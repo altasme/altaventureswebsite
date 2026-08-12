@@ -14,7 +14,7 @@ export default function CredibilityStrip() {
         <h2 className="text-2xl font-bold tracking-tight text-brand-navy sm:text-3xl">
           {CREDIBILITY_STRIP.headline}
         </h2>
-        <p className="mx-auto mt-3 max-w-2xl text-base text-ink/60">{CREDIBILITY_STRIP.sub}</p>
+        <p className="mx-auto mt-3 max-w-sm text-base text-ink/60">{CREDIBILITY_STRIP.sub}</p>
       </div>
 
       <div className="mt-10 grid grid-cols-2 gap-6 lg:grid-cols-4">

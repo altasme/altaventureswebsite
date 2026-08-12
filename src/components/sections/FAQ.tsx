@@ -11,7 +11,7 @@ export default function FAQ() {
         {FAQ_CONTENT.headline}
       </h2>
 
-      <div className="mt-10 divide-y divide-ink/8 border-y border-ink/8">
+      <div className="mt-10 max-w-prose divide-y divide-ink/8 border-y border-ink/8">
         {FAQ_CONTENT.items.map((item, i) => {
           const isOpen = openIndex === i;
           const panelId = `faq-panel-${i}`;

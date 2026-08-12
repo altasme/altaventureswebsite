@@ -12,8 +12,7 @@ interface CTAButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "
 }
 
 const VARIANT_CLASSES: Record<Variant, string> = {
-  primary:
-    "bg-brand-blue text-white hover:bg-[#0b57cc] active:bg-[#094aad] shadow-lg shadow-brand-blue/25",
+  primary: "bg-brand-blue text-white hover:bg-[#0b57cc] active:bg-[#094aad] shadow-lg shadow-black/15",
   secondary:
     "bg-white text-brand-navy border border-brand-navy/15 hover:border-brand-navy/30 hover:bg-paper-alt",
   ghost: "bg-transparent text-white border border-white/30 hover:bg-white/10",

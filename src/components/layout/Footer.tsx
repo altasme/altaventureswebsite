@@ -22,7 +22,7 @@ export default function Footer() {
             </span>
             <p className="mt-3 max-w-sm text-sm text-white/60">{FOOTER.tagline}</p>
             <p className="mt-4 text-xs text-white/40">{FOOTER.legalName}</p>
-            <p className="mt-1 text-xs text-white/40">{FOOTER.supportingStatement}</p>
+            <p className="mt-1 max-w-sm text-xs text-white/40">{FOOTER.supportingStatement}</p>
           </div>
 
           <div>

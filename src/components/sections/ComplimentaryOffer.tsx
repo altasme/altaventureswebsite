@@ -21,7 +21,9 @@ export default function ComplimentaryOffer() {
         <p className="mt-4 text-xl font-semibold text-brand-blue">
           {COMPLIMENTARY_OFFER.offerLine}
         </p>
-        <p className="mt-4 text-base text-ink/65">{COMPLIMENTARY_OFFER.support}</p>
+        <p className="mx-auto mt-4 max-w-sm text-base text-ink/65">
+          {COMPLIMENTARY_OFFER.support}
+        </p>
         <div className="mt-8 flex justify-center">
           <CTAButton
             label={COMPLIMENTARY_OFFER.cta}

@@ -23,9 +23,7 @@ export default function Hero() {
       <div className="relative mx-auto max-w-6xl px-6 pb-16 pt-16 sm:pt-20 lg:px-8 lg:pb-24 lg:pt-24">
         <div className="grid items-center gap-14 lg:grid-cols-2">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-wider text-[#5fa2ff]">
-              {HERO.eyebrow}
-            </p>
+            <p className="text-sm font-semibold tracking-wide text-[#5fa2ff]">{HERO.eyebrow}</p>
             <h1 className="mt-4 text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
               {HERO.headline}
             </h1>
@@ -46,21 +44,17 @@ export default function Hero() {
               />
             </div>
 
-            <p className="mt-8 text-xs uppercase tracking-wider text-white/40">
-              {HERO.trustLine}
-            </p>
+            <p className="mt-8 max-w-sm text-xs tracking-wide text-white/50">{HERO.trustLine}</p>
           </div>
 
           <div className="relative">
             {/* TODO(asset): real hero interface composition (website + dashboard/booking/CRM) not yet supplied */}
-            <div className="aspect-[4/3] w-full rounded-3xl border border-white/10 bg-white/5 p-3 shadow-2xl backdrop-blur-sm sm:p-4">
-              <div className="flex h-full w-full flex-col items-center justify-center rounded-2xl border border-dashed border-white/15 bg-brand-navy/40 text-center">
-                <p className="px-8 text-sm text-white/40">
-                  TODO(asset): real product interface composition
-                  <br />
-                  (website + booking/CRM screens) pending
-                </p>
-              </div>
+            <div className="flex aspect-[4/3] w-full flex-col items-center justify-center rounded-3xl border border-dashed border-white/15 bg-brand-navy/60 p-3 text-center shadow-2xl sm:p-4">
+              <p className="px-8 text-sm text-white">
+                TODO(asset): real product interface composition
+                <br />
+                (website + booking/CRM screens) pending
+              </p>
             </div>
             <div
               className="absolute -bottom-6 -left-6 hidden h-28 w-28 rounded-2xl bg-brand-gradient shadow-xl sm:block"

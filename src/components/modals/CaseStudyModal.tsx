@@ -34,7 +34,7 @@ export default function CaseStudyModal() {
       >
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-brand-blue">
+            <p className="text-xs font-semibold tracking-wide text-brand-blue">
               {project.category}
             </p>
             <h2 id="case-study-heading" className="mt-1 text-2xl font-bold text-brand-navy sm:text-3xl">

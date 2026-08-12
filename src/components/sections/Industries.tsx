@@ -26,7 +26,7 @@ export default function Industries() {
         ))}
       </div>
 
-      <p className="mt-8 text-sm text-ink/60">{INDUSTRIES.line}</p>
+      <p className="mt-8 max-w-sm text-sm text-ink/60">{INDUSTRIES.line}</p>
 
       <div className="mt-6">
         <CTAButton

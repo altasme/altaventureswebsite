@@ -27,7 +27,7 @@ export default function ServicesSection() {
               onMouseEnter={() => track("service_interaction", { service: service.id })}
               className={`flex flex-col rounded-2xl border border-ink/8 p-7 ${isFeatured ? "lg:col-span-2" : ""}`}
             >
-              <p className="text-xs font-semibold uppercase tracking-wider text-brand-blue">
+              <p className="text-xs font-semibold tracking-wide text-brand-blue">
                 {service.name}
               </p>
               <h3 className="mt-2 text-xl font-bold text-ink">{service.outcome}</h3>

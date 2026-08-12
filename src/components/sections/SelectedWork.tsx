@@ -35,7 +35,7 @@ export default function SelectedWork() {
               </div>
 
               <div className="flex flex-1 flex-col p-6">
-                <p className="text-xs font-semibold uppercase tracking-wider text-brand-blue">
+                <p className="text-xs font-semibold tracking-wide text-brand-blue">
                   {project.category}
                 </p>
                 <h3 className="mt-1 text-lg font-bold text-ink">{project.name}</h3>
