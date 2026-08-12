@@ -16,8 +16,10 @@
 These override anything in the source spec that conflicts. Where the source `ALTAVENTURES_WEBSITE_BUILD_SPECIFICATION` says otherwise, this block wins.
 
 1. **Single page, not multi-page.** One route (`/`). Nav items are anchor-scroll links, not pages. This overrides source §40 (12-page MVP) and §34's page implication.
+   - **Exception, `/WSA-free` [amended]:** a second route hosts the Free Website Service Agreement e-signature flow (§17). It is an operational/legal utility page, not part of the marketing funnel, so it is `noindex`, unlinked from Nav/Footer, and lazy-loaded so it never adds weight to the marketing homepage bundle.
 2. **Case studies are modals, not pages.** "View Project" opens an in-page modal. This overrides source §41's "case-study pages."
 3. **Static frontend, zero backend.** React + Vite + TypeScript + Tailwind. No Supabase, no database, no server. Deployed to Cloudflare Pages.
+   - **Exception, `/api/submit-wsa` [amended]:** the WSA-free flow (§17) requires sending email, which a static frontend cannot do. A single Cloudflare Pages Function handles that one endpoint; it holds no database and no session state, so the site remains otherwise backend-free.
 4. **No contact form.** The only conversion is opening a chat channel. No email capture, no form submission. Qualification happens in-chat (source §4, §24).
 5. **Website Care is NOT on the public site.** No pricing, no plans, no mention in the funnel (source §3, §43). Internal upsell only.
 6. **Free-offer copy is blunt and uses "flagship."** Approved wording:
@@ -402,4 +404,28 @@ Define as Tailwind theme tokens.
 2. No Website Care pricing or plans on the public site.
 3. No contact form or email capture. Chat channels are the only conversion.
 4. Don't imply Messenger/Viber prefill a message.
-5. Don't reintroduce multi-page routing or case-study pages. Single page + modals is final.
+5. Don't reintroduce multi-page routing or case-study pages on the marketing site. Single page + modals is final. The one carved-out exception is `/WSA-free` (§17), an unlinked operational utility page outside the marketing funnel, not a case-study page.
+
+---
+
+## 17. FREE WEBSITE SERVICE AGREEMENT (`/WSA-free`)
+
+A standalone e-signature page for the real Free Website Service Agreement contract, separate from the marketing funnel. Not linked from Nav/Footer; reached by direct URL.
+
+**Route:** `src/pages/WsaFreePage.tsx`, lazy-loaded via `React.lazy` in `App.tsx` so `pdf-lib` never ships in the homepage bundle. `react-router-dom` (`BrowserRouter` in `main.tsx`) provides the routing; `public/_redirects` gives Cloudflare Pages the SPA fallback (`/* /index.html 200`) so a direct/refreshed visit to `/WSA-free` doesn't 404.
+
+**Document content:** `src/content/wsa.ts` holds the full agreement text (`WSA_DOCUMENT`), transcribed verbatim from the client-supplied PDF, reusing the `LegalBlock`/`LegalSection` shape from `content/site.ts`. The page renders it as normal readable HTML (not an embedded PDF viewer) in natural page scroll, so it works smoothly on any device without a nested scroll container.
+
+**Flow:**
+1. Client scrolls the full agreement. An `IntersectionObserver` on a sentinel after the text unlocks the form once reached (`hasReadAgreement`).
+2. Client fills Business Name, Client Name / Authorized Representative, Email, Contact Number. Date is auto-filled to today (read-only) on both the Client and Altaventures blocks, per the client's instruction that the Altaventures side is otherwise already fixed.
+3. Client draws a signature on `src/components/wsa/SignaturePad.tsx` (canvas + Pointer Events, works for mouse and touch). The pad crops the exported PNG tightly to the drawn ink's bounding box (plus small padding) — embedding the full blank canvas instead would scale the signature down to near-invisibility when fit into the small signature box on the PDF.
+4. Client checks an explicit "I have read, understood, and agree" box.
+5. **Download PDF** and **Submit Agreement** both call `src/lib/wsaPdf.ts` → `fillAgreementPdf()`, which fetches the real base contract (`public/documents/free-website-service-agreement.pdf`) with `pdf-lib`, overlays the typed field values and the signature image at hand-verified coordinates on the signature page, and returns the filled PDF bytes. This runs entirely client-side.
+6. **Submit** additionally POSTs `{ businessName, clientName, email, phone, date, pdfBase64 }` to `/api/submit-wsa` (a Cloudflare Pages Function, `functions/api/submit-wsa.ts`), which emails the signed PDF via Resend to both `altasmeworks@gmail.com` and the client's email, and optionally archives it to Cloudinary if credentials are configured.
+
+**A note on the signature pad's resize handling:** reassigning a `<canvas>`'s `width`/`height` silently wipes its pixels, even when nothing visually changes. `SignaturePad` guards against wiping on every render, but if a *genuine* resize happens after the client has signed (mobile keyboard toggling, orientation change), it correctly treats the now-blank canvas as invalidated — clearing `hasSignature`, showing the "Sign here" placeholder again, and re-disabling Download/Submit — rather than silently letting a blank signature through. Do not remove this guard when touching the component.
+
+**Required Cloudflare Pages environment variables** (set in the dashboard, never committed): `RESEND_API_KEY`, `RESEND_FROM_EMAIL` (must be on a domain verified in Resend — Resend's sandbox sender can only deliver to the account's own email, not to arbitrary client addresses). Optional: `WSA_NOTIFY_EMAIL` (defaults to `altasmeworks@gmail.com`), `CLOUDINARY_CLOUD_NAME` / `CLOUDINARY_API_KEY` / `CLOUDINARY_API_SECRET` (archival upload is skipped entirely if these are absent).
+
+**If the source PDF is ever replaced:** the field coordinates in `WSA_PDF_FIELD_COORDS` / `WSA_SIGNATURE_BOX` (`src/content/wsa.ts`) are hand-verified pixel/point positions tied to the current document's exact layout, and will need to be re-derived (e.g. via `pdfjs-dist`'s `getTextContent()` transform positions) if the underlying contract text reflows.

@@ -26,6 +26,7 @@ type AnalyticsEventMap = {
   service_interaction: { service: string };
   scroll_depth: { depth: 25 | 50 | 75 | 100 };
   industry_engagement: { industry: string };
+  wsa_agreement_submit: Record<string, never>;
 };
 
 export function track<E extends keyof AnalyticsEventMap>(
