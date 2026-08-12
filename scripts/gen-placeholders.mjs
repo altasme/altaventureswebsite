@@ -41,8 +41,12 @@ function projectCard(label, category) {
 </svg>`;
 }
 
-const heroBgSvg = `
-<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+// Both hero placeholders hint at where the real subject (a product
+// screenshot or team/workspace photo) should sit: right-of-frame on
+// desktop, lower-frame on mobile, mirroring the Vocalyze/Lean & Fit
+// construction technique (subject-to-one-side, gradient does the rest).
+const heroBgWideSvg = `
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="800" viewBox="0 0 1920 800">
   <defs>
     <linearGradient id="hero-bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#06122E" />
@@ -50,11 +54,32 @@ const heroBgSvg = `
       <stop offset="100%" stop-color="#02256F" />
     </linearGradient>
   </defs>
-  <rect width="1920" height="1080" fill="url(#hero-bg)" />
-  <circle cx="1600" cy="180" r="420" fill="#0D68EF" opacity="0.16" />
-  <circle cx="260" cy="920" r="360" fill="#0D68EF" opacity="0.10" />
-  <text x="960" y="550" font-family="Arial, sans-serif" font-size="30" font-weight="600" fill="#FFFFFF" fill-opacity="0.35" text-anchor="middle">
-    TODO(asset): full-bleed hero background pending
+  <rect width="1920" height="800" fill="url(#hero-bg)" />
+  <rect x="1180" y="120" width="640" height="560" rx="24" fill="#0D68EF" opacity="0.12" stroke="#FFFFFF" stroke-opacity="0.2" stroke-width="2" stroke-dasharray="10 10" />
+  <text x="1500" y="410" font-family="Arial, sans-serif" font-size="26" font-weight="600" fill="#FFFFFF" fill-opacity="0.5" text-anchor="middle">
+    TODO(asset): real product
+  </text>
+  <text x="1500" y="444" font-family="Arial, sans-serif" font-size="26" font-weight="600" fill="#FFFFFF" fill-opacity="0.5" text-anchor="middle">
+    screenshot or team photo
+  </text>
+</svg>`;
+
+const heroBgMobileSvg = `
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="hero-bg-m" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06122E" />
+      <stop offset="55%" stop-color="#0A1A3D" />
+      <stop offset="100%" stop-color="#02256F" />
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#hero-bg-m)" />
+  <rect x="90" y="1080" width="900" height="700" rx="24" fill="#0D68EF" opacity="0.12" stroke="#FFFFFF" stroke-opacity="0.2" stroke-width="2" stroke-dasharray="10 10" />
+  <text x="540" y="1420" font-family="Arial, sans-serif" font-size="30" font-weight="600" fill="#FFFFFF" fill-opacity="0.5" text-anchor="middle">
+    TODO(asset): real product
+  </text>
+  <text x="540" y="1462" font-family="Arial, sans-serif" font-size="30" font-weight="600" fill="#FFFFFF" fill-opacity="0.5" text-anchor="middle">
+    screenshot or team photo
   </text>
 </svg>`;
 
@@ -68,7 +93,13 @@ await sharp(Buffer.from(ogSvg)).png().toFile("public/og/altaventures-og.png");
 
 await sharp(Buffer.from(logoSvg)).png().toFile("public/images/brand/altaventures-logo.png");
 
-await sharp(Buffer.from(heroBgSvg)).jpeg({ quality: 82 }).toFile("public/images/hero/hero-bg.jpg");
+await sharp(Buffer.from(heroBgWideSvg))
+  .jpeg({ quality: 82 })
+  .toFile("public/images/hero/hero-bg-wide.jpg");
+
+await sharp(Buffer.from(heroBgMobileSvg))
+  .jpeg({ quality: 82 })
+  .toFile("public/images/hero/hero-bg-mobile.jpg");
 
 const projects = [
   ["setmona", "SETMONA", "Booking &amp; Scheduling"],
