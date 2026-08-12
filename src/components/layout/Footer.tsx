@@ -16,7 +16,9 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-6 py-14 lg:px-8">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            {/* TODO(asset): generated wordmark placeholder; logo is on a white background, so it's rendered in a light chip for legibility on this dark canvas */}
+            {/* Logo's navy wordmark doesn't read on this dark canvas (checked
+                against the supplied reversed variant too), so it's rendered
+                in a light chip for legibility instead. */}
             <span className="inline-flex rounded-lg bg-white px-3 py-2">
               <img src={BRAND.logo} alt={BRAND.name} width={160} height={40} className="h-7 w-auto" />
             </span>

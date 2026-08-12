@@ -23,7 +23,8 @@ These override anything in the source spec that conflicts. Where the source `ALT
 6. **Free-offer copy is blunt and uses "flagship."** Approved wording:
    > "We'll build your flagship website free: you only pay for the domain."
    Keep the source's premium framing terms available elsewhere ("Complimentary Website Build", "No upfront website development fee") but the primary offer line is the blunt one above.
-7. **Real work only (launch integrity).** No fabricated interfaces, no stock-photo mockups standing in for real products, no invented testimonials. Project visuals must be real Altaventures screenshots. Ship with clearly-marked placeholders until real assets are provided.
+7. **Real work only (launch integrity).** No fabricated interfaces, no stock-photo mockups standing in for real products, no invented testimonials. Project visuals (SelectedWork/CaseStudyModal) must be real Altaventures screenshots. Ship with clearly-marked placeholders until real assets are provided.
+   - **Exception, hero background [amended]:** the hero uses an AI-generated photorealistic atmospheric photo (a business owner working), not a real team/office photo, since the site is run by a solo founder without a photography budget. This is narrower than it sounds: any screen content in the image must stay abstract (a soft glow, never legible fake UI), since a fabricated *product screenshot* is exactly what this guardrail exists to prevent. Real product screenshots remain mandatory everywhere else (SelectedWork, CaseStudyModal).
 
 ---
 
@@ -31,8 +32,8 @@ These override anything in the source spec that conflicts. Where the source `ALT
 
 | # | Item | Default used in build | Action needed from client |
 |---|------|----------------------|---------------------------|
-| 1 | **About section copy** | Written from brand message (§47) as a credible placeholder. Marked `TODO(about)` in `content/site.ts`. | Replace with real story / founder / positioning details. |
-| 2 | **Real project screenshots** | Placeholder images with `TODO(asset)` labels. | Provide real screenshots for Setmona, Altamotors, Kolekta, Vocalyze. |
+| 1 | ~~About section copy~~ **RESOLVED** | Real founder/company story supplied by client, in `content/site.ts` -> `ABOUT`. | N/A |
+| 2 | ~~Real project screenshots~~ **RESOLVED** | Real screenshots supplied for Setmona, Altamotors, Kolekta, Vocalyze (`public/images/projects/`). | N/A |
 | 3 | ~~Brand color + logo~~ **RESOLVED [v1.1]** | Logo supplied; palette locked from logo (see §11.1). Tagline supplied. | N/A |
 | 4 | **Messenger branding mismatch** | Link points to `m.me/vanamaranto.moto`, which shows a personal-style profile ("Van Amaranto"), not "Altaventures". | Consider a dedicated Altaventures Facebook Page for brand consistency. |
 | 5 | **Analytics ID** | Tracking layer scaffolded with a `MEASUREMENT_ID` constant left blank; events fire to `dataLayer` regardless. | Provide GA4 / Meta Pixel IDs when ready. |
@@ -207,7 +208,7 @@ Copy is authoritative from the source spec. Reproduce exactly unless noted. Stor
 - Primary CTA: **Let's Talk About Your Business** → ContactModal
 - Secondary CTA: **See What We've Built** → smooth-scroll to SelectedWork
 - Trust line: "Built for real businesses. Designed around real business needs."
-- **Hero visual:** real interface composition (website + dashboard/booking/CRM). Placeholder `TODO(asset)` until real screenshots provided. Never generic stock.
+- **Hero visual: RESOLVED, amended [see §0.7 exception].** Full-bleed AI-generated photorealistic photo (business owner at a laptop), not the originally-specified real interface composition; solo-founder resourcing constraint. Separate desktop/mobile art-directed crops in `public/images/hero/`. Screen content in the image stays abstract, no fabricated UI.
 
 ### 6.2 CredibilityStrip (§12)
 - Headline: **Not Just Websites. Real Business Systems.**
@@ -270,9 +271,8 @@ Copy is authoritative from the source spec. Reproduce exactly unless noted. Stor
 - Sub per §28. CTA: **Let's Talk About Your Business** → ContactModal.
 - Show "Messenger | Viber | WhatsApp" beneath.
 
-### 6.14 About (`TODO(about)`, open item #1)
-- Placeholder built from §47 brand message. Anchor target for nav "About".
-- Keep short, credible, editable. Flag clearly in `content/site.ts` for replacement.
+### 6.14 About (open item #1, RESOLVED)
+- Real founder/company story supplied by client. Anchor target for nav "About".
 
 ### 6.15 Footer (§39)
 - Logo (or wordmark), tagline "We build the engine. You drive the business.", formal name, supporting statement (§39).
@@ -383,17 +383,17 @@ Define as Tailwind theme tokens.
 
 ## 15. DEFINITION OF DONE
 
-- [ ] Single page, all sections in §5 order, all copy pulled from `content/site.ts`.
-- [ ] All CTAs open ContactModal; channel links correct; WhatsApp prefills, Messenger/Viber do not falsely claim to.
-- [ ] Four case-study modals working, Vocalyze future-dev clearly labeled as planned.
-- [ ] Sticky mobile CTA present and non-obstructing.
-- [ ] Analytics events firing to `dataLayer` (IDs optional).
-- [ ] SEO meta + JSON-LD + OG image present.
-- [ ] Placeholders clearly marked for: About copy, project screenshots, legal text, analytics IDs.
-- [ ] Brand palette (§11.1), logo, and tagline applied.
-- [ ] No backend, no form, no Website Care mention anywhere public.
+- [x] Single page, all sections in §5 order, all copy pulled from `content/site.ts`.
+- [x] All CTAs open ContactModal; channel links correct; WhatsApp prefills, Messenger/Viber do not falsely claim to.
+- [x] Four case-study modals working, Vocalyze future-dev clearly labeled as planned.
+- [x] Sticky mobile CTA present and non-obstructing.
+- [x] Analytics events firing to `dataLayer` (IDs optional).
+- [x] SEO meta + JSON-LD + OG image present.
+- [x] Real assets in place: logo, favicon, OG image, hero photography, four project screenshots, About copy. Placeholders remain only for legal text and analytics IDs.
+- [x] Brand palette (§11.1), logo, and tagline applied.
+- [x] No backend, no form, no Website Care mention anywhere public.
 - [ ] Lighthouse: performance/accessibility/SEO in good range on mobile.
-- [ ] Static `dist/` deploys clean to Cloudflare Pages.
+- [x] Static `dist/` deploys clean to Cloudflare Pages (live at altasme.com).
 
 ---
 

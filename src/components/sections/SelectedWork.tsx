@@ -26,7 +26,7 @@ export default function SelectedWork() {
               <div className="aspect-[16/10] w-full overflow-hidden border-b border-ink/10 bg-paper-alt">
                 <img
                   src={project.image}
-                  alt={`${project.name}, ${project.category} (placeholder, pending real screenshot)`}
+                  alt={`${project.name}, ${project.category}`}
                   width={1200}
                   height={750}
                   loading="lazy"

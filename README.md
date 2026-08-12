@@ -31,17 +31,20 @@ All copy, project case studies, FAQ, industries, and contact configuration
 live in `src/content/site.ts`, the single source of truth. No component
 hard-codes copy.
 
-## Known placeholders (pending real assets from the client)
+## Known placeholders
 
-- `TODO(about)`: About section copy (`src/content/site.ts` -> `ABOUT`)
-- `TODO(asset)`: real logo, hero visual, and project screenshots
-  (`public/images/brand/`, `public/images/projects/`); regenerate placeholders
-  with `node scripts/gen-placeholders.mjs` (requires `npm i -D sharp` first)
+Resolved: About copy, logo, favicon, OG image, hero photography, and all four
+project screenshots are real assets. Domain is live at altasme.com.
+
+Still pending:
+
 - `TODO(legal)`: Privacy Policy / Terms of Service boilerplate
   (`src/content/site.ts` -> `LEGAL`)
 - `TODO(analytics)`: GA4 / Meta Pixel `MEASUREMENT_ID`
   (`src/lib/analytics.ts`)
-- `TODO(domain)`: canonical/OG URLs in `index.html` use a placeholder domain
+
+To regenerate fallback placeholder assets for a future project, run
+`node scripts/gen-placeholders.mjs` (requires `npm i -D sharp` first).
 
 ## Deployment
 
