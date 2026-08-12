@@ -1,0 +1,511 @@
+// content/site.ts
+// SINGLE SOURCE OF TRUTH — all copy, projects, contact config for the Altaventures site.
+// No component should hard-code copy. Edit this file to change what the site says.
+
+export const BRAND = {
+  name: "Altaventures",
+  legalName: "Altaventures Business Development Services",
+  tagline: "We build the engine. You drive the business.",
+  // TODO(asset): real logo file not yet supplied to this build. Using a text
+  // wordmark fallback (see components/layout/Nav.tsx & Footer.tsx) until
+  // `Copy_of_Altaventures_logo.png` is placed at this path.
+  logo: "/images/brand/altaventures-logo.png",
+} as const;
+
+export const CONTACT = {
+  whatsapp: {
+    number: "639212836683",
+    supportsPrefill: true,
+    prefill:
+      "Hi Altaventures! I'd like to discuss a website or digital solution for my business.",
+  },
+  viber: {
+    number: "+639212836683",
+    supportsPrefill: false,
+  },
+  messenger: {
+    handle: "vanamaranto.moto",
+    supportsPrefill: false,
+  },
+} as const;
+
+export const NAV_LINKS = [
+  { label: "Home", href: "#home" },
+  { label: "Services", href: "#services" },
+  { label: "Work", href: "#work" },
+  { label: "How It Works", href: "#how-it-works" },
+  { label: "About", href: "#about" },
+] as const;
+
+// ---------------------------------------------------------------------------
+// Hero
+// ---------------------------------------------------------------------------
+
+export const HERO = {
+  eyebrow: BRAND.tagline,
+  headline: "Build a Better Digital Business.",
+  sub: "Altaventures builds professional websites, digital tools, and business systems designed around the way your business actually works.",
+  line: "For Philippine businesses ready to build, improve, or digitalize their business online.",
+  primaryCta: "Let's Talk About Your Business",
+  secondaryCta: "See What We've Built",
+  trustLine: "Built for real businesses. Designed around real business needs.",
+} as const;
+
+// ---------------------------------------------------------------------------
+// Credibility strip
+// ---------------------------------------------------------------------------
+
+export const CREDIBILITY_STRIP = {
+  headline: "Not Just Websites. Real Business Systems.",
+  sub: "Every project below is a live, working system built for a real Philippine business — not a template or a mockup.",
+  cta: "Explore Our Work",
+  items: [
+    { id: "setmona", name: "SETMONA", category: "Booking & Scheduling" },
+    { id: "altamotors", name: "ALTAMOTORS", category: "Motorcycle Financing & Sales" },
+    { id: "kolekta", name: "KOLEKTA", category: "Loan Management & Billing" },
+    { id: "vocalyze", name: "VOCALYZE", category: "Entertainment Website & Digitalization" },
+  ],
+} as const;
+
+// ---------------------------------------------------------------------------
+// Problem section
+// ---------------------------------------------------------------------------
+
+export const PROBLEMS = {
+  headline: "Does Your Business Need More Than a Facebook Page?",
+  cta: "Tell Us What's Holding Your Business Back",
+  items: [
+    {
+      title: "You're Losing Customers to a Weak First Impression",
+      copy: "A Facebook page can't show up in Google search, load fast on mobile, or make your business look as established as it actually is. Customers judge credibility in seconds.",
+    },
+    {
+      title: "You're Managing Bookings, Orders, or Payments by Hand",
+      copy: "Messenger threads, spreadsheets, and sticky notes don't scale. Every manual step is a chance for something to be missed, double-booked, or lost.",
+    },
+    {
+      title: "Your Systems Don't Talk to Each Other",
+      copy: "Sales in one place, records in another, follow-ups nowhere. Without a connected system, growth just means more chaos, not more revenue.",
+    },
+    {
+      title: "You Don't Have Time to Manage Any of This Yourself",
+      copy: "You're running the business, not building software. You need a system that works quietly in the background — not another project on your plate.",
+    },
+  ],
+} as const;
+
+// ---------------------------------------------------------------------------
+// Services
+// ---------------------------------------------------------------------------
+
+export const SERVICES = {
+  headline: "Digital Solutions Built Around Your Business",
+  items: [
+      {
+      id: "websites",
+      name: "Business Websites",
+      outcome: "A Website That Works as Hard as You Do",
+      capabilities: [
+        "Professional, mobile-first design",
+        "Built to convert visitors into conversations",
+        "Fast-loading, search-friendly pages",
+        "Easy to update as your business grows",
+      ],
+      cta: "I Need a Website",
+      referenceIds: [],
+    },
+    {
+      id: "booking",
+      name: "Booking & Scheduling",
+      outcome: "Stop Managing Bookings by Hand",
+      capabilities: [
+        "Online booking and calendar management",
+        "Automated confirmations and reminders",
+        "Staff and resource scheduling",
+        "Built around how your business actually operates",
+      ],
+      cta: "I Need a Booking System",
+      referenceIds: ["setmona"],
+    },
+    {
+      id: "management",
+      name: "Business Management Systems",
+      outcome: "Run Your Operations From One Place",
+      capabilities: [
+        "Loan, billing, and collections tracking",
+        "Financing and sales record management",
+        "Custom dashboards for owners and staff",
+        "Built to match your existing workflow, not replace it",
+      ],
+      cta: "I Need a Management System",
+      referenceIds: ["altamotors", "kolekta"],
+    },
+    {
+      id: "ecommerce",
+      name: "E-commerce",
+      outcome: "Sell Online Without the Guesswork",
+      capabilities: [
+        "Product catalogs and online ordering",
+        "Payment and inventory-aware workflows",
+        "Mobile-first shopping experience",
+        "Designed to grow with your catalog",
+      ],
+      cta: "I Need to Sell Online",
+      referenceIds: [],
+    },
+    {
+      id: "digitalization",
+      name: "Business Digitalization",
+      outcome: "Move Your Business Online, Properly",
+      capabilities: [
+        "Digitizing manual, paper-based processes",
+        "Centralizing scattered records and tools",
+        "Systems that fit your business, not the other way around",
+        "A clear, guided path from where you are to where you want to be",
+      ],
+      cta: "I Need to Digitalize My Business",
+      referenceIds: [],
+    },
+  ],
+} as const;
+
+// ---------------------------------------------------------------------------
+// Projects — used by SelectedWork + CaseStudyModal
+// ---------------------------------------------------------------------------
+
+export type ProjectId = "setmona" | "altamotors" | "kolekta" | "vocalyze";
+
+export const PROJECTS: Record<
+  ProjectId,
+  {
+    id: ProjectId;
+    name: string;
+    category: string;
+    shortDescription: string;
+    tags: string[];
+    // TODO(asset): real screenshot(s) not yet supplied for this build.
+    image: string;
+    overview: string;
+    whatWeBuilt: string[];
+    projectType: string;
+    businessValue: string;
+    futureDevelopment?: string[];
+    cta: string;
+  }
+> = {
+  setmona: {
+    id: "setmona",
+    name: "Setmona",
+    category: "Booking & Scheduling",
+    shortDescription:
+      "A booking and scheduling platform built to replace manual, Messenger-based appointment management with a real system.",
+    tags: ["Booking", "Scheduling", "Web App"],
+    image: "/images/projects/setmona.png",
+    overview:
+      "Setmona is a booking and scheduling system built for service-based businesses that were previously coordinating appointments manually. Altaventures designed and built the platform end-to-end, from customer-facing booking to the back-end schedule management staff rely on day to day.",
+    whatWeBuilt: [
+      "Customer-facing online booking flow",
+      "Real-time calendar and availability management",
+      "Automated booking confirmations and reminders",
+      "Admin dashboard for managing schedules and staff",
+    ],
+    projectType: "Web application",
+    businessValue:
+      "Replaced manual back-and-forth scheduling with a self-serve booking flow, reducing missed bookings and freeing up staff time.",
+    cta: "I Need a Booking System Like This",
+  },
+  altamotors: {
+    id: "altamotors",
+    name: "Altamotors",
+    category: "Motorcycle Financing & Sales",
+    shortDescription:
+      "A digital sales and financing platform built for a motorcycle dealership, connecting inquiries, applications, and records in one system.",
+    tags: ["Sales", "Financing", "Business System"],
+    image: "/images/projects/altamotors.png",
+    overview:
+      "Altamotors needed a way to present its motorcycle lineup and financing options online, while giving staff a structured way to manage sales inquiries and financing applications instead of tracking them across chat threads and paper forms.",
+    whatWeBuilt: [
+      "Public-facing website with vehicle and financing information",
+      "Digital financing application flow",
+      "Sales inquiry and lead tracking for staff",
+      "Structured records in place of manual paper trails",
+    ],
+    projectType: "Business website + management system",
+    businessValue:
+      "Gave the dealership a professional online presence while turning ad-hoc sales and financing tracking into a structured, repeatable process.",
+    cta: "I Need a System Like This",
+  },
+  kolekta: {
+    id: "kolekta",
+    name: "Kolekta",
+    category: "Loan Management & Billing",
+    shortDescription:
+      "A loan management and billing system built to track accounts, payments, and collections in one place.",
+    tags: ["Loan Management", "Billing", "Business System"],
+    image: "/images/projects/kolekta.png",
+    overview:
+      "Kolekta was built for lending operations that needed a reliable way to track borrower accounts, payment schedules, and collections — work that was previously spread across spreadsheets and manual records.",
+    whatWeBuilt: [
+      "Borrower and account record management",
+      "Payment and billing schedule tracking",
+      "Collections status and follow-up tools",
+      "Owner-facing reporting on outstanding accounts",
+    ],
+    projectType: "Business management system",
+    businessValue:
+      "Centralized loan and billing records into one system, making it easier to track what's owed, what's paid, and what needs follow-up.",
+    cta: "I Need a Management System Like This",
+  },
+  vocalyze: {
+    id: "vocalyze",
+    name: "Vocalyze",
+    category: "Entertainment Website & Digitalization",
+    shortDescription:
+      "A website and digitalization foundation for an entertainment business moving its presence and operations online.",
+    tags: ["Website", "Digitalization", "Entertainment"],
+    image: "/images/projects/vocalyze.png",
+    overview:
+      "Vocalyze needed a professional website to establish its presence online, along with a foundation for digitalizing more of its operations over time as the business grows.",
+    whatWeBuilt: [
+      "Professional business website",
+      "Content structure built for an entertainment audience",
+      "Foundation for future booking and engagement features",
+    ],
+    projectType: "Business website",
+    businessValue:
+      "Gave the business a credible online presence and a technical foundation it can build on as its digital needs grow.",
+    futureDevelopment: [
+      "Online booking for events and engagements",
+      "Expanded content and media management",
+      "Deeper digitalization of day-to-day operations",
+    ],
+    cta: "I Need a Website Like This",
+  },
+} as const;
+
+export const PROJECT_ORDER: ProjectId[] = ["setmona", "altamotors", "kolekta", "vocalyze"];
+
+export const SELECTED_WORK = {
+  headline: "We've Built It. Now Let's Build Yours.",
+  viewProjectLabel: "View Project",
+} as const;
+
+// ---------------------------------------------------------------------------
+// Portfolio conversion
+// ---------------------------------------------------------------------------
+
+export const PORTFOLIO_CONVERSION = {
+  headline: "What Could We Build for Your Business?",
+  sub: "Every system on this page started as a conversation about a real business problem. Yours could be next.",
+  cta: "Let's Talk About Your Business",
+} as const;
+
+// ---------------------------------------------------------------------------
+// Why Altaventures
+// ---------------------------------------------------------------------------
+
+export const WHY_ALTAVENTURES = {
+  headline: "Built Around Your Business.",
+  points: [
+    {
+      title: "Business First",
+      copy: "We start with how your business actually operates, not with a template. The system fits the business — not the other way around.",
+    },
+    {
+      title: "More Than Websites",
+      copy: "Websites, booking systems, management tools, e-commerce — we build the parts of your business that need to run online, together.",
+    },
+    {
+      title: "Designed to Grow",
+      copy: "What we build today is built to be extended tomorrow. You won't need to start over as your business scales.",
+    },
+    {
+      title: "Practical",
+      copy: "No unnecessary complexity, no features you'll never use. Just the systems your business needs to run better.",
+    },
+  ],
+} as const;
+
+// ---------------------------------------------------------------------------
+// Complimentary offer
+// ---------------------------------------------------------------------------
+
+export const COMPLIMENTARY_OFFER = {
+  headline: "Need a Website? Let Us Build It.",
+  offerLine: "We'll build your flagship website free — you only pay for the domain.",
+  support:
+    "Tell us about your business. If you're a good fit, we'll discuss how we can build and launch a professional website around your business.",
+  cta: "See If We're a Good Fit",
+} as const;
+
+// ---------------------------------------------------------------------------
+// How it works
+// ---------------------------------------------------------------------------
+
+export const HOW_IT_WORKS = {
+  headline: "From Idea to Launch.",
+  cta: "Start a Conversation",
+  steps: [
+    {
+      number: 1,
+      title: "Talk",
+      copy: "Start a conversation on Messenger, Viber, or WhatsApp and tell us about your business.",
+    },
+    {
+      number: 2,
+      title: "Understand",
+      copy: "We ask questions about how your business actually runs — not just what you think you want built.",
+    },
+    {
+      number: 3,
+      title: "Recommend",
+      copy: "We recommend the right solution for your business and budget, not the most expensive one.",
+    },
+    {
+      number: 4,
+      title: "Build",
+      copy: "We design and build your website or system, keeping you in the loop the whole way.",
+    },
+    {
+      number: 5,
+      title: "Launch",
+      copy: "We launch your site or system and make sure it's working the way your business needs it to.",
+    },
+    {
+      number: 6,
+      title: "Grow",
+      copy: "We're available as your business grows and your needs change — this isn't a one-and-done handoff.",
+    },
+  ],
+} as const;
+
+// ---------------------------------------------------------------------------
+// Industries
+// ---------------------------------------------------------------------------
+
+export const INDUSTRIES = {
+  headline: "Built for Businesses Like Yours.",
+  line: "Don't see your industry? That's okay. Tell us what your business needs.",
+  cta: "Tell Us About Your Business",
+  items: [
+    "Automotive & Motorcycle Dealers",
+    "Lending & Financing",
+    "Salons & Spas",
+    "Clinics & Wellness",
+    "Home & Trade Services",
+    "Retail & E-commerce",
+    "Entertainment & Events",
+    "Professional Services",
+  ],
+} as const;
+
+// ---------------------------------------------------------------------------
+// FAQ
+// ---------------------------------------------------------------------------
+
+export const FAQ = {
+  headline: "Frequently Asked Questions",
+  items: [
+    {
+      q: "What exactly does Altaventures build?",
+      a: "Websites, booking and scheduling systems, business management tools, e-commerce, and general business digitalization — whatever your business needs to run better online.",
+    },
+    {
+      q: "Is the free website offer really free?",
+      a: "Yes. We'll build your flagship website at no development cost — you only pay for the domain. We'll discuss the details once we understand your business and confirm it's a good fit.",
+    },
+    {
+      q: "How long does a project take?",
+      a: "It depends on the scope — a business website typically moves faster than a full management system. We'll give you a realistic timeline once we understand what you need.",
+    },
+    {
+      q: "Do I need to know what I want built before I talk to you?",
+      a: "No. Most clients start with a problem, not a spec. Tell us what's not working and we'll help figure out what to build.",
+    },
+    {
+      q: "Can you work with my existing systems or processes?",
+      a: "Often, yes. We design around how your business actually operates rather than asking you to change everything to fit our tools.",
+    },
+    {
+      q: "How do I get started?",
+      a: "Start a conversation on Messenger, Viber, or WhatsApp. Tell us a little about your business and we'll take it from there.",
+    },
+  ],
+} as const;
+
+// ---------------------------------------------------------------------------
+// Final CTA
+// ---------------------------------------------------------------------------
+
+export const FINAL_CTA = {
+  headline: "Ready to Build Something Better?",
+  sub: "Your business deserves more than a Facebook page. Let's talk about what you actually need.",
+  cta: "Let's Talk About Your Business",
+  channelsLine: "Messenger | Viber | WhatsApp",
+} as const;
+
+// ---------------------------------------------------------------------------
+// About — TODO(about): open item #1, placeholder pending real copy
+// ---------------------------------------------------------------------------
+
+export const ABOUT = {
+  // TODO(about): replace with real founder / company story and positioning
+  // details once provided by the client. Placeholder below is written from
+  // the brand tagline and locked positioning in CLAUDE.md §0 / §47.
+  headline: "About Altaventures",
+  body: [
+    "Altaventures Business Development Services builds the digital engines that let Philippine businesses focus on what they do best: running the business.",
+    "We started building real systems for real businesses — booking platforms, financing and sales tools, loan management systems, and business websites — and grew Altaventures around that same principle: build around the business, not a template.",
+    "We're not a freelance shop and we're not a generic web agency. We're a business-solutions partner that happens to build exceptional websites and systems along the way.",
+  ],
+} as const;
+
+// ---------------------------------------------------------------------------
+// Footer
+// ---------------------------------------------------------------------------
+
+export const FOOTER = {
+  tagline: BRAND.tagline,
+  legalName: BRAND.legalName,
+  supportingStatement:
+    "Websites, booking systems, business management tools, and digitalization for Philippine businesses.",
+  linkGroups: {
+    site: [
+      { label: "Services", href: "#services" },
+      { label: "Work", href: "#work" },
+      { label: "How It Works", href: "#how-it-works" },
+      { label: "About", href: "#about" },
+    ],
+  },
+  legalLinks: [
+    { label: "Privacy Policy", id: "privacy" as const },
+    { label: "Terms of Service", id: "terms" as const },
+  ],
+} as const;
+
+// ---------------------------------------------------------------------------
+// Legal — TODO(legal): open item #6, placeholder boilerplate only
+// ---------------------------------------------------------------------------
+
+export const LEGAL = {
+  privacy: {
+    title: "Privacy Policy",
+    // TODO(legal): placeholder boilerplate — replace with real legal text
+    // before this modal is presented as final to the public.
+    body: [
+      "This is placeholder Privacy Policy text pending final legal review. It does not constitute the actual privacy practices of Altaventures Business Development Services.",
+      "Altaventures does not operate a contact form or collect data through this website beyond standard, anonymized analytics used to understand site traffic. When you contact us through Messenger, Viber, or WhatsApp, that conversation is governed by the respective platform's own privacy policy.",
+      "A complete Privacy Policy will be published here once finalized.",
+    ],
+  },
+  terms: {
+    title: "Terms of Service",
+    // TODO(legal): placeholder boilerplate — replace with real legal text
+    // before this modal is presented as final to the public.
+    body: [
+      "This is placeholder Terms of Service text pending final legal review. It does not constitute the actual terms governing use of Altaventures services.",
+      "This website is provided for informational and marketing purposes only. Any business engagement with Altaventures Business Development Services is governed by a separate agreement discussed directly with you.",
+      "A complete Terms of Service will be published here once finalized.",
+    ],
+  },
+} as const;
