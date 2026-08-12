@@ -1,7 +1,7 @@
-# CLAUDE.md — Altaventures Marketing Website
+# CLAUDE.md: Altaventures Marketing Website
 
 **Artifact type:** Build specification for Claude Code
-**Spec version:** `[v1.1]` — brand palette + logo + tagline locked
+**Spec version:** `[v1.1]`, brand palette + logo + tagline locked
 **Brand:** Altaventures
 **Tagline:** We build the engine. You drive the business.
 **Formal business name:** Altaventures Business Development Services
@@ -21,7 +21,7 @@ These override anything in the source spec that conflicts. Where the source `ALT
 4. **No contact form.** The only conversion is opening a chat channel. No email capture, no form submission. Qualification happens in-chat (source §4, §24).
 5. **Website Care is NOT on the public site.** No pricing, no plans, no mention in the funnel (source §3, §43). Internal upsell only.
 6. **Free-offer copy is blunt and uses "flagship."** Approved wording:
-   > "We'll build your flagship website free — you only pay for the domain."
+   > "We'll build your flagship website free: you only pay for the domain."
    Keep the source's premium framing terms available elsewhere ("Complimentary Website Build", "No upfront website development fee") but the primary offer line is the blunt one above.
 7. **Real work only (launch integrity).** No fabricated interfaces, no stock-photo mockups standing in for real products, no invented testimonials. Project visuals must be real Altaventures screenshots. Ship with clearly-marked placeholders until real assets are provided.
 
@@ -33,7 +33,7 @@ These override anything in the source spec that conflicts. Where the source `ALT
 |---|------|----------------------|---------------------------|
 | 1 | **About section copy** | Written from brand message (§47) as a credible placeholder. Marked `TODO(about)` in `content/site.ts`. | Replace with real story / founder / positioning details. |
 | 2 | **Real project screenshots** | Placeholder images with `TODO(asset)` labels. | Provide real screenshots for Setmona, Altamotors, Kolekta, Vocalyze. |
-| 3 | ~~Brand color + logo~~ **RESOLVED [v1.1]** | Logo supplied; palette locked from logo (see §11.1). Tagline supplied. | — |
+| 3 | ~~Brand color + logo~~ **RESOLVED [v1.1]** | Logo supplied; palette locked from logo (see §11.1). Tagline supplied. | N/A |
 | 4 | **Messenger branding mismatch** | Link points to `m.me/vanamaranto.moto`, which shows a personal-style profile ("Van Amaranto"), not "Altaventures". | Consider a dedicated Altaventures Facebook Page for brand consistency. |
 | 5 | **Analytics ID** | Tracking layer scaffolded with a `MEASUREMENT_ID` constant left blank; events fire to `dataLayer` regardless. | Provide GA4 / Meta Pixel IDs when ready. |
 | 6 | **Legal pages** | Privacy Policy + Terms rendered as modals with placeholder boilerplate. | Provide real legal text. |
@@ -44,8 +44,8 @@ These override anything in the source spec that conflicts. Where the source `ALT
 
 - **Framework:** React 18 + Vite + TypeScript
 - **Styling:** Tailwind CSS
-- **State:** Local component state only (no Zustand needed — no cart, no multi-step flow)
-- **Animation:** CSS transitions + a lightweight lib only if needed (e.g. `framer-motion`) — keep bundle small
+- **State:** Local component state only (no Zustand needed, no cart, no multi-step flow)
+- **Animation:** CSS transitions + a lightweight lib only if needed (e.g. `framer-motion`); keep bundle small
 - **Hosting:** Cloudflare Pages (static output from `vite build`)
 - **No backend, no database, no auth, no email service.**
 
@@ -61,7 +61,7 @@ src/
   App.tsx
   index.css                 # Tailwind entry + design tokens
   content/
-    site.ts                 # SINGLE SOURCE OF TRUTH — all copy, projects, contact config
+    site.ts                 # SINGLE SOURCE OF TRUTH: all copy, projects, contact config
   lib/
     contact.ts              # CTA link builders (wa.me / m.me / viber) + prefill logic
     analytics.ts            # event tracking wrapper
@@ -109,12 +109,12 @@ export const BRAND = {
   name: "Altaventures",
   legalName: "Altaventures Business Development Services",
   tagline: "We build the engine. You drive the business.",
-  logo: "/images/brand/altaventures-logo.png", // supplied asset — place in public/images/brand/
+  logo: "/images/brand/altaventures-logo.png", // supplied asset, place in public/images/brand/
 } as const;
 ```
 
 - Tagline usage: hero eyebrow (above or below the §10 headline) **and** footer under the wordmark. Do not replace the §10 headline with it.
-- Logo asset is provided (`Copy_of_Altaventures_logo.png`) — place in `public/images/brand/`. Use in Nav (small) and Footer. Provide an on-dark version or ensure the mark reads on the dark canvas; the supplied file is on white, so render it inside a light chip or use the mark-only on dark if legibility suffers.
+- Logo asset is provided (`Copy_of_Altaventures_logo.png`); place in `public/images/brand/`. Use in Nav (small) and Footer. Provide an on-dark version or ensure the mark reads on the dark canvas; the supplied file is on white, so render it inside a light chip or use the mark-only on dark if legibility suffers.
 
 ### 4.1 Contact config (single swappable constant)
 
@@ -157,7 +157,7 @@ export const messengerUrl = () =>
   `https://m.me/${CONTACT.messenger.handle}`;
 ```
 
-### 4.3 Prefill reality — do not promise what won't fire
+### 4.3 Prefill reality: do not promise what won't fire
 
 - **WhatsApp:** prefill works. Message appears in the composer. ✅
 - **Messenger:** opens a chat with the profile above; **no prefill**. Do not render UI copy implying a pre-written message will appear.
@@ -167,7 +167,7 @@ The channel-picker UI may still say "tell us a little about your business" (sour
 
 ### 4.4 CTA behavior
 
-- Every primary/contextual CTA on the page opens the **ContactModal** (channel picker) — it does not deep-link to a single channel directly, except the sticky mobile CTA which also opens the picker.
+- Every primary/contextual CTA on the page opens the **ContactModal** (channel picker); it does not deep-link to a single channel directly, except the sticky mobile CTA which also opens the picker.
 - CTA labels are contextual per source §5 / §29 (e.g. "I Need a Website", "I Need a Booking System", "See If We're a Good Fit"), but all resolve to the same three-channel picker.
 - Fire an analytics event on every CTA click (see §9) **and** on each channel selection inside the modal.
 
@@ -177,16 +177,16 @@ The channel-picker UI may still say "tell us a little about your business" (sour
 
 Follows source §9 conversion sequence. Each maps to a component in `sections/`.
 
-1. **Nav** (sticky top) — Home · Services · Work · How It Works · About · `[Let's Talk]`
+1. **Nav** (sticky top): Home · Services · Work · How It Works · About · `[Let's Talk]`
 2. **Hero** (§10, §11)
-3. **CredibilityStrip** — four featured projects (§12)
-4. **ProblemSection** — four recognizable problems (§13)
-5. **ServicesSection** — five outcome-framed service blocks (§14.1–14.5)
-6. **SelectedWork** — four project cards, each opens CaseStudyModal (§15–19)
-7. **PortfolioConversion** — proof→action transition (§20)
+3. **CredibilityStrip**: four featured projects (§12)
+4. **ProblemSection**: four recognizable problems (§13)
+5. **ServicesSection**: five outcome-framed service blocks (§14.1–14.5)
+6. **SelectedWork**: four project cards, each opens CaseStudyModal (§15–19)
+7. **PortfolioConversion**: proof to action transition (§20)
 8. **WhyAltaventures** (§21)
-9. **ComplimentaryOffer** — the acquisition offer (§22, §23)
-10. **HowItWorks** — 6 steps (§25)
+9. **ComplimentaryOffer**: the acquisition offer (§22, §23)
+10. **HowItWorks**: 6 steps (§25)
 11. **Industries** (§26)
 12. **FAQ** (§27)
 13. **FinalCTA** (§28)
@@ -233,7 +233,7 @@ Copy is authoritative from the source spec. Reproduce exactly unless noted. Stor
 ### 6.6 CaseStudyModal (§16–19)
 - One reusable modal, content keyed by project id from `content/site.ts`.
 - Fields per project: title, category, overview, "What We Built" list, project type, business value, contextual CTA.
-- **Vocalyze** additionally has a "Future Development" list (§19) — render it clearly labeled as *planned*, never as existing capability (launch integrity).
+- **Vocalyze** additionally has a "Future Development" list (§19); render it clearly labeled as *planned*, never as existing capability (launch integrity).
 - Modal CTA → ContactModal (chain modals or close-then-open; keep focus management correct).
 
 ### 6.7 PortfolioConversion (§20)
@@ -246,7 +246,7 @@ Copy is authoritative from the source spec. Reproduce exactly unless noted. Stor
 
 ### 6.9 ComplimentaryOffer (§22, §23)
 - Headline: **Need a Website? Let Us Build It.**
-- Primary offer line (LOCKED, §0.6): "We'll build your flagship website free — you only pay for the domain."
+- Primary offer line (LOCKED, §0.6): "We'll build your flagship website free: you only pay for the domain."
 - Support: "Tell us about your business. If you're a good fit, we'll discuss how we can build and launch a professional website around your business."
 - CTA: **See If We're a Good Fit** → ContactModal.
 - Never render "FREE WEBSITE FOR EVERYONE".
@@ -270,7 +270,7 @@ Copy is authoritative from the source spec. Reproduce exactly unless noted. Stor
 - Sub per §28. CTA: **Let's Talk About Your Business** → ContactModal.
 - Show "Messenger | Viber | WhatsApp" beneath.
 
-### 6.14 About (`TODO(about)` — open item #1)
+### 6.14 About (`TODO(about)`, open item #1)
 - Placeholder built from §47 brand message. Anchor target for nav "About".
 - Keep short, credible, editable. Flag clearly in `content/site.ts` for replacement.
 
@@ -320,19 +320,19 @@ Each ContactModal channel selection is the closest on-site proxy for the primary
 
 ## 10. SEO (§37)
 
-- Single-page, so one strong `<title>` + meta description targeting the §37 keyword set (website development / business systems / booking system / CRM — Philippines).
+- Single-page, so one strong `<title>` + meta description targeting the §37 keyword set (website development / business systems / booking system / CRM, Philippines).
 - Open Graph + Twitter card meta; OG image in `public/og/`.
 - `LocalBusiness` / `Organization` JSON-LD structured data with brand name, area served (Philippines), and contact channels.
 - Semantic headings (one `<h1>` in Hero; section `<h2>`s).
-- Prerendered static HTML (Vite build) so content is crawlable without JS execution where possible — if hydration hides content, ensure critical copy is in the initial HTML.
+- Prerendered static HTML (Vite build) so content is crawlable without JS execution where possible; if hydration hides content, ensure critical copy is in the initial HTML.
 
 ---
 
 ## 11. DESIGN DIRECTION (§31–33)
 
-- Feel: premium, modern, confident, technology-driven — a business-solutions company, **not** a low-cost freelancer.
+- Feel: premium, modern, confident, technology-driven, a business-solutions company, **not** a low-cost freelancer.
 - Real interfaces are the primary visual proof (§32). Minimize stock imagery.
-- Strong CTA hierarchy — the primary CTA is always the most visually obvious element in view.
+- Strong CTA hierarchy: the primary CTA is always the most visually obvious element in view.
 - Concise, scannable copy; short paragraphs; generous spacing.
 - Consult the `frontend-design` skill for typography and to avoid a templated/default look.
 
@@ -343,14 +343,14 @@ Define as Tailwind theme tokens.
 | Token | Hex | Use |
 |-------|-----|-----|
 | `brand-navy` | `#02256F` | Primary dark brand blue (headlines, "ALTA" weight, dark UI) |
-| `brand-blue` | `#0D68EF` | Primary accent — **all primary CTAs**, links, active states |
+| `brand-blue` | `#0D68EF` | Primary accent: **all primary CTAs**, links, active states |
 | `brand-navy-deep` | `#06122E` | Near-black canvas with a navy tint (dark sections / hero bg) |
 | `ink` | `#0A0F1C` | Body text on light |
 | `paper` | `#FFFFFF` / `#F6F8FC` | Light surfaces |
 
-- **A-mark gradient** (brand device): `linear-gradient(135deg, #02256F 0%, #0D68EF 100%)`. Use sparingly — hero accent, section dividers, CTA hover sheen. Don't apply to body text at small sizes.
+- **A-mark gradient** (brand device): `linear-gradient(135deg, #02256F 0%, #0D68EF 100%)`. Use sparingly: hero accent, section dividers, CTA hover sheen. Don't apply to body text at small sizes.
 - Primary CTA buttons: solid `brand-blue` `#0D68EF`, white label, clear hover/active. This is the single most visually obvious element per §11.
-- Wordmark echoes the logo split (navy + blue) — keep that relationship if the wordmark is ever set in type.
+- Wordmark echoes the logo split (navy + blue); keep that relationship if the wordmark is ever set in type.
 - Maintain WCAG AA contrast: `brand-blue` on white passes for large/bold; use `brand-navy` for small text on light. White on `brand-navy`/`brand-navy-deep` passes.
 
 **Mobile-first (§33):** fast load, large touch targets, sticky CTA, optimized images, simple nav.
@@ -399,8 +399,8 @@ Define as Tailwind theme tokens.
 
 ## 16. GUARDRAILS (do not violate)
 
-1. No fabricated screenshots, testimonials, or "clients" — real work only.
+1. No fabricated screenshots, testimonials, or "clients". Real work only.
 2. No Website Care pricing or plans on the public site.
-3. No contact form or email capture — chat channels are the only conversion.
+3. No contact form or email capture. Chat channels are the only conversion.
 4. Don't imply Messenger/Viber prefill a message.
-5. Don't reintroduce multi-page routing or case-study pages — single page + modals is final.
+5. Don't reintroduce multi-page routing or case-study pages. Single page + modals is final.

@@ -1,5 +1,5 @@
 // content/site.ts
-// SINGLE SOURCE OF TRUTH — all copy, projects, contact config for the Altaventures site.
+// SINGLE SOURCE OF TRUTH: all copy, projects, contact config for the Altaventures site.
 // No component should hard-code copy. Edit this file to change what the site says.
 
 export const BRAND = {
@@ -57,7 +57,7 @@ export const HERO = {
 
 export const CREDIBILITY_STRIP = {
   headline: "Not Just Websites. Real Business Systems.",
-  sub: "Every project below is a live, working system built for a real Philippine business — not a template or a mockup.",
+  sub: "Every project below is a live, working system built for a real Philippine business, not a template or a mockup.",
   cta: "Explore Our Work",
   items: [
     { id: "setmona", name: "SETMONA", category: "Booking & Scheduling" },
@@ -89,7 +89,7 @@ export const PROBLEMS = {
     },
     {
       title: "You Don't Have Time to Manage Any of This Yourself",
-      copy: "You're running the business, not building software. You need a system that works quietly in the background — not another project on your plate.",
+      copy: "You're running the business, not building software. You need a system that works quietly in the background, not another project on your plate.",
     },
   ],
 } as const;
@@ -170,7 +170,7 @@ export const SERVICES = {
 } as const;
 
 // ---------------------------------------------------------------------------
-// Projects — used by SelectedWork + CaseStudyModal
+// Projects, used by SelectedWork + CaseStudyModal
 // ---------------------------------------------------------------------------
 
 export type ProjectId = "setmona" | "altamotors" | "kolekta" | "vocalyze";
@@ -244,7 +244,7 @@ export const PROJECTS: Record<
     tags: ["Loan Management", "Billing", "Business System"],
     image: "/images/projects/kolekta.png",
     overview:
-      "Kolekta was built for lending operations that needed a reliable way to track borrower accounts, payment schedules, and collections — work that was previously spread across spreadsheets and manual records.",
+      "Kolekta was built for lending operations that needed a reliable way to track borrower accounts, payment schedules, and collections. This work was previously spread across spreadsheets and manual records.",
     whatWeBuilt: [
       "Borrower and account record management",
       "Payment and billing schedule tracking",
@@ -309,11 +309,11 @@ export const WHY_ALTAVENTURES = {
   points: [
     {
       title: "Business First",
-      copy: "We start with how your business actually operates, not with a template. The system fits the business — not the other way around.",
+      copy: "We start with how your business actually operates, not with a template. The system fits the business, not the other way around.",
     },
     {
       title: "More Than Websites",
-      copy: "Websites, booking systems, management tools, e-commerce — we build the parts of your business that need to run online, together.",
+      copy: "Websites, booking systems, management tools, e-commerce: we build the parts of your business that need to run online, together.",
     },
     {
       title: "Designed to Grow",
@@ -332,7 +332,7 @@ export const WHY_ALTAVENTURES = {
 
 export const COMPLIMENTARY_OFFER = {
   headline: "Need a Website? Let Us Build It.",
-  offerLine: "We'll build your flagship website free — you only pay for the domain.",
+  offerLine: "We'll build your flagship website free: you only pay for the domain.",
   support:
     "Tell us about your business. If you're a good fit, we'll discuss how we can build and launch a professional website around your business.",
   cta: "See If We're a Good Fit",
@@ -354,7 +354,7 @@ export const HOW_IT_WORKS = {
     {
       number: 2,
       title: "Understand",
-      copy: "We ask questions about how your business actually runs — not just what you think you want built.",
+      copy: "We ask questions about how your business actually runs, not just what you think you want built.",
     },
     {
       number: 3,
@@ -374,7 +374,7 @@ export const HOW_IT_WORKS = {
     {
       number: 6,
       title: "Grow",
-      copy: "We're available as your business grows and your needs change — this isn't a one-and-done handoff.",
+      copy: "We're available as your business grows and your needs change. This isn't a one-and-done handoff.",
     },
   ],
 } as const;
@@ -408,15 +408,15 @@ export const FAQ = {
   items: [
     {
       q: "What exactly does Altaventures build?",
-      a: "Websites, booking and scheduling systems, business management tools, e-commerce, and general business digitalization — whatever your business needs to run better online.",
+      a: "Websites, booking and scheduling systems, business management tools, e-commerce, and general business digitalization: whatever your business needs to run better online.",
     },
     {
       q: "Is the free website offer really free?",
-      a: "Yes. We'll build your flagship website at no development cost — you only pay for the domain. We'll discuss the details once we understand your business and confirm it's a good fit.",
+      a: "Yes. We'll build your flagship website at no development cost: you only pay for the domain. We'll discuss the details once we understand your business and confirm it's a good fit.",
     },
     {
       q: "How long does a project take?",
-      a: "It depends on the scope — a business website typically moves faster than a full management system. We'll give you a realistic timeline once we understand what you need.",
+      a: "It depends on the scope: a business website typically moves faster than a full management system. We'll give you a realistic timeline once we understand what you need.",
     },
     {
       q: "Do I need to know what I want built before I talk to you?",
@@ -445,7 +445,7 @@ export const FINAL_CTA = {
 } as const;
 
 // ---------------------------------------------------------------------------
-// About — TODO(about): open item #1, placeholder pending real copy
+// About, TODO(about): open item #1, placeholder pending real copy
 // ---------------------------------------------------------------------------
 
 export const ABOUT = {
@@ -455,7 +455,7 @@ export const ABOUT = {
   headline: "About Altaventures",
   body: [
     "Altaventures Business Development Services builds the digital engines that let Philippine businesses focus on what they do best: running the business.",
-    "We started building real systems for real businesses — booking platforms, financing and sales tools, loan management systems, and business websites — and grew Altaventures around that same principle: build around the business, not a template.",
+    "We started building real systems for real businesses, including booking platforms, financing and sales tools, loan management systems, and business websites, and grew Altaventures around that same principle: build around the business, not a template.",
     "We're not a freelance shop and we're not a generic web agency. We're a business-solutions partner that happens to build exceptional websites and systems along the way.",
   ],
 } as const;
@@ -484,13 +484,13 @@ export const FOOTER = {
 } as const;
 
 // ---------------------------------------------------------------------------
-// Legal — TODO(legal): open item #6, placeholder boilerplate only
+// Legal, TODO(legal): open item #6, placeholder boilerplate only
 // ---------------------------------------------------------------------------
 
 export const LEGAL = {
   privacy: {
     title: "Privacy Policy",
-    // TODO(legal): placeholder boilerplate — replace with real legal text
+    // TODO(legal): placeholder boilerplate, replace with real legal text
     // before this modal is presented as final to the public.
     body: [
       "This is placeholder Privacy Policy text pending final legal review. It does not constitute the actual privacy practices of Altaventures Business Development Services.",
@@ -500,7 +500,7 @@ export const LEGAL = {
   },
   terms: {
     title: "Terms of Service",
-    // TODO(legal): placeholder boilerplate — replace with real legal text
+    // TODO(legal): placeholder boilerplate, replace with real legal text
     // before this modal is presented as final to the public.
     body: [
       "This is placeholder Terms of Service text pending final legal review. It does not constitute the actual terms governing use of Altaventures services.",

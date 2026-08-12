@@ -3,7 +3,7 @@ import { useModalA11y } from "../../lib/useModalA11y";
 import { messengerUrl, viberUrl, whatsappUrl } from "../../lib/contact";
 import { track } from "../../lib/analytics";
 
-// Shared chat-bubble glyph (Feather "message-circle") — channels are
+// Shared chat-bubble glyph (Feather "message-circle"). Channels are
 // differentiated by label/note text rather than brand-specific logo marks.
 const CHAT_BUBBLE_PATH =
   "M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z";
@@ -37,8 +37,8 @@ export default function ContactModal() {
   if (!isOpen) return null;
 
   const handleChannelSelect = (channel: (typeof CHANNELS)[number]["id"]) => {
-    // Note: this is the closest on-site proxy for a qualified conversation —
-    // whether the visitor actually engages happens off-site in chat.
+    // Note: this is the closest on-site proxy for a qualified conversation.
+    // Whether the visitor actually engages happens off-site in chat.
     track("contact_channel_select", { channel });
   };
 

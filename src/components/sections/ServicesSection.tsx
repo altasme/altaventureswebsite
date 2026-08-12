@@ -16,9 +16,9 @@ export default function ServicesSection() {
 
       <div className="mt-10 grid gap-6 lg:grid-cols-2">
         {SERVICES.items.map((service, i) => {
-          // An odd item count leaves the last card alone in the grid — span
-          // it full width and lay its bullets out in two columns so it reads
-          // as a deliberate closing card, not an orphaned leftover.
+          // An odd item count leaves the last card alone in the grid, so it
+          // spans full width and lays its bullets out in two columns, reading
+          // as a deliberate closing card rather than an orphaned leftover.
           const isFeatured = i === SERVICES.items.length - 1 && SERVICES.items.length % 2 === 1;
 
           return (

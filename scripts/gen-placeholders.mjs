@@ -1,5 +1,5 @@
 // One-off script to render placeholder raster assets from SVG sources.
-// Not part of the app build. `sharp` is not a project dependency —
+// Not part of the app build. `sharp` is not a project dependency:
 // run `npm i -D sharp` before re-running this script, then `npm uninstall sharp`.
 import sharp from "sharp";
 import { mkdirSync } from "node:fs";
