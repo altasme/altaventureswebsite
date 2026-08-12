@@ -7,6 +7,7 @@ import { mkdirSync } from "node:fs";
 mkdirSync("public/og", { recursive: true });
 mkdirSync("public/images/projects", { recursive: true });
 mkdirSync("public/images/brand", { recursive: true });
+mkdirSync("public/images/hero", { recursive: true });
 
 const ogSvg = `
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
@@ -40,6 +41,23 @@ function projectCard(label, category) {
 </svg>`;
 }
 
+const heroBgSvg = `
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="hero-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06122E" />
+      <stop offset="55%" stop-color="#0A1A3D" />
+      <stop offset="100%" stop-color="#02256F" />
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#hero-bg)" />
+  <circle cx="1600" cy="180" r="420" fill="#0D68EF" opacity="0.16" />
+  <circle cx="260" cy="920" r="360" fill="#0D68EF" opacity="0.10" />
+  <text x="960" y="550" font-family="Arial, sans-serif" font-size="30" font-weight="600" fill="#FFFFFF" fill-opacity="0.35" text-anchor="middle">
+    TODO(asset): full-bleed hero background pending
+  </text>
+</svg>`;
+
 const logoSvg = `
 <svg xmlns="http://www.w3.org/2000/svg" width="480" height="120" viewBox="0 0 480 120">
   <rect width="480" height="120" fill="#FFFFFF" />
@@ -49,6 +67,8 @@ const logoSvg = `
 await sharp(Buffer.from(ogSvg)).png().toFile("public/og/altaventures-og.png");
 
 await sharp(Buffer.from(logoSvg)).png().toFile("public/images/brand/altaventures-logo.png");
+
+await sharp(Buffer.from(heroBgSvg)).jpeg({ quality: 82 }).toFile("public/images/hero/hero-bg.jpg");
 
 const projects = [
   ["setmona", "SETMONA", "Booking &amp; Scheduling"],
