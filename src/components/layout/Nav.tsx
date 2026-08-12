@@ -6,7 +6,7 @@ import CTAButton from "../ui/CTAButton";
 function Wordmark() {
   return (
     <a href="#home" className="flex items-center gap-2" aria-label={`${BRAND.name} home`}>
-      <img src={BRAND.logo} alt={BRAND.name} width={160} height={40} className="h-8 w-auto sm:h-9" />
+      <img src={BRAND.logo} alt={BRAND.name} width={240} height={30} className="h-8 w-auto sm:h-9" />
     </a>
   );
 }

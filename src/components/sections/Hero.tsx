@@ -61,7 +61,7 @@ export default function Hero() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, rgba(6,18,46,0.5) 0%, transparent 25%, rgba(6,18,46,0.6) 100%)",
+              "linear-gradient(180deg, rgba(6,18,46,0.5) 0%, rgba(6,18,46,0.15) 25%, rgba(6,18,46,0.6) 100%)",
           }}
         />
         <div className="relative z-10 mx-auto w-full max-w-6xl">
@@ -81,7 +81,7 @@ export default function Hero() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, rgba(6,18,46,0.75) 0%, rgba(6,18,46,0.35) 30%, transparent 48%, rgba(6,18,46,0.6) 100%)",
+              "linear-gradient(180deg, rgba(6,18,46,0.92) 0%, rgba(6,18,46,0.88) 50%, rgba(6,18,46,0.72) 74%, rgba(6,18,46,0.45) 100%)",
           }}
         />
         <div className="relative z-10">

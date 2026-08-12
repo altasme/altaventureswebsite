@@ -20,7 +20,7 @@ export default function Footer() {
                 against the supplied reversed variant too), so it's rendered
                 in a light chip for legibility instead. */}
             <span className="inline-flex rounded-lg bg-white px-3 py-2">
-              <img src={BRAND.logo} alt={BRAND.name} width={160} height={40} className="h-7 w-auto" />
+              <img src={BRAND.logo} alt={BRAND.name} width={240} height={30} className="h-6 w-auto" />
             </span>
             <p className="mt-3 max-w-sm text-sm text-white/60">{FOOTER.tagline}</p>
             <p className="mt-4 text-xs text-white/40">{FOOTER.legalName}</p>
