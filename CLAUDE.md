@@ -37,7 +37,7 @@ These override anything in the source spec that conflicts. Where the source `ALT
 | 3 | ~~Brand color + logo~~ **RESOLVED [v1.1]** | Logo supplied; palette locked from logo (see §11.1). Tagline supplied. | N/A |
 | 4 | **Messenger branding mismatch** | Link points to `m.me/vanamaranto.moto`, which shows a personal-style profile ("Van Amaranto"), not "Altaventures". | Consider a dedicated Altaventures Facebook Page for brand consistency. |
 | 5 | **Analytics ID** | Tracking layer scaffolded with a `MEASUREMENT_ID` constant left blank; events fire to `dataLayer` regardless. | Provide GA4 / Meta Pixel IDs when ready. |
-| 6 | **Legal pages** | Privacy Policy + Terms rendered as modals with placeholder boilerplate. | Provide real legal text. |
+| 6 | ~~Legal pages~~ **RESOLVED** | Real Privacy Policy + Terms of Service supplied by client, rendered as modals from `content/site.ts` -> `LEGAL`. | N/A |
 
 ---
 
@@ -366,10 +366,9 @@ Define as Tailwind theme tokens.
 
 ---
 
-## 13. LEGAL (open item #6)
+## 13. LEGAL (open item #6, RESOLVED)
 
-- Privacy Policy and Terms of Service render in LegalModal with placeholder boilerplate marked `TODO(legal)`.
-- Do not present placeholder legal text as final.
+- Privacy Policy and Terms of Service are real client-supplied legal text, rendered in LegalModal from structured section/block data in `content/site.ts` (`LEGAL`).
 
 ---
 
@@ -389,7 +388,7 @@ Define as Tailwind theme tokens.
 - [x] Sticky mobile CTA present and non-obstructing.
 - [x] Analytics events firing to `dataLayer` (IDs optional).
 - [x] SEO meta + JSON-LD + OG image present.
-- [x] Real assets in place: logo, favicon, OG image, hero photography, four project screenshots, About copy. Placeholders remain only for legal text and analytics IDs.
+- [x] Real assets in place: logo, favicon, OG image, hero photography, four project screenshots, About copy, legal text. Placeholders remain only for analytics IDs.
 - [x] Brand palette (§11.1), logo, and tagline applied.
 - [x] No backend, no form, no Website Care mention anywhere public.
 - [ ] Lighthouse: performance/accessibility/SEO in good range on mobile.

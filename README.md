@@ -33,13 +33,12 @@ hard-codes copy.
 
 ## Known placeholders
 
-Resolved: About copy, logo, favicon, OG image, hero photography, and all four
-project screenshots are real assets. Domain is live at altasme.com.
+Resolved: About copy, logo, favicon, OG image, hero photography, all four
+project screenshots, and Privacy Policy / Terms of Service are real content.
+Domain is live at altasme.com.
 
 Still pending:
 
-- `TODO(legal)`: Privacy Policy / Terms of Service boilerplate
-  (`src/content/site.ts` -> `LEGAL`)
 - `TODO(analytics)`: GA4 / Meta Pixel `MEASUREMENT_ID`
   (`src/lib/analytics.ts`)
 
