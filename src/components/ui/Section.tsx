@@ -15,8 +15,10 @@ const TONE_CLASSES: Record<NonNullable<SectionProps["tone"]>, string> = {
 
 export default function Section({ id, children, className = "", tone = "light" }: SectionProps) {
   return (
-    <section id={id} className={`${TONE_CLASSES[tone]} ${className}`}>
-      <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20 lg:px-8 lg:py-28">{children}</div>
+    <section id={id} className={TONE_CLASSES[tone]}>
+      <div className={`mx-auto max-w-6xl px-6 py-16 sm:py-20 lg:px-8 lg:py-28 ${className}`}>
+        {children}
+      </div>
     </section>
   );
 }
