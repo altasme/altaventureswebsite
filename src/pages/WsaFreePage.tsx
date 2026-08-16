@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { BRAND, type LegalBlock } from "../content/site";
-import { WSA_ALTA_SIGNER, WSA_DOCUMENT } from "../content/wsa";
+import { BRAND } from "../content/site";
+import { WSA_ALTA_SIGNER, WSA_DOCUMENT, type WsaBlock } from "../content/wsa";
 import { bytesToBase64, fillAgreementPdf, todayLabel } from "../lib/wsaPdf";
 import { track } from "../lib/analytics";
 import SignaturePad, { type SignaturePadHandle } from "../components/wsa/SignaturePad";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function AgreementBlock({ block }: { block: LegalBlock }) {
+function AgreementBlock({ block }: { block: WsaBlock }) {
   switch (block.kind) {
     case "ul":
       return (
@@ -23,6 +23,33 @@ function AgreementBlock({ block }: { block: LegalBlock }) {
       );
     case "sh":
       return <h4 className="mt-4 text-sm font-semibold text-ink">{block.text}</h4>;
+    case "table":
+      return (
+        <div className="overflow-x-auto rounded-xl border border-ink/10">
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="bg-paper-alt">
+                {block.headers.map((header) => (
+                  <th key={header} className="px-4 py-2.5 font-semibold text-brand-navy">
+                    {header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {block.rows.map((row, i) => (
+                <tr key={i} className="border-t border-ink/10">
+                  {row.map((cell, j) => (
+                    <td key={j} className="px-4 py-2.5 text-ink/75">
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
     case "p":
     default:
       return <p className="text-[15px] leading-relaxed text-ink/75">{block.text}</p>;

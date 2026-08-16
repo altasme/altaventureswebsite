@@ -5,7 +5,7 @@ import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { WSA_PDF_FIELD_COORDS, WSA_SIGNATURE_BOX } from "../content/wsa";
 
 const TEMPLATE_URL = "/documents/free-website-service-agreement.pdf";
-const FONT_SIZE = 11;
+const FONT_SIZE = 10.5;
 const FIELD_GAP = 10;
 const FILLED_COLOR = rgb(0.008, 0.145, 0.435); // brand-navy
 
@@ -31,10 +31,9 @@ export async function fillAgreementPdf(data: WsaFormData): Promise<Uint8Array> {
   const pdf = await PDFDocument.load(templateBytes);
   const font = await pdf.embedFont(StandardFonts.Helvetica);
   const pages = pdf.getPages();
-  const page = pages[pages.length - 1];
 
-  const put = (text: string, field: { x: number; y: number; w: number }) => {
-    page.drawText(text, {
+  const put = (text: string, field: { page: number; x: number; y: number; w: number }) => {
+    pages[field.page].drawText(text, {
       x: field.x + field.w + FIELD_GAP,
       y: field.y,
       size: FONT_SIZE,
@@ -43,14 +42,14 @@ export async function fillAgreementPdf(data: WsaFormData): Promise<Uint8Array> {
     });
   };
 
-  put(data.businessName, WSA_PDF_FIELD_COORDS.businessName);
-  put(data.clientName, WSA_PDF_FIELD_COORDS.clientRep);
-  put(data.email, WSA_PDF_FIELD_COORDS.email);
-  put(data.phone, WSA_PDF_FIELD_COORDS.phone);
-  put(data.dateLabel, WSA_PDF_FIELD_COORDS.clientInfoDate);
-  put(data.clientName, WSA_PDF_FIELD_COORDS.acceptName);
-  put(data.dateLabel, WSA_PDF_FIELD_COORDS.acceptDate);
-  put(data.dateLabel, WSA_PDF_FIELD_COORDS.altaDate);
+  const { clientInfo, signing } = WSA_PDF_FIELD_COORDS;
+  put(data.businessName, clientInfo.businessName);
+  put(data.clientName, clientInfo.ownerRep);
+  put(data.email, clientInfo.email);
+  put(data.phone, clientInfo.phone);
+  put(data.clientName, signing.clientName);
+  put(data.dateLabel, signing.clientDate);
+  put(data.dateLabel, signing.altaDate);
 
   const signatureBytes = dataUrlToBytes(data.signaturePngDataUrl);
   const signatureImage = await pdf.embedPng(signatureBytes);
@@ -60,7 +59,7 @@ export async function fillAgreementPdf(data: WsaFormData): Promise<Uint8Array> {
   );
   const drawWidth = signatureImage.width * scale;
   const drawHeight = signatureImage.height * scale;
-  page.drawImage(signatureImage, {
+  pages[WSA_SIGNATURE_BOX.page].drawImage(signatureImage, {
     x: WSA_SIGNATURE_BOX.x + (WSA_SIGNATURE_BOX.width - drawWidth) / 2,
     y: WSA_SIGNATURE_BOX.y + (WSA_SIGNATURE_BOX.height - drawHeight) / 2,
     width: drawWidth,

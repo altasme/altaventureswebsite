@@ -1,479 +1,768 @@
 // content/wsa.ts
-// Free Website Service Agreement: full text as supplied by the client, plus
-// the coordinate map used to overlay signed values onto the source PDF.
-// Keep this in sync with public/documents/free-website-service-agreement.pdf.
+// Free Website Service Agreement (v4.0): full text as supplied by the client,
+// plus the coordinate map used to overlay signed values onto the generated
+// PDF. Keep this in sync with public/documents/free-website-service-agreement.pdf.
+//
+// The PDF itself is generated from this exact content by
+// scripts/generate-wsa-pdf.ts. If this content changes again, re-run that
+// script (it also prints the field coordinates below) rather than hand-editing
+// the PDF.
 
-import type { LegalBlock, LegalSection } from "./site";
+export type WsaBlock =
+  | { kind: "p"; text: string }
+  | { kind: "sh"; text: string }
+  | { kind: "ul"; items: string[] }
+  | { kind: "table"; headers: string[]; rows: string[][] };
 
-const p = (text: string): LegalBlock => ({ kind: "p", text });
-const ul = (items: string[]): LegalBlock => ({ kind: "ul", items });
+export type WsaSection = { heading: string; blocks: WsaBlock[] };
+
+const p = (text: string): WsaBlock => ({ kind: "p", text });
+const sh = (text: string): WsaBlock => ({ kind: "sh", text });
+const ul = (items: string[]): WsaBlock => ({ kind: "ul", items });
+const table = (headers: string[], rows: string[][]): WsaBlock => ({ kind: "table", headers, rows });
 
 export const WSA_DOCUMENT: {
   title: string;
-  intro: LegalBlock[];
-  sections: LegalSection[];
+  version: string;
+  entity: string;
+  intro: WsaBlock[];
+  sections: WsaSection[];
 } = {
   title: "Free Website Service Agreement",
+  version: "4.0",
+  entity: "Altaventures Business Development Services",
   intro: [
     p(
-      'This Free Website Service Agreement ("Agreement") is entered into between ALTAVENTURES ("ALTAVENTURES") and the business or individual identified in the applicable client information or acceptance record ("Client").'
+      'This Free Website Service Agreement ("Agreement") is entered into between Altaventures Business Development Services, a DTI and BIR Registered business, with business address at Blk 43 Lt 32 Ph 2, Santa Barbara Villas 2, Brgy. Silangan, San Mateo, Rizal ("Altaventures," "we," "us," or "our"), and the Client identified below ("Client," "you," or "your").'
     ),
-    p(
-      "By accepting the Free Website Service, providing the required information and materials, approving the website for publication, or otherwise proceeding with the service, the Client agrees to the terms of this Agreement."
-    ),
+    p('Altaventures and the Client are collectively referred to as the "Parties."'),
   ],
   sections: [
     {
-      heading: "1. Free Website Service",
+      heading: "1. Client Information",
       blocks: [
-        p("ALTAVENTURES provides the Client with a professional Phase 1 website at no website service fee."),
-        p(
-          "The purpose of the Free Website Service is to provide the Client with a professional online presence that allows customers to learn about the business and contact the Client."
-        ),
-        p("The Free Website Service may include:"),
         ul([
-          "Professional website design",
-          "Mobile-responsive website",
-          "Business information",
-          "Services or product presentation",
-          "Client-provided images and content",
-          "Contact information",
-          "Call-to-action elements",
-          "Hosting and SSL",
-          "Basic website infrastructure required to operate the website",
+          "Business Name",
+          "Owner / Authorized Representative",
+          "Position / Capacity",
+          "Business Address",
+          "Email",
+          "Contact Number",
+          "Website / Domain",
         ]),
-        p("The Free Website Service is primarily intended to function as an informational and lead-generation website."),
       ],
     },
     {
-      heading: "2. Phase 1 Service Limitations",
+      heading: "2. Purpose of the Agreement",
       blocks: [
-        p("The Free Website Service is a Phase 1 website and does not automatically include Phase 2 functionality."),
-        p("The following are not included unless separately agreed:"),
+        p("Altaventures is providing the Client with a professional website under its Free Website Service."),
+        p(
+          "The Client will not be charged a recurring monthly or annual website service fee for the services specifically included under this Agreement."
+        ),
+        p(
+          "The purpose of the Free Website Service is to provide the Client with a professional online presence while allowing the Client to explore additional website and digital business services offered by Altaventures."
+        ),
+        p(
+          '"Free" applies only to the services expressly included in this Agreement. It does not mean that all future website changes, maintenance, development, third-party services, or additional functionality will be provided free of charge.'
+        ),
+        p("Services not expressly included in this Agreement may be subject to separate fees."),
+      ],
+    },
+    {
+      heading: "3. What Is Included",
+      blocks: [
+        p("The Free Website Service includes:"),
+        ul([
+          "Professional website",
+          "Website hosting",
+          "SSL",
+          "Initial website setup and deployment",
+          "The website, pages, sections, content, design, and functionality delivered to the Client as of the date of this Agreement",
+          "Fourteen (14) calendar day revision period",
+          "Ninety (90) calendar day bug warranty for genuine bugs in the delivered website",
+        ]),
+        p("The Free Website Service does not include an ongoing monthly or annual website service fee."),
+      ],
+    },
+    {
+      heading: "4. What Is Not Included",
+      blocks: [
+        p("Unless specifically agreed in writing, the Free Website Service does not include:"),
+        ul([
+          "Custom domain registration or renewal",
+          "Client Admin Panel",
+          "Product and price management",
+          "Order management",
+          "Database functionality",
+          "Business Email",
+          "Ongoing website maintenance",
+          "Ongoing website updates",
+          "SEO, GEO, or AEO services",
+          "New features or systems",
+          "Booking or appointment systems",
+          "Payment integrations",
+          "CRM integrations",
+          "Major redesigns",
+          "Major restructuring",
+          "Additional development outside the delivered website",
+          "Full-scale website transfer",
+          "Other services not expressly included in this Agreement",
+        ]),
+        p("Additional services may be purchased separately through PAYG services, a project quotation, a paid Digital Growth Plan, or another agreement."),
+      ],
+    },
+    {
+      heading: "5. Initial Website Scope",
+      blocks: [
+        p(
+          "For purposes of this Agreement, the Initial Website Scope consists of the website, pages, sections, content, design, functionality, and other deliverables that have been completed and delivered to the Client as of the date this Agreement is signed."
+        ),
+        p(
+          "By signing this Agreement, the Client acknowledges that it has received and reviewed the website being provided under the Free Website Service and accepts the delivered website as the Initial Website Scope, subject to the fourteen (14) calendar day revision period and ninety (90) calendar day bug warranty provided under this Agreement."
+        ),
+        p("The website delivered at the time of signing establishes the baseline for determining what constitutes:"),
+        ul(["An included revision", "A covered bug", "A new request", "Additional development"]),
+        p(
+          "Any request that introduces functionality, pages, sections, systems, integrations, design concepts, or other work that was not part of the website delivered at the time of signing may be treated as an additional service."
+        ),
+      ],
+    },
+    {
+      heading: "6. Client Responsibilities",
+      blocks: [
+        p("The Client is responsible for providing accurate and usable information and materials required for the website."),
+        p("This may include:"),
+        ul([
+          "Business information",
+          "Logo and branding",
+          "Photos and videos",
+          "Product or service information",
+          "Prices",
+          "Contact information",
+          "Business hours",
+          "Social media links",
+          "Policies",
+          "Other content required for the website",
+        ]),
+        p("The Client represents that it has the right to use any materials provided to Altaventures."),
+        p("The Client remains responsible for the accuracy and legality of its content, products, services, claims, pricing, policies, and business information."),
+      ],
+    },
+    {
+      heading: "7. Website Review and Acceptance",
+      blocks: [
+        p("The Client acknowledges that the website covered by this Agreement has been delivered for review and acceptance."),
+        p("By signing this Agreement, the Client confirms that it has had the opportunity to review the delivered website."),
+        p("The Client should check the website for accuracy, including:"),
+        ul([
+          "Business information",
+          "Contact details",
+          "Products and services",
+          "Prices",
+          "Images",
+          "Links",
+          "Business hours",
+          "Other customer-facing information",
+        ]),
+        p(
+          "The Client's signature or electronic acceptance of this Agreement constitutes acknowledgment and acceptance of the delivered website as the Initial Website Scope, subject to the revision period and bug warranty provided in this Agreement."
+        ),
+      ],
+    },
+    {
+      heading: "8. 14-Day Revision Period",
+      blocks: [
+        p(
+          "The Client receives fourteen (14) calendar days from the date the website is delivered to request reasonable revisions and changes to the Initial Website Scope."
+        ),
+        p(
+          "The revision period covers reasonable changes to the website as delivered, provided that the requested changes remain within the existing scope and functionality of the delivered website."
+        ),
+        p("Examples include:"),
+        ul([
+          "Text corrections",
+          "Photo replacements",
+          "Minor content changes",
+          "Corrections to business information",
+          "Adjustments to existing sections",
+          "Minor design adjustments",
+          "Minor layout adjustments",
+        ]),
+        p("The Client should submit revision requests within the fourteen (14) calendar day period."),
+        p("Where practical, the Client should consolidate its requested revisions into a clear list."),
+      ],
+    },
+    {
+      heading: "9. Limitations of the Revision Period",
+      blocks: [
+        p("The fourteen (14) day revision period does not provide unlimited free development."),
+        p("The revision period is intended for reasonable changes to the delivered website within its existing scope."),
+        p("The following may be considered additional services:"),
+        ul([
+          "New pages",
+          "New sections",
+          "New functionality",
+          "New systems",
+          "New integrations",
+          "Booking systems",
+          "Appointment systems",
+          "Ordering systems",
+          "Payment integrations",
+          "CRM integrations",
+          "Major redesigns",
+          "Major restructuring",
+          "Significant changes to the original design direction",
+          "Substantial changes to the delivered website",
+          "Other work requiring additional development",
+        ]),
+        p("Such requests may be subject to PAYG pricing, a separate project quotation, a paid plan, or another agreement."),
+      ],
+    },
+    {
+      heading: "10. Expiration of the Revision Period",
+      blocks: [
+        p("The fourteen (14) calendar day revision period expires automatically at the end of the applicable period."),
+        p("After the revision period expires, the website will be considered finalized for purposes of the Free Website Service."),
+        p("Requests submitted after the revision period may be subject to applicable PAYG rates or a separate quotation."),
+        p("The expiration of the revision period does not affect the ninety (90) calendar day bug warranty."),
+      ],
+    },
+    {
+      heading: "11. 90-Day Bug Warranty",
+      blocks: [
+        p("The Free Website Service includes a ninety (90) calendar day warranty for genuine bugs in the delivered website."),
+        p("The warranty begins on the date the website is delivered to the Client."),
+        p(
+          "During the ninety (90) calendar day warranty period, Altaventures will correct genuine technical bugs in the website delivered under this Agreement at no additional service charge."
+        ),
+        p("A covered bug is a technical defect where:"),
+        ul([
+          "The affected functionality exists in the website delivered to the Client;",
+          "The functionality was intended to operate as delivered;",
+          "It does not operate substantially as intended; and",
+          "The issue is attributable to the website implementation by Altaventures.",
+        ]),
+        p("Where an issue qualifies as a covered bug, Altaventures will use reasonable efforts to correct it."),
+      ],
+    },
+    {
+      heading: "12. What the Bug Warranty Does Not Cover",
+      blocks: [
+        p("The ninety (90) day bug warranty does not cover:"),
+        ul([
+          "New features",
+          "New functionality",
+          "New pages",
+          "New sections",
+          "Design changes",
+          "Content changes",
+          "Client-requested changes",
+          "Changes made by the Client",
+          "Changes made by another developer",
+          "Unauthorized modifications",
+          "Incorrect Client information",
+          "Client-provided content",
+          "Third-party service issues",
+          "Hosting provider issues outside Altaventures' reasonable control",
+          "Domain provider issues",
+          "Third-party plugins or software",
+          "External API changes",
+          "Issues caused by misuse",
+          "Issues caused by compromised credentials",
+          "Issues caused by changes to third-party infrastructure",
+          "Other circumstances outside Altaventures' reasonable control",
+        ]),
+        p("Altaventures may nevertheless review such issues and offer a separately priced solution where appropriate."),
+      ],
+    },
+    {
+      heading: "13. Revision vs. Bug",
+      blocks: [
+        p("For clarity, a revision and a bug are different."),
+        sh("Revision"),
+        p("A revision is a change the Client wants made to the website."),
+        p("Example: \"Please change the button text from 'Contact Us' to 'Book Now.'\" This is a revision."),
+        sh("Bug"),
+        p("A bug is a technical problem where something that was supposed to work does not work."),
+        p('Example: "The Contact Us button was supposed to open the contact form, but clicking it does nothing." This may be a bug.'),
+        p(
+          "Altaventures will reasonably determine whether a request is a revision, bug, new functionality, or additional project based on the Initial Website Scope and the nature of the requested work."
+        ),
+      ],
+    },
+    {
+      heading: "14. Warranty Does Not Mean Unlimited Maintenance",
+      blocks: [
+        p("The ninety (90) day warranty does not provide unlimited free website maintenance or development."),
+        p("The warranty is limited to genuine bugs in the delivered website."),
+        p("It does not include:"),
+        ul([
+          "Content updates",
+          "Design changes",
+          "New functionality",
+          "New pages",
+          "New sections",
+          "SEO",
+          "GEO",
+          "AEO",
+          "Performance optimization",
+          "System improvements",
+          "New integrations",
+          "Ongoing maintenance",
+          "Other development work",
+        ]),
+        p(
+          "After the warranty period expires, technical issues may be handled through an applicable PAYG service, paid Digital Growth Plan, project quotation, or separate service agreement."
+        ),
+      ],
+    },
+    {
+      heading: "15. Reporting a Bug",
+      blocks: [
+        p("The Client should report suspected bugs through an approved Altaventures communication channel."),
+        p("The Client should provide sufficient information for Altaventures to investigate the issue."),
+        p("This may include:"),
+        ul([
+          "Description of the issue",
+          "Page or feature affected",
+          "Steps to reproduce the issue",
+          "Screenshots",
+          "Screen recordings",
+          "Relevant device or browser information",
+          "Other information reasonably required for investigation",
+        ]),
+        p("Altaventures may request additional information before determining whether the issue qualifies under the warranty."),
+      ],
+    },
+    {
+      heading: "16. Warranty Remedy",
+      blocks: [
+        p("Where Altaventures determines that an issue qualifies as a covered bug, Altaventures will use reasonable efforts to correct the affected functionality."),
+        p("The warranty remedy is limited to correcting the covered website defect."),
+        p("The warranty does not entitle the Client to:"),
+        ul([
+          "A refund",
+          "New features",
+          "Additional free pages",
+          "A redesign",
+          "New functionality",
+          "Compensation for lost sales",
+          "Compensation for lost revenue",
+          "Compensation for business interruption",
+          "Other unrelated services",
+        ]),
+      ],
+    },
+    {
+      heading: "17. Services After the Revision and Warranty Period",
+      blocks: [
+        p(
+          "Once the fourteen (14) day revision period and ninety (90) day bug warranty have expired, the Free Website Service does not include ongoing free maintenance or development."
+        ),
+        p("Future requests may be handled through:"),
+        ul(["PAYG services", "A website project", "A paid Digital Growth Plan", "A separate service agreement", "Another mutually agreed arrangement"]),
+        p("The expiration of these periods does not automatically terminate the Client's right to use the website while the Free Website Service remains active."),
+      ],
+    },
+    {
+      heading: "18. Current Pay-As-You-Go Services",
+      blocks: [
+        p("The current standard PAYG services are:"),
+        table(
+          ["Service", "Current Price"],
+          [
+            ["Domain Transfer Out", "Free"],
+            ["Small Website Change", "₱500"],
+            ["Website Update / Section", "₱1,500"],
+            ["Website Project", "₱3,000+"],
+            ["Full-Scale Transfer Out", "₱4,000+"],
+            ["Major Project", "Subject to quotation"],
+            ["Altaventures Hosted Business Email", "₱1,500/year"],
+          ]
+        ),
+        p("PAYG prices are subject to change without prior notice."),
+        p("The price applicable to an approved service will be the applicable published price at the time of purchase or the price stated in an accepted quotation."),
+      ],
+    },
+    {
+      heading: "19. Domain, Hosting and SSL",
+      blocks: [
+        sh("Custom Domain"),
+        p("A custom domain is not included in the Free Website Service."),
+        p("The Client is responsible for domain registration, renewal, and registrar fees."),
+        p("Altaventures may assist with connecting the Client's domain to the website where technically possible."),
+        sh("Hosting"),
+        p("Website hosting is included in the Free Website Service while the service remains active."),
+        sh("SSL"),
+        p("SSL is included in the Free Website Service where supported by the applicable hosting infrastructure."),
+        p("Altaventures does not guarantee uninterrupted website availability."),
+      ],
+    },
+    {
+      heading: "20. Third-Party Services",
+      blocks: [
+        p("Altaventures may use third-party providers for hosting, security, infrastructure, APIs, or other technical services."),
+        p("Third-party providers may experience:"),
+        ul(["Outages", "Service interruptions", "Pricing changes", "Policy changes", "Technical changes", "Service limitations", "Service discontinuation"]),
+        p(
+          "Altaventures will use reasonable efforts to maintain the website but is not responsible for service failures caused solely by third parties or circumstances outside its reasonable control."
+        ),
+      ],
+    },
+    {
+      heading: "21. Future Paid Plans and Additional Services",
+      blocks: [
+        p("The Client may choose to upgrade to an applicable paid Digital Growth Plan or purchase additional services from Altaventures."),
+        p("Current paid Digital Growth Plan pricing includes:"),
+        table(
+          ["Plan", "Annual Price", "Equivalent Monthly Cost"],
+          [
+            ["Essential", "₱4,560/year", "₱380/month"],
+            ["Business", "₱9,000/year", "₱750/month"],
+            ["Growth", "₱18,000/year", "₱1,500/month"],
+          ]
+        ),
+        p("The monthly figures are provided for comparison only. Paid plans are generally annual service plans."),
+        p("Paid plans may provide additional services such as:"),
         ul([
           "Client Admin Panel",
           "Product and price management",
           "Order management",
-          "Database-driven business systems",
-          "Online payment processing",
-          "Booking systems",
-          "Appointment systems",
-          "Customer relationship management systems",
-          "Business email",
-          "Transactional email systems",
-          "Advanced integrations",
-          "Custom software development",
-          "Advanced automation",
-          "Ongoing website update requests",
-          "Advanced SEO, GEO or AEO services",
-          "Major redesigns",
-          "Major restructuring",
-          "Additional business systems",
+          "Database",
+          "Business Email and Notifications",
+          "Technical maintenance",
+          "Bug fixes",
+          "Done-for-You Website Updates",
+          "SEO",
+          "GEO",
+          "AEO",
+          "Priority support",
+          "Other plan-specific services",
         ]),
-        p("These services may become available through a paid ALTAVENTURES service plan, Pay-As-You-Go services, or another agreed arrangement."),
+        p("The exact services and terms applicable to a paid plan will be established in the applicable paid Service Agreement."),
       ],
     },
     {
-      heading: "3. Client May Upgrade at Any Time",
+      heading: "22. Pricing Changes and Price Lock",
       blocks: [
-        p("The Client may upgrade from the Free Website Service to an applicable ALTAVENTURES paid service plan at any time."),
+        p("Altaventures' published pricing for its services is subject to change without prior notice."),
+        p("The Client understands that the Free Website Service does not guarantee access to future paid services at today's pricing."),
+        p("If the Client later subscribes to a paid Digital Growth Plan, the pricing applicable to that paid plan will be governed by the applicable paid Service Agreement."),
         p(
-          "An upgrade may provide access to additional website functionality, business systems, ongoing development, website updates, maintenance, email services and other features depending on the selected plan."
+          "For a paid plan, the selected plan price will be locked for the Client's current Service Term and may change upon the next renewal in accordance with the applicable paid Service Agreement."
         ),
-        p("Once a paid service plan is accepted, the applicable paid service agreement and plan terms will govern the paid services."),
-        p("The Client is not required to remain on the Free Website Service if it wishes to access additional functionality."),
       ],
     },
     {
-      heading: "4. Domain Registration and Ownership",
+      heading: "23. Future Paid Plan or Partnership Arrangement",
       blocks: [
-        p("The Client's custom domain is separate from the website service itself."),
-        p("The Client owns the domain registration rights, subject to the applicable registrar and domain registry rules."),
-        p("ALTAVENTURES may purchase, register, configure, renew, manage or administer the domain on behalf of the Client."),
-        p("The domain registration cost shall be paid by:"),
+        p("If the Client wishes to:"),
         ul([
-          "the Client directly; or",
-          "ALTAVENTURES on behalf of the Client where ALTAVENTURES agrees to advance or cover the applicable registration cost.",
+          "Upgrade to a paid plan;",
+          "Purchase recurring services;",
+          "Engage Altaventures for a separate website project;",
+          "Purchase substantial additional services;",
+          "Enter into an alternative commercial arrangement; or",
+          "Enter into an alternative partnership arrangement,",
         ]),
+        p("the Parties may enter into a separate written agreement."),
+        p("The separate agreement will govern the services or relationship specifically covered by it."),
         p(
-          "Where ALTAVENTURES pays a domain registration or renewal cost on behalf of the Client, such payment does not transfer ownership of the domain to ALTAVENTURES."
+          "The separate agreement will supersede this Agreement to the extent of any conflict concerning the services, pricing, rights, obligations, or relationship covered by the separate agreement."
         ),
-        p("The domain remains the Client's domain, subject to the Client's payment obligations and the applicable registrar's terms."),
-      ],
-    },
-    {
-      heading: "5. Domain Selection Is Final",
-      blocks: [
-        p("The Client is responsible for carefully reviewing and approving the domain name before registration."),
-        p("Once the domain has been purchased and registered, the selected domain name cannot simply be changed, exchanged or replaced under the Free Website Service."),
-        p("If the Client later wishes to use a different domain name, the Client may purchase and maintain a new domain at its own expense."),
-        p("Any additional configuration, migration or website changes required because of a new domain may be treated as a separate paid service."),
-        p(
-          "ALTAVENTURES is not responsible for the Client's choice of domain name, including potential trademark conflicts, similarity to another business, spelling preferences, branding decisions or future commercial suitability."
-        ),
-        p("The Client is responsible for ensuring that its chosen domain does not infringe third-party rights."),
-      ],
-    },
-    {
-      heading: "6. Domain Management and Transfer Restrictions",
-      blocks: [
-        p(
-          "Where ALTAVENTURES purchases or manages the domain on behalf of the Client, ALTAVENTURES may retain administrative control of the applicable registrar account or domain-management layer for purposes of registration, renewal, DNS configuration, security and website operation."
-        ),
-        p("The Client remains the domain owner."),
-        p("Following initial registration, registrar transfer, material registration changes, or other applicable domain events, the domain may be subject to a transfer restriction or lockout period."),
-        p(
-          "Where applicable to the domain and registrar arrangement, the Client acknowledges that a transfer lockout period of up to seventy (70) days may apply from the date the domain is registered, transferred, or otherwise placed under ALTAVENTURES' domain management."
-        ),
-        p("The actual transfer eligibility period may depend on the domain extension, registrar, registry, applicable policies and technical circumstances."),
-        p("The Client acknowledges that domain transfer restrictions may exist independently of ALTAVENTURES and may be imposed by the registrar or registry."),
-        p(
-          "For certain generic top-level domains, ICANN policies provide for 60-day transfer restrictions in specified circumstances, including certain new registrations, registrar transfers and changes of registrant information."
-        ),
-        p("ALTAVENTURES does not guarantee that a domain can be transferred immediately upon request."),
-      ],
-    },
-    {
-      heading: "7. Domain Renewal",
-      blocks: [
-        p("The Client is responsible for ensuring that the domain remains renewed and active."),
-        p("Where ALTAVENTURES manages the renewal, the Client must provide payment or reimbursement as applicable before the renewal deadline."),
-        p("ALTAVENTURES is not responsible for domain expiration caused by the Client's failure to provide required payment, authorization or information."),
-        p("Domain expiration may result in the website becoming unavailable."),
-      ],
-    },
-    {
-      heading: "8. Service Term",
-      blocks: [
-        p(
-          "The Free Website Service Agreement remains active for as long as the applicable Client domain remains active and the website service remains supported by ALTAVENTURES, unless this Agreement is otherwise terminated or suspended under its terms."
-        ),
-        p("The Free Website Service does not create a perpetual guarantee of hosting, infrastructure or technical availability."),
-        p(
-          "ALTAVENTURES may modify, suspend or discontinue the Free Website Service where reasonably necessary due to technical, operational, security, legal, infrastructure or business considerations."
-        ),
-      ],
-    },
-    {
-      heading: "9. Website Ownership",
-      blocks: [
-        p("The Client retains ownership of:"),
+        p("Any provisions of this Agreement that are not addressed or superseded will remain effective."),
+        p("Alternative arrangements may include:"),
         ul([
-          "Its business name",
-          "Trademarks and logos supplied by the Client",
-          "Original photographs supplied by the Client",
-          "Original written content supplied by the Client",
-          "Business information supplied by the Client",
-          "The Client's domain",
+          "Referral partnerships",
+          "Revenue-sharing arrangements",
+          "Strategic partnerships",
+          "Marketing partnerships",
+          "Technology partnerships",
+          "Custom business development arrangements",
+          "Other mutually agreed arrangements",
         ]),
-        p("However, ALTAVENTURES retains ownership of the website technology and materials created, developed, configured or supplied by ALTAVENTURES, including, without limitation:"),
-        ul([
-          "Source code",
-          "Website code",
-          "Frameworks",
-          "Components",
-          "Templates",
-          "Design systems",
-          "Development systems",
-          "Website architecture",
-          "Database structure",
-          "Database schema",
-          "Proprietary database systems",
-          "Backend systems",
-          "Admin systems",
-          "APIs",
-          "Integrations",
-          "Automation systems",
-          "Deployment configurations",
-          "Infrastructure configurations",
-          "Internal tools",
-          "Reusable components",
-          "Development methodologies",
-          "Proprietary libraries",
-          "Technical documentation",
-          "Other proprietary technology developed or used by ALTAVENTURES",
-        ]),
-        p("The Client receives the right to use the completed website as part of the applicable service while the service remains active."),
-        p("The Free Website Service does not constitute a sale or transfer of ALTAVENTURES' source code, repositories, database structure, proprietary technology, infrastructure or development systems."),
       ],
     },
     {
-      heading: "10. Client Data and Business Information",
+      heading: "24. Portfolio and Marketing Rights",
       blocks: [
         p(
-          "Although ALTAVENTURES owns the underlying database structure, software and technical infrastructure used to operate the website, the Client retains its rights in its own business information and other Client-provided materials, subject to applicable law."
+          "The Client agrees that Altaventures may display and reference the website built for the Client as part of its portfolio, marketing, promotional, sales, presentation, and business development materials."
         ),
-        p("Personal information belonging to customers or other individuals is not treated as property owned by ALTAVENTURES."),
-        p("The parties will handle personal information in accordance with applicable Philippine data privacy laws and regulations."),
-        p("ALTAVENTURES' ownership of the technical database infrastructure does not give ALTAVENTURES unrestricted rights to use personal information for unrelated purposes."),
-      ],
-    },
-    {
-      heading: "11. Website Content",
-      blocks: [
-        p("The Client is responsible for providing accurate, lawful and up-to-date:"),
+        p("This may include:"),
         ul([
-          "Business information",
-          "Product information",
-          "Service information",
-          "Pricing",
-          "Contact information",
-          "Promotional claims",
-          "Images",
-          "Logos",
-          "Written content",
+          "Website screenshots",
+          "Website previews",
+          "Website recordings",
+          "Website links",
+          "Before-and-after comparisons",
+          "Client business name",
+          "Publicly displayed logo or branding",
+          "General descriptions of the website project",
+          "Social media posts",
+          "Proposals",
+          "Presentations",
+          "Advertisements",
+          "Altaventures' website and portfolio",
         ]),
-        p("The Client represents that it has the necessary rights and permissions to provide materials supplied to ALTAVENTURES."),
-        p("ALTAVENTURES may rely on Client-provided information when building and maintaining the website."),
-        p("The Client remains responsible for the accuracy and legality of information it provides."),
+        p("The purpose of this permission is to allow Altaventures to demonstrate its previous work and capabilities."),
+        p("Altaventures will not state or imply that the Client endorses Altaventures unless separately authorized."),
+        p("This portfolio permission continues after termination of this Agreement unless otherwise agreed in writing."),
       ],
     },
     {
-      heading: "12. Client Business Responsibility",
+      heading: "25. Intellectual Property",
       blocks: [
-        p("ALTAVENTURES provides digital infrastructure and website development services."),
-        p("ALTAVENTURES does not operate the Client's underlying business."),
-        p("The Client remains responsible for:"),
+        p("The Client retains ownership of Client-owned materials provided to Altaventures, including its:"),
+        ul(["Business name", "Logo", "Trademarks", "Photographs", "Written content", "Product information", "Other Client-owned materials"]),
+        p("Altaventures retains ownership of its pre-existing and reusable:"),
+        ul(["Frameworks", "Templates", "Components", "Development methods", "Internal tools", "General-purpose code", "Technical processes", "Know-how"]),
+        p("The Client receives the rights reasonably necessary to use the completed website for its business, subject to this Agreement and applicable third-party licenses."),
+      ],
+    },
+    {
+      heading: "26. Client Business Responsibilities",
+      blocks: [
+        p("The Client remains solely responsible for its:"),
         ul([
-          "Its products and services",
-          "Pricing",
-          "Customer transactions",
+          "Products",
+          "Services",
+          "Prices",
+          "Inventory",
           "Orders",
-          "Payments",
           "Fulfillment",
+          "Shipping",
           "Refunds",
-          "Cancellations",
-          "Warranties",
-          "Guarantees",
-          "Customer communications",
-          "Business permits",
+          "Returns",
+          "Customer service",
+          "Advertising",
+          "Marketing claims",
+          "Business policies",
           "Licenses",
+          "Permits",
+          "Taxes",
           "Regulatory compliance",
-          "Advertising claims",
-          "Product claims",
-          "Consumer obligations",
         ]),
-        p("Where the website is used for online transactions, the Client remains responsible for applicable legal obligations relating to its business and transactions."),
+        p("Altaventures provides website and digital services and does not become the Client's seller, merchant, manufacturer, or service provider."),
       ],
     },
     {
-      heading: "13. Website Approval",
+      heading: "27. Data Privacy and Security",
       blocks: [
-        p("ALTAVENTURES may provide the Client with an opportunity to review the website before publication."),
-        p("Once the Client approves the website for publication, the website will be considered accepted."),
-        p("Changes requested after approval that introduce new content, functionality, redesign work, restructuring or additional development may be treated as additional paid work."),
+        p("The Parties agree to comply with applicable Philippine data protection requirements."),
+        p("The Client is responsible for determining what personal information it collects through its business and website and how that information is used."),
+        p("The Client is also responsible for maintaining the confidentiality of any credentials provided to it."),
+        p("The Client must promptly notify Altaventures if it suspects that website or account credentials have been compromised."),
+        p("Altaventures may take reasonable security measures, including temporary suspension of affected services, where necessary to protect the Client, website, infrastructure, or other users."),
       ],
     },
     {
-      heading: "14. Additional Work",
+      heading: "28. Prohibited Use",
       blocks: [
-        p("The Free Website Service does not include unlimited revisions or development."),
-        p("Additional work may be requested through:"),
+        p("The website and Services may not be used for:"),
         ul([
-          "ALTAVENTURES Pay-As-You-Go services",
-          "ALTAVENTURES Digital Growth Plans",
-          "A separately quoted website project",
-          "An Alternative Partnership Arrangement",
-        ]),
-        p("ALTAVENTURES will determine whether a request falls within the original agreed scope or constitutes additional work."),
-        p("ALTAVENTURES will provide applicable pricing before chargeable work is performed."),
-      ],
-    },
-    {
-      heading: "15. Business System Development",
-      blocks: [
-        p("Phase 2 functionality may include business systems such as:"),
-        ul([
-          "Booking",
-          "Appointment management",
-          "Sales systems",
-          "Ordering systems",
-          "Customer management",
-          "Automated notifications",
-          "Payment integrations",
-          "Other business workflows",
-        ]),
-        p("Such functionality is not included in the Free Website Service unless expressly stated in writing."),
-        p("The Client may request these capabilities through an applicable paid service or separately quoted project."),
-      ],
-    },
-    {
-      heading: "16. Third-Party Services",
-      blocks: [
-        p(
-          "The website may depend on third-party services, including hosting infrastructure, domain registrars, APIs, software services, email providers, payment providers and other external systems."
-        ),
-        p("ALTAVENTURES does not control third-party services and cannot guarantee their continuous availability, pricing, policies or functionality."),
-        p("Third-party services that require separate fees may be charged to the Client where applicable."),
-      ],
-    },
-    {
-      heading: "17. Service Continuity Protection",
-      blocks: [
-        p("If the applicable service is suspended or terminated, ALTAVENTURES may disable dynamic features, infrastructure or functionality provided as part of the managed service."),
-        p("The website may become unavailable or revert to an available static version where technically applicable, subject to the applicable agreement."),
-        p("The Client acknowledges that the website is provided as a managed service and that continued access to ALTAVENTURES infrastructure is dependent upon the applicable service remaining active."),
-      ],
-    },
-    {
-      heading: "18. Security and Misuse",
-      blocks: [
-        p("The Client must not use the website or related services for:"),
-        ul([
-          "Illegal activities",
           "Fraud",
           "Phishing",
           "Malware",
-          "Unauthorized access",
+          "Illegal transactions",
+          "Copyright infringement",
+          "Trademark infringement",
           "Spam",
-          "Abuse of infrastructure",
-          "Intellectual property infringement",
-          "Deceptive activity",
-          "Other activity that creates a material legal, security or operational risk",
+          "Harassment",
+          "Impersonation",
+          "Illegal products or services",
+          "Malicious activity",
+          "Activities violating applicable law",
+          "Activities violating third-party provider policies",
         ]),
-        p("ALTAVENTURES may suspend or restrict services where reasonably necessary to protect its infrastructure, the Client, other users or third parties."),
       ],
     },
     {
-      heading: "19. Data Privacy",
+      heading: "29. Suspension and Termination",
       blocks: [
-        p("The parties shall comply with applicable Philippine data privacy laws, including Republic Act No. 10173, the Data Privacy Act of 2012."),
-        p("ALTAVENTURES will implement reasonable measures appropriate to the services it provides."),
-        p("The Client remains responsible for determining the lawful purposes for which customer information is collected and used in connection with its business."),
-        p("Where additional data-processing documentation is required, the parties may enter into a separate Data Processing Agreement."),
-      ],
-    },
-    {
-      heading: "20. No Guarantee of Business Results",
-      blocks: [
-        p("ALTAVENTURES does not guarantee:"),
+        p("Altaventures may suspend or terminate the Free Website Service where reasonably necessary due to:"),
         ul([
-          "Website traffic",
-          "Leads",
-          "Sales",
-          "Bookings",
-          "Revenue",
-          "Search rankings",
-          "Customer inquiries",
-          "Business growth",
-          "Advertising results",
-          "Conversion rates",
+          "Material breach of this Agreement",
+          "Illegal activity",
+          "Fraud",
+          "Security threats",
+          "Malware",
+          "Phishing",
+          "Abuse",
+          "Spam",
+          "Intellectual property violations",
+          "Threats to infrastructure",
+          "Government or court requirements",
+          "Discontinuation of necessary third-party services",
+          "Discontinuation of the Free Website Service",
+          "Extended inactivity",
+          "Other legitimate operational reasons",
         ]),
-        p("The website is a business tool and its results depend on factors outside ALTAVENTURES' reasonable control."),
+        p("Where reasonably practicable, Altaventures will provide notice before termination."),
+        p("The Client may also request termination of the Free Website Service."),
+        p("Upon termination, hosting may be discontinued and the website may be removed from Altaventures' infrastructure."),
+        p("The Client may request a domain transfer or full website transfer subject to the applicable transfer terms and fees."),
       ],
     },
     {
-      heading: "21. Intellectual Property",
+      heading: "30. Website Transfer",
       blocks: [
-        p("The Client must not represent ALTAVENTURES' proprietary technology as its own technology."),
+        sh("Domain Transfer"),
+        p("Standard domain transfer assistance is Free."),
+        p("The Client remains responsible for any fees charged by the destination registrar."),
+        sh("Full Website Transfer"),
+        p("A full-scale website transfer starts at ₱4,000+, depending on the scope and complexity."),
+        p("A full transfer may include source code, repositories, databases, website assets, and other transferable materials."),
+        p("The Client may be required to provide destination hosting, accounts, or infrastructure."),
+      ],
+    },
+    {
+      heading: "31. No Guarantee of Business Results",
+      blocks: [
+        p("Altaventures does not guarantee:"),
+        ul(["Sales", "Revenue", "Leads", "Website traffic", "Search rankings", "Conversion rates", "Customer volume", "Orders", "Profit", "Business growth"]),
+        p("The website is provided as a digital business tool."),
+        p("The Client remains responsible for its marketing, sales, customer service, products, services, and business operations."),
+      ],
+    },
+    {
+      heading: "32. Liability",
+      blocks: [
+        p("Each Party remains responsible for its obligations under this Agreement to the extent required by law."),
         p(
-          "The Client may not copy, reproduce, resell, distribute, reverse engineer, extract or commercially reuse ALTAVENTURES' proprietary website systems, source code, database structure, frameworks or internal technology without ALTAVENTURES' written authorization."
-        ),
-        p("This restriction does not prevent the Client from using its own business content, trademarks, domain or other materials that it independently owns."),
-      ],
-    },
-    {
-      heading: "22. Website Transfer",
-      blocks: [
-        p("The Free Website Service does not automatically include transfer of the website to another provider."),
-        p("A transfer-out request may require a separate service fee and technical assessment."),
-        p("Any transfer involving source code, repositories, databases, infrastructure configurations or proprietary systems shall be subject to a separate agreement."),
-        p("ALTAVENTURES may determine what materials can technically and legally be transferred."),
-      ],
-    },
-    {
-      heading: "23. Limitation of Liability",
-      blocks: [
-        p(
-          "To the maximum extent permitted by law, ALTAVENTURES will not be liable for indirect, incidental, consequential, special or speculative losses arising from the use, interruption or unavailability of the Free Website Service."
-        ),
-        p("This may include loss of:"),
-        ul(["Revenue", "Profits", "Customers", "Business opportunities", "Goodwill", "Data", "Anticipated savings"]),
-        p("Nothing in this Agreement excludes or limits liability that cannot legally be excluded or limited."),
-      ],
-    },
-    {
-      heading: "24. Client Indemnification",
-      blocks: [
-        p(
-          "To the maximum extent permitted by applicable law, the Client agrees to protect and indemnify ALTAVENTURES against third-party claims, losses, liabilities, damages and reasonable expenses arising from:"
+          "To the extent permitted by applicable law, Altaventures will not be responsible for indirect or consequential losses, lost profits, lost revenue, lost business opportunities, or losses caused by:"
         ),
         ul([
-          "Client-provided content",
-          "Client products or services",
-          "Client business operations",
-          "Client transactions",
-          "Client's violation of applicable laws",
-          "Client's unauthorized use of third-party materials",
-          "Claims relating to information supplied or approved by the Client",
+          "Incorrect Client information",
+          "Client instructions",
+          "Client misuse",
+          "Unauthorized modifications",
+          "Third-party failures",
+          "Third-party services",
+          "Circumstances outside Altaventures' reasonable control",
         ]),
-        p("This clause does not apply to the extent a claim is directly caused by ALTAVENTURES' proven willful misconduct or liability that cannot legally be transferred to the Client."),
+        p("Nothing in this Agreement excludes liability that cannot legally be excluded."),
+        p("Because the Free Website Service has no recurring service fee, the Parties acknowledge that the amount paid specifically for the Free Website Service may be ₱0."),
       ],
     },
     {
-      heading: "25. Termination",
+      heading: "33. Confidentiality",
       blocks: [
-        p("Either party may request termination of the Free Website Service."),
+        p("Each Party agrees to take reasonable steps to protect confidential information received from the other Party."),
+        p("This may include:"),
+        ul(["Business information", "Customer information", "Credentials", "Internal documents", "Technical information", "Non-public operational information"]),
+        p("This obligation does not apply to information that is publicly available, independently developed, lawfully obtained from another source, or required to be disclosed by law."),
+      ],
+    },
+    {
+      heading: "34. Force Majeure",
+      blocks: [
+        p("Neither Party will be responsible for failure or delay caused by circumstances beyond its reasonable control."),
+        p("This may include:"),
+        ul([
+          "Natural disasters",
+          "War",
+          "Government action",
+          "Major internet failures",
+          "Major hosting outages",
+          "Cyberattacks",
+          "Power failures",
+          "Telecommunications failures",
+          "Regulatory changes",
+          "Third-party service discontinuation",
+          "Other comparable events",
+        ]),
+      ],
+    },
+    {
+      heading: "35. Governing Law and Disputes",
+      blocks: [
+        p("This Agreement is governed by the laws of the Republic of the Philippines."),
+        p("If a dispute arises, the Parties will first attempt to resolve the matter through good-faith communication."),
+        p("If the dispute cannot be resolved, the Parties may pursue appropriate remedies under Philippine law."),
+      ],
+    },
+    {
+      heading: "36. General Terms",
+      blocks: [
+        p("If any provision of this Agreement is found to be invalid or unenforceable, the remaining provisions will continue to apply to the extent permitted by law."),
+        p("Electronic signatures, electronic approvals, and other reliable forms of electronic acceptance may be used to accept this Agreement."),
+        p("This Agreement, together with any expressly incorporated website scope or approved documentation, constitutes the agreement between the Parties regarding the Free Website Service."),
+      ],
+    },
+    {
+      heading: "37. Client Acknowledgment",
+      blocks: [
+        p("By accepting this Agreement, the Client confirms that it:"),
+        ul([
+          "Has read and understood this Agreement.",
+          "Understands what is included in the Free Website Service.",
+          "Understands what is not included.",
+          "Understands that the website is provided without a recurring website service fee.",
+          "Understands that additional services may require payment.",
+          "Understands that the website delivered at the time of signing constitutes the Initial Website Scope.",
+          "Understands that the fourteen (14) day revision period begins on the date the website is delivered.",
+          "Understands that the ninety (90) day bug warranty begins on the date the website is delivered.",
+          "Understands that the revision period covers reasonable changes within the delivered website's existing scope.",
+          "Understands that the bug warranty covers genuine technical defects in the delivered website.",
+          "Understands that the bug warranty does not constitute unlimited free maintenance.",
+          "Understands that new features, new functionality, major changes, and additional development may require payment.",
+          "Understands that Altaventures' published pricing is subject to change without prior notice.",
+          "Understands that future paid plans are subject to their applicable pricing and agreements.",
+          "Understands that the Client's price for a future paid plan will be governed by the applicable paid Service Agreement.",
+          "Understands that a separate agreement will govern any future paid plan or alternative partnership arrangement.",
+          "Agrees that such separate agreement will supersede this Agreement to the extent of any conflict concerning the services or relationship covered by that agreement.",
+          "Understands that Altaventures may use the completed website in its portfolio and marketing materials.",
+          "Authorizes Altaventures to use reasonable screenshots, website previews, links, business name, and publicly displayed branding for portfolio and promotional purposes.",
+          "Understands that the Client remains responsible for its business, content, products, services, customers, transactions, and legal obligations.",
+          "Understands that Altaventures does not guarantee business results.",
+          "Confirms that the person accepting this Agreement is authorized to bind the Client.",
+          "Agrees to be bound by this Agreement.",
+        ]),
+      ],
+    },
+    {
+      heading: "38. Electronic Acceptance",
+      blocks: [
         p(
-          "ALTAVENTURES may suspend or terminate the service where the Client materially violates this Agreement or where continued service creates a significant legal, security, technical or operational risk."
+          "By signing, electronically signing, checking an acceptance box, or otherwise expressly accepting this Agreement, the Client confirms that it has read, understood, and agreed to the terms of this Agreement."
         ),
-        p("Upon termination, ALTAVENTURES may discontinue the website service and associated infrastructure."),
-        p("The Client's domain ownership is separate from the website service and remains subject to the applicable domain registrar and registry rules."),
-      ],
-    },
-    {
-      heading: "26. Effect of Termination on Domain",
-      blocks: [
-        p("Termination of the website service does not automatically transfer ownership of the Client's domain to ALTAVENTURES."),
-        p("The domain remains the Client's property, subject to applicable registrar requirements and any unpaid domain-related amounts."),
-        p("If the Client requests transfer or migration of the domain, the transfer will be subject to applicable registrar and registry policies, including any active transfer lock or waiting period."),
-      ],
-    },
-    {
-      heading: "27. Agreement Changes",
-      blocks: [
-        p("ALTAVENTURES may update its standard service terms for future clients or future service periods."),
-        p("Any material amendment to the Client's existing Agreement that materially changes the Client's obligations will be communicated through an appropriate notice or updated agreement where required."),
-        p("Specific written terms agreed with the Client will prevail over general promotional materials."),
-      ],
-    },
-    {
-      heading: "28. Governing Law",
-      blocks: [
-        p("This Agreement shall be governed by the laws of the Republic of the Philippines."),
-        p("The parties will first attempt to resolve disputes through good-faith discussion before pursuing available legal remedies, subject to applicable law."),
-        p("Nothing in this Agreement prevents either party from exercising rights or remedies that cannot legally be waived."),
-      ],
-    },
-    {
-      heading: "29. Entire Agreement",
-      blocks: [
-        p(
-          "This Agreement, together with any written scope, quotation, order form, plan terms or other documents expressly incorporated into it, constitutes the agreement between ALTAVENTURES and the Client concerning the Free Website Service."
-        ),
-        p("Any additional service or feature not expressly included in the agreed scope will require separate approval."),
       ],
     },
   ],
 };
 
 // ---------------------------------------------------------------------------
-// Signature-page field coordinates (PDF points, bottom-left origin), taken
-// directly from the text layout of the last page of
-// public/documents/free-website-service-agreement.pdf. Keep in sync if the
-// source PDF is ever replaced.
+// Signable-field coordinates (PDF points, bottom-left origin, 0-indexed
+// page numbers), on the generated PDF
+// (public/documents/free-website-service-agreement.pdf). Regenerated by
+// scripts/generate-wsa-pdf.ts whenever the document changes; do not
+// hand-edit unless you know the exact layout changed by that amount.
 // ---------------------------------------------------------------------------
 export const WSA_PDF_FIELD_COORDS = {
-  businessName: { x: 72.02, y: 532.87, w: 124.34 },
-  clientRep: { x: 72.02, y: 507.91, w: 139.33 },
-  email: { x: 72.02, y: 482.95, w: 32.7 },
-  phone: { x: 72.02, y: 457.99, w: 90.18 },
-  clientInfoDate: { x: 72.02, y: 433.03, w: 28.14 },
-  acceptName: { x: 72.02, y: 299.21, w: 34.82 },
-  acceptDate: { x: 72.02, y: 249.29, w: 28.14 },
-  altaDate: { x: 72.02, y: 149.42, w: 28.14 },
+  // "1. Client Information" block, near the top of the document.
+  clientInfo: {
+    businessName: { page: 0, x: 72, y: 521.1992840095465, w: 76.44 },
+    ownerRep: { page: 0, x: 72, y: 504.19928400954655, w: 165.7425 },
+    email: { page: 0, x: 72, y: 453.19928400954655, w: 29.169 },
+    phone: { page: 0, x: 72, y: 436.19928400954655, w: 79.674 },
+  },
+  // Signature/execution block at the end of the document. Client and
+  // Altaventures sub-blocks are kept from splitting across a page break by
+  // the generator, but can still land on different pages from each other.
+  signing: {
+    clientName: { page: 15, x: 72, y: 199.69928400954655, w: 30.922500000000003 },
+    clientDate: { page: 15, x: 72, y: 148.69928400954655, w: 25.095000000000002 },
+    altaDate: { page: 16, x: 72, y: 627.6992840095465, w: 25.095000000000002 },
+  },
 } as const;
 
-export const WSA_SIGNATURE_BOX = { x: 134.48, y: 270, width: 150, height: 26 } as const;
+export const WSA_SIGNATURE_BOX = {
+  page: 15,
+  x: 131.859,
+  y: 176.69928400954655,
+  width: 150,
+  height: 32,
+} as const;
 
 export const WSA_ALTA_SIGNER = "Van Amaranto";
