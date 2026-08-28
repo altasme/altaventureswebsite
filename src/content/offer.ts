@@ -18,11 +18,17 @@ export const PRIMARY_CTA = "CLAIM MY FREE WEBSITE →";
 
 export const OFFER_HERO = {
   headline: "Get Your Business Online. We'll Build the Website for FREE.",
+  headlineHighlight: "FREE",
   sub: "Get a professional website built for your business at zero development cost.",
   punchLine: "Be easier to find. Look more credible. Give customers a reason to choose you.",
   cta: PRIMARY_CTA,
   secondaryCta: "SEE WHAT WE'VE BUILT",
   microcopy: "Ready in 4 to 7 days. You only pay for your domain. No plans. No contracts.",
+  stats: [
+    { value: "8", label: "Real businesses built" },
+    { value: "4-7", label: "Days to launch" },
+    { value: "₱0", label: "Development cost" },
+  ],
 } as const;
 
 export const AGITATION = {
@@ -57,7 +63,7 @@ export const OFFER_PORTFOLIO = {
   // Lead with the relatable site tier, then the ceiling (system tier).
   // Engines (Setmona, Kolekta) have no public URL and are excluded here;
   // they appear in Growth Vision as Phase 2 proof instead.
-  projectIds: ["dmhr", "vocalyze", "aulea", "altamotors", "aurielle", "leanandfit"],
+  projectIds: ["altamotors", "vocalyze", "dmhr", "aulea", "aurielle", "leanandfit"],
   closer: "If we built these for them, picture what we will build for you. Free.",
   cta: PRIMARY_CTA,
 } as const;

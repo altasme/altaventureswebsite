@@ -18,7 +18,7 @@ export default function WhyFree({ onOpenQualifier }: { onOpenQualifier: () => vo
       </div>
 
       <div className="mt-8">
-        <CTAButton label={WHY_FREE.cta} section="why-free" onClick={onOpenQualifier} />
+        <CTAButton label={WHY_FREE.cta} section="why-free" onClick={onOpenQualifier} size="lg" />
       </div>
     </Section>
   );

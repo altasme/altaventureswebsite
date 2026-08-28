@@ -32,7 +32,7 @@ export default function GrowthVision({ onOpenQualifier }: { onOpenQualifier: () 
       <p className="mt-4 text-sm font-medium text-ink/50">{GROWTH_VISION.noCommitmentLine}</p>
 
       <div className="mt-6">
-        <CTAButton label={GROWTH_VISION.cta} section="growth-vision" onClick={onOpenQualifier} />
+        <CTAButton label={GROWTH_VISION.cta} section="growth-vision" onClick={onOpenQualifier} size="lg" />
       </div>
     </Section>
   );

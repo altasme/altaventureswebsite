@@ -38,7 +38,7 @@ export default function TheOfferPlainly({ onOpenQualifier }: { onOpenQualifier: 
       </div>
 
       <div className="mt-8">
-        <CTAButton label={THE_OFFER_PLAINLY.cta} section="offer-plainly" onClick={onOpenQualifier} />
+        <CTAButton label={THE_OFFER_PLAINLY.cta} section="offer-plainly" onClick={onOpenQualifier} size="lg" />
       </div>
     </Section>
   );

@@ -54,7 +54,7 @@ export default function WhoItsFor({ onOpenQualifier }: { onOpenQualifier: () => 
       <p className="mt-6 text-base font-medium text-ink/70">{WHO_ITS_FOR.close}</p>
 
       <div className="mt-6">
-        <CTAButton label={WHO_ITS_FOR.cta} section="who-its-for" onClick={onOpenQualifier} />
+        <CTAButton label={WHO_ITS_FOR.cta} section="who-its-for" onClick={onOpenQualifier} size="lg" />
       </div>
     </Section>
   );

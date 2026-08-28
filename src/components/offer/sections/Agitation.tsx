@@ -15,10 +15,12 @@ export default function Agitation({ onOpenQualifier }: { onOpenQualifier: () => 
         ))}
       </div>
 
-      <p className="mt-8 max-w-xl text-xl font-bold text-white">{AGITATION.turnLine}</p>
+      <div className="mt-10 max-w-2xl rounded-2xl bg-brand-blue p-6 sm:p-8">
+        <p className="text-xl font-bold leading-snug text-white sm:text-2xl">{AGITATION.turnLine}</p>
+      </div>
 
       <div className="mt-8">
-        <CTAButton label={AGITATION.cta} section="agitation" onClick={onOpenQualifier} />
+        <CTAButton label={AGITATION.cta} section="agitation" onClick={onOpenQualifier} size="lg" />
       </div>
     </Section>
   );

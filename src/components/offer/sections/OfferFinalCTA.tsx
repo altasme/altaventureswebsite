@@ -12,12 +12,7 @@ export default function OfferFinalCTA({ onOpenQualifier }: { onOpenQualifier: ()
         <p className="mx-auto mt-4 max-w-xl text-base text-white/80 sm:text-lg">{OFFER_FINAL_CTA.body}</p>
 
         <div className="mt-8 flex justify-center">
-          <CTAButton
-            label={OFFER_FINAL_CTA.cta}
-            section="final-cta"
-            onClick={onOpenQualifier}
-            className="!px-8 !py-4 !text-base sm:!text-lg"
-          />
+          <CTAButton label={OFFER_FINAL_CTA.cta} section="final-cta" onClick={onOpenQualifier} size="lg" />
         </div>
 
         <p className="mt-6 text-sm text-white/60">{OFFER_FINAL_CTA.sub}</p>

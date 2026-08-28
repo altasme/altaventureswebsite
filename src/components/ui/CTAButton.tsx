@@ -2,12 +2,14 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { track } from "../../lib/analytics";
 
 type Variant = "primary" | "secondary" | "ghost";
+type Size = "md" | "lg";
 
 interface CTAButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick"> {
   label: string;
   section: string;
   onClick: () => void;
   variant?: Variant;
+  size?: Size;
   icon?: ReactNode;
 }
 
@@ -18,11 +20,17 @@ const VARIANT_CLASSES: Record<Variant, string> = {
   ghost: "bg-transparent text-white border border-white/30 hover:bg-white/10",
 };
 
+const SIZE_CLASSES: Record<Size, string> = {
+  md: "px-6 py-3.5 text-sm sm:text-base",
+  lg: "px-7 py-4 text-base sm:text-lg",
+};
+
 export default function CTAButton({
   label,
   section,
   onClick,
   variant = "primary",
+  size = "md",
   icon,
   className = "",
   ...rest
@@ -36,7 +44,7 @@ export default function CTAButton({
     <button
       type="button"
       onClick={handleClick}
-      className={`inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-tight transition-all duration-200 hover:-translate-y-0.5 focus-visible:outline-offset-4 sm:text-base ${VARIANT_CLASSES[variant]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-full font-semibold tracking-tight transition-all duration-200 hover:-translate-y-0.5 focus-visible:outline-offset-4 ${SIZE_CLASSES[size]} ${VARIANT_CLASSES[variant]} ${className}`}
       {...rest}
     >
       {label}

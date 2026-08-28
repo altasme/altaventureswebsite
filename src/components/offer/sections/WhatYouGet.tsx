@@ -35,7 +35,7 @@ export default function WhatYouGet({ onOpenQualifier }: { onOpenQualifier: () =>
       </ul>
 
       <div className="mt-8">
-        <CTAButton label={WHAT_YOU_GET.cta} section="what-you-get" onClick={onOpenQualifier} />
+        <CTAButton label={WHAT_YOU_GET.cta} section="what-you-get" onClick={onOpenQualifier} size="lg" />
       </div>
     </Section>
   );

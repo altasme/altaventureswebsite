@@ -19,6 +19,7 @@ import OfferFAQ from "../components/offer/sections/OfferFAQ";
 import OfferFinalCTA from "../components/offer/sections/OfferFinalCTA";
 import Qualifier from "../components/offer/qualifier/Qualifier";
 import StickyMobileOfferCTA from "../components/offer/StickyMobileOfferCTA";
+import SectionDivider from "../components/offer/SectionDivider";
 
 const PAGE_TITLE = "Free Website for Your Business (Philippines) | Altaventures";
 const PAGE_DESCRIPTION =
@@ -89,7 +90,9 @@ export default function LimitedOfferPage() {
         <WhyFree onOpenQualifier={openQualifier} />
         <OfferHowItWorks onOpenQualifier={openQualifier} />
         <WhoItsFor onOpenQualifier={openQualifier} />
+        <SectionDivider />
         <Scarcity onOpenQualifier={openQualifier} />
+        <SectionDivider />
         <GrowthVision onOpenQualifier={openQualifier} />
         <OfferFAQ />
         <OfferFinalCTA onOpenQualifier={openQualifier} />
