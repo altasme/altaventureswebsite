@@ -43,17 +43,17 @@ Resolved: About copy, logo, favicon, OG image, hero photography, and
 Privacy Policy / Terms of Service are real content. Domain is live at
 altasme.com. Portfolio data for all 8 real projects lives in
 `src/content/portfolio.ts`, shared by the main site and `/limitedoffer`
-(see `CLAUDE.md` §6.5).
+(see `CLAUDE.md` §6.5). All 8 project images in `public/images/projects/`
+are real client-supplied assets (Setmona and Kolekta ship as branded logo
+cards rather than dashboard screenshots, since those two are internal
+engines with no public URL to screenshot); no placeholder cards remain.
+`/limitedoffer`'s Agitation section background
+(`public/images/offer/agitation.jpg`) is also a real supplied photo.
 
 Still pending:
 
 - `TODO(analytics)`: GA4 / Meta Pixel `MEASUREMENT_ID`
   (`src/lib/analytics.ts`)
-- Real screenshots for 4 of the 8 portfolio projects (Aurielle Paris
-  Atelier, Lean and Fit PH, DM HR Consultancy, Aulea Skin Essentials) —
-  currently shipping clearly-labeled placeholder cards in
-  `public/images/projects/`. Altamotors, Vocalyze, Setmona, and Kolekta
-  already have real screenshots.
 - `/WSA-free` email delivery needs `RESEND_API_KEY` and `RESEND_FROM_EMAIL`
   set in Cloudflare Pages before it will actually send anything (see
   Deployment below). The page, PDF fill, and download work without them;
