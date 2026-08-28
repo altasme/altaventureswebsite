@@ -1,6 +1,7 @@
 import { GROWTH_VISION } from "../../../content/offer";
 import Section from "../../ui/Section";
 import CTAButton from "../../ui/CTAButton";
+import Reveal from "../Reveal";
 
 export default function GrowthVision({ onOpenQualifier }: { onOpenQualifier: () => void }) {
   return (
@@ -11,8 +12,8 @@ export default function GrowthVision({ onOpenQualifier }: { onOpenQualifier: () 
       <p className="mt-3 max-w-md text-base text-ink/60">{GROWTH_VISION.sub}</p>
 
       <div className="mt-10 grid gap-6 sm:grid-cols-3">
-        {GROWTH_VISION.phases.map((phase) => (
-          <div key={phase.label} className="rounded-2xl border border-ink/8 bg-white p-6">
+        {GROWTH_VISION.phases.map((phase, i) => (
+          <Reveal key={phase.label} delayMs={i * 100} className="rounded-2xl border border-ink/8 bg-white p-6">
             <span className="inline-flex items-center rounded-full bg-brand-blue/8 px-3 py-1 text-xs font-semibold text-brand-navy">
               {phase.label}
             </span>
@@ -24,7 +25,7 @@ export default function GrowthVision({ onOpenQualifier }: { onOpenQualifier: () 
                 </li>
               ))}
             </ul>
-          </div>
+          </Reveal>
         ))}
       </div>
 

@@ -1,6 +1,7 @@
 import { WHO_ITS_FOR } from "../../../content/offer";
 import Section from "../../ui/Section";
 import CTAButton from "../../ui/CTAButton";
+import Reveal from "../Reveal";
 
 function CheckIcon() {
   return (
@@ -26,7 +27,7 @@ export default function WhoItsFor({ onOpenQualifier }: { onOpenQualifier: () => 
       </h2>
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2">
-        <div className="rounded-2xl border border-brand-blue/20 bg-brand-blue/5 p-6">
+        <Reveal className="rounded-2xl border border-brand-blue/20 bg-brand-blue/5 p-6">
           <p className="text-sm font-semibold uppercase tracking-wide text-brand-blue">For you if</p>
           <ul className="mt-4 space-y-3">
             {WHO_ITS_FOR.forYou.map((item) => (
@@ -36,9 +37,9 @@ export default function WhoItsFor({ onOpenQualifier }: { onOpenQualifier: () => 
               </li>
             ))}
           </ul>
-        </div>
+        </Reveal>
 
-        <div className="rounded-2xl border border-ink/10 bg-paper-alt p-6">
+        <Reveal delayMs={100} className="rounded-2xl border border-ink/10 bg-paper-alt p-6">
           <p className="text-sm font-semibold uppercase tracking-wide text-ink/50">Not for you if</p>
           <ul className="mt-4 space-y-3">
             {WHO_ITS_FOR.notForYou.map((item) => (
@@ -48,7 +49,7 @@ export default function WhoItsFor({ onOpenQualifier }: { onOpenQualifier: () => 
               </li>
             ))}
           </ul>
-        </div>
+        </Reveal>
       </div>
 
       <p className="mt-6 text-base font-medium text-ink/70">{WHO_ITS_FOR.close}</p>

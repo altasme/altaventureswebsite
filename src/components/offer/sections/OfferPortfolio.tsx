@@ -4,6 +4,7 @@ import { track } from "../../../lib/analytics";
 import Section from "../../ui/Section";
 import Tag from "../../ui/Tag";
 import CTAButton from "../../ui/CTAButton";
+import Reveal from "../Reveal";
 
 function ProjectCard({ id, featured = false }: { id: string; featured?: boolean }) {
   const project = PORTFOLIO_BY_ID[id];
@@ -64,8 +65,10 @@ export default function OfferPortfolio({ onOpenQualifier }: { onOpenQualifier: (
       <div className="mt-10 space-y-6">
         <ProjectCard id={featuredId} featured />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {restIds.map((id) => (
-            <ProjectCard key={id} id={id} />
+          {restIds.map((id, i) => (
+            <Reveal key={id} delayMs={i * 80}>
+              <ProjectCard id={id} />
+            </Reveal>
           ))}
         </div>
       </div>

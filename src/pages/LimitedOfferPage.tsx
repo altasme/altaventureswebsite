@@ -20,6 +20,7 @@ import OfferFinalCTA from "../components/offer/sections/OfferFinalCTA";
 import Qualifier from "../components/offer/qualifier/Qualifier";
 import StickyMobileOfferCTA from "../components/offer/StickyMobileOfferCTA";
 import SectionDivider from "../components/offer/SectionDivider";
+import Reveal from "../components/offer/Reveal";
 
 const PAGE_TITLE = "Free Website for Your Business (Philippines) | Altaventures";
 const PAGE_DESCRIPTION =
@@ -83,19 +84,41 @@ export default function LimitedOfferPage() {
 
       <main>
         <OfferHero onOpenQualifier={openQualifier} />
-        <Agitation onOpenQualifier={openQualifier} />
-        <WhatYouGet onOpenQualifier={openQualifier} />
-        <OfferPortfolio onOpenQualifier={openQualifier} />
-        <TheOfferPlainly onOpenQualifier={openQualifier} />
-        <WhyFree onOpenQualifier={openQualifier} />
-        <OfferHowItWorks onOpenQualifier={openQualifier} />
-        <WhoItsFor onOpenQualifier={openQualifier} />
+        <Reveal>
+          <Agitation onOpenQualifier={openQualifier} />
+        </Reveal>
+        <Reveal>
+          <WhatYouGet onOpenQualifier={openQualifier} />
+        </Reveal>
+        <Reveal>
+          <OfferPortfolio onOpenQualifier={openQualifier} />
+        </Reveal>
+        <Reveal>
+          <TheOfferPlainly onOpenQualifier={openQualifier} />
+        </Reveal>
+        <Reveal>
+          <WhyFree onOpenQualifier={openQualifier} />
+        </Reveal>
+        <Reveal>
+          <OfferHowItWorks onOpenQualifier={openQualifier} />
+        </Reveal>
+        <Reveal>
+          <WhoItsFor onOpenQualifier={openQualifier} />
+        </Reveal>
         <SectionDivider />
-        <Scarcity onOpenQualifier={openQualifier} />
+        <Reveal>
+          <Scarcity onOpenQualifier={openQualifier} />
+        </Reveal>
         <SectionDivider />
-        <GrowthVision onOpenQualifier={openQualifier} />
-        <OfferFAQ />
-        <OfferFinalCTA onOpenQualifier={openQualifier} />
+        <Reveal>
+          <GrowthVision onOpenQualifier={openQualifier} />
+        </Reveal>
+        <Reveal>
+          <OfferFAQ />
+        </Reveal>
+        <Reveal>
+          <OfferFinalCTA onOpenQualifier={openQualifier} />
+        </Reveal>
       </main>
 
       <footer className="bg-brand-navy-deep py-12 text-white">

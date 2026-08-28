@@ -1,6 +1,7 @@
 import { OFFER_HERO } from "../../../content/offer";
 import { useCountUp } from "../../../lib/useCountUp";
 import CTAButton from "../../ui/CTAButton";
+import Reveal from "../Reveal";
 
 function scrollToPortfolio() {
   document.getElementById("offer-portfolio")?.scrollIntoView({ behavior: "smooth" });
@@ -25,10 +26,15 @@ function Headline() {
 type Stat = (typeof OFFER_HERO.stats)[number];
 
 function StatValue({ stat }: { stat: Stat }) {
-  const hasCounter = "countTo" in stat;
-  const count = useCountUp(hasCounter ? stat.countTo : 0);
+  const counterTarget = stat.kind === "counter" ? stat.countTo : 0;
+  const rangeFromTarget = stat.kind === "range" ? stat.from : 0;
+  const rangeToTarget = stat.kind === "range" ? stat.to : 0;
 
-  if (hasCounter) {
+  const count = useCountUp(counterTarget);
+  const rangeFrom = useCountUp(rangeFromTarget);
+  const rangeTo = useCountUp(rangeToTarget);
+
+  if (stat.kind === "counter") {
     return (
       <p className="text-4xl font-extrabold tracking-tight sm:text-5xl">
         {count}
@@ -37,7 +43,19 @@ function StatValue({ stat }: { stat: Stat }) {
     );
   }
 
-  return <p className="text-4xl font-extrabold tracking-tight sm:text-5xl">{stat.value}</p>;
+  if (stat.kind === "range") {
+    return (
+      <p className="text-4xl font-extrabold tracking-tight sm:text-5xl">
+        {rangeFrom}-{rangeTo}
+      </p>
+    );
+  }
+
+  return (
+    <Reveal delayMs={500}>
+      <p className="text-4xl font-extrabold tracking-tight sm:text-5xl">{stat.value}</p>
+    </Reveal>
+  );
 }
 
 export default function OfferHero({ onOpenQualifier }: { onOpenQualifier: () => void }) {
