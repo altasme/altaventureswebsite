@@ -59,12 +59,9 @@ export const CREDIBILITY_STRIP = {
   headline: "Not Just Websites. Real Business Systems.",
   sub: "Every project below is a live, working system built for a real Philippine business, not a template or a mockup.",
   cta: "Explore Our Work",
-  items: [
-    { id: "setmona", name: "SETMONA", category: "Booking & Scheduling" },
-    { id: "altamotors", name: "ALTAMOTORS", category: "Motorcycle Financing & Sales" },
-    { id: "kolekta", name: "KOLEKTA", category: "Loan Management & Billing" },
-    { id: "vocalyze", name: "VOCALYZE", category: "Entertainment Website & Digitalization" },
-  ],
+  // Shows range: two systems, one commerce, one site. Data itself lives in
+  // content/portfolio.ts, the canonical source shared with /limitedoffer.
+  featuredIds: ["altamotors", "aurielle", "leanandfit", "vocalyze"],
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -170,123 +167,58 @@ export const SERVICES = {
 } as const;
 
 // ---------------------------------------------------------------------------
-// Projects, used by SelectedWork + CaseStudyModal
+// Projects, used by SelectedWork + CaseStudyModal. Card-level data (name,
+// category, tags, description, url) is canonical in content/portfolio.ts,
+// shared with /limitedoffer. This file only adds the narrative detail
+// CaseStudyModal shows for the two in-house engines (Setmona, Kolekta),
+// which have no public URL to send visitors to instead.
 // ---------------------------------------------------------------------------
 
-export type ProjectId = "setmona" | "altamotors" | "kolekta" | "vocalyze";
-
-export const PROJECTS: Record<
-  ProjectId,
+export const CASE_STUDY_DETAILS: Record<
+  string,
   {
-    id: ProjectId;
-    name: string;
-    category: string;
-    shortDescription: string;
-    tags: string[];
-    image: string;
     overview: string;
     whatWeBuilt: string[];
     projectType: string;
     businessValue: string;
-    futureDevelopment?: string[];
     cta: string;
   }
 > = {
   setmona: {
-    id: "setmona",
-    name: "Setmona",
-    category: "Booking & Scheduling",
-    shortDescription:
-      "A booking and scheduling platform built to replace manual, Messenger-based appointment management with a real system.",
-    tags: ["Booking", "Scheduling", "Web App"],
-    image: "/images/projects/setmona.jpg",
     overview:
       "Setmona is a booking and scheduling system built for service-based businesses that were previously coordinating appointments manually. Altaventures designed and built the platform end-to-end, from customer-facing booking to the back-end schedule management staff rely on day to day.",
     whatWeBuilt: [
       "Customer-facing online booking flow",
       "Real-time calendar and availability management",
-      "Automated booking confirmations and reminders",
-      "Admin dashboard for managing schedules and staff",
+      "Automated booking confirmations and reminders and SMS",
+      "CRM, forms, and reporting for staff",
     ],
     projectType: "Web application",
     businessValue:
       "Replaced manual back-and-forth scheduling with a self-serve booking flow, reducing missed bookings and freeing up staff time.",
     cta: "I Need a Booking System Like This",
   },
-  altamotors: {
-    id: "altamotors",
-    name: "Altamotors",
-    category: "Motorcycle Financing & Sales",
-    shortDescription:
-      "A digital sales and financing platform built for a motorcycle dealership, connecting inquiries, applications, and records in one system.",
-    tags: ["Sales", "Financing", "Business System"],
-    image: "/images/projects/altamotors.jpg",
-    overview:
-      "Altamotors needed a way to present its motorcycle lineup and financing options online, while giving staff a structured way to manage sales inquiries and financing applications instead of tracking them across chat threads and paper forms.",
-    whatWeBuilt: [
-      "Public-facing website with vehicle and financing information",
-      "Digital financing application flow",
-      "Sales inquiry and lead tracking for staff",
-      "Structured records in place of manual paper trails",
-    ],
-    projectType: "Business website + management system",
-    businessValue:
-      "Gave the dealership a professional online presence while turning ad-hoc sales and financing tracking into a structured, repeatable process.",
-    cta: "I Need a System Like This",
-  },
   kolekta: {
-    id: "kolekta",
-    name: "Kolekta",
-    category: "Loan Management & Billing",
-    shortDescription:
-      "A loan management and billing system built to track accounts, payments, and collections in one place.",
-    tags: ["Loan Management", "Billing", "Business System"],
-    image: "/images/projects/kolekta.jpg",
     overview:
       "Kolekta was built for lending operations that needed a reliable way to track borrower accounts, payment schedules, and collections. This work was previously spread across spreadsheets and manual records.",
     whatWeBuilt: [
-      "Borrower and account record management",
-      "Payment and billing schedule tracking",
-      "Collections status and follow-up tools",
-      "Owner-facing reporting on outstanding accounts",
+      "Invoice generation and manual recurring billing",
+      "Automated email and SMS",
+      "Tax and fee calculation",
+      "Customer portal and payment plans",
     ],
     projectType: "Business management system",
     businessValue:
       "Centralized loan and billing records into one system, making it easier to track what's owed, what's paid, and what needs follow-up.",
     cta: "I Need a Management System Like This",
   },
-  vocalyze: {
-    id: "vocalyze",
-    name: "Vocalyze",
-    category: "Entertainment Website & Digitalization",
-    shortDescription:
-      "A website and digitalization foundation for an entertainment business moving its presence and operations online.",
-    tags: ["Website", "Digitalization", "Entertainment"],
-    image: "/images/projects/vocalyze.jpg",
-    overview:
-      "Vocalyze needed a professional website to establish its presence online, along with a foundation for digitalizing more of its operations over time as the business grows.",
-    whatWeBuilt: [
-      "Professional business website",
-      "Content structure built for an entertainment audience",
-      "Foundation for future booking and engagement features",
-    ],
-    projectType: "Business website",
-    businessValue:
-      "Gave the business a credible online presence and a technical foundation it can build on as its digital needs grow.",
-    futureDevelopment: [
-      "Online booking for events and engagements",
-      "Expanded content and media management",
-      "Deeper digitalization of day-to-day operations",
-    ],
-    cta: "I Need a Website Like This",
-  },
-} as const;
-
-export const PROJECT_ORDER: ProjectId[] = ["setmona", "altamotors", "kolekta", "vocalyze"];
+};
 
 export const SELECTED_WORK = {
   headline: "We've Built It. Now Let's Build Yours.",
-  viewProjectLabel: "View Project",
+  viewWebsiteLabel: "View Website",
+  viewDetailsLabel: "View Details",
+  studioLine: "Currently in the studio:",
 } as const;
 
 // ---------------------------------------------------------------------------

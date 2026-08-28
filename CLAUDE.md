@@ -216,7 +216,7 @@ Copy is authoritative from the source spec. Reproduce exactly unless noted. Stor
 ### 6.2 CredibilityStrip (§12)
 - Headline: **Not Just Websites. Real Business Systems.**
 - Sub per §12.
-- Four labeled projects: SETMONA (Booking & Scheduling), ALTAMOTORS (Motorcycle Financing & Sales), KOLEKTA (Loan Management & Billing), VOCALYZE (Entertainment Website & Digitalization).
+- Four featured projects, pulled live from `content/portfolio.ts` via `CREDIBILITY_STRIP.featuredIds` (`content/site.ts`): `["altamotors", "aurielle", "leanandfit", "vocalyze"]`. The component (`CredibilityStrip.tsx`) looks each id up in `PORTFOLIO_BY_ID` and renders `project.name.toUpperCase()` + `project.category` — no project copy is hard-coded in the component itself.
 - CTA: **Explore Our Work** → scroll to SelectedWork.
 
 ### 6.3 ProblemSection (§13)
@@ -230,14 +230,19 @@ Copy is authoritative from the source spec. Reproduce exactly unless noted. Stor
 - Each block's contextual CTA per source → ContactModal.
 - Reference-project chips where the source lists them (Setmona; Altamotors + Kolekta).
 
-### 6.5 SelectedWork (§15)
+### 6.5 SelectedWork (§15) [amended for the portfolio.ts model]
 - Headline: **We've Built It. Now Let's Build Yours.**
-- Four cards; each card: visual, name, category, short description, capability tags, **View Project** → CaseStudyModal.
+- **Portfolio data now lives in `src/content/portfolio.ts`**, a canonical `PORTFOLIO` array shared verbatim between the main site and `/limitedoffer` (§18) so the two funnels never duplicate or drift on project copy. Each `Project` carries `id`, `name`, `url: string | null`, `category`, `tier: "system" | "site" | "engine"`, `status: "live" | "ongoing"`, `viewable: boolean`, `description`, `tags: string[]`.
+- `SelectedWork.tsx` renders all 8 real projects (Altamotors, Aurielle Paris Atelier, Lean and Fit PH, DM HR Consultancy, Vocalyze Lounge, Aulea Skin Essentials, Setmona Booking Engine, Kolekta Billing Engine). Each card: screenshot (only for `viewable` projects — engines render no image), name, category, description, a tier badge (`TIER_LABEL`, suppressed if the project's own `tags` already contains that label, to avoid a duplicate pill) plus `tags`.
+- **View Website vs. View Details is data-driven, not per-project logic:** `viewable && url` renders an external `<a href={url} target="_blank">` ("View Website"); otherwise a button opens `CaseStudyModal` ("View Details"). Only the two engine-tier projects (Setmona, Kolekta) are non-viewable and use the modal — everything else links straight out to the live site.
+- Below the grid, a "Currently in the studio" line lists `ONGOING` (Ollocal.PH, Macquia's Camera Rental, Pocket G7iii Camera Rental) — real in-progress client work, referenced as social proof only, explicitly marked "(in progress)" and never presented as completed.
+- Real screenshots exist for Altamotors, Vocalyze, Setmona, Kolekta from earlier asset delivery; Aurielle, Lean and Fit PH, DM HR, and Aulea currently ship the same dashed-border SVG placeholder convention as the rest of the site (`scripts/gen-placeholders.mjs` pattern) pending real screenshots — replace them in `public/images/projects/` when supplied, no code change needed.
 
-### 6.6 CaseStudyModal (§16–19)
-- One reusable modal, content keyed by project id from `content/site.ts`.
-- Fields per project: title, category, overview, "What We Built" list, project type, business value, contextual CTA.
-- **Vocalyze** additionally has a "Future Development" list (§19); render it clearly labeled as *planned*, never as existing capability (launch integrity).
+### 6.6 CaseStudyModal (§16–19) [amended for the portfolio.ts model]
+- One reusable modal, but now reachable **only** for the two engine-tier projects (Setmona, Kolekta) — every viewable project links out to its live site instead, per §6.5.
+- Short card data (name/category/tags/description) comes from `PORTFOLIO_BY_ID` in `content/portfolio.ts`. Narrative detail (overview, "What We Built" list, project type, business value, contextual CTA) lives separately in `CASE_STUDY_DETAILS` in `content/site.ts`, keyed by the same project id — kept as its own record because it's modal-only prose that engines need and viewable projects don't.
+- The modal looks up both records by `caseStudyProject` (now typed as a plain `string`, not the old `ProjectId` union) and renders `null` if either is missing — a defensive guard, since only engine ids should ever be passed to `openCaseStudy`.
+- Vocalyze no longer opens this modal (it's viewable and links out directly), so the old Vocalyze-only "Future Development" block has been removed from the component entirely.
 - Modal CTA → ContactModal (chain modals or close-then-open; keep focus management correct).
 
 ### 6.7 PortfolioConversion (§20)
@@ -435,19 +440,34 @@ A standalone e-signature page for the real Free Website Service Agreement contra
 
 ---
 
-## 18. LIMITED OFFER LANDING PAGE (`/limitedoffer`)
+## 18. LIMITED OFFER LANDING PAGE (`/limitedoffer`) [v3, direct-response rewrite]
 
-A paid-social landing page (FB/IG → this page → chat) for the "free website, you pay for the domain" offer. Built from a separate spec than the rest of this file (`CLAUDElimitedoffer.md`, v2 — backend removed from the original spec per client direction), summarized here since it now lives in this repo.
+A paid-social landing page (FB/IG → this page → chat) for the "free website, you pay for the domain" offer. Originally built from a v2 spec (backend removed from the original spec per client direction); **fully rewritten to a v3 spec** (`CLAUDElimitedoffer_2.md`) that turns it into a direct-response page with one explicit job: get the visitor to start a chat. This section documents the v3 state; nothing from v2's structure survives except the qualifier mechanics and the shared brand/contact plumbing.
 
-**Relationship to the main site:** same brand, same `CONTACT` channels, same domain (`altasme.com`), but a deliberately separate funnel — not linked from the homepage Nav/Footer, and the homepage isn't linked from its own nav either (only an "Explore Altaventures →" outbound link in the header/footer, plus a "Digital Growth Plans →" link from the phase-progression section). Route: `src/pages/LimitedOfferPage.tsx`, lazy-loaded in `App.tsx` like `/WSA-free`, so its content and qualifier logic never ship in the homepage bundle.
+**Relationship to the main site:** same brand, same `CONTACT` channels, same domain (`altasme.com`), but a deliberately separate funnel. Route: `src/pages/LimitedOfferPage.tsx`, lazy-loaded in `App.tsx` like `/WSA-free`, so its content and qualifier logic never ship in the homepage bundle.
 
-**Content:** `src/content/offer.ts` is the single source of truth for this route — `OFFER` (what's included/not included), all ten section copy blocks, and `QUALIFIER` (business-type options, years-in-business options, objective options). It imports `PROJECT_ORDER` from `content/site.ts` to reuse the same four real portfolio projects rather than duplicating them; there is no fifth project and the portfolio grid is not padded with placeholders to hit the spec's 6–9 capacity note.
+**No exits, anywhere [v3 hard requirement].** Unlike v2, this page has **zero outbound links away from the funnel**: no "Explore Altaventures" link, no "Digital Growth Plans" link out to the homepage. The header is logo + a qualifier-opening CTA button only (hidden on mobile — `hidden ... sm:inline-flex` — since the sticky mobile CTA already covers that viewport and the full label overflowed a 390px header). The footer has no nav links either, just the logo, tagline, a one-line privacy note, and a copyright line. Every single CTA on the page, including the one inside `GrowthVision` (the "Phase 2" section, replacing v2's `PhaseProgression.tsx`), opens the qualifier via `onOpenQualifier()` — none of them navigate anywhere.
 
-**The qualifier is not a lead form.** `src/components/offer/qualifier/Qualifier.tsx` is a 3-step, fully-skippable, client-only modal (name/business → business type/years → objectives) that collects no contact details and persists nothing — closing it (Escape, backdrop click, or the × button all route through one `handleClose` so none of them can bypass the reset) wipes all answers back to blank, so reopening always starts a fresh session. The 4th "step" is `ChatHandoff.tsx`: three channel buttons where WhatsApp gets a message built by `buildQualifierPrefill()` (`lib/contact.ts`) from whatever was answered, gracefully omitting skipped fields, while Messenger and Viber stay blank per the site-wide rule that only WhatsApp reliably prefills.
+**Section order (13 sections, `LimitedOfferPage.tsx`):** Header → `OfferHero` → `Agitation` → `WhatYouGet` → `OfferPortfolio` (renamed from v2's portfolio component) → `TheOfferPlainly` → `WhyFree` (replaces v2's `OfferWhyAltaventures.tsx`) → `OfferHowItWorks` → `WhoItsFor` → `Scarcity` (new) → `GrowthVision` (replaces v2's `PhaseProgression.tsx`) → `OfferFAQ` → `OfferFinalCTA` → Footer → `StickyMobileOfferCTA`.
 
-**Analytics:** `qualifier_start` fires on the first field interaction (not on modal open — opening and closing without touching anything fires nothing), `qualifier_complete` fires on reaching the handoff step, and the Meta `Lead` event fires only on an actual chat-channel click (`trackLead()` in `lib/analytics.ts`), carrying non-PII qualifier context (business type, years, objectives) but never the name or business name. `initMetaPixel()` no-ops until `META_PIXEL_ID` is set (same pattern as the existing `MEASUREMENT_ID` in the same file) — nothing to configure to build or run the page.
+**Content:** `src/content/offer.ts` is the single source of truth — one exported const per section (`OFFER_HERO`, `AGITATION`, `WHAT_YOU_GET`, `OFFER_PORTFOLIO`, `THE_OFFER_PLAINLY`, `WHY_FREE`, `OFFER_HOW_IT_WORKS`, `WHO_ITS_FOR`, `SCARCITY`, `GROWTH_VISION`, `OFFER_FAQ`, `OFFER_FINAL_CTA`, `QUALIFIER`), plus a shared `PRIMARY_CTA = "CLAIM MY FREE WEBSITE →"` constant every section's CTA button uses (renamed from v2's "GET MY FREE WEBSITE →"). It imports `PORTFOLIO_BY_ID` / `PORTFOLIO` from the canonical `content/portfolio.ts` (§6.5) rather than duplicating project copy — `OFFER_PORTFOLIO.projectIds` is a **hard-coded subset of exactly the 6 viewable projects** (`["dmhr", "vocalyze", "aulea", "altamotors", "aurielle", "leanandfit"]`); Setmona and Kolekta (the two `engine`-tier, non-viewable projects) must never appear there — they're referenced only inside `GROWTH_VISION.phase2ProofLine` as proof of what clients graduate into.
 
-**Known open items (client-provided defaults in place, not blocking):**
+**Direct-response structure, per section:**
+- **Agitation** states the cost of staying Facebook-only before any offer details, then a `turnLine` bridges to relief ("it is fixable... at no cost").
+- **TheOfferPlainly** lists the offer stack plainly and states risk reversal explicitly ("if you are not happy, you walk away, no fee, no pressure").
+- **WhyFree** gives an honest reason the offer exists rather than leaving "why free?" as an unaddressed objection.
+- **WhoItsFor** is a two-column honest qualifier (for-you / not-for-you) — deliberately including reasons *not* to convert, per the spec's instruction to keep it honest so both sides win.
+- **Scarcity** uses soft, non-fabricated framing only: "we cap how many we take each month... the next opening rolls to the following month." **No countdown timer and no specific slot number are rendered anywhere** — there is no confirmed real cap figure yet, and the spec explicitly forbids fake numbers. It lists the real `ONGOING` projects (from `content/portfolio.ts`) as evidence of current capacity, not a synthetic counter.
+- No price appears anywhere on the page except "you only pay for the domain."
+
+**The qualifier is still not a lead form** (unchanged mechanics from v2). `src/components/offer/qualifier/Qualifier.tsx` is a 3-step, fully-skippable, client-only modal (name/business → business type/years → objectives) that collects no contact details and persists nothing — closing it (Escape, backdrop click, or the × button all route through one `handleClose`) wipes all answers back to blank. The 4th "step" is `ChatHandoff.tsx`. The WhatsApp prefill template changed for v3 (`buildQualifierPrefill()` in `lib/contact.ts`): `"Hi Altaventures! I want to claim the free website offer. I'm {name}, I run {businessName}, a {type} business, {years} in business. I'd like my website to help me: {objectives}."` — each clause is omitted gracefully if that field was skipped. Messenger and Viber still open blank, per the site-wide rule that only WhatsApp reliably prefills.
+
+**Analytics:** `qualifier_start` fires on first field interaction, `qualifier_complete` on reaching the handoff step, and the Meta `Lead` event (`trackLead()`) fires only on an actual chat-channel click in `ChatHandoff.tsx`, carrying non-PII qualifier context (business type, years, objectives) but never name or business name. `OfferPortfolio` also fires `portfolio_view` on hover of any project card. `initMetaPixel()` no-ops until `META_PIXEL_ID` is set — nothing to configure to build or run the page.
+
+**Copy rule reminder:** no em dashes anywhere in this page's copy or in any JSX text authored for it — this applies to `content/offer.ts` and to any inline strings written directly in a component, not just client-supplied text. Caught and fixed twice during the v3 build (once in `offer.ts`'s own copy, once in `Scarcity.tsx`'s JSX).
+
+**Known open items (not blocking, do not build speculative code for these):**
+- **Testimonials are deferred.** The v3 spec includes a testimonial slot in the Proof section, but there are no real client quotes yet. Per the site-wide no-fabricated-testimonials guardrail (§16), this slot stays unpopulated until real quotes are supplied — do not invent one to fill the space.
+- **Scarcity has no confirmed real cap number.** The soft "we cap monthly" framing above is the correct permanent state unless the client provides a true, specific monthly capacity figure — at that point the copy can state the real number, but must never revert to a fake one.
 - `META_PIXEL_ID` is blank in `lib/analytics.ts` — set it and confirm the `Lead` custom conversion once provided.
-- The WhatsApp prefill wording in `buildQualifierPrefill()` follows the spec's draft template verbatim; flagged there as tweakable, not final copy.
-- SEO/OG tags for this route are set client-side in `LimitedOfferPage.tsx`'s effect (title, description, OG/Twitter, canonical) since the app is a single-page SPA shell — this works for browsers and JS-capable crawlers, but a crawler that doesn't execute JS (relevant mainly for *organic* link shares, not for paid ad creatives, which don't depend on scraping the destination URL) will still see the homepage's static OG tags from `index.html`. A dedicated OG image for this route hasn't been supplied either; it currently inherits the homepage's `/og/altaventures-og.jpg`. Revisit with static prerendering if organic-share previews for this specific URL matter later.
+- SEO/OG tags for this route are set client-side in `LimitedOfferPage.tsx`'s effect (title, description, OG/Twitter, canonical) since the app is a single-page SPA shell — this works for browsers and JS-capable crawlers, but a crawler that doesn't execute JS will still see the homepage's static OG tags from `index.html`. A dedicated OG image for this route hasn't been supplied either; it currently inherits the homepage's `/og/altaventures-og.jpg`.

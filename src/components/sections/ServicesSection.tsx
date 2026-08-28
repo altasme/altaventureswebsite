@@ -1,4 +1,5 @@
-import { PROJECTS, SERVICES } from "../../content/site";
+import { SERVICES } from "../../content/site";
+import { PORTFOLIO_BY_ID } from "../../content/portfolio";
 import { useModals } from "../../lib/modalContext";
 import { track } from "../../lib/analytics";
 import Section from "../ui/Section";
@@ -46,7 +47,7 @@ export default function ServicesSection() {
               {service.referenceIds.length > 0 && (
                 <div className="mt-5 flex flex-wrap gap-2">
                   {service.referenceIds.map((id) => (
-                    <Tag key={id}>{PROJECTS[id].name}</Tag>
+                    <Tag key={id}>{PORTFOLIO_BY_ID[id].name}</Tag>
                   ))}
                 </div>
               )}

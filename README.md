@@ -39,24 +39,34 @@ hard-codes copy.
 
 ## Known placeholders
 
-Resolved: About copy, logo, favicon, OG image, hero photography, all four
-project screenshots, and Privacy Policy / Terms of Service are real content.
-Domain is live at altasme.com.
+Resolved: About copy, logo, favicon, OG image, hero photography, and
+Privacy Policy / Terms of Service are real content. Domain is live at
+altasme.com. Portfolio data for all 8 real projects lives in
+`src/content/portfolio.ts`, shared by the main site and `/limitedoffer`
+(see `CLAUDE.md` §6.5).
 
 Still pending:
 
 - `TODO(analytics)`: GA4 / Meta Pixel `MEASUREMENT_ID`
   (`src/lib/analytics.ts`)
+- Real screenshots for 4 of the 8 portfolio projects (Aurielle Paris
+  Atelier, Lean and Fit PH, DM HR Consultancy, Aulea Skin Essentials) —
+  currently shipping clearly-labeled placeholder cards in
+  `public/images/projects/`. Altamotors, Vocalyze, Setmona, and Kolekta
+  already have real screenshots.
 - `/WSA-free` email delivery needs `RESEND_API_KEY` and `RESEND_FROM_EMAIL`
   set in Cloudflare Pages before it will actually send anything (see
   Deployment below). The page, PDF fill, and download work without them;
   only the Submit → email step needs them.
-- `/limitedoffer` needs a Meta Pixel ID (`META_PIXEL_ID` in
-  `src/lib/analytics.ts`) before the `Lead` conversion event actually fires
-  anywhere; the page and qualifier work fully without it. Real portfolio
-  screenshots are already wired in (reused from the main site's four
-  projects); a dedicated OG image for this route hasn't been supplied yet
-  (it inherits the homepage's).
+- `/limitedoffer` (now on the v3 direct-response spec, `CLAUDE.md` §18)
+  needs a Meta Pixel ID (`META_PIXEL_ID` in `src/lib/analytics.ts`) before
+  the `Lead` conversion event actually fires anywhere; the page and
+  qualifier work fully without it. Its Proof section reuses the 6 viewable
+  portfolio projects from `content/portfolio.ts`. Testimonials are
+  deferred until real client quotes are supplied, and its Scarcity section
+  uses soft "we cap monthly" framing with no fabricated numbers until a
+  real monthly cap figure is confirmed. A dedicated OG image for this
+  route hasn't been supplied yet (it inherits the homepage's).
 
 To regenerate fallback placeholder assets for a future project, run
 `node scripts/gen-placeholders.mjs` (requires `npm i -D sharp` first).

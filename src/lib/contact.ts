@@ -21,13 +21,13 @@ export const messengerUrl = () => `https://m.me/${CONTACT.messenger.handle}`;
  * or sent anywhere until the visitor taps the WhatsApp channel themselves.
  */
 export function buildQualifierPrefill(answers: QualifierAnswers): string {
-  let message = "Hi Altaventures! I'd like to claim the free website offer.";
+  let message = "Hi Altaventures! I want to claim the free website offer.";
 
   const introParts: string[] = [];
   if (answers.name.trim()) introParts.push(`I'm ${answers.name.trim()}`);
 
   if (answers.businessName.trim() && answers.businessType.trim()) {
-    introParts.push(`I run ${answers.businessName.trim()} — a ${answers.businessType.trim()} business`);
+    introParts.push(`I run ${answers.businessName.trim()}, a ${answers.businessType.trim()} business`);
   } else if (answers.businessName.trim()) {
     introParts.push(`I run ${answers.businessName.trim()}`);
   } else if (answers.businessType.trim()) {

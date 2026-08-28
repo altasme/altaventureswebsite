@@ -1,18 +1,17 @@
-import { WHAT_YOU_GET } from "../../../content/offer";
+import { THE_OFFER_PLAINLY } from "../../../content/offer";
 import { track } from "../../../lib/analytics";
 import Section from "../../ui/Section";
 import CTAButton from "../../ui/CTAButton";
 
-export default function WhatYouGet({ onOpenQualifier }: { onOpenQualifier: () => void }) {
+export default function TheOfferPlainly({ onOpenQualifier }: { onOpenQualifier: () => void }) {
   return (
     <Section tone="alt">
       <h2 className="max-w-2xl text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
-        {WHAT_YOU_GET.headline}
+        {THE_OFFER_PLAINLY.headline}
       </h2>
-      <p className="mt-3 max-w-md text-base text-ink/60">{WHAT_YOU_GET.intro}</p>
 
-      <ul className="mt-8 grid gap-3 sm:grid-cols-2">
-        {WHAT_YOU_GET.items.map((item) => (
+      <ul className="mt-8 space-y-3">
+        {THE_OFFER_PLAINLY.stack.map((item) => (
           <li key={item} className="flex items-start gap-3 rounded-xl bg-white p-4 shadow-sm">
             <svg
               width="18"
@@ -30,17 +29,21 @@ export default function WhatYouGet({ onOpenQualifier }: { onOpenQualifier: () =>
                 strokeLinejoin="round"
               />
             </svg>
-            <span className="text-sm text-ink/80">{item}</span>
+            <span className="text-sm text-ink/80 sm:text-base">{item}</span>
           </li>
         ))}
       </ul>
 
+      <div className="mt-8 rounded-2xl border border-brand-blue/20 bg-brand-blue/5 p-6">
+        <p className="text-base font-medium leading-relaxed text-brand-navy">{THE_OFFER_PLAINLY.riskReversal}</p>
+      </div>
+
       <div className="mt-8">
         <CTAButton
-          label={WHAT_YOU_GET.cta}
-          section="what-you-get"
+          label={THE_OFFER_PLAINLY.cta}
+          section="offer-plainly"
           onClick={() => {
-            track("cta_click", { label: WHAT_YOU_GET.cta, section: "what-you-get" });
+            track("cta_click", { label: THE_OFFER_PLAINLY.cta, section: "offer-plainly" });
             onOpenQualifier();
           }}
         />

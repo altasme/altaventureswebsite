@@ -7,8 +7,10 @@ export default function OfferFinalCTA({ onOpenQualifier }: { onOpenQualifier: ()
   return (
     <Section tone="dark">
       <div className="text-center">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{OFFER_FINAL_CTA.headline}</h2>
-        <p className="mt-3 text-xl font-semibold text-white/90">{OFFER_FINAL_CTA.sub}</p>
+        <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">
+          {OFFER_FINAL_CTA.headline}
+        </h2>
+        <p className="mx-auto mt-4 max-w-xl text-base text-white/75 sm:text-lg">{OFFER_FINAL_CTA.body}</p>
 
         <div className="mt-8 flex justify-center">
           <CTAButton
@@ -18,10 +20,11 @@ export default function OfferFinalCTA({ onOpenQualifier }: { onOpenQualifier: ()
               track("cta_click", { label: OFFER_FINAL_CTA.cta, section: "final-cta" });
               onOpenQualifier();
             }}
+            className="!px-8 !py-4 !text-base sm:!text-lg"
           />
         </div>
 
-        <p className="mt-6 text-sm text-white/50">{OFFER_FINAL_CTA.microcopy}</p>
+        <p className="mt-6 text-sm text-white/50">{OFFER_FINAL_CTA.sub}</p>
       </div>
     </Section>
   );

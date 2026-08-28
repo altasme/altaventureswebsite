@@ -20,7 +20,9 @@ export default function OfferHowItWorks({ onOpenQualifier }: { onOpenQualifier: 
         ))}
       </ol>
 
-      <div className="mt-10">
+      <p className="mt-8 text-sm font-medium text-ink/50">{OFFER_HOW_IT_WORKS.footerLine}</p>
+
+      <div className="mt-6">
         <CTAButton
           label={OFFER_HOW_IT_WORKS.cta}
           section="how-it-works"

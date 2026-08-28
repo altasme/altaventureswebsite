@@ -1,154 +1,139 @@
 // content/offer.ts
-// SINGLE SOURCE OF TRUTH for the /limitedoffer landing page: the offer
-// config, the qualifier, and every section's copy. No component on this
-// route should hard-code copy. Shares BRAND, CONTACT, and PROJECTS with the
-// main site (content/site.ts) rather than duplicating them.
-
-import { BRAND, PROJECT_ORDER } from "./site";
+// SINGLE SOURCE OF TRUTH for the /limitedoffer landing page (v3,
+// direct-response rewrite). No component on this route should hard-code
+// copy. Shares BRAND, CONTACT with the main site (content/site.ts) and
+// portfolio data with content/portfolio.ts rather than duplicating them.
+//
+// This is a direct-response funnel, not a brochure: one goal, one CTA,
+// every button opens the chat qualifier. No pricing anywhere except "you
+// only pay for the domain." Scarcity uses soft framing, not a fabricated
+// number, since no confirmed real monthly cap has been provided.
 
 export const OFFER = {
   freeTierIncludesCustomDomain: true,
-  buildTimeDays: "4–7 days",
-  free: {
-    included: [
-      "Professional website design & development",
-      "Mobile-friendly build",
-      "Website hosting",
-      "SSL security",
-      "Custom domain (you pay only the domain registration)",
-      "Business information & services presentation",
-      "Contact / inquiry CTA",
-      "Altaventures-managed hosting",
-    ],
-    notIncluded: [
-      "Basic SEO",
-      "Business systems / admin panel",
-      "Business email & notifications",
-      "Continuous development / done-for-you updates",
-    ],
-  },
+  buildTimeDays: "4 to 7 days",
 } as const;
+
+export const PRIMARY_CTA = "CLAIM MY FREE WEBSITE →";
 
 export const OFFER_HERO = {
-  eyebrow: BRAND.tagline,
-  headline: "Your Business Deserves a Website.",
-  sub: "We'll Build It For You. Free.",
-  support: `A professional website built around your business, ready in ${OFFER.buildTimeDays}. Not a template, not a mockup: a real website you can start using.`,
-  microcopy: "Professional website creation and development. You only pay for the domain.",
-  cta: "GET MY FREE WEBSITE →",
+  eyebrow: "For Philippine businesses still running on a Facebook page.",
+  headline: "Your Competitors Show Up on Google. You Show Up on Facebook. Let's Fix That. Free.",
+  sub: "Not a template. Not a DIY builder. Not a mockup. A real, custom website our team designs around your business and launches for you, at zero development cost.",
+  cta: PRIMARY_CTA,
   secondaryCta: "See What We've Built",
+  microcopy: "Ready in 4 to 7 days. You only pay for your domain. No plans, no contracts, no catch.",
+  proofStrip: "Real builds for real Philippine businesses: Setmona, Altamotors, Kolekta, Vocalyze.",
 } as const;
 
-export const PROBLEM_OPPORTUNITY = {
-  headline: 'Go From "Facebook Only" to a Real Website',
-  benefits: [
-    "Show up when customers search for you on Google",
-    "Load fast and look professional on any device",
-    "Give customers one clear place to learn about your business",
-    "Build the kind of credibility a Facebook page alone can't offer",
-    "Turn visitors into inquiries with clear calls to action",
+export const AGITATION = {
+  headline: "Right Now, You're Losing Customers You'll Never Hear From.",
+  body: [
+    "When someone hears your business name, they do one thing first: they search for you. If what shows up is a thin Facebook page, an old listing, or nothing at all, they quietly move on. No message. No missed call. Just a customer who chose someone else.",
+    "A Facebook page cannot do a website's job. It buries your info under posts, makes you look like a side hustle instead of a real business, and forces customers to dig for answers before they will trust you with their money.",
+    "Meanwhile, the competitor with a clean, professional website looks like the safe choice, even when your product is better.",
   ],
-  support: "And we're giving you the website build for FREE.",
-  cta: OFFER_HERO.cta,
+  turnLine: "Every day you stay Facebook-only, this keeps happening. The good news: it is fixable in about a week, and the build costs you nothing.",
+  cta: PRIMARY_CTA,
 } as const;
 
 export const WHAT_YOU_GET = {
-  headline: "A Professional Website. Built For Your Business.",
-  sub: "Get your business online first. Build more when you're ready.",
-  cta: OFFER_HERO.cta,
+  headline: "A Website That Does the Selling For You.",
+  intro: "Here is everything we build and hand you, at no development cost:",
+  items: [
+    "Shows up when customers Google your business, so you stop losing them before they find you.",
+    "Loads fast and looks premium on any phone, where most of your customers already are.",
+    "One clear place that answers every question a customer has before they even message.",
+    "An obvious way to contact you, so browsing turns into real conversations.",
+    "Hosting and SSL handled for you: the secure padlock customers look for.",
+    "Custom domain (you pay only the domain registration).",
+    "Built and managed by our team, so you never touch a line of code.",
+  ],
+  cta: PRIMARY_CTA,
 } as const;
 
 export const OFFER_PORTFOLIO = {
-  headline: "See What We've Built",
-  sub: "Real projects for real Philippine businesses. Not templates, not mockups.",
-  projectIds: PROJECT_ORDER,
-  cta: OFFER_HERO.cta,
+  headline: "We Don't Do Templates. We Build the Real Thing.",
+  sub: "Every project below is a live website for a real Philippine business. Click any of them. Not mockups. Not stock. Yours is next.",
+  // Lead with the relatable site tier, then the ceiling (system tier).
+  // Engines (Setmona, Kolekta) have no public URL and are excluded here;
+  // they appear in Growth Vision as Phase 2 proof instead.
+  projectIds: ["dmhr", "vocalyze", "aulea", "altamotors", "aurielle", "leanandfit"],
+  closer: "If we built these for them, picture what we will build for you. Free.",
+  cta: PRIMARY_CTA,
+} as const;
+
+export const THE_OFFER_PLAINLY = {
+  headline: "Here Is the Whole Deal, in Plain Terms.",
+  stack: [
+    "We build your complete, professional website. No development fee.",
+    "We design it around your business, not a template.",
+    "We host it, secure it, and get it live in 4 to 7 days.",
+    "You only pay for your domain. That is the only cost. Nothing hidden, nothing recurring required.",
+    "You do not touch code. You do not manage anything. You do not commit to any plan.",
+  ],
+  riskReversal:
+    "And if we build it and you are not happy, you walk away. No fee, no pressure, no obligation. Worst case, you got a free website and we part as friends.",
+  cta: PRIMARY_CTA,
+} as const;
+
+export const WHY_FREE = {
+  headline: "Wait, Why Would You Do This for Free?",
+  body: [
+    "Fair question. Here is the honest answer.",
+    "Altaventures started when our founder built his first business and found out how expensive and confusing good digital tools were. The free tools were weak. The real ones were priced for big companies.",
+    "So we flipped it. We build your first website for free, do great work, and earn your trust. When your business grows and you are ready for booking systems, customer tools, or a full online operation, we hope we are the team you call. That is the entire catch. The free website is how we start, not a bait and switch.",
+  ],
+  cta: PRIMARY_CTA,
 } as const;
 
 export const OFFER_HOW_IT_WORKS = {
-  headline: `From Idea to Website in ${OFFER.buildTimeDays}`,
-  cta: "Start a Conversation",
+  headline: "You Do Almost Nothing. Here Is the Whole Process.",
+  footerLine: "Total effort on your side: one conversation and a few photos.",
+  cta: PRIMARY_CTA,
   steps: [
-    {
-      number: 1,
-      title: "Tell Us",
-      copy: "Start a quick chat and tell us about your business: what you do, who you serve, and what you want your website to accomplish.",
-    },
-    {
-      number: 2,
-      title: "We Build",
-      copy: "We design and build your website around your business, keeping you in the loop as it comes together.",
-    },
-    {
-      number: 3,
-      title: "We Present",
-      copy: "We walk you through the finished website and make any reasonable adjustments before launch.",
-    },
-    {
-      number: 4,
-      title: "Launch",
-      copy: "Your website goes live on your own domain, ready for real customers.",
-    },
-  ],
-} as const;
-
-export const WHY_ALTAVENTURES_OFFER = {
-  headline: "Technology Should Help Your Business Grow. Not Add More Overhead.",
-  founderStatement: [
-    "Altaventures was born from our founder's experience building his first business and discovering how hard it was to access affordable, genuinely helpful digital tools.",
-    "That's why we build practical websites and business systems, without the unnecessary overhead or complexity that usually comes with them.",
-  ],
-} as const;
-
-export const PHASE_PROGRESSION = {
-  headline: "Your Website Can Grow With Your Business",
-  sub: "Start with a free, professional website. Add more only when your business is ready for it.",
-  noCommitmentLine: "No paid commitment required for your free website.",
-  cta: "EXPLORE DIGITAL GROWTH PLANS →",
-  ctaHref: "https://altasme.com",
-  phases: [
-    {
-      label: "Phase 1",
-      title: "Your Free Website",
-      items: OFFER.free.included.slice(0, 4),
-    },
-    {
-      label: "Phase 2",
-      title: "Business Growth Systems",
-      items: OFFER.free.notIncluded,
-    },
-    {
-      label: "Future",
-      title: "Whatever Your Business Needs Next",
-      items: ["Booking & scheduling systems", "Business management tools", "E-commerce", "Full business digitalization"],
-    },
+    { number: 1, title: "Tell Us", copy: "One quick chat about your business, what you do, and who you serve." },
+    { number: 2, title: "We Build", copy: "We design and build your site. You relax." },
+    { number: 3, title: "We Present", copy: "We walk you through the finished website and adjust what you want." },
+    { number: 4, title: "Launch", copy: "Your site goes live on your own domain, ready for real customers." },
   ],
 } as const;
 
 export const WHO_ITS_FOR = {
-  headline: "Built for Businesses Like Yours.",
-  cards: [
-    {
-      title: "Small Businesses Just Starting Out",
-      copy: "You're ready to look professional online without a big upfront cost.",
-    },
-    {
-      title: "Service-Based Businesses",
-      copy: "Salons, clinics, repair shops: businesses that live or die on trust and first impressions.",
-    },
-    {
-      title: "Rental & Property Businesses",
-      copy: "Showcase what you offer with a website customers can actually browse.",
-    },
-    {
-      title: "Local Shops & Retailers",
-      copy: "Give your regulars and new customers a real place to find you online.",
-    },
-    {
-      title: "Growing Businesses",
-      copy: "Outgrowing Facebook-only? A real website is the next step, and it's free.",
-    },
+  headline: "This Is Built for You If...",
+  forYou: [
+    "You run a real, operating business and you are tired of looking smaller than you are.",
+    "Customers keep asking the same questions your Facebook page cannot answer.",
+    "You want to show up when people search, not hope they scroll past your competitor.",
   ],
+  notForYou: [
+    "You have not started a real business yet and are only testing an idea.",
+    "You want endless free redesigns without ever growing the business.",
+  ],
+  close: "We keep it honest so both of us win.",
+  cta: PRIMARY_CTA,
+} as const;
+
+export const SCARCITY = {
+  headline: "We Can Only Build So Many at Once.",
+  body: "Every free build gets our full attention, so we cap how many we take each month. When this month's slots are full, the next opening rolls to the following month. If your business is ready now, start the conversation now.",
+  studioLabel: "Currently in the studio",
+  studioNote: "(in progress)",
+  cta: PRIMARY_CTA,
+} as const;
+
+export const GROWTH_VISION = {
+  headline: "Your Free Website Is the Start, Not the Ceiling.",
+  sub: "Start free. Add more only when your business is ready.",
+  phases: [
+    { label: "Phase 1", title: "Your Free Website", items: ["Professional site", "Mobile build", "Hosting", "SSL", "Custom domain"] },
+    { label: "Phase 2", title: "Business Growth", items: ["Booking systems", "Admin tools", "Business email", "Continuous development"] },
+    { label: "Future", title: "Whatever's Next", items: ["E-commerce", "Business management tools", "Full digitalization"] },
+  ],
+  phase2ProofLine:
+    "When you are ready, we build the systems your business graduates into: booking and scheduling like our Setmona engine, billing and collections like our Kolekta engine.",
+  noCommitmentLine: "No paid commitment required for your free website.",
+  cta: "Start With My Free Website →",
 } as const;
 
 export const OFFER_FAQ = {
@@ -159,39 +144,40 @@ export const OFFER_FAQ = {
       a: "Yes. We build and launch your website at no development cost. You only pay for your domain registration.",
     },
     {
+      q: "What is the catch?",
+      a: "No catch. We do great work for free to earn the chance to help you as you grow. No contract, no hidden fee, nothing recurring required.",
+    },
+    {
+      q: "Why would you give this away?",
+      a: "A free first website is how we start a relationship. If you grow and want more later, we hope you choose us. If not, the website is still yours.",
+    },
+    {
       q: "Can I use my own domain?",
-      a: "Yes, you can use your own domain — you just cover the domain registration.",
+      a: "Yes. You register the domain (the only cost) and we build everything on it.",
     },
     {
       q: "How long does it take?",
-      a: `Most free websites are built and launched within ${OFFER.buildTimeDays}, once we understand your business.`,
-    },
-    {
-      q: "What's not included in the free website?",
-      a: "Things like advanced SEO, business systems, business email, and ongoing done-for-you updates are Phase 2. Your free website is a real, professional starting point.",
-    },
-    {
-      q: "Do I have to commit to anything else?",
-      a: "No. There's no paid commitment required to get your free website.",
+      a: "Usually 4 to 7 days once you send your details and photos.",
     },
     {
       q: "How do I get started?",
-      a: "Tap the button on this page, answer a few quick questions, and we'll continue the conversation on Messenger, Viber, or WhatsApp.",
+      a: "One quick chat. Tap any button on this page and tell us about your business.",
     },
   ],
 } as const;
 
 export const OFFER_FINAL_CTA = {
-  headline: "Ready To Put Your Business Online?",
-  sub: "Let's build your website. Free.",
-  cta: OFFER_HERO.cta,
-  microcopy: "Your business. Your website. Your next step.",
+  headline: "A Week From Now, You Could Have a Website That Sells For You.",
+  body: "Or you could still be sending customers to a Facebook page and hoping it looks good enough. One quick chat starts the build.",
+  cta: PRIMARY_CTA,
+  sub: "Free build. You only pay for the domain. Ready in 4 to 7 days.",
 } as const;
 
 // ---------------------------------------------------------------------------
-// Qualifier: an interactive engagement step, not a lead form. Captures no
-// contact details and stores nothing; every answer is optional and only
-// used to build the WhatsApp handoff message for this one session.
+// Qualifier: an interactive engagement step, not a lead form. Unchanged from
+// v2. Captures no contact details and stores nothing; every answer is
+// optional and only used to build the WhatsApp handoff message for this one
+// session.
 // ---------------------------------------------------------------------------
 
 export const QUALIFIER = {
@@ -209,7 +195,7 @@ export const QUALIFIER = {
     "Home & Trade Services",
     "Other",
   ],
-  yearsInBusiness: ["Less than 1 year", "1–3 years", "3–5 years", "5+ years"] as const,
+  yearsInBusiness: ["Less than 1 year", "1 to 3 years", "3 to 5 years", "5+ years"] as const,
   objectives: [
     "Get more inquiries",
     "Showcase products or services",
@@ -219,7 +205,7 @@ export const QUALIFIER = {
     "Other",
   ],
   handoff: {
-    headline: "Great — let's finish this on chat.",
+    headline: "Great, let's finish this on chat.",
     sub: "Choose the platform you prefer. WhatsApp opens with a message ready to send; Messenger and Viber open a blank chat.",
   },
 } as const;

@@ -1,23 +1,27 @@
 import { useEffect, useState } from "react";
 import { BRAND } from "../content/site";
-import { initMetaPixel } from "../lib/analytics";
+import { PRIMARY_CTA } from "../content/offer";
+import { initMetaPixel, track } from "../lib/analytics";
 import { useScrollDepth } from "../lib/useScrollDepth";
 
 import OfferHero from "../components/offer/sections/OfferHero";
-import ProblemOpportunity from "../components/offer/sections/ProblemOpportunity";
+import Agitation from "../components/offer/sections/Agitation";
 import WhatYouGet from "../components/offer/sections/WhatYouGet";
 import OfferPortfolio from "../components/offer/sections/OfferPortfolio";
+import TheOfferPlainly from "../components/offer/sections/TheOfferPlainly";
+import WhyFree from "../components/offer/sections/WhyFree";
 import OfferHowItWorks from "../components/offer/sections/OfferHowItWorks";
-import OfferWhyAltaventures from "../components/offer/sections/OfferWhyAltaventures";
-import PhaseProgression from "../components/offer/sections/PhaseProgression";
 import WhoItsFor from "../components/offer/sections/WhoItsFor";
+import Scarcity from "../components/offer/sections/Scarcity";
+import GrowthVision from "../components/offer/sections/GrowthVision";
 import OfferFAQ from "../components/offer/sections/OfferFAQ";
 import OfferFinalCTA from "../components/offer/sections/OfferFinalCTA";
 import Qualifier from "../components/offer/qualifier/Qualifier";
+import StickyMobileOfferCTA from "../components/offer/StickyMobileOfferCTA";
 
 const PAGE_TITLE = "Free Website for Your Business (Philippines) | Altaventures";
 const PAGE_DESCRIPTION =
-  "Get a professional website built for your business, free: you only pay for the domain. Built in 4–7 days for Philippine businesses ready to go online.";
+  "Your competitors show up on Google. You show up on Facebook. We'll build you a real, custom website free: you only pay for the domain. Ready in 4 to 7 days.";
 
 function setMeta(selector: string, attr: string, value: string): (() => void) | void {
   const el = document.querySelector(selector);
@@ -57,30 +61,39 @@ export default function LimitedOfferPage() {
   const closeQualifier = () => setQualifierOpen(false);
 
   return (
-    <div className="min-h-screen bg-paper">
+    <div className="min-h-screen bg-paper pb-16 md:pb-0">
+      {/* No outbound nav on this funnel: logo only, no "Explore Altaventures"
+          link. The header CTA is the same qualifier as every other button
+          on the page. */}
       <header className="border-b border-ink/5 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-6 py-4 lg:px-8">
-          <a href="https://altasme.com" aria-label={`${BRAND.name} home`} className="shrink-0">
+          <span className="shrink-0">
             <img src={BRAND.logo} alt={BRAND.name} width={240} height={30} className="h-6 w-auto sm:h-8" />
-          </a>
-          <a
-            href="https://altasme.com"
-            className="shrink-0 whitespace-nowrap text-xs font-semibold text-brand-navy hover:text-brand-blue sm:text-sm"
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              track("cta_click", { label: PRIMARY_CTA, section: "header" });
+              openQualifier();
+            }}
+            className="hidden shrink-0 whitespace-nowrap rounded-full bg-brand-blue px-5 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#0b57cc] sm:inline-flex"
           >
-            Explore Altaventures &rarr;
-          </a>
+            {PRIMARY_CTA}
+          </button>
         </div>
       </header>
 
       <main>
         <OfferHero onOpenQualifier={openQualifier} />
-        <ProblemOpportunity onOpenQualifier={openQualifier} />
+        <Agitation onOpenQualifier={openQualifier} />
         <WhatYouGet onOpenQualifier={openQualifier} />
         <OfferPortfolio onOpenQualifier={openQualifier} />
+        <TheOfferPlainly onOpenQualifier={openQualifier} />
+        <WhyFree onOpenQualifier={openQualifier} />
         <OfferHowItWorks onOpenQualifier={openQualifier} />
-        <OfferWhyAltaventures onOpenQualifier={openQualifier} />
-        <PhaseProgression />
-        <WhoItsFor />
+        <WhoItsFor onOpenQualifier={openQualifier} />
+        <Scarcity onOpenQualifier={openQualifier} />
+        <GrowthVision onOpenQualifier={openQualifier} />
         <OfferFAQ />
         <OfferFinalCTA onOpenQualifier={openQualifier} />
       </main>
@@ -95,18 +108,13 @@ export default function LimitedOfferPage() {
             No forms. Nothing is collected or stored on this page: every conversation happens on the chat
             platform you choose.
           </p>
-          <a
-            href="https://altasme.com"
-            className="mt-6 inline-block text-sm font-semibold text-white hover:text-[#5fa2ff]"
-          >
-            Explore Altaventures &rarr;
-          </a>
           <p className="mt-6 text-xs text-white/30">
             &copy; {new Date().getFullYear()} {BRAND.legalName}.
           </p>
         </div>
       </footer>
 
+      <StickyMobileOfferCTA onOpenQualifier={openQualifier} />
       <Qualifier open={qualifierOpen} onClose={closeQualifier} />
     </div>
   );
