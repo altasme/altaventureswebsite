@@ -1,4 +1,5 @@
 import { OFFER_HERO } from "../../../content/offer";
+import { useCountUp } from "../../../lib/useCountUp";
 import CTAButton from "../../ui/CTAButton";
 
 function scrollToPortfolio() {
@@ -19,6 +20,24 @@ function Headline() {
       {after}
     </>
   );
+}
+
+type Stat = (typeof OFFER_HERO.stats)[number];
+
+function StatValue({ stat }: { stat: Stat }) {
+  const hasCounter = "countTo" in stat;
+  const count = useCountUp(hasCounter ? stat.countTo : 0);
+
+  if (hasCounter) {
+    return (
+      <p className="text-4xl font-extrabold tracking-tight sm:text-5xl">
+        {count}
+        <span className="ml-2 text-base font-semibold text-white/70">{stat.suffix}</span>
+      </p>
+    );
+  }
+
+  return <p className="text-4xl font-extrabold tracking-tight sm:text-5xl">{stat.value}</p>;
 }
 
 export default function OfferHero({ onOpenQualifier }: { onOpenQualifier: () => void }) {
@@ -50,7 +69,7 @@ export default function OfferHero({ onOpenQualifier }: { onOpenQualifier: () => 
           <div className="divide-y divide-white/20">
             {OFFER_HERO.stats.map((stat) => (
               <div key={stat.label} className="py-5 first:pt-0 last:pb-0">
-                <p className="text-4xl font-extrabold tracking-tight sm:text-5xl">{stat.value}</p>
+                <StatValue stat={stat} />
                 <p className="mt-1 text-sm font-medium text-white/85">{stat.label}</p>
               </div>
             ))}

@@ -57,7 +57,7 @@ export default function CaseStudyModal() {
         <div className="mb-8 aspect-video w-full overflow-hidden rounded-2xl bg-paper-alt">
           <img
             src={`/images/projects/${project.id}.jpg`}
-            alt={`${project.name} dashboard`}
+            alt={project.name}
             width={1200}
             height={750}
             className="h-full w-full object-cover"
