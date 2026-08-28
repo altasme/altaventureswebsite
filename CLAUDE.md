@@ -17,6 +17,7 @@ These override anything in the source spec that conflicts. Where the source `ALT
 
 1. **Single page, not multi-page.** One route (`/`). Nav items are anchor-scroll links, not pages. This overrides source §40 (12-page MVP) and §34's page implication.
    - **Exception, `/WSA-free` [amended]:** a second route hosts the Free Website Service Agreement e-signature flow (§17). It is an operational/legal utility page, not part of the marketing funnel, so it is `noindex`, unlinked from Nav/Footer, and lazy-loaded so it never adds weight to the marketing homepage bundle.
+   - **Exception, `/limitedoffer` [amended]:** a third route hosts a paid-social landing page for the free-website offer (§18). Unlike `/WSA-free`, this one *wants* to be indexed and shared: it's a real marketing surface with its own SEO/OG intent, just a separate funnel from the homepage.
 2. **Case studies are modals, not pages.** "View Project" opens an in-page modal. This overrides source §41's "case-study pages."
 3. **Static frontend, zero backend.** React + Vite + TypeScript + Tailwind. No Supabase, no database, no server. Deployed to Cloudflare Pages.
    - **Exception, `/api/submit-wsa` [amended]:** the WSA-free flow (§17) requires sending email, which a static frontend cannot do. A single Cloudflare Pages Function handles that one endpoint; it holds no database and no session state, so the site remains otherwise backend-free.
@@ -404,7 +405,7 @@ Define as Tailwind theme tokens.
 2. No Website Care pricing or plans on the public site.
 3. No contact form or email capture. Chat channels are the only conversion.
 4. Don't imply Messenger/Viber prefill a message.
-5. Don't reintroduce multi-page routing or case-study pages on the marketing site. Single page + modals is final. The one carved-out exception is `/WSA-free` (§17), an unlinked operational utility page outside the marketing funnel, not a case-study page.
+5. Don't reintroduce multi-page routing or case-study pages on the marketing site. Single page + modals is final. The carved-out exceptions are `/WSA-free` (§17), an unlinked operational utility page outside the marketing funnel, and `/limitedoffer` (§18), a separate paid-social landing page — neither is a case-study page, and neither is linked from the homepage Nav/Footer.
 
 ---
 
@@ -431,3 +432,22 @@ A standalone e-signature page for the real Free Website Service Agreement contra
 **Required Cloudflare Pages environment variables** (set in the dashboard, never committed): `RESEND_API_KEY`, `RESEND_FROM_EMAIL` (must be on a domain verified in Resend — Resend's sandbox sender can only deliver to the account's own email, not to arbitrary client addresses). Optional: `WSA_NOTIFY_EMAIL` (defaults to `altasmeworks@gmail.com`), `CLOUDINARY_CLOUD_NAME` / `CLOUDINARY_API_KEY` / `CLOUDINARY_API_SECRET` (archival upload is skipped entirely if these are absent).
 
 **If the agreement text changes again:** edit `WSA_DOCUMENT` in `src/content/wsa.ts`, re-run `npx tsx scripts/generate-wsa-pdf.ts`, paste the printed coordinates back into `WSA_PDF_FIELD_COORDS` / `WSA_SIGNATURE_BOX`, then `npm run build`. Do not hand-edit the PDF or the coordinates independently of each other — they're only valid as a matched pair produced by the same generator run. `src/lib/wsaPdf.ts` (the runtime overlay used by Download/Submit) reads each field's own `page` index, since the Client Information block and the Signatures block can legitimately land on different pages depending on how long the text is.
+
+---
+
+## 18. LIMITED OFFER LANDING PAGE (`/limitedoffer`)
+
+A paid-social landing page (FB/IG → this page → chat) for the "free website, you pay for the domain" offer. Built from a separate spec than the rest of this file (`CLAUDElimitedoffer.md`, v2 — backend removed from the original spec per client direction), summarized here since it now lives in this repo.
+
+**Relationship to the main site:** same brand, same `CONTACT` channels, same domain (`altasme.com`), but a deliberately separate funnel — not linked from the homepage Nav/Footer, and the homepage isn't linked from its own nav either (only an "Explore Altaventures →" outbound link in the header/footer, plus a "Digital Growth Plans →" link from the phase-progression section). Route: `src/pages/LimitedOfferPage.tsx`, lazy-loaded in `App.tsx` like `/WSA-free`, so its content and qualifier logic never ship in the homepage bundle.
+
+**Content:** `src/content/offer.ts` is the single source of truth for this route — `OFFER` (what's included/not included), all ten section copy blocks, and `QUALIFIER` (business-type options, years-in-business options, objective options). It imports `PROJECT_ORDER` from `content/site.ts` to reuse the same four real portfolio projects rather than duplicating them; there is no fifth project and the portfolio grid is not padded with placeholders to hit the spec's 6–9 capacity note.
+
+**The qualifier is not a lead form.** `src/components/offer/qualifier/Qualifier.tsx` is a 3-step, fully-skippable, client-only modal (name/business → business type/years → objectives) that collects no contact details and persists nothing — closing it (Escape, backdrop click, or the × button all route through one `handleClose` so none of them can bypass the reset) wipes all answers back to blank, so reopening always starts a fresh session. The 4th "step" is `ChatHandoff.tsx`: three channel buttons where WhatsApp gets a message built by `buildQualifierPrefill()` (`lib/contact.ts`) from whatever was answered, gracefully omitting skipped fields, while Messenger and Viber stay blank per the site-wide rule that only WhatsApp reliably prefills.
+
+**Analytics:** `qualifier_start` fires on the first field interaction (not on modal open — opening and closing without touching anything fires nothing), `qualifier_complete` fires on reaching the handoff step, and the Meta `Lead` event fires only on an actual chat-channel click (`trackLead()` in `lib/analytics.ts`), carrying non-PII qualifier context (business type, years, objectives) but never the name or business name. `initMetaPixel()` no-ops until `META_PIXEL_ID` is set (same pattern as the existing `MEASUREMENT_ID` in the same file) — nothing to configure to build or run the page.
+
+**Known open items (client-provided defaults in place, not blocking):**
+- `META_PIXEL_ID` is blank in `lib/analytics.ts` — set it and confirm the `Lead` custom conversion once provided.
+- The WhatsApp prefill wording in `buildQualifierPrefill()` follows the spec's draft template verbatim; flagged there as tweakable, not final copy.
+- SEO/OG tags for this route are set client-side in `LimitedOfferPage.tsx`'s effect (title, description, OG/Twitter, canonical) since the app is a single-page SPA shell — this works for browsers and JS-capable crawlers, but a crawler that doesn't execute JS (relevant mainly for *organic* link shares, not for paid ad creatives, which don't depend on scraping the destination URL) will still see the homepage's static OG tags from `index.html`. A dedicated OG image for this route hasn't been supplied either; it currently inherits the homepage's `/og/altaventures-og.jpg`. Revisit with static prerendering if organic-share previews for this specific URL matter later.

@@ -17,6 +17,9 @@ guardrails, definition of done).
 - One exception: `/WSA-free`, a standalone Free Website Service Agreement
   e-signature page (unlinked from the marketing site), backed by a single
   Cloudflare Pages Function for email delivery. See `CLAUDE.md` §17.
+- A second exception: `/limitedoffer`, a paid-social landing page for the
+  free-website offer, with its own interactive qualifier that hands off to
+  chat. Still fully static, no backend. See `CLAUDE.md` §18.
 
 ## Getting started
 
@@ -48,6 +51,12 @@ Still pending:
   set in Cloudflare Pages before it will actually send anything (see
   Deployment below). The page, PDF fill, and download work without them;
   only the Submit → email step needs them.
+- `/limitedoffer` needs a Meta Pixel ID (`META_PIXEL_ID` in
+  `src/lib/analytics.ts`) before the `Lead` conversion event actually fires
+  anywhere; the page and qualifier work fully without it. Real portfolio
+  screenshots are already wired in (reused from the main site's four
+  projects); a dedicated OG image for this route hasn't been supplied yet
+  (it inherits the homepage's).
 
 To regenerate fallback placeholder assets for a future project, run
 `node scripts/gen-placeholders.mjs` (requires `npm i -D sharp` first).

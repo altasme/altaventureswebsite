@@ -1,0 +1,113 @@
+import { useEffect, useState } from "react";
+import { BRAND } from "../content/site";
+import { initMetaPixel } from "../lib/analytics";
+import { useScrollDepth } from "../lib/useScrollDepth";
+
+import OfferHero from "../components/offer/sections/OfferHero";
+import ProblemOpportunity from "../components/offer/sections/ProblemOpportunity";
+import WhatYouGet from "../components/offer/sections/WhatYouGet";
+import OfferPortfolio from "../components/offer/sections/OfferPortfolio";
+import OfferHowItWorks from "../components/offer/sections/OfferHowItWorks";
+import OfferWhyAltaventures from "../components/offer/sections/OfferWhyAltaventures";
+import PhaseProgression from "../components/offer/sections/PhaseProgression";
+import WhoItsFor from "../components/offer/sections/WhoItsFor";
+import OfferFAQ from "../components/offer/sections/OfferFAQ";
+import OfferFinalCTA from "../components/offer/sections/OfferFinalCTA";
+import Qualifier from "../components/offer/qualifier/Qualifier";
+
+const PAGE_TITLE = "Free Website for Your Business (Philippines) | Altaventures";
+const PAGE_DESCRIPTION =
+  "Get a professional website built for your business, free: you only pay for the domain. Built in 4–7 days for Philippine businesses ready to go online.";
+
+function setMeta(selector: string, attr: string, value: string): (() => void) | void {
+  const el = document.querySelector(selector);
+  if (!el) return;
+  const previous = el.getAttribute(attr) ?? "";
+  el.setAttribute(attr, value);
+  return () => el.setAttribute(attr, previous);
+}
+
+export default function LimitedOfferPage() {
+  const [qualifierOpen, setQualifierOpen] = useState(false);
+  useScrollDepth();
+
+  useEffect(() => {
+    initMetaPixel();
+
+    const previousTitle = document.title;
+    document.title = PAGE_TITLE;
+
+    const restores = [
+      setMeta('meta[name="description"]', "content", PAGE_DESCRIPTION),
+      setMeta('meta[property="og:title"]', "content", PAGE_TITLE),
+      setMeta('meta[property="og:description"]', "content", PAGE_DESCRIPTION),
+      setMeta('meta[property="og:url"]', "content", "https://altasme.com/limitedoffer"),
+      setMeta('meta[name="twitter:title"]', "content", PAGE_TITLE),
+      setMeta('meta[name="twitter:description"]', "content", PAGE_DESCRIPTION),
+      setMeta('link[rel="canonical"]', "href", "https://altasme.com/limitedoffer"),
+    ];
+
+    return () => {
+      document.title = previousTitle;
+      restores.forEach((restore) => restore?.());
+    };
+  }, []);
+
+  const openQualifier = () => setQualifierOpen(true);
+  const closeQualifier = () => setQualifierOpen(false);
+
+  return (
+    <div className="min-h-screen bg-paper">
+      <header className="border-b border-ink/5 bg-white">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-6 py-4 lg:px-8">
+          <a href="https://altasme.com" aria-label={`${BRAND.name} home`} className="shrink-0">
+            <img src={BRAND.logo} alt={BRAND.name} width={240} height={30} className="h-6 w-auto sm:h-8" />
+          </a>
+          <a
+            href="https://altasme.com"
+            className="shrink-0 whitespace-nowrap text-xs font-semibold text-brand-navy hover:text-brand-blue sm:text-sm"
+          >
+            Explore Altaventures &rarr;
+          </a>
+        </div>
+      </header>
+
+      <main>
+        <OfferHero onOpenQualifier={openQualifier} />
+        <ProblemOpportunity onOpenQualifier={openQualifier} />
+        <WhatYouGet onOpenQualifier={openQualifier} />
+        <OfferPortfolio onOpenQualifier={openQualifier} />
+        <OfferHowItWorks onOpenQualifier={openQualifier} />
+        <OfferWhyAltaventures onOpenQualifier={openQualifier} />
+        <PhaseProgression />
+        <WhoItsFor />
+        <OfferFAQ />
+        <OfferFinalCTA onOpenQualifier={openQualifier} />
+      </main>
+
+      <footer className="bg-brand-navy-deep py-12 text-white">
+        <div className="mx-auto max-w-6xl px-6 text-center lg:px-8">
+          <span className="inline-flex rounded-lg bg-white px-3 py-2">
+            <img src={BRAND.logo} alt={BRAND.name} width={240} height={30} className="h-6 w-auto" />
+          </span>
+          <p className="mt-4 text-sm text-white/60">{BRAND.tagline}</p>
+          <p className="mx-auto mt-2 max-w-sm text-xs text-white/40">
+            No forms. Nothing is collected or stored on this page: every conversation happens on the chat
+            platform you choose.
+          </p>
+          <a
+            href="https://altasme.com"
+            className="mt-6 inline-block text-sm font-semibold text-white hover:text-[#5fa2ff]"
+          >
+            Explore Altaventures &rarr;
+          </a>
+          <p className="mt-6 text-xs text-white/30">
+            &copy; {new Date().getFullYear()} {BRAND.legalName}.
+          </p>
+        </div>
+      </footer>
+
+      <Qualifier open={qualifierOpen} onClose={closeQualifier} />
+    </div>
+  );
+}

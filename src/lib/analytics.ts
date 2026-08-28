@@ -11,10 +11,16 @@
 // TODO(analytics): set when GA4 / Meta Pixel IDs are provided by the client.
 const MEASUREMENT_ID = "";
 
+// TODO(pixel): set when the client provides a Meta Pixel ID for /limitedoffer.
+// initMetaPixel() and trackLead() no-op safely until this is set.
+const META_PIXEL_ID = "";
+
 declare global {
   interface Window {
     dataLayer?: Record<string, unknown>[];
     gtag?: (...args: unknown[]) => void;
+    fbq?: ((...args: unknown[]) => void) & { callMethod?: (...args: unknown[]) => void; queue?: unknown[] };
+    _fbq?: unknown;
   }
 }
 
@@ -27,6 +33,11 @@ type AnalyticsEventMap = {
   scroll_depth: { depth: 25 | 50 | 75 | 100 };
   industry_engagement: { industry: string };
   wsa_agreement_submit: Record<string, never>;
+  qualifier_start: Record<string, never>;
+  qualifier_complete: Record<string, never>;
+  portfolio_view: { project: string };
+  phase2_cta_click: Record<string, never>;
+  lead: { channel: "messenger" | "viber" | "whatsapp"; businessType?: string; yearsInBusiness?: string; objectives?: string };
 };
 
 export function track<E extends keyof AnalyticsEventMap>(
@@ -40,5 +51,55 @@ export function track<E extends keyof AnalyticsEventMap>(
 
   if (MEASUREMENT_ID && typeof window.gtag === "function") {
     window.gtag("event", event, params);
+  }
+}
+
+/**
+ * Loads the Meta Pixel base code and fires PageView, but only when
+ * META_PIXEL_ID is configured. Safe to call unconditionally; no-ops (and
+ * loads nothing) otherwise. Call once, near the top of the /limitedoffer
+ * page component.
+ */
+export function initMetaPixel() {
+  if (!META_PIXEL_ID || typeof window === "undefined" || window.fbq) return;
+
+  // Meta's standard Pixel bootstrap snippet, adapted to TypeScript. The
+  // queueing function is inherently dynamic (it grows properties onto
+  // itself), so it's built loosely typed here and only exposed through the
+  // typed `Window.fbq` declaration once fully constructed.
+  type FbqQueue = ((...args: unknown[]) => void) & { callMethod?: (...args: unknown[]) => void; queue: unknown[][] };
+  const queue: unknown[][] = [];
+  const fbq = ((...args: unknown[]) => {
+    if (fbq.callMethod) fbq.callMethod(...args);
+    else fbq.queue.push(args);
+  }) as FbqQueue;
+  fbq.queue = queue;
+
+  window.fbq = fbq;
+  window._fbq = window._fbq ?? fbq;
+
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = "https://connect.facebook.net/en_US/fbevents.js";
+  document.head.appendChild(script);
+
+  window.fbq("init", META_PIXEL_ID);
+  window.fbq("track", "PageView");
+}
+
+/**
+ * Fires the Meta `Lead` conversion on chat-channel handoff (never on
+ * qualifier completion). Only non-PII qualifier context is included; no
+ * name or contact details are ever sent. Also mirrors to dataLayer as
+ * `lead` regardless of whether the Pixel is configured.
+ */
+export function trackLead(params: AnalyticsEventMap["lead"]) {
+  track("lead", params);
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+    window.fbq("track", "Lead", {
+      businessType: params.businessType,
+      yearsInBusiness: params.yearsInBusiness,
+      objectives: params.objectives,
+    });
   }
 }
