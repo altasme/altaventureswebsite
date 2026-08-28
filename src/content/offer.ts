@@ -26,7 +26,6 @@ export const OFFER_HERO = {
 } as const;
 
 export const AGITATION = {
-  eyebrow: "What This Is Costing You",
   headline: "Right Now, You're Losing Customers You'll Never Hear From.",
   body: [
     "When someone hears your business name, they do one thing first: they search for you. If what shows up is a thin Facebook page, an old listing, or nothing at all, they quietly move on. No message. No missed call. Just a customer who chose someone else.",
@@ -38,7 +37,6 @@ export const AGITATION = {
 } as const;
 
 export const WHAT_YOU_GET = {
-  eyebrow: "What You Get",
   headline: "A Website That Does the Selling For You.",
   intro: "Here is everything we build and hand you, at no development cost:",
   items: [
@@ -54,7 +52,6 @@ export const WHAT_YOU_GET = {
 } as const;
 
 export const OFFER_PORTFOLIO = {
-  eyebrow: "Real Work, Real Businesses",
   headline: "We Don't Do Templates. We Build the Real Thing.",
   sub: "Every project below is a live website for a real Philippine business. Click any of them. Not mockups. Not stock. Yours is next.",
   // Lead with the relatable site tier, then the ceiling (system tier).
@@ -66,7 +63,6 @@ export const OFFER_PORTFOLIO = {
 } as const;
 
 export const THE_OFFER_PLAINLY = {
-  eyebrow: "The Offer, Plainly",
   headline: "Here Is the Whole Deal, in Plain Terms.",
   stack: [
     "We build your complete, professional website. No development fee.",
@@ -81,7 +77,6 @@ export const THE_OFFER_PLAINLY = {
 } as const;
 
 export const WHY_FREE = {
-  eyebrow: "Why Free?",
   headline: "Wait, Why Would You Do This for Free?",
   body: [
     "Fair question. Here is the honest answer.",
@@ -92,7 +87,6 @@ export const WHY_FREE = {
 } as const;
 
 export const OFFER_HOW_IT_WORKS = {
-  eyebrow: "How It Works",
   headline: "You Do Almost Nothing. Here Is the Whole Process.",
   footerLine: "Total effort on your side: one conversation and a few photos.",
   cta: PRIMARY_CTA,
@@ -105,7 +99,6 @@ export const OFFER_HOW_IT_WORKS = {
 } as const;
 
 export const WHO_ITS_FOR = {
-  eyebrow: "Is This For You?",
   headline: "This Is Built for You If...",
   forYou: [
     "You run a real, operating business and you are tired of looking smaller than you are.",
@@ -121,7 +114,6 @@ export const WHO_ITS_FOR = {
 } as const;
 
 export const SCARCITY = {
-  eyebrow: "Limited Capacity",
   headline: "We Can Only Build So Many at Once.",
   body: "Every free build gets our full attention, so we cap how many we take each month. When this month's slots are full, the next opening rolls to the following month. If your business is ready now, start the conversation now.",
   studioLabel: "Currently in the studio",
@@ -130,7 +122,6 @@ export const SCARCITY = {
 } as const;
 
 export const GROWTH_VISION = {
-  eyebrow: "Beyond the Free Website",
   headline: "Your Free Website Is the Start, Not the Ceiling.",
   sub: "Start free. Add more only when your business is ready.",
   phases: [
@@ -145,7 +136,6 @@ export const GROWTH_VISION = {
 } as const;
 
 export const OFFER_FAQ = {
-  eyebrow: "FAQ",
   headline: "Frequently Asked Questions",
   items: [
     {
@@ -176,7 +166,6 @@ export const OFFER_FAQ = {
 } as const;
 
 export const OFFER_FINAL_CTA = {
-  eyebrow: "Last Step",
   headline: "A Week From Now, You Could Have a Website That Sells For You.",
   body: "Or you could still be sending customers to a Facebook page and hoping it looks good enough. One quick chat starts the build.",
   cta: PRIMARY_CTA,

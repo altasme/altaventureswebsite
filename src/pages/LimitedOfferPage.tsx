@@ -3,7 +3,7 @@ import { BRAND } from "../content/site";
 import { PRIMARY_CTA } from "../content/offer";
 import { initMetaPixel } from "../lib/analytics";
 import { useScrollDepth } from "../lib/useScrollDepth";
-import OfferCTAButton from "../components/offer/ui/OfferCTAButton";
+import CTAButton from "../components/ui/CTAButton";
 
 import OfferHero from "../components/offer/sections/OfferHero";
 import Agitation from "../components/offer/sections/Agitation";
@@ -62,16 +62,16 @@ export default function LimitedOfferPage() {
   const closeQualifier = () => setQualifierOpen(false);
 
   return (
-    <div className="min-h-screen bg-brand-navy-deep pb-16 md:pb-0">
+    <div className="min-h-screen bg-paper pb-16 md:pb-0">
       {/* No outbound nav on this funnel: logo only, no "Explore Altaventures"
           link. The header CTA is the same qualifier as every other button
           on the page. */}
-      <header className="border-b border-white/10 bg-brand-navy-deep">
+      <header className="border-b border-ink/5 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-6 py-4 lg:px-8">
-          <span className="inline-flex shrink-0 rounded-lg bg-white px-2.5 py-1.5">
-            <img src={BRAND.logo} alt={BRAND.name} width={240} height={30} className="h-6 w-auto sm:h-7" />
+          <span className="shrink-0">
+            <img src={BRAND.logo} alt={BRAND.name} width={240} height={30} className="h-6 w-auto sm:h-8" />
           </span>
-          <OfferCTAButton
+          <CTAButton
             label={PRIMARY_CTA}
             section="header"
             onClick={openQualifier}
