@@ -1,18 +1,21 @@
 import { THE_OFFER_PLAINLY } from "../../../content/offer";
 import { track } from "../../../lib/analytics";
-import Section from "../../ui/Section";
-import CTAButton from "../../ui/CTAButton";
+import OfferSection from "../ui/OfferSection";
+import Eyebrow from "../ui/Eyebrow";
+import OfferCTAButton from "../ui/OfferCTAButton";
 
 export default function TheOfferPlainly({ onOpenQualifier }: { onOpenQualifier: () => void }) {
   return (
-    <Section tone="alt">
-      <h2 className="max-w-2xl text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
-        {THE_OFFER_PLAINLY.headline}
-      </h2>
+    <OfferSection shade="deep">
+      <Eyebrow>{THE_OFFER_PLAINLY.eyebrow}</Eyebrow>
+      <h2 className="max-w-2xl text-3xl font-extrabold tracking-tight sm:text-4xl">{THE_OFFER_PLAINLY.headline}</h2>
 
       <ul className="mt-8 space-y-3">
         {THE_OFFER_PLAINLY.stack.map((item) => (
-          <li key={item} className="flex items-start gap-3 rounded-xl bg-white p-4 shadow-sm">
+          <li
+            key={item}
+            className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.04] p-4"
+          >
             <svg
               width="18"
               height="18"
@@ -29,17 +32,17 @@ export default function TheOfferPlainly({ onOpenQualifier }: { onOpenQualifier: 
                 strokeLinejoin="round"
               />
             </svg>
-            <span className="text-sm text-ink/80 sm:text-base">{item}</span>
+            <span className="text-sm text-white/80 sm:text-base">{item}</span>
           </li>
         ))}
       </ul>
 
-      <div className="mt-8 rounded-2xl border border-brand-blue/20 bg-brand-blue/5 p-6">
-        <p className="text-base font-medium leading-relaxed text-brand-navy">{THE_OFFER_PLAINLY.riskReversal}</p>
+      <div className="mt-8 rounded-2xl border border-brand-blue/30 bg-brand-blue/10 p-6">
+        <p className="text-base font-medium leading-relaxed text-white">{THE_OFFER_PLAINLY.riskReversal}</p>
       </div>
 
       <div className="mt-8">
-        <CTAButton
+        <OfferCTAButton
           label={THE_OFFER_PLAINLY.cta}
           section="offer-plainly"
           onClick={() => {
@@ -48,6 +51,6 @@ export default function TheOfferPlainly({ onOpenQualifier }: { onOpenQualifier: 
           }}
         />
       </div>
-    </Section>
+    </OfferSection>
   );
 }

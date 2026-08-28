@@ -1,19 +1,23 @@
 import { OFFER_FINAL_CTA } from "../../../content/offer";
 import { track } from "../../../lib/analytics";
-import Section from "../../ui/Section";
-import CTAButton from "../../ui/CTAButton";
+import OfferSection from "../ui/OfferSection";
+import Eyebrow from "../ui/Eyebrow";
+import OfferCTAButton from "../ui/OfferCTAButton";
 
 export default function OfferFinalCTA({ onOpenQualifier }: { onOpenQualifier: () => void }) {
   return (
-    <Section tone="dark">
+    <OfferSection shade="navy">
       <div className="text-center">
-        <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">
+        <div className="flex justify-center">
+          <Eyebrow>{OFFER_FINAL_CTA.eyebrow}</Eyebrow>
+        </div>
+        <h2 className="mx-auto max-w-2xl text-3xl font-extrabold tracking-tight sm:text-4xl">
           {OFFER_FINAL_CTA.headline}
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-base text-white/75 sm:text-lg">{OFFER_FINAL_CTA.body}</p>
 
         <div className="mt-8 flex justify-center">
-          <CTAButton
+          <OfferCTAButton
             label={OFFER_FINAL_CTA.cta}
             section="final-cta"
             onClick={() => {
@@ -26,6 +30,6 @@ export default function OfferFinalCTA({ onOpenQualifier }: { onOpenQualifier: ()
 
         <p className="mt-6 text-sm text-white/50">{OFFER_FINAL_CTA.sub}</p>
       </div>
-    </Section>
+    </OfferSection>
   );
 }

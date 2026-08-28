@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { OFFER_FAQ } from "../../../content/offer";
-import Section from "../../ui/Section";
+import OfferSection from "../ui/OfferSection";
+import Eyebrow from "../ui/Eyebrow";
 
 export default function OfferFAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <Section tone="light">
-      <h2 className="max-w-2xl text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
-        {OFFER_FAQ.headline}
-      </h2>
+    <OfferSection shade="deep">
+      <Eyebrow>{OFFER_FAQ.eyebrow}</Eyebrow>
+      <h2 className="max-w-2xl text-3xl font-extrabold tracking-tight sm:text-4xl">{OFFER_FAQ.headline}</h2>
 
-      <div className="mt-10 max-w-prose divide-y divide-ink/8 border-y border-ink/8">
+      <div className="mt-10 max-w-prose divide-y divide-white/10 border-y border-white/10">
         {OFFER_FAQ.items.map((item, i) => {
           const isOpen = openIndex === i;
           const panelId = `offer-faq-panel-${i}`;
@@ -28,7 +28,7 @@ export default function OfferFAQ() {
                   onClick={() => setOpenIndex(isOpen ? null : i)}
                   className="flex w-full items-center justify-between gap-4 py-5 text-left"
                 >
-                  <span className="text-base font-semibold text-ink sm:text-lg">{item.q}</span>
+                  <span className="text-base font-semibold text-white sm:text-lg">{item.q}</span>
                   <svg
                     width="20"
                     height="20"
@@ -42,12 +42,12 @@ export default function OfferFAQ() {
                 </button>
               </h3>
               <div id={panelId} role="region" aria-labelledby={buttonId} hidden={!isOpen} className="pb-5">
-                <p className="text-sm leading-relaxed text-ink/65 sm:text-base">{item.a}</p>
+                <p className="text-sm leading-relaxed text-white/65 sm:text-base">{item.a}</p>
               </div>
             </div>
           );
         })}
       </div>
-    </Section>
+    </OfferSection>
   );
 }
