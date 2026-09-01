@@ -114,6 +114,30 @@ export const PORTFOLIO: Project[] = [
       "An in-house billing and collections system: invoice generation, automated email and SMS, manual recurring billing, tax and fee calculation, customer portal, and payment plans.",
     tags: ["Billing", "Collections", "Portal"],
   },
+  {
+    id: "pocketg7iii",
+    name: "Pocket G7iii Camera Rental",
+    url: "https://pocketg7iii.altasme.com",
+    category: "Local Camera Rental Website",
+    tier: "site",
+    status: "live",
+    viewable: true,
+    description:
+      "A landing page for a local camera rental business based in Puerto Princesa, Palawan, subdomained to ours in support of youth entrepreneurship. Booking page and system development in future talks.",
+    tags: ["Website", "Local", "Youth Entrepreneurship"],
+  },
+  {
+    id: "macquias",
+    name: "Macquia's Camera Rental",
+    url: "https://macquias.altasme.com",
+    category: "Local Camera Rental Website",
+    tier: "site",
+    status: "live",
+    viewable: true,
+    description:
+      "A landing page for a local camera rental business based in Tarlac City, subdomained to ours in support of youth entrepreneurship.",
+    tags: ["Website", "Local", "Youth Entrepreneurship"],
+  },
 ];
 
 export const PORTFOLIO_BY_ID: Record<string, Project> = Object.fromEntries(
@@ -130,13 +154,33 @@ export const ONGOING = [
     note: "A local farmers market initiative and event organizer across Metro Manila malls.",
   },
   {
-    id: "macquia",
-    name: "Macquia's Camera Rental",
-    note: "A local camera rental service in Tarlac.",
+    id: "amani",
+    name: "Amani Massage and Wellness Spa",
+    note: "A massage and wellness spa.",
   },
   {
-    id: "pocketg7iii",
-    name: "Pocket G7iii Camera Rental",
-    note: "A local camera rental service in Palawan.",
+    id: "argo",
+    name: "ARGO Customs Brokerage",
+    note: "A customs brokerage service.",
+  },
+  {
+    id: "ascend-volleyball",
+    name: "Ascend Volleyball Academy",
+    note: "A volleyball training academy.",
+  },
+  {
+    id: "onyx-clouds",
+    name: "ONYX CLOUDS PREMIUM VAPE CO.",
+    note: "A premium vape brand.",
+  },
+  {
+    id: "camsnaps",
+    name: "Camsnaps Camera Rental",
+    note: "A camera rental service.",
+  },
+  {
+    id: "firsthand-travel",
+    name: "FirstHand Travel and Tours",
+    note: "A travel and tours agency.",
   },
 ] as const;

@@ -41,7 +41,7 @@ hard-codes copy.
 
 Resolved: About copy, logo, favicon, OG image, hero photography, and
 Privacy Policy / Terms of Service are real content. Domain is live at
-altasme.com. Portfolio data for all 8 real projects lives in
+altasme.com. Portfolio data for all 10 real projects lives in
 `src/content/portfolio.ts`, shared by the main site and `/limitedoffer`
 (see `CLAUDE.md` §6.5). All 8 project images in `public/images/projects/`
 are real client-supplied assets (Setmona and Kolekta ship as branded logo

@@ -25,7 +25,7 @@ export const OFFER_HERO = {
   secondaryCta: "SEE WHAT WE'VE BUILT",
   microcopy: "Ready in 4 to 7 days. You only pay for your domain. No plans. No contracts.",
   stats: [
-    { kind: "counter", countTo: 8, suffix: " and counting", label: "Real businesses built" },
+    { kind: "counter", countTo: 10, suffix: " and counting", label: "Real businesses built" },
     { kind: "range", from: 4, to: 7, label: "Days to launch" },
     { kind: "static", value: "₱0", label: "Development cost" },
   ],
