@@ -19,13 +19,6 @@
 }
 
 @layer utilities {
-  .brand-gradient-text {
-    background: linear-gradient(135deg, #02256f 0%, #0d68ef 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
   .safe-bottom {
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }

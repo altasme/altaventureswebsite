@@ -10,7 +10,7 @@ export default function FinalCTA() {
     <Section tone="dark" className="text-center">
       <div className="mx-auto max-w-2xl">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{FINAL_CTA.headline}</h2>
-        <p className="mt-4 text-lg text-white/70">{FINAL_CTA.sub}</p>
+        <p className="mx-auto mt-4 max-w-sm text-lg text-white/70">{FINAL_CTA.sub}</p>
         <div className="mt-8 flex justify-center">
           <CTAButton
             label={FINAL_CTA.cta}

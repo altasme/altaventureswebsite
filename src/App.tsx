@@ -1,3 +1,5 @@
+import { lazy, Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
 import { ModalProvider } from "./lib/modalContext";
 import { useScrollDepth } from "./lib/useScrollDepth";
 
@@ -22,6 +24,9 @@ import About from "./components/sections/About";
 import ContactModal from "./components/modals/ContactModal";
 import CaseStudyModal from "./components/modals/CaseStudyModal";
 import LegalModal from "./components/modals/LegalModal";
+
+const WsaFreePage = lazy(() => import("./pages/WsaFreePage"));
+const LimitedOfferPage = lazy(() => import("./pages/LimitedOfferPage"));
 
 function PageContent() {
   useScrollDepth();
@@ -56,8 +61,31 @@ function PageContent() {
 
 export default function App() {
   return (
-    <ModalProvider>
-      <PageContent />
-    </ModalProvider>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <ModalProvider>
+            <PageContent />
+          </ModalProvider>
+        }
+      />
+      <Route
+        path="/WSA-free"
+        element={
+          <Suspense fallback={null}>
+            <WsaFreePage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/limitedoffer"
+        element={
+          <Suspense fallback={null}>
+            <LimitedOfferPage />
+          </Suspense>
+        }
+      />
+    </Routes>
   );
 }

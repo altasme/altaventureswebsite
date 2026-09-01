@@ -1,6 +1,27 @@
 import { useModals } from "../../lib/modalContext";
 import { useModalA11y } from "../../lib/useModalA11y";
-import { LEGAL } from "../../content/site";
+import { LEGAL, type LegalBlock } from "../../content/site";
+
+function Block({ block }: { block: LegalBlock }) {
+  switch (block.kind) {
+    case "sh":
+      return <h4 className="mt-4 text-sm font-semibold text-ink">{block.text}</h4>;
+    case "ul":
+      return (
+        <ul className="space-y-1.5">
+          {block.items.map((item) => (
+            <li key={item} className="flex gap-2 text-sm leading-relaxed text-ink/75">
+              <span className="mt-0.5 text-brand-blue">•</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      );
+    case "p":
+    default:
+      return <p className="text-sm leading-relaxed text-ink/75">{block.text}</p>;
+  }
+}
 
 export default function LegalModal() {
   const { legalDoc, closeLegal } = useModals();
@@ -23,9 +44,9 @@ export default function LegalModal() {
         role="dialog"
         aria-modal="true"
         aria-labelledby="legal-modal-heading"
-        className="max-h-[85vh] w-full max-w-xl overflow-y-auto rounded-t-3xl bg-white p-6 shadow-2xl sm:rounded-3xl sm:p-8"
+        className="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-t-3xl bg-white p-6 shadow-2xl sm:rounded-3xl sm:p-8"
       >
-        <div className="mb-4 flex items-start justify-between gap-4">
+        <div className="mb-1 flex items-start justify-between gap-4">
           <h2 id="legal-modal-heading" className="text-xl font-bold text-brand-navy sm:text-2xl">
             {doc.title}
           </h2>
@@ -46,15 +67,26 @@ export default function LegalModal() {
           </button>
         </div>
 
-        <p className="mb-5 inline-block rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
-          TODO(legal): placeholder text pending final legal review
+        <p className="mb-6 text-xs text-ink/40">
+          Effective {doc.effectiveDate} · Last updated {doc.lastUpdated}
         </p>
 
-        <div className="space-y-4">
-          {doc.body.map((paragraph, i) => (
-            <p key={i} className="text-sm leading-relaxed text-ink/75">
-              {paragraph}
-            </p>
+        <div className="space-y-3">
+          {doc.intro.map((block, i) => (
+            <Block key={i} block={block} />
+          ))}
+        </div>
+
+        <div className="mt-8 space-y-8">
+          {doc.sections.map((section) => (
+            <section key={section.heading}>
+              <h3 className="mb-3 text-base font-bold text-brand-navy">{section.heading}</h3>
+              <div className="space-y-3">
+                {section.blocks.map((block, i) => (
+                  <Block key={i} block={block} />
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       </div>

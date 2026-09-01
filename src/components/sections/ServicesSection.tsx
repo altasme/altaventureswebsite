@@ -1,4 +1,5 @@
-import { PROJECTS, SERVICES } from "../../content/site";
+import { SERVICES } from "../../content/site";
+import { PORTFOLIO_BY_ID } from "../../content/portfolio";
 import { useModals } from "../../lib/modalContext";
 import { track } from "../../lib/analytics";
 import Section from "../ui/Section";
@@ -16,9 +17,9 @@ export default function ServicesSection() {
 
       <div className="mt-10 grid gap-6 lg:grid-cols-2">
         {SERVICES.items.map((service, i) => {
-          // An odd item count leaves the last card alone in the grid — span
-          // it full width and lay its bullets out in two columns so it reads
-          // as a deliberate closing card, not an orphaned leftover.
+          // An odd item count leaves the last card alone in the grid, so it
+          // spans full width and lays its bullets out in two columns, reading
+          // as a deliberate closing card rather than an orphaned leftover.
           const isFeatured = i === SERVICES.items.length - 1 && SERVICES.items.length % 2 === 1;
 
           return (
@@ -27,7 +28,7 @@ export default function ServicesSection() {
               onMouseEnter={() => track("service_interaction", { service: service.id })}
               className={`flex flex-col rounded-2xl border border-ink/8 p-7 ${isFeatured ? "lg:col-span-2" : ""}`}
             >
-              <p className="text-xs font-semibold uppercase tracking-wider text-brand-blue">
+              <p className="text-xs font-semibold tracking-wide text-brand-blue">
                 {service.name}
               </p>
               <h3 className="mt-2 text-xl font-bold text-ink">{service.outcome}</h3>
@@ -46,7 +47,7 @@ export default function ServicesSection() {
               {service.referenceIds.length > 0 && (
                 <div className="mt-5 flex flex-wrap gap-2">
                   {service.referenceIds.map((id) => (
-                    <Tag key={id}>{PROJECTS[id].name}</Tag>
+                    <Tag key={id}>{PORTFOLIO_BY_ID[id].name}</Tag>
                   ))}
                 </div>
               )}

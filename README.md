@@ -1,4 +1,4 @@
-# Altaventures — Marketing Website
+# Altaventures: Marketing Website
 
 Single-page, conversion-focused lead-generation site for Altaventures Business
 Development Services. Static React + Vite + TypeScript + Tailwind build,
@@ -12,8 +12,14 @@ guardrails, definition of done).
 
 - React 18 + Vite + TypeScript
 - Tailwind CSS
-- No backend, no database, no auth, no forms — all CTAs open a
-  Messenger/Viber/WhatsApp channel picker
+- No backend, no database, no auth, no forms on the marketing site. All CTAs
+  open a Messenger/Viber/WhatsApp channel picker
+- One exception: `/WSA-free`, a standalone Free Website Service Agreement
+  e-signature page (unlinked from the marketing site), backed by a single
+  Cloudflare Pages Function for email delivery. See `CLAUDE.md` §17.
+- A second exception: `/limitedoffer`, a paid-social landing page for the
+  free-website offer, with its own interactive qualifier that hands off to
+  chat. Still fully static, no backend. See `CLAUDE.md` §18.
 
 ## Getting started
 
@@ -28,22 +34,66 @@ npm run lint      # oxlint
 ## Content
 
 All copy, project case studies, FAQ, industries, and contact configuration
-live in `src/content/site.ts` — the single source of truth. No component
+live in `src/content/site.ts`, the single source of truth. No component
 hard-codes copy.
 
-## Known placeholders (pending real assets from the client)
+## Known placeholders
 
-- `TODO(about)` — About section copy (`src/content/site.ts` → `ABOUT`)
-- `TODO(asset)` — real logo, hero visual, and project screenshots
-  (`public/images/brand/`, `public/images/projects/`); regenerate placeholders
-  with `node scripts/gen-placeholders.mjs` (requires `npm i -D sharp` first)
-- `TODO(legal)` — Privacy Policy / Terms of Service boilerplate
-  (`src/content/site.ts` → `LEGAL`)
-- `TODO(analytics)` — GA4 / Meta Pixel `MEASUREMENT_ID`
+Resolved: About copy, logo, favicon, OG image, hero photography, and
+Privacy Policy / Terms of Service are real content. Domain is live at
+altasme.com. Portfolio data for all 10 real projects lives in
+`src/content/portfolio.ts`, shared by the main site and `/limitedoffer`
+(see `CLAUDE.md` §6.5). All 8 project images in `public/images/projects/`
+are real client-supplied assets (Setmona and Kolekta ship as branded logo
+cards rather than dashboard screenshots, since those two are internal
+engines with no public URL to screenshot); no placeholder cards remain.
+`/limitedoffer`'s Agitation section background
+(`public/images/offer/agitation.jpg`) is also a real supplied photo.
+
+Still pending:
+
+- `TODO(analytics)`: GA4 / Meta Pixel `MEASUREMENT_ID`
   (`src/lib/analytics.ts`)
-- `TODO(domain)` — canonical/OG URLs in `index.html` use a placeholder domain
+- `/WSA-free` email delivery needs `RESEND_API_KEY` and `RESEND_FROM_EMAIL`
+  set in Cloudflare Pages before it will actually send anything (see
+  Deployment below). The page, PDF fill, and download work without them;
+  only the Submit → email step needs them.
+- `/limitedoffer` (now on the v3 direct-response spec, `CLAUDE.md` §18)
+  needs a Meta Pixel ID (`META_PIXEL_ID` in `src/lib/analytics.ts`) before
+  the `Lead` conversion event actually fires anywhere; the page and
+  qualifier work fully without it. Its Proof section reuses the 6 viewable
+  portfolio projects from `content/portfolio.ts`. Testimonials are
+  deferred until real client quotes are supplied, and its Scarcity section
+  uses soft "we cap monthly" framing with no fabricated numbers until a
+  real monthly cap figure is confirmed. A dedicated OG image for this
+  route hasn't been supplied yet (it inherits the homepage's).
+
+To regenerate fallback placeholder assets for a future project, run
+`node scripts/gen-placeholders.mjs` (requires `npm i -D sharp` first).
 
 ## Deployment
 
 Cloudflare Pages: connect this repo, build command `npm run build`, output
-directory `dist`. No runtime environment variables required.
+directory `dist`. No runtime environment variables required for the marketing
+site itself.
+
+### `/WSA-free` environment variables
+
+Set these in the Cloudflare Pages dashboard (Settings → Environment variables)
+for `functions/api/submit-wsa.ts` to work. Never commit them.
+
+Required:
+
+- `RESEND_API_KEY`
+- `RESEND_FROM_EMAIL` — must be on a domain verified in Resend. Resend's
+  sandbox sender can only deliver to the account's own email, not to
+  arbitrary client addresses, so this needs a verified sending domain
+  (e.g. `Altaventures <agreements@altasme.com>`).
+
+Optional:
+
+- `WSA_NOTIFY_EMAIL` — internal notification recipient, defaults to
+  `altasmeworks@gmail.com`.
+- `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` — if
+  all three are set, the signed PDF is also archived to Cloudinary. If any
+  are missing, archiving is skipped entirely; it never blocks email delivery.

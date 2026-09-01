@@ -4,13 +4,14 @@ interface SectionProps {
   id?: string;
   children: ReactNode;
   className?: string;
-  tone?: "light" | "alt" | "dark";
+  tone?: "light" | "alt" | "dark" | "brand";
 }
 
 const TONE_CLASSES: Record<NonNullable<SectionProps["tone"]>, string> = {
   light: "bg-paper text-ink",
   alt: "bg-paper-alt text-ink",
   dark: "bg-brand-navy-deep text-white",
+  brand: "bg-brand-blue text-white",
 };
 
 export default function Section({ id, children, className = "", tone = "light" }: SectionProps) {

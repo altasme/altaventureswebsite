@@ -16,13 +16,15 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-6 py-14 lg:px-8">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            {/* TODO(asset): generated wordmark placeholder; logo is on a white background, so it's rendered in a light chip for legibility on this dark canvas */}
+            {/* Logo's navy wordmark doesn't read on this dark canvas (checked
+                against the supplied reversed variant too), so it's rendered
+                in a light chip for legibility instead. */}
             <span className="inline-flex rounded-lg bg-white px-3 py-2">
-              <img src={BRAND.logo} alt={BRAND.name} width={160} height={40} className="h-7 w-auto" />
+              <img src={BRAND.logo} alt={BRAND.name} width={240} height={30} className="h-6 w-auto" />
             </span>
             <p className="mt-3 max-w-sm text-sm text-white/60">{FOOTER.tagline}</p>
             <p className="mt-4 text-xs text-white/40">{FOOTER.legalName}</p>
-            <p className="mt-1 text-xs text-white/40">{FOOTER.supportingStatement}</p>
+            <p className="mt-1 max-w-sm text-xs text-white/40">{FOOTER.supportingStatement}</p>
           </div>
 
           <div>
