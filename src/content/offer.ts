@@ -60,10 +60,20 @@ export const WHAT_YOU_GET = {
 export const OFFER_PORTFOLIO = {
   headline: "We Don't Do Templates. We Build the Real Thing.",
   sub: "Every project below is a live website for a real Philippine business. Click any of them. Not mockups. Not stock. Yours is next.",
-  // Lead with the relatable site tier, then the ceiling (system tier).
+  // Every viewable project, for a full "wall of portfolio" impression.
   // Engines (Setmona, Kolekta) have no public URL and are excluded here;
-  // they appear in Growth Vision as Phase 2 proof instead.
-  projectIds: ["altamotors", "vocalyze", "dmhr", "aulea", "aurielle", "leanandfit"],
+  // they appear in Growth Vision as Phase 2 proof instead. First id is the
+  // featured, larger card in OfferPortfolio.tsx.
+  projectIds: [
+    "altamotors",
+    "vocalyze",
+    "dmhr",
+    "aulea",
+    "aurielle",
+    "leanandfit",
+    "pocketg7iii",
+    "macquias",
+  ],
   closer: "If we built these for them, picture what we will build for you. Free.",
   cta: PRIMARY_CTA,
 } as const;
