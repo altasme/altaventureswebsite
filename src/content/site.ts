@@ -410,6 +410,7 @@ export const FOOTER = {
   legalLinks: [
     { label: "Privacy Policy", id: "privacy" as const },
     { label: "Terms of Service", id: "terms" as const },
+    { label: "Refund Policy", id: "refund" as const },
   ],
 } as const;
 
@@ -443,6 +444,13 @@ export const LEGAL: {
     sections: LegalSection[];
   };
   terms: {
+    title: string;
+    effectiveDate: string;
+    lastUpdated: string;
+    intro: LegalBlock[];
+    sections: LegalSection[];
+  };
+  refund: {
     title: string;
     effectiveDate: string;
     lastUpdated: string;
@@ -1500,6 +1508,72 @@ export const LEGAL: {
         heading: "31. Acceptance",
         blocks: [
           p("By accessing or using the Altaventures website, you acknowledge that you have read and understood these Terms of Service and agree to comply with them."),
+        ],
+      },
+    ],
+  },
+  refund: {
+    title: "Refund Policy",
+    effectiveDate: "September 2, 2026",
+    lastUpdated: "September 2, 2026",
+    intro: [
+      p(
+        'This Refund Policy explains how refunds apply to services offered by Altaventures Business Development Services, operating under the brand name Altaventures ("Altaventures," "we," "us," or "our").',
+      ),
+      p(
+        "This policy should be read together with our Terms of Service, which governs your use of this website and any engagement with Altaventures.",
+      ),
+    ],
+    sections: [
+      {
+        heading: "1. Complimentary Website Offer",
+        blocks: [
+          p(
+            "Where Altaventures builds a website under a complimentary (free) website offer, no development fee is charged for that build. Because no development fee is collected, there is nothing to refund for the development work itself.",
+          ),
+          p(
+            "Domain registration, where applicable, is purchased directly through a third-party domain registrar and is paid to that registrar, not to Altaventures. Domain registration fees are set and collected by the registrar and are generally non-refundable once purchased, in accordance with the registrar's own policies.",
+          ),
+          p(
+            "Any additional third-party costs (such as hosting upgrades, paid software, premium services, or payment processing fees) that fall outside the complimentary offer and are separately agreed with the client are subject to the refund terms of the applicable third-party provider.",
+          ),
+        ],
+      },
+      {
+        heading: "2. Paid Projects and Custom Engagements",
+        blocks: [
+          p(
+            "For paid website builds, business systems, or other custom digital solutions, refund terms (if any) are set out in the specific project agreement, proposal, or statement of work signed with the client for that engagement, and are not set by this website.",
+          ),
+          p(
+            "Where a paid engagement includes a deposit, milestone payment, or retainer, whether and how much of that amount is refundable depends on the stage of work completed and the terms agreed for that specific project.",
+          ),
+          p(
+            "If you have questions about the refund terms that apply to your specific project, please refer to your project agreement or contact us directly.",
+          ),
+        ],
+      },
+      {
+        heading: "3. How to Request a Refund",
+        blocks: [
+          p(
+            "If you believe you are entitled to a refund under the terms of your specific project agreement, please contact us through Messenger, Viber, or WhatsApp, or through the contact details in your agreement, and include your business name and project details.",
+          ),
+          p("We will review your request against the terms of the applicable agreement and respond within a reasonable time."),
+        ],
+      },
+      {
+        heading: "4. Changes to This Policy",
+        blocks: [
+          p(
+            "We may update this Refund Policy from time to time. Updates will be reflected on this page with a revised \"Last updated\" date.",
+          ),
+        ],
+      },
+      {
+        heading: "5. Contact Us",
+        blocks: [
+          p("For questions about this Refund Policy, you may contact Altaventures through Messenger, Viber, or WhatsApp."),
         ],
       },
     ],

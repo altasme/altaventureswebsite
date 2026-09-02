@@ -377,6 +377,7 @@ Define as Tailwind theme tokens.
 ## 13. LEGAL (open item #6, RESOLVED)
 
 - Privacy Policy and Terms of Service are real client-supplied legal text, rendered in LegalModal from structured section/block data in `content/site.ts` (`LEGAL`).
+- **Refund Policy** (`LEGAL.refund`, footer link id `"refund"`) was added later, authored to be consistent with — and not duplicate — the commercial terms already in the Terms of Service: §5 (the complimentary offer has no development fee, so nothing to refund on that side; domain cost is paid to a third-party registrar, non-refundable per the registrar's own policy) and §17 (paid engagements are governed by a separate per-project agreement, not by the public site). Deliberately states no specific refund percentages, timeframes, or deposit terms for paid work, since those aren't public/standardized — it points to the individual project agreement instead. If the client ever supplies real numeric refund terms for paid engagements, add them under LEGAL.refund's "Paid Projects and Custom Engagements" section rather than inventing figures.
 
 ---
 
