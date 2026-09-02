@@ -48,7 +48,7 @@ export const HERO = {
   trustLine: "Built for real businesses. Designed around real business needs.",
   backgroundImageDesktop: "/images/hero/hero-bg-wide.jpg",
   backgroundImageMobile: "/images/hero/hero-bg-mobile.jpg",
-  backgroundAlt: "Business owner working on a laptop in a modern office, warm evening light",
+  backgroundAlt: "Business owner smiling with coffee in a modern office, surrounded by laptops and monitors",
 } as const;
 
 // ---------------------------------------------------------------------------
