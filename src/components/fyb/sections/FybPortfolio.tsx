@@ -47,7 +47,7 @@ function ProjectCard({ id }: { id: string }) {
 
 export default function FybPortfolio({ onOpenContact }: { onOpenContact: () => void }) {
   return (
-    <Section id="fyb-portfolio" tone="light">
+    <Section id="fyb-portfolio" tone="alt">
       <h2 className="max-w-2xl text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
         {FYB_PORTFOLIO.headline}
       </h2>

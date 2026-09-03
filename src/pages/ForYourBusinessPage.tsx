@@ -7,16 +7,11 @@ import { ModalProvider, useModals } from "../lib/modalContext";
 import CTAButton from "../components/ui/CTAButton";
 
 import FybHero from "../components/fyb/sections/FybHero";
-import Reality from "../components/fyb/sections/Reality";
-import SocialMediaReality from "../components/fyb/sections/SocialMediaReality";
-import Value from "../components/fyb/sections/Value";
-import WhatThisLooksLike from "../components/fyb/sections/WhatThisLooksLike";
+import Problem from "../components/fyb/sections/Problem";
+import WhatsIncluded from "../components/fyb/sections/WhatsIncluded";
+import WhoItsFor from "../components/fyb/sections/WhoItsFor";
 import FybPortfolio from "../components/fyb/sections/FybPortfolio";
 import FybHowItWorks from "../components/fyb/sections/FybHowItWorks";
-import DoesntInclude from "../components/fyb/sections/DoesntInclude";
-import Why299 from "../components/fyb/sections/Why299";
-import Urgency from "../components/fyb/sections/Urgency";
-import Guarantee from "../components/fyb/sections/Guarantee";
 import FybFAQ from "../components/fyb/sections/FybFAQ";
 import FybFinalCTA from "../components/fyb/sections/FybFinalCTA";
 import StickyMobileFybCTA from "../components/fyb/StickyMobileFybCTA";
@@ -92,34 +87,19 @@ function PageContent() {
       <main>
         <FybHero onOpenContact={() => openContact("hero")} />
         <Reveal>
-          <Reality />
+          <Problem />
         </Reveal>
         <Reveal>
-          <SocialMediaReality />
+          <WhatsIncluded />
         </Reveal>
         <Reveal>
-          <Value />
-        </Reveal>
-        <Reveal>
-          <WhatThisLooksLike />
+          <WhoItsFor />
         </Reveal>
         <Reveal>
           <FybPortfolio onOpenContact={() => openContact("portfolio")} />
         </Reveal>
         <Reveal>
           <FybHowItWorks />
-        </Reveal>
-        <Reveal>
-          <DoesntInclude />
-        </Reveal>
-        <Reveal>
-          <Why299 />
-        </Reveal>
-        <Reveal>
-          <Urgency onOpenContact={() => openContact("urgency")} />
-        </Reveal>
-        <Reveal>
-          <Guarantee />
         </Reveal>
         <Reveal>
           <FybFAQ />
