@@ -44,3 +44,13 @@ export function buildQualifierPrefill(answers: QualifierAnswers): string {
 
   return message;
 }
+
+/**
+ * WhatsApp prefill for /foryourbusiness. Checkout/payment isn't wired up
+ * yet (no ganap.net, Supabase, Setmona, or Resend credentials), so every
+ * CTA on that page opens a chat with this message instead, keeping the
+ * page a working lead path in the interim. Replace with a real checkout
+ * flow once payment is ready; see CLAUDE.md §19.
+ */
+export const FYB_PREFILL =
+  "Hi Altaventures! I'd like to get the ₱299 website offer for my business.";

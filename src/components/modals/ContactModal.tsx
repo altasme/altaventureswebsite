@@ -8,33 +8,33 @@ import { track } from "../../lib/analytics";
 const CHAT_BUBBLE_PATH =
   "M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z";
 
-const CHANNELS = [
-  {
-    id: "whatsapp" as const,
-    label: "WhatsApp",
-    note: "Opens WhatsApp with a message ready to send.",
-    url: whatsappUrl,
-  },
-  {
-    id: "messenger" as const,
-    label: "Messenger",
-    note: "Opens a chat on Messenger.",
-    url: messengerUrl,
-  },
-  {
-    id: "viber" as const,
-    label: "Viber",
-    note: "Opens a chat on Viber.",
-    url: viberUrl,
-  },
-];
-
 export default function ContactModal() {
-  const { contactSection, closeContactModal } = useModals();
+  const { contactSection, contactPrefill, closeContactModal } = useModals();
   const isOpen = contactSection !== null;
   const containerRef = useModalA11y(isOpen, closeContactModal);
 
   if (!isOpen) return null;
+
+  const CHANNELS = [
+    {
+      id: "whatsapp" as const,
+      label: "WhatsApp",
+      note: "Opens WhatsApp with a message ready to send.",
+      url: () => whatsappUrl(contactPrefill),
+    },
+    {
+      id: "messenger" as const,
+      label: "Messenger",
+      note: "Opens a chat on Messenger.",
+      url: messengerUrl,
+    },
+    {
+      id: "viber" as const,
+      label: "Viber",
+      note: "Opens a chat on Viber.",
+      url: viberUrl,
+    },
+  ];
 
   const handleChannelSelect = (channel: (typeof CHANNELS)[number]["id"]) => {
     // Note: this is the closest on-site proxy for a qualified conversation.

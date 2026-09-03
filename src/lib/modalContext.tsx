@@ -1,11 +1,12 @@
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
-type LegalDoc = "privacy" | "terms" | "refund";
+type LegalDoc = "privacy" | "terms" | "refund" | "fyb-refund" | "fyb-terms" | "fyb-privacy";
 
 interface ModalContextValue {
   contactSection: string | null;
-  openContactModal: (section: string) => void;
+  contactPrefill: string | undefined;
+  openContactModal: (section: string, prefillMessage?: string) => void;
   closeContactModal: () => void;
 
   caseStudyProject: string | null;
@@ -21,11 +22,18 @@ const ModalContext = createContext<ModalContextValue | null>(null);
 
 export function ModalProvider({ children }: { children: ReactNode }) {
   const [contactSection, setContactSection] = useState<string | null>(null);
+  const [contactPrefill, setContactPrefill] = useState<string | undefined>(undefined);
   const [caseStudyProject, setCaseStudyProject] = useState<string | null>(null);
   const [legalDoc, setLegalDoc] = useState<LegalDoc | null>(null);
 
-  const openContactModal = useCallback((section: string) => setContactSection(section), []);
-  const closeContactModal = useCallback(() => setContactSection(null), []);
+  const openContactModal = useCallback((section: string, prefillMessage?: string) => {
+    setContactSection(section);
+    setContactPrefill(prefillMessage);
+  }, []);
+  const closeContactModal = useCallback(() => {
+    setContactSection(null);
+    setContactPrefill(undefined);
+  }, []);
 
   const openCaseStudy = useCallback((project: string) => setCaseStudyProject(project), []);
   const closeCaseStudy = useCallback(() => setCaseStudyProject(null), []);
@@ -36,6 +44,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
   const value = useMemo(
     () => ({
       contactSection,
+      contactPrefill,
       openContactModal,
       closeContactModal,
       caseStudyProject,
@@ -47,6 +56,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
     }),
     [
       contactSection,
+      contactPrefill,
       openContactModal,
       closeContactModal,
       caseStudyProject,

@@ -435,28 +435,21 @@ const p = (text: string): LegalBlock => ({ kind: "p", text });
 const sh = (text: string): LegalBlock => ({ kind: "sh", text });
 const ul = (items: string[]): LegalBlock => ({ kind: "ul", items });
 
+type LegalDocument = {
+  title: string;
+  effectiveDate: string;
+  lastUpdated: string;
+  intro: LegalBlock[];
+  sections: LegalSection[];
+};
+
 export const LEGAL: {
-  privacy: {
-    title: string;
-    effectiveDate: string;
-    lastUpdated: string;
-    intro: LegalBlock[];
-    sections: LegalSection[];
-  };
-  terms: {
-    title: string;
-    effectiveDate: string;
-    lastUpdated: string;
-    intro: LegalBlock[];
-    sections: LegalSection[];
-  };
-  refund: {
-    title: string;
-    effectiveDate: string;
-    lastUpdated: string;
-    intro: LegalBlock[];
-    sections: LegalSection[];
-  };
+  privacy: LegalDocument;
+  terms: LegalDocument;
+  refund: LegalDocument;
+  "fyb-refund": LegalDocument;
+  "fyb-terms": LegalDocument;
+  "fyb-privacy": LegalDocument;
 } = {
   privacy: {
     title: "Privacy Policy",
@@ -1574,6 +1567,265 @@ export const LEGAL: {
         heading: "5. Contact Us",
         blocks: [
           p("For questions about this Refund Policy, you may contact Altaventures through Messenger, Viber, or WhatsApp."),
+        ],
+      },
+    ],
+  },
+  "fyb-refund": {
+    title: "Refund Policy (₱299 Website Offer)",
+    effectiveDate: "September 3, 2026",
+    lastUpdated: "September 3, 2026",
+    intro: [
+      p(
+        "This Refund Policy applies specifically to the ₱299 one-time professional website offer at altasme.com/foryourbusiness (\"the ₱299 offer\"), provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). It should be read together with the Terms of Sale for the ₱299 offer.",
+      ),
+      p(
+        "This policy is separate from, and does not change, the general Refund Policy that applies to Altaventures' other services.",
+      ),
+    ],
+    sections: [
+      {
+        heading: "1. Before Work Begins",
+        blocks: [
+          p(
+            "You may request a full refund of the ₱299 at any time before your discovery call takes place and before any build work has started. Email altasmeworks@gmail.com to request it.",
+          ),
+        ],
+      },
+      {
+        heading: "2. After the Discovery Call or Once Build Work Has Begun",
+        blocks: [
+          p(
+            "The ₱299 becomes non-refundable, because the consultation and build effort have already been rendered.",
+          ),
+        ],
+      },
+      {
+        heading: "3. If Your Project Needs More Than the ₱299 Offer",
+        blocks: [
+          p(
+            "If, during the discovery call, we determine your requirements go beyond a professional informational website (for example complex e-commerce, custom applications, advanced systems, or complex integrations), we will either (a) credit the full ₱299 toward the higher plan we recommend, or (b) proceed to build a professional informational website within the ₱299 scope. You receive value in either case. A cash refund is not owed simply because your needs exceed what the ₱299 offer covers.",
+          ),
+        ],
+      },
+      {
+        heading: "4. Satisfaction",
+        blocks: [
+          p(
+            "Our guarantee is that we will make the website meet the requirements we agreed on. If the delivered website does not match the agreed scope, we will revise it to meet that scope within the revision rounds in the Terms of Sale. This is a make-it-right guarantee, not a money-back-if-you-change-your-mind guarantee, and it is not a guarantee of any business result, traffic, ranking, or sales.",
+          ),
+        ],
+      },
+      {
+        heading: "5. Change of Mind",
+        blocks: [p("No refunds are given for change of mind after work has begun.")],
+      },
+      {
+        heading: "6. Client Responsiveness",
+        blocks: [
+          p(
+            "The build timeline starts only when we receive the required information and materials. If you do not provide the required materials, or you are unresponsive, for 30 days, we may close the project as fulfilled, and the ₱299 is non-refundable.",
+          ),
+        ],
+      },
+      {
+        heading: "7. Chargebacks",
+        blocks: [
+          p(
+            "Initiating a chargeback or payment dispute for a service that has been rendered is a breach of these terms. We may suspend or remove the website and pursue recovery of amounts owed and related costs.",
+          ),
+        ],
+      },
+      {
+        heading: "8. How to Request a Refund",
+        blocks: [
+          p(
+            "Email altasmeworks@gmail.com with your business name and project details. We will review your request against this policy and respond within a reasonable time.",
+          ),
+        ],
+      },
+    ],
+  },
+  "fyb-terms": {
+    title: "Terms of Sale (₱299 Website Offer)",
+    effectiveDate: "September 3, 2026",
+    lastUpdated: "September 3, 2026",
+    intro: [
+      p(
+        "These Terms of Sale govern the ₱299 one-time professional website offer at altasme.com/foryourbusiness, provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). By purchasing the ₱299 offer, you (\"you,\" \"the client\") agree to these Terms of Sale, together with the Refund Policy (₱299 Website Offer) and the Privacy Notice for the ₱299 offer.",
+      ),
+    ],
+    sections: [
+      {
+        heading: "1. What the ₱299 Offer Includes",
+        blocks: [
+          p(
+            "A professional, mobile-friendly informational website designed around your business: business information, services or products, an about section, contact details, a clear contact or inquiry call to action, hosting on an Altaventures subdomain, and SSL/HTTPS. Creation is fully done for you.",
+          ),
+        ],
+      },
+      {
+        heading: "2. What It Does Not Include",
+        blocks: [
+          p(
+            "Complex e-commerce, custom web applications, advanced business systems, complex integrations, and unlimited custom changes. If you need these, we will recommend and separately quote the appropriate solution.",
+          ),
+        ],
+      },
+      {
+        heading: "3. Your Content and Materials",
+        blocks: [
+          p(
+            "You are responsible for providing accurate, lawful business information and materials. You represent and warrant that you own or are licensed to use everything you submit (text, images, logos, media) and that it does not infringe any third party's rights or any law. You agree to indemnify and hold Altaventures harmless from any claim, loss, or cost arising from the content or materials you provide.",
+          ),
+        ],
+      },
+      {
+        heading: "4. Timeline",
+        blocks: [
+          p(
+            "Typical completion is 4 to 7 days after we receive the required information and materials. The timeline does not begin until those are received, and any delay on your side extends it accordingly.",
+          ),
+        ],
+      },
+      {
+        heading: "5. Revisions",
+        blocks: [
+          p(
+            "The offer includes up to 2 rounds of reasonable revisions within the agreed scope. Additional revisions or any out-of-scope change may be quoted separately.",
+          ),
+        ],
+      },
+      {
+        heading: "6. Hosting and Subdomain",
+        blocks: [
+          p(
+            "Your website is hosted on an Altaventures subdomain (for example yourbusiness.altasme.com). Subdomain hosting is included at no additional cost for as long as Altaventures continues to operate the hosting service, subject to acceptable use. Hosting may end or be suspended only if Altaventures ceases operations or discontinues the service, or if the website is used for unlawful, fraudulent, infringing, abusive, or resource-abusive purposes. Your website remains on the Altaventures subdomain; moving it to your own custom domain is a separate, optional paid service.",
+          ),
+        ],
+      },
+      {
+        heading: "7. Intellectual Property",
+        blocks: [
+          p(
+            "On full payment, you own the rights to the business content displayed on your website. Altaventures retains ownership of the underlying code, templates, frameworks, and design system, and grants you a license to use the delivered website. We may display the completed website and identify you as a client for portfolio and marketing purposes unless you opt out in writing.",
+          ),
+        ],
+      },
+      {
+        heading: "8. Availability",
+        blocks: [
+          p("Monthly build capacity is limited. We may queue or decline projects, including projects that fall outside the offer."),
+        ],
+      },
+      {
+        heading: "9. No Outcome Guarantee",
+        blocks: [
+          p(
+            "A website is not a guarantee of customers, traffic, rankings, or sales. We do not warrant any specific business result.",
+          ),
+        ],
+      },
+      {
+        heading: "10. Limitation of Liability",
+        blocks: [
+          p(
+            "To the maximum extent permitted by law, Altaventures is not liable for indirect, incidental, special, or consequential damages, lost profits, or lost business. Our total aggregate liability for any claim relating to this offer is limited to the amount you paid (₱299).",
+          ),
+        ],
+      },
+      {
+        heading: "11. Acceptable Use and Takedown",
+        blocks: [
+          p("We may suspend or remove any website used for unlawful, fraudulent, infringing, or abusive purposes."),
+        ],
+      },
+      {
+        heading: "12. Changes to These Terms",
+        blocks: [p("We may update these terms; the version in effect at the time of your purchase governs that purchase.")],
+      },
+      {
+        heading: "13. Governing Law",
+        blocks: [
+          p(
+            "These terms are governed by the laws of the Republic of the Philippines. Venue for any dispute is subject to the jurisdiction of the appropriate courts of the Philippines.",
+          ),
+        ],
+      },
+      {
+        heading: "14. Severability and Entire Agreement",
+        blocks: [
+          p(
+            "If any provision is held unenforceable, the rest remains in effect. These terms, together with the Refund Policy (₱299 Website Offer) and the Privacy Notice, are the entire agreement for the ₱299 offer.",
+          ),
+        ],
+      },
+      {
+        heading: "15. Contact",
+        blocks: [p("Questions about these Terms of Sale can be sent to altasmeworks@gmail.com.")],
+      },
+    ],
+  },
+  "fyb-privacy": {
+    title: "Privacy Notice (₱299 Website Offer)",
+    effectiveDate: "September 3, 2026",
+    lastUpdated: "September 3, 2026",
+    intro: [
+      p(
+        "This Privacy Notice explains how Altaventures Business Development Services, operating under the brand name Altaventures, collects and processes personal data in connection with the ₱299 website offer at altasme.com/foryourbusiness, in accordance with the Data Privacy Act of 2012 (Republic Act 10173).",
+      ),
+    ],
+    sections: [
+      {
+        heading: "Who We Are",
+        blocks: [p("Altaventures Business Development Services, Philippines.")],
+      },
+      {
+        heading: "What We Collect",
+        blocks: [
+          p(
+            "The personal data you provide: full name, business name, email address, mobile number, and the business information and materials you submit for your website.",
+          ),
+        ],
+      },
+      {
+        heading: "Why We Collect It",
+        blocks: [
+          p(
+            "To process your payment, create and manage your account, deliver the website service, schedule and conduct your discovery call, communicate with you about your project, and offer related services. Our lawful bases are your consent and the performance of our contract with you.",
+          ),
+        ],
+      },
+      {
+        heading: "Who We Share It With",
+        blocks: [
+          p(
+            "Trusted service providers acting on our behalf: our payment processor, our email provider, our scheduling tool, and our hosting infrastructure. We do not sell your personal data.",
+          ),
+        ],
+      },
+      {
+        heading: "Storage, Security, and Retention",
+        blocks: [
+          p(
+            "We store your data with reasonable organizational, physical, and technical safeguards. We keep it only as long as necessary to deliver the service and to meet legal, tax, and accounting requirements, after which we dispose of it securely.",
+          ),
+        ],
+      },
+      {
+        heading: "Your Rights",
+        blocks: [
+          p(
+            "Under the Data Privacy Act you have the right to be informed, to access, to correct, to object, to erasure or blocking, to data portability, to withdraw consent, and to lodge a complaint with the National Privacy Commission. To exercise these, contact altasmeworks@gmail.com.",
+          ),
+        ],
+      },
+      {
+        heading: "Consent",
+        blocks: [
+          p(
+            "By proceeding with the ₱299 offer, you confirm you have read this notice and consent to Altaventures collecting and processing your personal data for the purposes described.",
+          ),
         ],
       },
     ],
