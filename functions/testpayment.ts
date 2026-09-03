@@ -14,12 +14,19 @@
 // header name or scheme differs, update SIGNATURE_HEADER / verifySignature
 // below.
 //
-// There is no database yet (no Supabase credentials configured), so this
-// does not persist an "orders" record. Instead it emails the full payload
-// to the internal notify address via Resend so a human sees every event
-// while the payload shape is still being confirmed against real test
-// transactions. Once the real field names are confirmed, tighten this to
-// only notify on a genuine "paid"/"succeeded" status.
+// It always emails the full payload to the internal notify address via
+// Resend so a human sees every event while the payload shape is still being
+// confirmed against real test transactions. Once the real field names are
+// confirmed, tighten this to only notify on a genuine "paid"/"succeeded"
+// status.
+//
+// DB (optional, a bound D1 database, see d1/schema.sql): if bound, this
+// tries to match the webhook back to the 'pending' order created by
+// functions/api/checkout.ts (by externalReference/referenceNumber/id
+// against the order's id, which is the idempotencyKey sent to ganap.net)
+// and marks it paid with the raw webhook payload attached. No match, or no
+// DB bound, is not an error — the email notification above still fires
+// either way, so nothing is silently lost.
 //
 // Required env vars: GANAP_SECRET (same signing secret as /api/checkout),
 // RESEND_API_KEY, RESEND_FROM_EMAIL. Optional: PAYMENT_NOTIFY_EMAIL
@@ -30,6 +37,7 @@ interface Env {
   RESEND_API_KEY: string;
   RESEND_FROM_EMAIL: string;
   PAYMENT_NOTIFY_EMAIL?: string;
+  DB?: D1Database;
 }
 
 const SIGNATURE_HEADER = "X-Ganap-Signature";
@@ -79,6 +87,26 @@ function extractString(payload: Record<string, unknown>, keys: string[]): string
     if (typeof value === "string" && value) return value;
   }
   return "";
+}
+
+async function updateMatchingOrder(env: Env, rawBody: string, payload: Record<string, unknown>): Promise<void> {
+  if (!env.DB) return;
+
+  const orderId = extractString(payload, ["externalReference", "referenceNumber", "id"]);
+  if (!orderId) return;
+
+  const status = extractStatus(payload);
+  const now = new Date().toISOString();
+
+  const result = await env.DB.prepare(
+    `UPDATE orders SET status = ?, webhook_payload = ?, updated_at = ? WHERE id = ?`
+  )
+    .bind(status, rawBody, now, orderId)
+    .run();
+
+  if (!result.meta.changes) {
+    console.error(`No order matched webhook reference "${orderId}"; nothing updated in D1.`);
+  }
 }
 
 async function sendNotification(env: Env, rawBody: string, payload: Record<string, unknown>): Promise<void> {
@@ -141,6 +169,10 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUnti
     console.error("Ganap webhook body is not valid JSON.");
     return new Response("Invalid body", { status: 400 });
   }
+
+  waitUntil(
+    updateMatchingOrder(env, rawBody, payload).catch((err) => console.error("Failed to update order in D1", err))
+  );
 
   if (env.RESEND_API_KEY && env.RESEND_FROM_EMAIL) {
     waitUntil(

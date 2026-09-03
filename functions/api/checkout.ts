@@ -15,10 +15,17 @@
 // convention, so ₱299.00 is sent as 29900. Confirm against a real test
 // transaction before relying on this; if ganap.net actually expects whole
 // pesos, change AMOUNT_PHP_CENTAVOS to 299.
+//
+// DB (optional, a bound D1 database, see d1/schema.sql): if bound, this
+// inserts a 'pending' order row keyed by the same idempotencyKey sent to
+// ganap.net, so functions/testpayment.ts can later match the webhook back
+// to this order and mark it paid. Best-effort — a DB hiccup here never
+// blocks the actual checkout/payment flow.
 
 interface Env {
   GANAP_SECRET: string;
   GANAP_PROJECT_UUID: string;
+  DB?: D1Database;
 }
 
 const GANAP_CHECKOUT_URL = "https://convex-top-api.ganap.net/v1/checkout";
@@ -123,6 +130,32 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     },
     returnUrl: RETURN_URL,
   });
+
+  if (env.DB) {
+    try {
+      const now = new Date().toISOString();
+      await env.DB.prepare(
+        `INSERT INTO orders (id, status, full_name, business_name, email, phone, facebook, instagram, existing_website, amount, created_at, updated_at)
+         VALUES (?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      )
+        .bind(
+          idempotencyKey,
+          data.fullName,
+          data.businessName,
+          data.email,
+          data.phone,
+          data.facebook || null,
+          data.instagram || null,
+          data.existingWebsite || null,
+          AMOUNT_PHP_CENTAVOS,
+          now,
+          now
+        )
+        .run();
+    } catch (err) {
+      console.error("Failed to insert pending order into D1", err);
+    }
+  }
 
   const signature = await hmacSha256Hex(env.GANAP_SECRET, ganapBody);
 

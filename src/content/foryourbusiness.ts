@@ -145,3 +145,12 @@ export const THANK_YOU = {
   microcopy: "Having trouble, or didn't get a confirmation? Message us and we'll sort it out.",
   cta: "Message Us",
 } as const;
+
+export const ACCOUNT = {
+  headline: "Ready to Get Started?",
+  body: "Create your account so we can begin gathering your business details.",
+  cta: "Create Your Account",
+  welcomeHeadline: "You're All Set!",
+  welcomeBody: "Your account is created. We'll reach out within one business day to get your business details and schedule a quick call.",
+  errorMessage: "We couldn't create your account just now. Please try again, or message us and we'll sort it out.",
+} as const;

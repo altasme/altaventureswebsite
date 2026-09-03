@@ -1,12 +1,41 @@
 import { useEffect } from "react";
 import { BRAND } from "../content/site";
-import { THANK_YOU } from "../content/foryourbusiness";
+import { THANK_YOU, ACCOUNT } from "../content/foryourbusiness";
 import { FYB_PREFILL } from "../lib/contact";
 import { track } from "../lib/analytics";
 import { ModalProvider, useModals } from "../lib/modalContext";
 import ContactModal from "../components/modals/ContactModal";
 
 const PAGE_TITLE = "Payment Received | Altaventures";
+
+function AccountPanel() {
+  const params = new URLSearchParams(window.location.search);
+  const welcome = params.get("welcome") === "1";
+  const authFailed = params.get("error") === "auth_failed";
+
+  if (welcome) {
+    return (
+      <div className="mt-6 rounded-2xl border border-brand-blue/20 bg-brand-blue/5 px-6 py-5 text-center">
+        <p className="text-base font-bold text-brand-navy">{ACCOUNT.welcomeHeadline}</p>
+        <p className="mt-2 text-sm leading-relaxed text-ink/70">{ACCOUNT.welcomeBody}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-6 rounded-2xl border border-ink/10 bg-paper-alt px-6 py-5 text-center">
+      <p className="text-base font-bold text-brand-navy">{ACCOUNT.headline}</p>
+      <p className="mt-2 text-sm text-ink/60">{ACCOUNT.body}</p>
+      {authFailed && <p className="mt-2 text-sm font-medium text-red-600">{ACCOUNT.errorMessage}</p>}
+      <a
+        href="/api/auth-start"
+        className="mt-4 inline-flex items-center justify-center rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-black/15 transition hover:-translate-y-0.5 hover:bg-[#0b57cc]"
+      >
+        {ACCOUNT.cta} &rarr;
+      </a>
+    </div>
+  );
+}
 
 function PageContent() {
   const { openContactModal } = useModals();
@@ -44,7 +73,11 @@ function PageContent() {
         <h1 className="mt-6 text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">{THANK_YOU.headline}</h1>
         <p className="mt-4 max-w-md text-base leading-relaxed text-ink/70">{THANK_YOU.body}</p>
 
-        <div className="mt-10 rounded-2xl border border-ink/10 bg-paper-alt px-6 py-5">
+        <div className="w-full max-w-md">
+          <AccountPanel />
+        </div>
+
+        <div className="mt-6 rounded-2xl border border-ink/10 bg-paper-alt px-6 py-5">
           <p className="text-sm text-ink/60">{THANK_YOU.microcopy}</p>
           <button
             type="button"
