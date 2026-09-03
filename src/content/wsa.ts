@@ -1,5 +1,5 @@
 // content/wsa.ts
-// Free Website Service Agreement (v4.0): full text as supplied by the client,
+// Free Website Service Agreement (v4.1): full text as supplied by the client,
 // plus the coordinate map used to overlay signed values onto the generated
 // PDF. Keep this in sync with public/documents/free-website-service-agreement.pdf.
 //
@@ -19,7 +19,6 @@ export type WsaSection = { heading: string; blocks: WsaBlock[] };
 const p = (text: string): WsaBlock => ({ kind: "p", text });
 const sh = (text: string): WsaBlock => ({ kind: "sh", text });
 const ul = (items: string[]): WsaBlock => ({ kind: "ul", items });
-const table = (headers: string[], rows: string[][]): WsaBlock => ({ kind: "table", headers, rows });
 
 export const WSA_DOCUMENT: {
   title: string;
@@ -29,7 +28,7 @@ export const WSA_DOCUMENT: {
   sections: WsaSection[];
 } = {
   title: "Free Website Service Agreement",
-  version: "4.0",
+  version: "4.1",
   entity: "Altaventures Business Development Services",
   intro: [
     p(
@@ -368,20 +367,17 @@ export const WSA_DOCUMENT: {
       heading: "18. Current Pay-As-You-Go Services",
       blocks: [
         p("The current standard PAYG services are:"),
-        table(
-          ["Service", "Current Price"],
-          [
-            ["Domain Transfer Out", "Free"],
-            ["Small Website Change", "₱500"],
-            ["Website Update / Section", "₱1,500"],
-            ["Website Project", "₱3,000+"],
-            ["Full-Scale Transfer Out", "₱4,000+"],
-            ["Major Project", "Subject to quotation"],
-            ["Altaventures Hosted Business Email", "₱1,500/year"],
-          ]
-        ),
-        p("PAYG prices are subject to change without prior notice."),
-        p("The price applicable to an approved service will be the applicable published price at the time of purchase or the price stated in an accepted quotation."),
+        ul([
+          "Domain Transfer Out",
+          "Small Website Change",
+          "Website Update / Section",
+          "Website Project",
+          "Full-Scale Transfer Out",
+          "Major Project (subject to quotation)",
+          "Altaventures Hosted Business Email",
+        ]),
+        p("PAYG services are priced at Altaventures' then-current published rates, which are subject to change without prior notice."),
+        p("The price applicable to an approved service will be the applicable published rate at the time of purchase or the price stated in an accepted quotation."),
       ],
     },
     {
@@ -413,16 +409,11 @@ export const WSA_DOCUMENT: {
       heading: "21. Future Paid Plans and Additional Services",
       blocks: [
         p("The Client may choose to upgrade to an applicable paid Digital Growth Plan or purchase additional services from Altaventures."),
-        p("Current paid Digital Growth Plan pricing includes:"),
-        table(
-          ["Plan", "Annual Price", "Equivalent Monthly Cost"],
-          [
-            ["Essential", "₱4,560/year", "₱380/month"],
-            ["Business", "₱9,000/year", "₱750/month"],
-            ["Growth", "₱18,000/year", "₱1,500/month"],
-          ]
+        p("Current paid Digital Growth Plans include:"),
+        ul(["Essential", "Business", "Growth"]),
+        p(
+          "Digital Growth Plans are generally annual service plans, priced at Altaventures' then-current published rates at the time of upgrade."
         ),
-        p("The monthly figures are provided for comparison only. Paid plans are generally annual service plans."),
         p("Paid plans may provide additional services such as:"),
         ul([
           "Client Admin Panel",
@@ -611,7 +602,7 @@ export const WSA_DOCUMENT: {
         p("Standard domain transfer assistance is Free."),
         p("The Client remains responsible for any fees charged by the destination registrar."),
         sh("Full Website Transfer"),
-        p("A full-scale website transfer starts at ₱4,000+, depending on the scope and complexity."),
+        p("A full-scale website transfer is priced at Altaventures' then-current published rate, depending on the scope and complexity."),
         p("A full transfer may include source code, repositories, databases, website assets, and other transferable materials."),
         p("The Client may be required to provide destination hosting, accounts, or infrastructure."),
       ],
@@ -751,16 +742,16 @@ export const WSA_PDF_FIELD_COORDS = {
   // Altaventures sub-blocks are kept from splitting across a page break by
   // the generator, but can still land on different pages from each other.
   signing: {
-    clientName: { page: 15, x: 72, y: 199.69928400954655, w: 30.922500000000003 },
-    clientDate: { page: 15, x: 72, y: 148.69928400954655, w: 25.095000000000002 },
-    altaDate: { page: 16, x: 72, y: 627.6992840095465, w: 25.095000000000002 },
+    clientName: { page: 15, x: 72, y: 272.19928400954655, w: 30.922500000000003 },
+    clientDate: { page: 15, x: 72, y: 221.19928400954655, w: 25.095000000000002 },
+    altaDate: { page: 15, x: 72, y: 127.19928400954655, w: 25.095000000000002 },
   },
 } as const;
 
 export const WSA_SIGNATURE_BOX = {
   page: 15,
   x: 131.859,
-  y: 176.69928400954655,
+  y: 249.19928400954655,
   width: 150,
   height: 32,
 } as const;
