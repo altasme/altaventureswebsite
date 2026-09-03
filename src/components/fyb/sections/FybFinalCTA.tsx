@@ -2,7 +2,7 @@ import { FYB_FINAL_CTA } from "../../../content/foryourbusiness";
 import Section from "../../ui/Section";
 import CTAButton from "../../ui/CTAButton";
 
-export default function FybFinalCTA({ onOpenContact }: { onOpenContact: () => void }) {
+export default function FybFinalCTA({ onCheckout }: { onCheckout: () => void }) {
   return (
     <Section tone="dark">
       <div className="mx-auto max-w-2xl text-center">
@@ -10,7 +10,7 @@ export default function FybFinalCTA({ onOpenContact }: { onOpenContact: () => vo
         <p className="mt-6 text-base text-white/75 sm:text-lg">{FYB_FINAL_CTA.body}</p>
 
         <div className="mt-8 flex justify-center">
-          <CTAButton label={FYB_FINAL_CTA.cta} section="final-cta" onClick={onOpenContact} size="lg" />
+          <CTAButton label={FYB_FINAL_CTA.cta} section="final-cta" onClick={onCheckout} size="lg" />
         </div>
       </div>
     </Section>

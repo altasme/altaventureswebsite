@@ -38,6 +38,8 @@ type AnalyticsEventMap = {
   portfolio_view: { project: string };
   phase2_cta_click: Record<string, never>;
   lead: { channel: "messenger" | "viber" | "whatsapp"; businessType?: string; yearsInBusiness?: string; objectives?: string };
+  checkout_started: Record<string, never>;
+  payment_return: Record<string, never>;
 };
 
 export function track<E extends keyof AnalyticsEventMap>(
@@ -101,5 +103,17 @@ export function trackLead(params: AnalyticsEventMap["lead"]) {
       yearsInBusiness: params.yearsInBusiness,
       objectives: params.objectives,
     });
+  }
+}
+
+/**
+ * Fires when the /foryourbusiness checkout form is submitted and the
+ * ganap.net checkout session is being created. Mirrors Meta's
+ * InitiateCheckout, no-ops on the Pixel side until META_PIXEL_ID is set.
+ */
+export function trackInitiateCheckout() {
+  track("checkout_started", {});
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+    window.fbq("track", "InitiateCheckout", { value: 299, currency: "PHP" });
   }
 }

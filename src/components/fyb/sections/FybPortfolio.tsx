@@ -45,7 +45,7 @@ function ProjectCard({ id }: { id: string }) {
   );
 }
 
-export default function FybPortfolio({ onOpenContact }: { onOpenContact: () => void }) {
+export default function FybPortfolio({ onCheckout }: { onCheckout: () => void }) {
   return (
     <Section id="fyb-portfolio" tone="alt">
       <h2 className="max-w-2xl text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
@@ -79,7 +79,7 @@ export default function FybPortfolio({ onOpenContact }: { onOpenContact: () => v
       <div className="mt-10">
         <button
           type="button"
-          onClick={onOpenContact}
+          onClick={onCheckout}
           className="text-sm font-semibold text-brand-blue hover:underline"
         >
           {FYB_PORTFOLIO.cta}

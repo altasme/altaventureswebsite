@@ -1,9 +1,10 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { BRAND } from "../content/site";
 import { PRIMARY_CTA } from "../content/foryourbusiness";
-import { FYB_PREFILL } from "../lib/contact";
 import { useScrollDepth } from "../lib/useScrollDepth";
 import { ModalProvider, useModals } from "../lib/modalContext";
+import { track } from "../lib/analytics";
 import CTAButton from "../components/ui/CTAButton";
 
 import FybHero from "../components/fyb/sections/FybHero";
@@ -17,7 +18,6 @@ import FybFinalCTA from "../components/fyb/sections/FybFinalCTA";
 import StickyMobileFybCTA from "../components/fyb/StickyMobileFybCTA";
 import Reveal from "../components/offer/Reveal";
 
-import ContactModal from "../components/modals/ContactModal";
 import LegalModal from "../components/modals/LegalModal";
 
 const PAGE_TITLE = "Get Your Business Online for ₱299 | Altaventures";
@@ -39,7 +39,8 @@ function setMeta(selector: string, attr: string, value: string): (() => void) | 
 }
 
 function PageContent() {
-  const { openContactModal, openLegal } = useModals();
+  const { openLegal } = useModals();
+  const navigate = useNavigate();
   useScrollDepth();
 
   useEffect(() => {
@@ -62,14 +63,15 @@ function PageContent() {
     };
   }, []);
 
-  const openContact = (section: string) => openContactModal(section, FYB_PREFILL);
+  const goToCheckout = (section: string) => {
+    track("cta_click", { label: PRIMARY_CTA, section });
+    navigate("/foryourbusiness/checkout");
+  };
 
   return (
     <div className="min-h-screen bg-paper pb-16 md:pb-0">
       {/* No outbound nav on this funnel: logo only, no link back to the
-          main site. Checkout/payment isn't wired up yet, so every CTA
-          opens the same chat channel picker used site-wide, prefilled
-          with a ₱299-specific message (see lib/contact.ts FYB_PREFILL). */}
+          main site. Every CTA navigates straight to /foryourbusiness/checkout. */}
       <header className="border-b border-ink/5 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-6 py-4 lg:px-8">
           <span className="shrink-0">
@@ -78,14 +80,14 @@ function PageContent() {
           <CTAButton
             label={PRIMARY_CTA}
             section="header"
-            onClick={() => openContact("header")}
+            onClick={() => goToCheckout("header")}
             className="hidden !px-5 !py-2.5 !text-xs sm:inline-flex sm:!text-sm"
           />
         </div>
       </header>
 
       <main>
-        <FybHero onOpenContact={() => openContact("hero")} />
+        <FybHero onCheckout={() => goToCheckout("hero")} />
         <Reveal>
           <Problem />
         </Reveal>
@@ -96,7 +98,7 @@ function PageContent() {
           <WhoItsFor />
         </Reveal>
         <Reveal>
-          <FybPortfolio onOpenContact={() => openContact("portfolio")} />
+          <FybPortfolio onCheckout={() => goToCheckout("portfolio")} />
         </Reveal>
         <Reveal>
           <FybHowItWorks />
@@ -105,7 +107,7 @@ function PageContent() {
           <FybFAQ />
         </Reveal>
         <Reveal>
-          <FybFinalCTA onOpenContact={() => openContact("final-cta")} />
+          <FybFinalCTA onCheckout={() => goToCheckout("final-cta")} />
         </Reveal>
       </main>
 
@@ -135,9 +137,8 @@ function PageContent() {
         </div>
       </footer>
 
-      <StickyMobileFybCTA onOpenContact={() => openContact("sticky-mobile")} />
+      <StickyMobileFybCTA onCheckout={() => goToCheckout("sticky-mobile")} />
 
-      <ContactModal />
       <LegalModal />
     </div>
   );

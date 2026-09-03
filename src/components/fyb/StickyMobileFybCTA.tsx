@@ -1,10 +1,10 @@
 import { STICKY_CTA } from "../../content/foryourbusiness";
 import { track } from "../../lib/analytics";
 
-export default function StickyMobileFybCTA({ onOpenContact }: { onOpenContact: () => void }) {
+export default function StickyMobileFybCTA({ onCheckout }: { onCheckout: () => void }) {
   const handleClick = () => {
     track("cta_click", { label: STICKY_CTA, section: "sticky-mobile" });
-    onOpenContact();
+    onCheckout();
   };
 
   return (

@@ -12,12 +12,14 @@
 // Shares BRAND, CONTACT with the main site (content/site.ts) and
 // portfolio data with content/portfolio.ts rather than duplicating them.
 //
-// Checkout/payment is deferred (no ganap.net, Supabase, Setmona, or Resend
-// credentials available yet). Every CTA on this page opens the same
-// ContactModal used site-wide, with a ₱299-specific WhatsApp prefill, so
-// the page still functions as a real (chat-qualified) lead path today.
-// Swap the CTA handlers to route to a real /foryourbusiness/checkout once
-// the payment integration is ready; see CLAUDE.md §19.
+// Checkout is live (ganap.net, TEST MODE project). Every CTA on this page
+// navigates to /foryourbusiness/checkout, which posts to the
+// functions/api/checkout.ts Cloudflare Function and redirects the browser
+// to ganap.net's hosted payment page. Supabase/Setmona/the full
+// account-onboarding flow are still not built (no credentials for those
+// yet), so the post-payment experience is a simple thank-you page, not the
+// full formalized flow in CLAUDE.md §19; see that section for what's real
+// vs. still deferred.
 
 export const PRIMARY_CTA = "GET MY WEBSITE FOR ₱299 →";
 export const STICKY_CTA = "₱299 · GET MY WEBSITE →";
@@ -118,4 +120,28 @@ export const FYB_FINAL_CTA = {
   headline: "Ready to Put Your Business Online?",
   body: "Get started with your website for ₱299. Simple, professional, and yours.",
   cta: PRIMARY_CTA,
+} as const;
+
+export const CHECKOUT = {
+  eyebrow: "START YOUR WEBSITE",
+  price: "₱299",
+  priceNote: "ONE-TIME PAYMENT",
+  summaryTitle: "Professional Business Website",
+  summaryItems: [
+    "Professional website",
+    "Mobile-friendly",
+    "Business information",
+    "Contact/inquiry CTA",
+    "Hosting & SSL",
+    "Done for you",
+  ],
+  cta: "PAY ₱299 & START →",
+  testModeNote: "This checkout is currently running in ganap.net test mode.",
+} as const;
+
+export const THANK_YOU = {
+  headline: "Thanks! We've Got Your Payment.",
+  body: "If your payment went through, you'll get a confirmation from us shortly, and we'll reach out to get your business details and schedule a quick call.",
+  microcopy: "Having trouble, or didn't get a confirmation? Message us and we'll sort it out.",
+  cta: "Message Us",
 } as const;
