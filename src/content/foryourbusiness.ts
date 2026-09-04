@@ -134,21 +134,22 @@ export const CHECKOUT = {
     "Contact/inquiry CTA",
     "Hosting & SSL",
     "Done for you",
+    "Typical buildtime: 4-7 days",
   ],
   cta: "PAY ₱299 & START →",
   testModeNote: "This checkout is currently running in ganap.net test mode.",
 } as const;
 
 export const THANK_YOU = {
-  headline: "Thanks! We've Got Your Payment.",
-  body: "If your payment went through, you'll get a confirmation from us shortly, and we'll reach out to get your business details and schedule a quick call.",
+  headline: "Payment Received. Let's Get Started.",
+  body: "Your ₱299 payment has been successfully received. You'll receive a confirmation email shortly. From there, you can create your Altaventures account and continue with your website setup.",
   microcopy: "Having trouble, or didn't get a confirmation? Message us and we'll sort it out.",
   cta: "Message Us",
 } as const;
 
 export const ACCOUNT = {
   headline: "Ready to Get Started?",
-  body: "Create your account so we can begin gathering your business details.",
+  body: "Create your account to continue your website setup.",
   cta: "Create Your Account",
   welcomeHeadline: "You're All Set!",
   welcomeBody: "Your account is created. We'll reach out within one business day to get your business details and schedule a quick call.",
