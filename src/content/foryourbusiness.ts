@@ -151,7 +151,4 @@ export const ACCOUNT = {
   headline: "Ready to Get Started?",
   body: "Create your account to continue your website setup.",
   cta: "Create Your Account",
-  welcomeHeadline: "You're All Set!",
-  welcomeBody: "Your account is created. We'll reach out within one business day to get your business details and schedule a quick call.",
-  errorMessage: "We couldn't create your account just now. Please try again, or message us and we'll sort it out.",
 } as const;

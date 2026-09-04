@@ -9,26 +9,12 @@ import ContactModal from "../components/modals/ContactModal";
 const PAGE_TITLE = "Payment Received | Altaventures";
 
 function AccountPanel() {
-  const params = new URLSearchParams(window.location.search);
-  const welcome = params.get("welcome") === "1";
-  const authFailed = params.get("error") === "auth_failed";
-
-  if (welcome) {
-    return (
-      <div className="mt-6 rounded-2xl border border-brand-blue/20 bg-brand-blue/5 px-6 py-5 text-center">
-        <p className="text-base font-bold text-brand-navy">{ACCOUNT.welcomeHeadline}</p>
-        <p className="mt-2 text-sm leading-relaxed text-ink/70">{ACCOUNT.welcomeBody}</p>
-      </div>
-    );
-  }
-
   return (
     <div className="mt-6 rounded-2xl border border-ink/10 bg-paper-alt px-6 py-5 text-center">
       <p className="text-base font-bold text-brand-navy">{ACCOUNT.headline}</p>
       <p className="mt-2 text-sm text-ink/60">{ACCOUNT.body}</p>
-      {authFailed && <p className="mt-2 text-sm font-medium text-red-600">{ACCOUNT.errorMessage}</p>}
       <a
-        href="/api/auth-start"
+        href="https://account.altasme.com/api/auth-start"
         className="mt-4 inline-flex items-center justify-center rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-black/15 transition hover:-translate-y-0.5 hover:bg-[#0b57cc]"
       >
         {ACCOUNT.cta} &rarr;
