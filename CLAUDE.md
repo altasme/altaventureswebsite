@@ -334,6 +334,7 @@ Each ContactModal channel selection is the closest on-site proxy for the primary
 - `LocalBusiness` / `Organization` JSON-LD structured data with brand name, area served (Philippines), and contact channels.
 - Semantic headings (one `<h1>` in Hero; section `<h2>`s).
 - Prerendered static HTML (Vite build) so content is crawlable without JS execution where possible; if hydration hides content, ensure critical copy is in the initial HTML.
+- **`public/robots.txt` + `public/sitemap.xml`** (added later, since neither existed at initial launch): `robots.txt` allows all crawling and points to the sitemap; `sitemap.xml` lists only the three indexable routes — `/`, `/limitedoffer`, `/foryourbusiness` — deliberately excluding `/WSA-free` and the `noindex` `/foryourbusiness/checkout` and `/foryourbusiness/thank-you` routes. This matters specifically for `/limitedoffer` and `/foryourbusiness`: per §0's guardrails they're intentionally *not* linked from the homepage Nav/Footer (kept as separate paid-social funnels), which otherwise leaves them with no organic crawl path at all — the sitemap is what makes them discoverable to search engines despite that. Update `sitemap.xml` if a future indexable route is added.
 
 ---
 
