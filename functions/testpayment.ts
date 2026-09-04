@@ -6,26 +6,46 @@
 // redirect back to /foryourbusiness/thank-you is only a UX nicety and is
 // never trusted on its own.
 //
-// Verifies the request really came from ganap.net (HMAC-SHA256 of the raw
-// body, hex, compared to X-Ganap-Signature) before doing anything with it.
-// ganap.net's docs only document signing OUTGOING checkout requests this
-// way; this assumes incoming webhooks are signed with the same scheme and
-// the same secret. Confirm against a real test webhook delivery — if the
-// header name or scheme differs, update SIGNATURE_HEADER / verifySignature
-// below.
+// Payload shape below is taken from ganap.net's own "Webhooks & API"
+// documentation (PDF supplied directly by the client), which confirmed
+// the exact fields — this used to guess at plausible field names
+// (status/paymentStatus/state, customerName/customerEmail flat) since no
+// real docs were available yet. The real shape:
+//   POST your endpoint URL
+//   X-Ganap-Event: transaction.paid
+//   X-Ganap-Signature: <HMAC-SHA256 of the raw body, hex>
+//   {
+//     "event": "transaction.paid",       // the only event sent today
+//     "referenceNumber": "...",          // matches the checkout response
+//     "externalReference": "..." | null, // whatever we sent at checkout
+//     "amount": 299,                     // gross, in pesos
+//     "currency": "PHP",
+//     "status": "paid",                  // always "paid" — failures are
+//                                         // never sent, so there is
+//                                         // nothing else to branch on
+//     "customer": { "name": "...", "email": "..." }, // either can be null
+//     "metadata": { ... } | null,
+//     "timestamp": "2026-08-13T09:04:11.412Z" // when the delivery was
+//                                              // built, not when it settled
+//   }
+// Signed the same way as the outgoing checkout call (confirmed by the
+// same docs): HMAC-SHA256 of the raw body, hex, in X-Ganap-Signature,
+// using the same signing secret.
 //
-// It always emails the full payload to the internal notify address via
-// Resend so a human sees every event while the payload shape is still being
-// confirmed against real test transactions. Once the real field names are
-// confirmed, tighten this to only notify on a genuine "paid"/"succeeded"
-// status.
+// Docs also confirm callbacks are at-least-once (a retry after a timeout,
+// or a manual redelivery, can resend the same event) — this always
+// updates the matching D1 order and re-sends the notification email on
+// every delivery rather than trying to dedupe, since a duplicate email is
+// a much smaller cost than a silently-dropped one; add real dedupe (e.g.
+// skip if the order is already 'paid') if duplicate notifications become
+// a problem.
 //
 // DB (optional, a bound D1 database, see d1/schema.sql): if bound, this
 // tries to match the webhook back to the 'pending' order created by
-// functions/api/checkout.ts (by externalReference/referenceNumber/id
-// against the order's id, which is the idempotencyKey sent to ganap.net)
-// and marks it paid with the raw webhook payload attached. No match, or no
-// DB bound, is not an error — the email notification above still fires
+// functions/api/checkout.ts via externalReference (the idempotencyKey
+// sent at checkout, which is also the order's own D1 row id) and marks
+// it paid with the raw webhook payload attached. No match, or no DB
+// bound, is not an error — the email notification below still fires
 // either way, so nothing is silently lost.
 //
 // Required env vars: GANAP_SECRET (same signing secret as /api/checkout),
@@ -38,6 +58,18 @@ interface Env {
   RESEND_FROM_EMAIL: string;
   PAYMENT_NOTIFY_EMAIL?: string;
   DB?: D1Database;
+}
+
+interface GanapWebhookPayload {
+  event: string;
+  referenceNumber: string;
+  externalReference: string | null;
+  amount: number;
+  currency: string;
+  status: string;
+  customer: { name: string | null; email: string | null } | null;
+  metadata: Record<string, unknown> | null;
+  timestamp: string;
 }
 
 const SIGNATURE_HEADER = "X-Ganap-Signature";
@@ -70,38 +102,56 @@ function timingSafeEqual(a: string, b: string): boolean {
   return mismatch === 0;
 }
 
-// ganap.net's webhook payload schema isn't documented here yet; look up a
-// plausible status/event field case-insensitively rather than assuming one
-// exact key.
-function extractStatus(payload: Record<string, unknown>): string {
-  for (const key of ["status", "paymentStatus", "state", "event", "type"]) {
-    const value = payload[key];
-    if (typeof value === "string" && value) return value;
+function parsePayload(rawBody: string): GanapWebhookPayload | null {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(rawBody);
+  } catch {
+    return null;
   }
-  return "unknown";
+  if (typeof parsed !== "object" || parsed === null) return null;
+  const p = parsed as Record<string, unknown>;
+
+  if (typeof p.referenceNumber !== "string" || typeof p.event !== "string") return null;
+
+  const customer =
+    typeof p.customer === "object" && p.customer !== null
+      ? (p.customer as { name?: unknown; email?: unknown })
+      : null;
+
+  return {
+    event: p.event,
+    referenceNumber: p.referenceNumber,
+    externalReference: typeof p.externalReference === "string" ? p.externalReference : null,
+    amount: typeof p.amount === "number" ? p.amount : 0,
+    currency: typeof p.currency === "string" ? p.currency : "PHP",
+    status: typeof p.status === "string" ? p.status : "unknown",
+    customer: customer
+      ? {
+          name: typeof customer.name === "string" ? customer.name : null,
+          email: typeof customer.email === "string" ? customer.email : null,
+        }
+      : null,
+    metadata: typeof p.metadata === "object" && p.metadata !== null ? (p.metadata as Record<string, unknown>) : null,
+    timestamp: typeof p.timestamp === "string" ? p.timestamp : "",
+  };
 }
 
-function extractString(payload: Record<string, unknown>, keys: string[]): string {
-  for (const key of keys) {
-    const value = payload[key];
-    if (typeof value === "string" && value) return value;
-  }
-  return "";
-}
-
-async function updateMatchingOrder(env: Env, rawBody: string, payload: Record<string, unknown>): Promise<void> {
+async function updateMatchingOrder(env: Env, rawBody: string, payload: GanapWebhookPayload): Promise<void> {
   if (!env.DB) return;
 
-  const orderId = extractString(payload, ["externalReference", "referenceNumber", "id"]);
+  // The order's D1 row id is the idempotencyKey sent at checkout, which
+  // was also sent as externalReference — that's what we match on.
+  // referenceNumber is ganap's own id, not ours, so it's only a fallback.
+  const orderId = payload.externalReference || payload.referenceNumber;
   if (!orderId) return;
 
-  const status = extractStatus(payload);
   const now = new Date().toISOString();
 
   const result = await env.DB.prepare(
     `UPDATE orders SET status = ?, webhook_payload = ?, updated_at = ? WHERE id = ?`
   )
-    .bind(status, rawBody, now, orderId)
+    .bind(payload.status, rawBody, now, orderId)
     .run();
 
   if (!result.meta.changes) {
@@ -109,19 +159,18 @@ async function updateMatchingOrder(env: Env, rawBody: string, payload: Record<st
   }
 }
 
-async function sendNotification(env: Env, rawBody: string, payload: Record<string, unknown>): Promise<void> {
+async function sendNotification(env: Env, rawBody: string, payload: GanapWebhookPayload): Promise<void> {
   const notifyEmail = env.PAYMENT_NOTIFY_EMAIL || DEFAULT_NOTIFY_EMAIL;
-  const status = extractStatus(payload);
-  const referenceNumber = extractString(payload, ["referenceNumber", "reference", "id"]);
-  const customerName = extractString(payload, ["customerName"]);
-  const customerEmail = extractString(payload, ["customerEmail"]);
 
   const html = `
     <p>A ganap.net payment webhook was received (TEST MODE project).</p>
     <ul>
-      <li><strong>Status/event:</strong> ${escapeHtml(status)}</li>
-      <li><strong>Reference:</strong> ${escapeHtml(referenceNumber || "(not found in payload)")}</li>
-      <li><strong>Customer:</strong> ${escapeHtml(customerName || "(not found)")} &lt;${escapeHtml(customerEmail || "(not found)")}&gt;</li>
+      <li><strong>Event:</strong> ${escapeHtml(payload.event)}</li>
+      <li><strong>Status:</strong> ${escapeHtml(payload.status)}</li>
+      <li><strong>Amount:</strong> ₱${payload.amount} ${escapeHtml(payload.currency)}</li>
+      <li><strong>Reference:</strong> ${escapeHtml(payload.referenceNumber)}</li>
+      <li><strong>Our reference:</strong> ${escapeHtml(payload.externalReference || "(none)")}</li>
+      <li><strong>Customer:</strong> ${escapeHtml(payload.customer?.name || "(not provided)")} &lt;${escapeHtml(payload.customer?.email || "(not provided)")}&gt;</li>
     </ul>
     <p>Full raw payload:</p>
     <pre style="white-space: pre-wrap; font-family: monospace; font-size: 12px;">${escapeHtml(rawBody)}</pre>
@@ -136,7 +185,7 @@ async function sendNotification(env: Env, rawBody: string, payload: Record<strin
     body: JSON.stringify({
       from: env.RESEND_FROM_EMAIL,
       to: [notifyEmail],
-      subject: `Ganap payment webhook (TEST MODE) — ${status}`,
+      subject: `Ganap payment webhook (TEST MODE) — ${payload.status}, ₱${payload.amount}`,
       html,
     }),
   });
@@ -162,12 +211,18 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUnti
     return new Response("Invalid signature", { status: 401 });
   }
 
-  let payload: Record<string, unknown>;
-  try {
-    payload = JSON.parse(rawBody) as Record<string, unknown>;
-  } catch {
-    console.error("Ganap webhook body is not valid JSON.");
+  const payload = parsePayload(rawBody);
+  if (!payload) {
+    console.error("Ganap webhook body is not valid JSON or missing required fields.", rawBody);
     return new Response("Invalid body", { status: 400 });
+  }
+
+  // "transaction.paid" is the only event ganap sends today; branching on
+  // it (per their own docs' advice) means a future event type won't fall
+  // through this handler as if it were a payment.
+  if (payload.event !== "transaction.paid") {
+    console.log(`Ignoring unrecognized ganap webhook event: ${payload.event}`);
+    return new Response("ok", { status: 200 });
   }
 
   waitUntil(

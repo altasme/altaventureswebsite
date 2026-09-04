@@ -1,20 +1,27 @@
 // Cloudflare Pages Function: POST /api/checkout
 //
-// Creates a ganap.net hosted checkout session for the /foryourbusiness ₱299
-// website offer and returns the redirectUrl the browser should be sent to.
+// Creates a ganap.net checkout session for the /foryourbusiness ₱299
+// website offer and returns what the browser needs to complete payment.
 // This is a server-only call: it signs the request with the ganap.net
 // signing secret, which must never reach the client.
+//
+// Field names and behavior below are taken from ganap.net's own
+// "Webhooks & API" documentation (PDF supplied directly by the client),
+// which superseded an earlier build based only on a generic curl example
+// from the project dashboard. Two real bugs were caught and fixed against
+// that doc:
+//   1. `amount` is in whole PESOS, not centavos — this function used to
+//      send 29900 for what should be 299, a 100x overcharge had it ever
+//      run against a live (non-test) project.
+//   2. The success/failure redirect fields are `successRedirectUrl` /
+//      `failureRedirectUrl`, not `returnUrl` — the field this function
+//      used to send doesn't exist in ganap's API and was silently
+//      ignored, so a real customer would have landed on ganap's own
+//      default receipt page instead of /foryourbusiness/thank-you.
 //
 // Required env vars (set in the Cloudflare Pages dashboard, never in the
 // repo): GANAP_SECRET (the signing secret from the ganap.net project
 // dashboard), GANAP_PROJECT_UUID (that project's UUID).
-//
-// NOTE ON AMOUNT UNIT: ganap.net's docs show `"amount":1000` in their
-// example without stating the unit. This assumes the API expects the
-// smallest currency unit (centavos), matching common PH payment gateway
-// convention, so ₱299.00 is sent as 29900. Confirm against a real test
-// transaction before relying on this; if ganap.net actually expects whole
-// pesos, change AMOUNT_PHP_CENTAVOS to 299.
 //
 // DB (optional, a bound D1 database, see d1/schema.sql): if bound, this
 // inserts a 'pending' order row keyed by the same idempotencyKey sent to
@@ -28,9 +35,23 @@ interface Env {
   DB?: D1Database;
 }
 
+// Confirmed working against this project during this build (returns a
+// correctly-shaped test-mode response) — kept as-is even though ganap's
+// own docs show the public alias api.ganap.net, since this is the host
+// actually given on the project's own dashboard/credentials page.
 const GANAP_CHECKOUT_URL = "https://convex-top-api.ganap.net/v1/checkout";
-const AMOUNT_PHP_CENTAVOS = 29900; // ₱299.00 — see amount-unit note above
-const RETURN_URL = "https://altasme.com/foryourbusiness/thank-you";
+const AMOUNT_PHP = 299; // whole pesos, decimals allowed per ganap's docs
+const SUCCESS_REDIRECT_URL = "https://altasme.com/foryourbusiness/thank-you";
+const FAILURE_REDIRECT_URL = "https://altasme.com/foryourbusiness/checkout?retry=1";
+
+// Every test-mode checkout returns this literal placeholder as redirectUrl
+// (case can vary — browsers normalize URL schemes to lowercase when
+// reporting them, so match case-insensitively), regardless of the
+// project's real payment rail. It's not a real payment code, and
+// completing a test payment happens from ganap's own dashboard (Test
+// mode section, "Simulate successful payment" button), not from anything
+// this checkout page can show the customer.
+const TEST_PLACEHOLDER_PATTERN = /^ganap-test-do-not-pay:/i;
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_FIELD_LENGTH = 200;
@@ -44,6 +65,8 @@ type CheckoutPayload = {
   instagram: string;
   existingWebsite: string;
 };
+
+type RedirectKind = "url" | "qr-image" | "qr-payload" | "test-placeholder";
 
 function jsonResponse(status: number, body: unknown): Response {
   return new Response(JSON.stringify(body), {
@@ -95,6 +118,18 @@ async function hmacSha256Hex(secret: string, message: string): Promise<string> {
     .join("");
 }
 
+// Classifies redirectUrl per ganap's own documented heuristic: an image
+// when it starts data:image or ends in an image extension, a URL when it
+// starts http, a QR payload otherwise — plus a check for the known
+// test-mode placeholder ahead of the generic QR-payload bucket, since
+// that literal string is not something to actually render as a QR code.
+function classifyRedirectUrl(value: string): RedirectKind {
+  if (TEST_PLACEHOLDER_PATTERN.test(value)) return "test-placeholder";
+  if (/^https?:\/\//i.test(value)) return "url";
+  if (/^data:image/i.test(value) || /\.(png|jpe?g|gif|webp|svg)$/i.test(value)) return "qr-image";
+  return "qr-payload";
+}
+
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (!env.GANAP_SECRET || !env.GANAP_PROJECT_UUID) {
     return jsonResponse(500, { error: "Payment is not configured yet. Please contact us directly." });
@@ -115,7 +150,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
   const ganapBody = JSON.stringify({
     projectUuid: env.GANAP_PROJECT_UUID,
-    amount: AMOUNT_PHP_CENTAVOS,
+    amount: AMOUNT_PHP,
     idempotencyKey,
     customerName: data.fullName,
     customerEmail: data.email,
@@ -128,7 +163,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       existingWebsite: data.existingWebsite || undefined,
       offer: "foryourbusiness-299",
     },
-    returnUrl: RETURN_URL,
+    successRedirectUrl: SUCCESS_REDIRECT_URL,
+    failureRedirectUrl: FAILURE_REDIRECT_URL,
   });
 
   if (env.DB) {
@@ -147,7 +183,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
           data.facebook || null,
           data.instagram || null,
           data.existingWebsite || null,
-          AMOUNT_PHP_CENTAVOS,
+          AMOUNT_PHP,
           now,
           now
         )
@@ -176,41 +212,33 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
   const ganapResponseText = await ganapResponse.text().catch(() => "");
 
+  // Logged on every call, success or failure, so the full response is
+  // visible in Cloudflare's Functions logs for diagnosis.
+  console.log(`ganap.net checkout response (${ganapResponse.status}):`, ganapResponseText);
+
   if (!ganapResponse.ok) {
-    console.error(`ganap.net checkout failed: ${ganapResponse.status} ${ganapResponseText}`);
+    // ganap's error responses are always { error: "..." } — surface that
+    // reason in the log rather than just the status code.
     return jsonResponse(502, { error: "We couldn't start your payment right now. Please try again shortly." });
   }
 
-  // Logged on every successful call (not just failures) so the full response
-  // shape is visible in Cloudflare's Functions logs — useful while ganap.net's
-  // test-mode response shape is still being confirmed.
-  console.log("ganap.net checkout response:", ganapResponseText);
-
-  let ganapData: { redirectUrl?: string } | null;
+  let ganapData: { referenceNumber?: string; redirectUrl?: string } | null;
   try {
-    ganapData = JSON.parse(ganapResponseText) as { redirectUrl?: string };
+    ganapData = JSON.parse(ganapResponseText) as { referenceNumber?: string; redirectUrl?: string };
   } catch {
     ganapData = null;
   }
 
-  if (!ganapData?.redirectUrl) {
-    console.error("ganap.net checkout response missing redirectUrl", ganapResponseText);
+  if (!ganapData?.redirectUrl || !ganapData.referenceNumber) {
+    console.error("ganap.net checkout response missing redirectUrl/referenceNumber", ganapResponseText);
     return jsonResponse(502, { error: "We couldn't start your payment right now. Please try again shortly." });
   }
 
-  if (!/^https?:\/\//.test(ganapData.redirectUrl)) {
-    // Seen in ganap.net TEST MODE: a redirectUrl like
-    // "ganap-test-do-not-pay:REFERENCE" using a custom (non-http) URL
-    // scheme, which browsers can't navigate to on their own. This isn't a
-    // bug in this function — it's ganap.net's sandbox project returning a
-    // placeholder instead of a real hosted checkout page. Surface it
-    // clearly rather than handing the browser a dead link.
-    console.error(`ganap.net returned a non-http(s) redirectUrl: "${ganapData.redirectUrl}"`, ganapResponseText);
-    return jsonResponse(502, {
-      error:
-        "Payment started, but ganap.net didn't return a usable checkout link (test-mode placeholder). Check the ganap.net dashboard or contact their support.",
-    });
-  }
+  const kind = classifyRedirectUrl(ganapData.redirectUrl);
 
-  return jsonResponse(200, { redirectUrl: ganapData.redirectUrl });
+  return jsonResponse(200, {
+    redirectUrl: ganapData.redirectUrl,
+    referenceNumber: ganapData.referenceNumber,
+    kind,
+  });
 };

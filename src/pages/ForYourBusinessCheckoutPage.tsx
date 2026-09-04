@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import QRCode from "qrcode";
 import { BRAND } from "../content/site";
 import { CHECKOUT } from "../content/foryourbusiness";
 import { trackInitiateCheckout } from "../lib/analytics";
@@ -9,6 +10,14 @@ const PAGE_TITLE = "Start Your ₱299 Website | Altaventures";
 
 const inputClasses =
   "w-full rounded-xl border border-ink/15 bg-white px-4 py-2.5 text-sm text-ink outline-none transition focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20";
+
+type RedirectKind = "url" | "qr-image" | "qr-payload" | "test-placeholder";
+
+type PaymentResult = {
+  redirectUrl: string;
+  referenceNumber: string;
+  kind: RedirectKind;
+};
 
 function Field({
   label,
@@ -42,6 +51,67 @@ function LegalLink({ label, onOpen }: { label: string; onOpen: () => void }) {
   );
 }
 
+// Generates a scannable QR code client-side from a raw payload string
+// (e.g. a QR Ph payload) using the qrcode package. Not used for the
+// "qr-image" kind, where ganap already hands back a ready-made image.
+function QrPayload({ payload }: { payload: string }) {
+  const [dataUrl, setDataUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    QRCode.toDataURL(payload, { width: 280, margin: 2 })
+      .then((url) => {
+        if (!cancelled) setDataUrl(url);
+      })
+      .catch((err) => console.error("Failed to render QR code", err));
+    return () => {
+      cancelled = true;
+    };
+  }, [payload]);
+
+  if (!dataUrl) {
+    return <div className="flex h-[280px] w-[280px] items-center justify-center text-sm text-ink/40">Generating QR code&hellip;</div>;
+  }
+
+  return <img src={dataUrl} alt="Scan with your banking or e-wallet app to pay" width={280} height={280} />;
+}
+
+function PaymentPanel({ result }: { result: PaymentResult }) {
+  return (
+    <div className="rounded-2xl border border-ink/10 bg-paper-alt p-6 text-center sm:p-8">
+      {result.kind === "test-placeholder" ? (
+        <>
+          <p className="text-xs font-semibold uppercase tracking-wide text-brand-blue">Test Mode</p>
+          <h2 className="mt-1 text-xl font-bold text-brand-navy">This is a Test Transaction</h2>
+          <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-ink/70">
+            ganap.net doesn't show a real payment screen in test mode. To simulate this payment, go to the ganap.net
+            dashboard's <strong>Test mode</strong> section, find reference{" "}
+            <code className="rounded bg-white px-1.5 py-0.5 font-mono text-xs text-brand-navy">
+              {result.referenceNumber}
+            </code>
+            , and click <strong>Simulate successful payment</strong>.
+          </p>
+        </>
+      ) : (
+        <>
+          <p className="text-xs font-semibold uppercase tracking-wide text-brand-blue">Scan to Pay</p>
+          <h2 className="mt-1 text-xl font-bold text-brand-navy">₱299 &middot; Reference {result.referenceNumber}</h2>
+          <div className="mt-4 flex justify-center">
+            {result.kind === "qr-image" ? (
+              <img src={result.redirectUrl} alt="Scan with your banking or e-wallet app to pay" width={280} height={280} />
+            ) : (
+              <QrPayload payload={result.redirectUrl} />
+            )}
+          </div>
+          <p className="mx-auto mt-4 max-w-sm text-sm text-ink/60">
+            Scan this code with your GCash, Maya, or banking app to complete your ₱299 payment.
+          </p>
+        </>
+      )}
+    </div>
+  );
+}
+
 function CheckoutForm() {
   const { openLegal } = useModals();
 
@@ -57,6 +127,7 @@ function CheckoutForm() {
   const [touched, setTouched] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [paymentResult, setPaymentResult] = useState<PaymentResult | null>(null);
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const fieldsValid = fullName.trim().length > 1 && businessName.trim().length > 1 && emailValid && phone.trim().length > 3;
@@ -88,20 +159,34 @@ function CheckoutForm() {
         }),
       });
 
-      const data = (await response.json().catch(() => null)) as { redirectUrl?: string; error?: string } | null;
+      const data = (await response.json().catch(() => null)) as
+        | { redirectUrl?: string; referenceNumber?: string; kind?: RedirectKind; error?: string }
+        | null;
 
-      if (!response.ok || !data?.redirectUrl) {
+      if (!response.ok || !data?.redirectUrl || !data.referenceNumber || !data.kind) {
         setErrorMessage(data?.error || "We couldn't start your payment right now. Please try again shortly.");
         setSubmitting(false);
         return;
       }
 
-      window.location.href = data.redirectUrl;
+      if (data.kind === "url") {
+        window.location.href = data.redirectUrl;
+        return;
+      }
+
+      // QR / test-placeholder kinds stay on this page and render a panel
+      // instead of navigating away, since there's nowhere to navigate to.
+      setPaymentResult({ redirectUrl: data.redirectUrl, referenceNumber: data.referenceNumber, kind: data.kind });
+      setSubmitting(false);
     } catch {
       setErrorMessage("We couldn't reach our payment provider. Please check your connection and try again.");
       setSubmitting(false);
     }
   };
+
+  if (paymentResult) {
+    return <PaymentPanel result={paymentResult} />;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
