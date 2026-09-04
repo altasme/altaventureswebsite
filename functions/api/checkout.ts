@@ -174,16 +174,42 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return jsonResponse(502, { error: "We couldn't start your payment right now. Please try again shortly." });
   }
 
+  const ganapResponseText = await ganapResponse.text().catch(() => "");
+
   if (!ganapResponse.ok) {
-    const text = await ganapResponse.text().catch(() => "");
-    console.error(`ganap.net checkout failed: ${ganapResponse.status} ${text}`);
+    console.error(`ganap.net checkout failed: ${ganapResponse.status} ${ganapResponseText}`);
     return jsonResponse(502, { error: "We couldn't start your payment right now. Please try again shortly." });
   }
 
-  const ganapData = (await ganapResponse.json().catch(() => null)) as { redirectUrl?: string } | null;
+  // Logged on every successful call (not just failures) so the full response
+  // shape is visible in Cloudflare's Functions logs — useful while ganap.net's
+  // test-mode response shape is still being confirmed.
+  console.log("ganap.net checkout response:", ganapResponseText);
+
+  let ganapData: { redirectUrl?: string } | null;
+  try {
+    ganapData = JSON.parse(ganapResponseText) as { redirectUrl?: string };
+  } catch {
+    ganapData = null;
+  }
+
   if (!ganapData?.redirectUrl) {
-    console.error("ganap.net checkout response missing redirectUrl", ganapData);
+    console.error("ganap.net checkout response missing redirectUrl", ganapResponseText);
     return jsonResponse(502, { error: "We couldn't start your payment right now. Please try again shortly." });
+  }
+
+  if (!/^https?:\/\//.test(ganapData.redirectUrl)) {
+    // Seen in ganap.net TEST MODE: a redirectUrl like
+    // "ganap-test-do-not-pay:REFERENCE" using a custom (non-http) URL
+    // scheme, which browsers can't navigate to on their own. This isn't a
+    // bug in this function — it's ganap.net's sandbox project returning a
+    // placeholder instead of a real hosted checkout page. Surface it
+    // clearly rather than handing the browser a dead link.
+    console.error(`ganap.net returned a non-http(s) redirectUrl: "${ganapData.redirectUrl}"`, ganapResponseText);
+    return jsonResponse(502, {
+      error:
+        "Payment started, but ganap.net didn't return a usable checkout link (test-mode placeholder). Check the ganap.net dashboard or contact their support.",
+    });
   }
 
   return jsonResponse(200, { redirectUrl: ganapData.redirectUrl });
