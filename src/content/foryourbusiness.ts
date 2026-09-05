@@ -82,7 +82,7 @@ export const WHO_ITS_FOR = {
 export const FYB_PORTFOLIO = {
   headline: "See What We Can Build",
   sub: "Real websites for real Philippine businesses. Tap any to see it live.",
-  primaryIds: ["dmhr", "vocalyze", "aulea", "pocketg7iii", "macquias"],
+  primaryIds: ["dmhr", "vocalyze", "aulea", "pocketg7iii", "macquias", "ascend-volleyball", "clickandkeep"],
   advancedIds: ["aurielle", "leanandfit"],
   advancedLabel: "Beyond the ₱299 scope",
   cta: "See What We Can Build →",

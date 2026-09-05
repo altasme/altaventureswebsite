@@ -73,6 +73,8 @@ export const OFFER_PORTFOLIO = {
     "leanandfit",
     "pocketg7iii",
     "macquias",
+    "ascend-volleyball",
+    "clickandkeep",
   ],
   closer: "If we built these for them, picture what we will build for you. Free.",
   cta: PRIMARY_CTA,

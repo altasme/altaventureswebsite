@@ -138,6 +138,30 @@ export const PORTFOLIO: Project[] = [
       "A landing page for a local camera rental business based in Tarlac City, subdomained to ours in support of youth entrepreneurship.",
     tags: ["Website", "Local", "Youth Entrepreneurship"],
   },
+  {
+    id: "ascend-volleyball",
+    name: "Ascend Volleyball Camp",
+    url: "https://avc.altasme.com",
+    category: "Volleyball Camp & Training Academy Website",
+    tier: "site",
+    status: "live",
+    viewable: true,
+    description:
+      "A landing page for a Quezon City based volleyball camp and training academy. Student management system and e-commerce store in future development talks.",
+    tags: ["Website", "Sports", "Local"],
+  },
+  {
+    id: "clickandkeep",
+    name: "Click and Keep Photography",
+    url: "https://clickandkeep.altasme.com",
+    category: "Local Photography Business Website",
+    tier: "site",
+    status: "live",
+    viewable: true,
+    description:
+      "A landing page for a local freelance photographer to showcase his work to clients, subdomained to ours in support of youth entrepreneurship.",
+    tags: ["Website", "Local", "Youth Entrepreneurship"],
+  },
 ];
 
 export const PORTFOLIO_BY_ID: Record<string, Project> = Object.fromEntries(
@@ -162,11 +186,6 @@ export const ONGOING = [
     id: "argo",
     name: "ARGO Customs Brokerage",
     note: "A customs brokerage service.",
-  },
-  {
-    id: "ascend-volleyball",
-    name: "Ascend Volleyball Academy",
-    note: "A volleyball training academy.",
   },
   {
     id: "onyx-clouds",
