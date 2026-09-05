@@ -32,6 +32,22 @@ export const FYB_HERO = {
   cta: PRIMARY_CTA,
 } as const;
 
+// Real numbers only — same honesty guardrail as everywhere else on this
+// page (no fake scarcity, no fabricated stats). "15+" is the real total
+// businesses served, per the operator directly (higher than
+// content/portfolio.ts's 10-entry PORTFOLIO array, since not every real
+// project has a public listing there). Update this by hand as the real
+// count grows — don't derive it from portfolio.ts, which was never meant
+// to be a complete client count.
+export const FYB_HERO_STATS = {
+  eyebrow: "Trusted By Businesses",
+  stats: [
+    { value: "15+", label: "Websites launched & counting" },
+    { value: "4-7 Days", label: "Average build time" },
+    { value: "₱299", label: "Your starting price" },
+  ],
+} as const;
+
 export const PROBLEM = {
   headline: "No Website Yet? Your Customers Notice.",
   body: "When someone hears about your business, they search for it. If nothing comes up, or just an old Facebook page, they wonder if you are still around, or they move on to someone who looks more established. A simple website gives them one clear place to see what you offer and how to reach you. You do not need something complicated. You just need to exist online, properly.",

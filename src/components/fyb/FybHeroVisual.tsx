@@ -1,34 +1,26 @@
-// Placeholder for the hero visual. Per CLAUDEforyourbusiness.md spec §8,
-// this should be a real device composition (one dominant desktop shot, one
-// or two mobile shots, real Altaventures projects, clean device framing)
-// once someone builds/captures it. Until then this renders a clearly
-// labeled placeholder instead of a fabricated mockup, per the site-wide
-// no-fabricated-screenshots guardrail (CLAUDE.md §16).
+// Editorial stat composition for the hero. Replaces the earlier
+// "hero visual placeholder" box (a real device-screenshot composition was
+// the original spec target, but no such asset exists yet and won't for a
+// while) with real, honest numbers instead of a fabricated mockup —
+// consistent with the site-wide no-fabricated-screenshots guardrail
+// (CLAUDE.md §16): a true stat is real proof too, not a placeholder.
+import { FYB_HERO_STATS } from "../../content/foryourbusiness";
+
 export default function FybHeroVisual() {
   return (
-    <div className="flex aspect-[4/3] w-full flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed border-white/25 bg-white/5 p-8 text-center">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="text-white/40" aria-hidden="true">
-        <rect x="3" y="4" width="18" height="13" rx="2" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M8 21h8M12 17v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      </svg>
-      <p className="text-sm font-semibold text-white/70">Hero visual placeholder</p>
-      <p className="max-w-xs text-xs leading-relaxed text-white/45">
-        Real device composition: one dominant desktop site + 1-2 mobile shots, real Altaventures projects.
+    <div className="min-w-0 rounded-3xl border border-white/15 px-8 py-10 sm:px-10 sm:py-12">
+      <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-white/40">
+        {FYB_HERO_STATS.eyebrow}
       </p>
-      <dl className="mt-2 grid grid-cols-1 gap-1 text-xs text-white/45">
-        <div>
-          <dt className="inline font-semibold text-white/60">Canvas: </dt>
-          <dd className="inline">1600 &times; 1200px</dd>
-        </div>
-        <div>
-          <dt className="inline font-semibold text-white/60">Aspect ratio: </dt>
-          <dd className="inline">4:3</dd>
-        </div>
-        <div>
-          <dt className="inline font-semibold text-white/60">Type: </dt>
-          <dd className="inline">PNG, transparent background</dd>
-        </div>
-      </dl>
+
+      <div className="mt-8 divide-y divide-white/10">
+        {FYB_HERO_STATS.stats.map((stat) => (
+          <div key={stat.label} className="py-7 text-center first:pt-0 last:pb-0">
+            <p className="text-5xl font-extrabold tracking-tight text-white sm:text-6xl">{stat.value}</p>
+            <p className="mt-2 text-sm text-white/60">{stat.label}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
