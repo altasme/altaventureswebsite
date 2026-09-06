@@ -11,7 +11,6 @@ export default function FybHero({ onCheckout }: { onCheckout: () => void }) {
             {FYB_HERO.headline}
           </h1>
           <p className="mt-6 max-w-lg text-lg leading-relaxed text-white/80">{FYB_HERO.sub}</p>
-          <p className="mt-3 max-w-lg text-sm text-white/60">{FYB_HERO.microcopy}</p>
 
           <div className="mt-8">
             <CTAButton label={FYB_HERO.cta} section="hero" onClick={onCheckout} size="lg" className="w-full sm:w-auto" />

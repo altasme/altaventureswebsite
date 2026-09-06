@@ -27,8 +27,6 @@ export const STICKY_CTA = "₱299 · GET MY WEBSITE →";
 export const FYB_HERO = {
   headline: "Get a Website for Your Business for Only ₱299",
   sub: "A simple, professional website for business owners who want to be online without paying agency prices. We build it for you.",
-  microcopy:
-    "No tech skills needed. You send your details, we build it, and it goes live on your own yourbusiness.altasme.com.",
   cta: PRIMARY_CTA,
 } as const;
 

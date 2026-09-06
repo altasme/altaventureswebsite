@@ -119,10 +119,10 @@ function TestingNotice() {
 
   return (
     <div className="rounded-2xl border-2 border-amber-400 bg-amber-50 p-5">
-      <p className="text-sm font-bold uppercase tracking-wide text-amber-800">Online Payment: Testing &amp; Development</p>
-      <p className="mt-2 text-sm leading-relaxed text-amber-900">
-        We just went live and online payment here is still being tested and refined. If you'd rather not risk it right
-        now, chat with us directly and we'll get your ₱299 website started that way instead.
+      <p className="text-xs font-bold uppercase tracking-wide text-amber-800">Testing &amp; Development</p>
+      <p className="mt-2 max-w-[65ch] text-sm leading-relaxed text-amber-900">
+        Online payment just went live and is still being tested and refined. If you'd rather not risk it right now,
+        chat with us directly and we'll get your ₱299 website started that way instead.
       </p>
       <button
         type="button"
@@ -313,7 +313,7 @@ function CheckoutForm() {
         <button
           type="submit"
           disabled={!canSubmit}
-          className="inline-flex w-full items-center justify-center rounded-full bg-brand-blue px-6 py-4 text-base font-semibold text-white shadow-lg shadow-black/15 transition hover:-translate-y-0.5 hover:bg-[#0b57cc] disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-40 sm:w-auto"
+          className="inline-flex w-full items-center justify-center rounded-full bg-brand-blue px-6 py-4 text-base font-semibold text-white shadow-lg shadow-black/15 transition hover:-translate-y-0.5 hover:bg-[#0b57cc] disabled:cursor-not-allowed disabled:translate-y-0 disabled:bg-ink/10 disabled:text-ink/60 disabled:shadow-none sm:w-auto"
         >
           {submitting ? "Starting your payment..." : CHECKOUT.cta}
         </button>
