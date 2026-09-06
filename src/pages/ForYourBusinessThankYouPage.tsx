@@ -14,7 +14,7 @@ function AccountPanel() {
       <p className="text-base font-bold text-brand-navy">{ACCOUNT.headline}</p>
       <p className="mt-2 text-sm text-ink/60">{ACCOUNT.body}</p>
       <a
-        href="https://account.altasme.com/api/auth-start"
+        href="https://account.altasme.com/api/auth-start?intent=signup"
         className="mt-4 inline-flex items-center justify-center rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-black/15 transition hover:-translate-y-0.5 hover:bg-[#0b57cc]"
       >
         {ACCOUNT.cta} &rarr;
