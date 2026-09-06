@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS orders (
   facebook TEXT,
   instagram TEXT,
   existing_website TEXT,
-  amount INTEGER NOT NULL,           -- centavos, see functions/api/checkout.ts
+  amount INTEGER NOT NULL,           -- whole pesos (299), see functions/api/checkout.ts AMOUNT_PHP
   webhook_payload TEXT,              -- raw JSON from the confirmed ganap.net webhook
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
