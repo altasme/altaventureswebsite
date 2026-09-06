@@ -23,12 +23,12 @@ export default function Footer() {
               <img src={BRAND.logo} alt={BRAND.name} width={240} height={30} className="h-6 w-auto" />
             </span>
             <p className="mt-3 max-w-sm text-sm text-white/60">{FOOTER.tagline}</p>
-            <p className="mt-4 text-xs text-white/40">{FOOTER.legalName}</p>
-            <p className="mt-1 max-w-sm text-xs text-white/40">{FOOTER.supportingStatement}</p>
+            <p className="mt-4 text-xs text-white/50">{FOOTER.legalName}</p>
+            <p className="mt-1 max-w-sm text-xs text-white/50">{FOOTER.supportingStatement}</p>
           </div>
 
           <div>
-            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-white/40">
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-white/50">
               Site
             </h3>
             <ul className="space-y-2">
@@ -52,7 +52,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-white/40">
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-white/50">
               Chat With Us
             </h3>
             <ul className="space-y-2">
@@ -94,7 +94,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-white/40">
+          <p className="text-xs text-white/50">
             &copy; {new Date().getFullYear()} {BRAND.legalName}. All rights reserved.
           </p>
           <div className="flex gap-6">

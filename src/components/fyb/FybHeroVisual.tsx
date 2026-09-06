@@ -9,7 +9,7 @@ import { FYB_HERO_STATS } from "../../content/foryourbusiness";
 export default function FybHeroVisual() {
   return (
     <div className="min-w-0 rounded-3xl border border-white/15 px-8 py-10 sm:px-10 sm:py-12">
-      <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-white/40">
+      <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-white/50">
         {FYB_HERO_STATS.eyebrow}
       </p>
 

@@ -40,7 +40,7 @@ export default function WhoItsFor({ onOpenQualifier }: { onOpenQualifier: () => 
         </Reveal>
 
         <Reveal delayMs={100} className="rounded-2xl border border-ink/10 bg-paper-alt p-6">
-          <p className="text-sm font-semibold uppercase tracking-wide text-ink/50">Not for you if</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-ink/60">Not for you if</p>
           <ul className="mt-4 space-y-3">
             {WHO_ITS_FOR.notForYou.map((item) => (
               <li key={item} className="flex items-start gap-3 text-sm text-ink/60 sm:text-base">

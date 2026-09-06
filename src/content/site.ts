@@ -46,7 +46,11 @@ export const HERO = {
   primaryCta: "Let's Talk About Your Business",
   secondaryCta: "See What We've Built",
   trustLine: "Built for real businesses. Designed around real business needs.",
+  // WebP variants (62-64% smaller than the JPEGs) are tried first via
+  // <picture>; the JPEGs stay as the fallback source, not dead files.
+  backgroundImageDesktopWebp: "/images/hero/hero-bg-wide.webp",
   backgroundImageDesktop: "/images/hero/hero-bg-wide.jpg",
+  backgroundImageMobileWebp: "/images/hero/hero-bg-mobile.webp",
   backgroundImageMobile: "/images/hero/hero-bg-mobile.jpg",
   backgroundAlt: "Business owner smiling with coffee in a modern office, surrounded by laptops and monitors",
 } as const;

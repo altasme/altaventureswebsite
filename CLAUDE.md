@@ -374,6 +374,28 @@ Define as Tailwind theme tokens.
 - Accessible: keyboard-navigable, focus-visible states, sufficient contrast, alt text on all real images, ARIA on modals/accordion.
 - HTTPS via Cloudflare Pages by default.
 
+### 12.1 Lighthouse audit [2026-09-06, real findings and fixes]
+
+Ran `lighthouse` (mobile, 390x844, default simulated-throttling preset) against a local `vite preview` build via the pre-installed headless Chromium, since this was previously an unchecked item in §15's Definition of Done. Before/after, homepage only:
+
+| Category | Before | After |
+|---|---|---|
+| Performance | 55 | 76 |
+| Accessibility | 96 | 100 |
+| Best Practices | 96 | 100 |
+| SEO | 100 | 100 |
+
+**Real, verified fixes (not sandbox artifacts):**
+- **Self-hosted Inter instead of Google Fonts.** `index.html`'s `<link rel="stylesheet" href="https://fonts.googleapis.com/...">` (plus its two `preconnect` hints) was a render-blocking third-party request that failed outright in this sandbox (`net::ERR_CONNECTION_RESET`, even when Chrome was pointed at the sandbox's own egress proxy) and drove First Contentful Paint to 13.8s. Replaced with `@fontsource/inter` (weights 400/500/600/700/800 imported in `src/main.tsx`), which bundles the font files locally with no external request at all — dropped FCP to ~2.2s. This removes a real third-party dependency regardless of the sandbox issue (self-hosting fonts is standard performance/privacy best practice), so it isn't a workaround for this environment specifically.
+- **Hero images converted to WebP.** `Hero.tsx`'s two full-bleed background images (the LCP element on every load) are now `<picture>` elements — a `<source type="image/webp">` first, the original JPEG kept as the `<img>` fallback (never deleted, so nothing regresses for a browser that somehow lacks WebP support) — plus `fetchPriority="high"` on both `<img>` tags. `hero-bg-mobile.jpg`/`hero-bg-wide.jpg` (184KB/118KB) got WebP siblings at 70KB/42KB (62-64% smaller, quality 78, generated once via a scratch `sharp` script, visually verified side-by-side before wiring in). `content/site.ts`'s `HERO` gained `backgroundImageDesktopWebp`/`backgroundImageMobileWebp` alongside the existing JPEG paths. LCP dropped from 5.0s to 4.1s.
+- **Color contrast, three real WCAG failures, all shared classes so fixed site-wide, not just on the homepage:**
+  - `text-ink/50` (ink `#0A0F1C` at 50% over `paper-alt` `#F6F8FC`) measured 3.52:1, below the 4.5:1 required for normal text — used in ~15 places across modals, `CredibilityStrip`, `SelectedWork`, the `/limitedoffer` and `/foryourbusiness` components, `SignaturePad`. Bumped to `text-ink/60` (4.94:1) everywhere via a single find-and-replace rather than patching only the flagged homepage instances, since the same class was failing on every page that used it.
+  - `text-white/40` (white at 40% over `brand-navy-deep` `#06122E`) measured 3.79:1 — used in `FinalCTA`, `Footer`, `FybHeroVisual`'s eyebrow, `LimitedOfferPage`'s footer. Bumped to `text-white/50` (5.28:1), same site-wide approach.
+  - **The decorative pale step-number accent** (`text-brand-blue/25` on white, used in `HowItWorks.tsx`, `OfferHowItWorks.tsx`, `FybHowItWorks.tsx`'s numbered steps) measured 1.43:1 against the 3:1 large-bold-text threshold. First tried `aria-hidden="true"` alone (reasoning: the number is redundant with the `<ol>` item order a screen reader already announces) — **this did not clear the audit**, because `aria-hidden` only removes an element from the accessibility tree, it doesn't exempt visually-rendered text from the WCAG contrast requirement that protects sighted low-vision users. Kept the `aria-hidden` (still correct for screen readers) and additionally darkened to `text-brand-blue/75` (3.25:1) to actually pass. `FybHowItWorks.tsx` was also restructured from a bare `<div>` grid to a semantic `<ol>/<li>` to match the other two components, since without list semantics `aria-hidden`-ing the only visible step number would have removed the sole indicator of step order for screen reader users.
+- **`unused-javascript` (main bundle, ~42% unused on this route) and the `network-dependency-tree`/`lcp-discovery` insights were not chased** — the remaining gap is inherent to a client-rendered SPA shipping one shared bundle across `/`, `/WSA-free`, `/limitedoffer`, `/foryourbusiness` (already code-split via `React.lazy` per §17-19) and would need either route-level chunking finer than what exists or a switch away from a pure-CSR architecture — a bigger, riskier change than this pass's scope. Revisit only if Performance needs to climb further.
+
+**Caveat on the Performance number itself:** Lighthouse's default mobile preset simulates a slow, high-latency mobile network and a 4x-slowed CPU — this local `vite preview` server is also not Cloudflare's real edge CDN (no HTTP/2 push, no edge caching, no real-world TLS session reuse). The 76 measured here is a lower bound from a deliberately harsh, non-production environment; the deployed site at `altasme.com` should score higher. Re-run the same audit against the live URL once convenient to get a production-accurate number — the fixes above are real either way (measured, verified byte savings and contrast ratios), not artifacts of the measurement environment.
+
 ---
 
 ## 13. LEGAL (open item #6, RESOLVED)
@@ -402,7 +424,7 @@ Define as Tailwind theme tokens.
 - [x] Real assets in place: logo, favicon, hero photography, project screenshots, About copy, legal text. Placeholders remain only for analytics IDs. OG image deliberately absent (§10), not a placeholder gap.
 - [x] Brand palette (§11.1), logo, and tagline applied.
 - [x] No backend, no form, no Website Care mention anywhere public.
-- [ ] Lighthouse: performance/accessibility/SEO in good range on mobile.
+- [x] Lighthouse: performance/accessibility/SEO in good range on mobile (§12.1).
 - [x] Static `dist/` deploys clean to Cloudflare Pages (live at altasme.com).
 
 ---

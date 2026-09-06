@@ -9,15 +9,21 @@ export default function FybHowItWorks() {
         {FYB_HOW_IT_WORKS.headline}
       </h2>
 
-      <div className="mt-10 grid gap-6 sm:grid-cols-3">
+      <ol className="mt-10 grid gap-6 sm:grid-cols-3">
         {FYB_HOW_IT_WORKS.steps.map((step, i) => (
-          <Reveal key={step.number} delayMs={i * 80}>
-            <p className="text-3xl font-extrabold text-brand-blue/25">{step.number}</p>
-            <h3 className="mt-2 text-base font-bold text-brand-navy">{step.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-ink/65">{step.body}</p>
-          </Reveal>
+          <li key={step.number}>
+            <Reveal delayMs={i * 80}>
+              {/* Decorative accent numeral, redundant with the <ol> item
+                  order a screen reader already announces. */}
+              <p aria-hidden="true" className="text-3xl font-extrabold text-brand-blue/75">
+                {step.number}
+              </p>
+              <h3 className="mt-2 text-base font-bold text-brand-navy">{step.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink/65">{step.body}</p>
+            </Reveal>
+          </li>
         ))}
-      </div>
+      </ol>
     </Section>
   );
 }

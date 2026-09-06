@@ -36,7 +36,7 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={htmlFor} className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/50">
+      <label htmlFor={htmlFor} className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/60">
         {label} {optional && <span className="normal-case text-ink/30">(optional)</span>}
       </label>
       {children}
@@ -220,7 +220,7 @@ function CheckoutForm() {
         <h1 className="mt-1 text-2xl font-bold text-brand-navy sm:text-3xl">{CHECKOUT.summaryTitle}</h1>
         <div className="mt-3 flex items-baseline gap-2">
           <span className="text-3xl font-extrabold text-brand-navy">{CHECKOUT.price}</span>
-          <span className="text-xs font-semibold text-ink/50">{CHECKOUT.priceNote}</span>
+          <span className="text-xs font-semibold text-ink/60">{CHECKOUT.priceNote}</span>
         </div>
         <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3">
           {CHECKOUT.summaryItems.map((item) => (

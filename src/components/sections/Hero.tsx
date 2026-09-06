@@ -45,11 +45,15 @@ export default function Hero() {
           the left third stays clear for the headline by construction;
           the gradient reinforces it rather than doing all the work. */}
       <div className="relative hidden min-h-[620px] items-center px-6 sm:flex lg:min-h-[760px] lg:px-8">
-        <img
-          src={HERO.backgroundImageDesktop}
-          alt={HERO.backgroundAlt}
-          className="absolute inset-0 h-full w-full object-cover object-[62%_center]"
-        />
+        <picture>
+          <source srcSet={HERO.backgroundImageDesktopWebp} type="image/webp" />
+          <img
+            src={HERO.backgroundImageDesktop}
+            alt={HERO.backgroundAlt}
+            fetchPriority="high"
+            className="absolute inset-0 h-full w-full object-cover object-[62%_center]"
+          />
+        </picture>
         <div
           className="pointer-events-none absolute inset-0"
           style={{
@@ -72,11 +76,15 @@ export default function Hero() {
       {/* Mobile: full-bleed portrait shot, subject in the lower frame,
           text sits in the image's own empty top zone. */}
       <div className="relative flex min-h-[100svh] flex-col overflow-hidden px-6 pb-10 pt-14 sm:hidden">
-        <img
-          src={HERO.backgroundImageMobile}
-          alt={HERO.backgroundAlt}
-          className="absolute inset-0 h-full w-full object-cover object-[50%_100%]"
-        />
+        <picture>
+          <source srcSet={HERO.backgroundImageMobileWebp} type="image/webp" />
+          <img
+            src={HERO.backgroundImageMobile}
+            alt={HERO.backgroundAlt}
+            fetchPriority="high"
+            className="absolute inset-0 h-full w-full object-cover object-[50%_100%]"
+          />
+        </picture>
         <div
           className="pointer-events-none absolute inset-0"
           style={{

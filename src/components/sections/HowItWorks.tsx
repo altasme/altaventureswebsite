@@ -15,7 +15,13 @@ export default function HowItWorks() {
       <ol className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {HOW_IT_WORKS.steps.map((step) => (
           <li key={step.number} className="rounded-2xl border border-ink/8 p-6">
-            <span className="text-3xl font-extrabold text-brand-blue/25">
+            {/* Decorative accent numeral, redundant with the <ol> item order
+                a screen reader already announces, so aria-hidden keeps it
+                out of the a11y tree. aria-hidden alone doesn't satisfy
+                WCAG contrast though (it hides from assistive tech, not
+                from sighted low-vision users), so it's also darkened to
+                /75 to clear the 3:1 large-bold-text threshold. */}
+            <span aria-hidden="true" className="text-3xl font-extrabold text-brand-blue/75">
               {String(step.number).padStart(2, "0")}
             </span>
             <h3 className="mt-3 text-lg font-semibold text-ink">{step.title}</h3>
