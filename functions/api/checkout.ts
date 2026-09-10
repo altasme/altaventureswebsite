@@ -40,7 +40,7 @@ interface Env {
 // own docs show the public alias api.ganap.net, since this is the host
 // actually given on the project's own dashboard/credentials page.
 const GANAP_CHECKOUT_URL = "https://convex-top-api.ganap.net/v1/checkout";
-const AMOUNT_PHP = 299; // whole pesos, decimals allowed per ganap's docs
+const AMOUNT_PHP = 1; // TEMPORARY: live ₱1 test [2026-09-10], revert to 299 after — see CLAUDE.md §19 note
 const SUCCESS_REDIRECT_URL = "https://altasme.com/foryourbusiness/thank-you";
 const FAILURE_REDIRECT_URL = "https://altasme.com/foryourbusiness/checkout?retry=1";
 
