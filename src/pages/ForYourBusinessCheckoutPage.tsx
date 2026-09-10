@@ -114,29 +114,8 @@ function PaymentPanel({ result }: { result: PaymentResult }) {
   );
 }
 
-function TestingNotice() {
-  const { openContactModal } = useModals();
-
-  return (
-    <div className="rounded-2xl border-2 border-amber-400 bg-amber-50 p-5">
-      <p className="text-xs font-bold uppercase tracking-wide text-amber-800">Testing &amp; Development</p>
-      <p className="mt-2 max-w-[65ch] text-sm leading-relaxed text-amber-900">
-        Online payment just went live and is still being tested and refined. If you'd rather not risk it right now,
-        chat with us directly and we'll get your ₱299 website started that way instead.
-      </p>
-      <button
-        type="button"
-        onClick={() => openContactModal("checkout-testing-notice", FYB_PREFILL)}
-        className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-amber-800 px-5 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-amber-900"
-      >
-        Chat With Us Instead &rarr;
-      </button>
-    </div>
-  );
-}
-
 function CheckoutForm() {
-  const { openLegal } = useModals();
+  const { openLegal, openContactModal } = useModals();
 
   const [fullName, setFullName] = useState("");
   const [businessName, setBusinessName] = useState("");
@@ -213,8 +192,6 @@ function CheckoutForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
-      <TestingNotice />
-
       <div className="rounded-2xl border border-ink/10 bg-paper-alt p-6">
         <p className="text-xs font-semibold uppercase tracking-wide text-brand-blue">{CHECKOUT.eyebrow}</p>
         <h1 className="mt-1 text-2xl font-bold text-brand-navy sm:text-3xl">{CHECKOUT.summaryTitle}</h1>
@@ -308,7 +285,18 @@ function CheckoutForm() {
           </label>
         </div>
 
-        {errorMessage && <p className="text-sm font-medium text-red-600">{errorMessage}</p>}
+        {errorMessage && (
+          <div className="rounded-xl bg-red-50 px-4 py-3">
+            <p className="text-sm font-medium text-red-600">{errorMessage}</p>
+            <button
+              type="button"
+              onClick={() => openContactModal("checkout-error", FYB_PREFILL)}
+              className="mt-1.5 text-sm font-semibold text-brand-blue hover:underline"
+            >
+              Message us instead &rarr;
+            </button>
+          </div>
+        )}
 
         <button
           type="submit"
@@ -317,8 +305,6 @@ function CheckoutForm() {
         >
           {submitting ? "Starting your payment..." : CHECKOUT.cta}
         </button>
-
-        <p className="text-xs text-ink/40">{CHECKOUT.testModeNote}</p>
       </div>
     </form>
   );

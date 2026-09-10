@@ -12,14 +12,14 @@
 // Shares BRAND, CONTACT with the main site (content/site.ts) and
 // portfolio data with content/portfolio.ts rather than duplicating them.
 //
-// Checkout is live (ganap.net, TEST MODE project). Every CTA on this page
-// navigates to /foryourbusiness/checkout, which posts to the
-// functions/api/checkout.ts Cloudflare Function and redirects the browser
-// to ganap.net's hosted payment page. Supabase/Setmona/the full
-// account-onboarding flow are still not built (no credentials for those
-// yet), so the post-payment experience is a simple thank-you page, not the
-// full formalized flow in CLAUDE.md §19; see that section for what's real
-// vs. still deferred.
+// Checkout is live (ganap.net, real production project, confirmed
+// 2026-09-10). Every CTA on this page navigates to /foryourbusiness/checkout,
+// which posts to the functions/api/checkout.ts Cloudflare Function and
+// redirects the browser to ganap.net's hosted payment page. Setmona's
+// booking system still has no credentials and remains unbuilt, so the
+// post-payment experience is a simple thank-you page, not the full
+// formalized flow in CLAUDE.md §19; see that section for what's real vs.
+// still deferred.
 
 export const PRIMARY_CTA = "GET MY WEBSITE FOR ₱299 →";
 export const STICKY_CTA = "₱299 · GET MY WEBSITE →";
@@ -151,7 +151,6 @@ export const CHECKOUT = {
     "Typical buildtime: 4-7 days",
   ],
   cta: "PAY ₱299 & START →",
-  testModeNote: "This checkout is currently running in ganap.net test mode.",
 } as const;
 
 export const THANK_YOU = {
