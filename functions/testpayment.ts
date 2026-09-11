@@ -18,7 +18,7 @@
 //     "event": "transaction.paid",       // the only event sent today
 //     "referenceNumber": "...",          // matches the checkout response
 //     "externalReference": "..." | null, // whatever we sent at checkout
-//     "amount": 299,                     // gross, in pesos
+//     "amount": 499,                     // gross, in pesos
 //     "currency": "PHP",
 //     "status": "paid",                  // always "paid" — failures are
 //                                         // never sent, so there is

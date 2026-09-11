@@ -1,10 +1,10 @@
 // content/foryourbusiness.ts
-// SINGLE SOURCE OF TRUTH for the /foryourbusiness landing page (the ₱299
+// SINGLE SOURCE OF TRUTH for the /foryourbusiness landing page (the ₱499
 // professional website offer). Structure and copy follow the v2 lean
 // 8-section spec (CLAUDEforyourbusiness_1.md §5), which supersedes the
 // original 13-section elaborate structure: standalone Reality, Social
-// Media Reality, Why Only ₱299, Urgency, and Guarantee sections are
-// dropped entirely (intentional for a ₱299 impulse offer). The
+// Media Reality, Why Only ₱499, Urgency, and Guarantee sections are
+// dropped entirely (intentional for a ₱499 impulse offer). The
 // catch-reassurance question ("why so cheap?") is folded into the FAQ;
 // the make-it-right guarantee lives in the Terms of Sale, not on-page.
 // No fake scarcity anywhere on this page.
@@ -20,12 +20,16 @@
 // post-payment experience is a simple thank-you page, not the full
 // formalized flow in CLAUDE.md §19; see that section for what's real vs.
 // still deferred.
+//
+// Price raised from ₱299 to ₱499 [2026-09-11, operator decision]. Every
+// mention of the price on this page and its checkout/thank-you flow was
+// updated to match; nothing about the offer's scope or structure changed.
 
-export const PRIMARY_CTA = "GET MY WEBSITE FOR ₱299 →";
-export const STICKY_CTA = "₱299 · GET MY WEBSITE →";
+export const PRIMARY_CTA = "GET MY WEBSITE FOR ₱499 →";
+export const STICKY_CTA = "₱499 · GET MY WEBSITE →";
 
 export const FYB_HERO = {
-  headline: "Get a Website for Your Business for Only ₱299",
+  headline: "Get a Website for Your Business for Only ₱499",
   sub: "A simple, professional website for business owners who want to be online without paying agency prices. We build it for you.",
   cta: PRIMARY_CTA,
 } as const;
@@ -42,7 +46,7 @@ export const FYB_HERO_STATS = {
   stats: [
     { value: "15+", label: "Websites launched & counting" },
     { value: "4-7 Days", label: "Average build time" },
-    { value: "₱299", label: "Your starting price" },
+    { value: "₱499", label: "Your starting price" },
   ],
 } as const;
 
@@ -52,7 +56,7 @@ export const PROBLEM = {
 } as const;
 
 export const WHATS_INCLUDED = {
-  headline: "What Your ₱299 Website Includes",
+  headline: "What Your ₱499 Website Includes",
   items: [
     "A professional single-page website built around your business",
     "Mobile-friendly design (most of your customers are on their phones)",
@@ -62,7 +66,7 @@ export const WHATS_INCLUDED = {
     "SSL security (the padlock customers trust)",
   ],
   scopeLine:
-    "This is a simple website to get you online. Online stores, booking systems, and custom tools are things we can add later, but they are not part of the ₱299 build.",
+    "This is a simple website to get you online. Online stores, booking systems, and custom tools are things we can add later, but they are not part of the ₱499 build.",
 } as const;
 
 export const WHO_ITS_FOR = {
@@ -71,25 +75,25 @@ export const WHO_ITS_FOR = {
   line: "If you have a real business and no proper website yet, this is for you.",
 } as const;
 
-// Portfolio grid is a deliberate ₱299-scope curation, not the full canonical
+// Portfolio grid is a deliberate ₱499-scope curation, not the full canonical
 // list: Altamotors (system tier) is excluded so a full CRM/financing
-// platform doesn't sit next to "₱299" and misrepresent what the offer
+// platform doesn't sit next to "₱499" and misrepresent what the offer
 // delivers. Setmona/Kolekta (engine tier, no public URL) never belong here.
-// Primary grid = simple, live, ₱299-scale informational sites. Advanced row
+// Primary grid = simple, live, ₱499-scale informational sites. Advanced row
 // is optional proof of range, explicitly labeled beyond this offer's scope.
 export const FYB_PORTFOLIO = {
   headline: "See What We Can Build",
   sub: "Real websites for real Philippine businesses. Tap any to see it live.",
   primaryIds: ["dmhr", "vocalyze", "aulea", "pocketg7iii", "macquias", "ascend-volleyball", "clickandkeep"],
   advancedIds: ["aurielle", "leanandfit"],
-  advancedLabel: "Beyond the ₱299 scope",
+  advancedLabel: "Beyond the ₱499 scope",
   cta: "See What We Can Build →",
 } as const;
 
 export const FYB_HOW_IT_WORKS = {
   headline: "Three Simple Steps",
   steps: [
-    { number: "01", title: "Pay ₱299", body: "Secure checkout via GCash, Maya, or card." },
+    { number: "01", title: "Pay ₱499", body: "Secure checkout via GCash, Maya, or card." },
     {
       number: "02",
       title: "Tell Us About Your Business",
@@ -103,7 +107,7 @@ export const FYB_FAQ = {
   headline: "Frequently Asked Questions",
   items: [
     {
-      q: "What exactly is included in ₱299?",
+      q: "What exactly is included in ₱499?",
       a: "A professional single-page website built around your business, mobile-friendly design, your business information, contact details, free hosting on your own subdomain, and SSL security. One-time fee.",
     },
     { q: "How long does it take?", a: "Usually 4 to 7 days after we receive your details and content." },
@@ -124,7 +128,7 @@ export const FYB_FAQ = {
       a: "You get an email to set up your account, then you book a quick call so we get everything right, then we build.",
     },
     {
-      q: "Why is it only ₱299?",
+      q: "Why is it only ₱499?",
       a: "We keep the first website simple and affordable to earn your trust. If your business grows and wants more later, we hope you build it with us. No catch, no contract.",
     },
   ],
@@ -132,13 +136,13 @@ export const FYB_FAQ = {
 
 export const FYB_FINAL_CTA = {
   headline: "Ready to Put Your Business Online?",
-  body: "Get started with your website for ₱299. Simple, professional, and yours.",
+  body: "Get started with your website for ₱499. Simple, professional, and yours.",
   cta: PRIMARY_CTA,
 } as const;
 
 export const CHECKOUT = {
   eyebrow: "START YOUR WEBSITE",
-  price: "₱299",
+  price: "₱499",
   priceNote: "ONE-TIME PAYMENT",
   summaryTitle: "Professional Business Website",
   summaryItems: [
@@ -150,12 +154,12 @@ export const CHECKOUT = {
     "Done for you",
     "Typical buildtime: 4-7 days",
   ],
-  cta: "PAY ₱299 & START →",
+  cta: "PAY ₱499 & START →",
 } as const;
 
 export const THANK_YOU = {
   headline: "Payment Received. Let's Get Started.",
-  body: "Your ₱299 payment has been successfully received. You'll receive a confirmation email shortly. From there, you can create your Altaventures account and continue with your website setup.",
+  body: "Your ₱499 payment has been successfully received. You'll receive a confirmation email shortly. From there, you can create your Altaventures account and continue with your website setup.",
   microcopy: "Having trouble, or didn't get a confirmation? Message us and we'll sort it out.",
   cta: "Message Us",
 } as const;

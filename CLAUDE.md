@@ -600,3 +600,21 @@ Ran a full audit of the checkout and account creation flow, prompted by the oper
 **Still open, not fixed here (unchanged from earlier sections):**
 - Legal content still needs a Philippine lawyer's review before real payments should be considered fully compliant (§19's own note, unchanged).
 - `functions/api/webhooks/workos.ts`'s signature header name is unconfirmed against a live delivery (above).
+
+---
+
+## 21. Price raised from ₱299 to ₱499 [2026-09-11]
+
+Operator decision: the /foryourbusiness offer's price moved from ₱299 to ₱499. Every real occurrence was updated, both here and in the two other repos that reference the same offer (`clienthub`, `clientkeeper`). Nothing about the offer's scope, structure, or section order changed, only the number.
+
+**Changed in this repo:**
+- `functions/api/checkout.ts`: `AMOUNT_PHP` (the actual amount charged) is now 499.
+- `src/content/foryourbusiness.ts`: every customer-facing price mention (hero, what's included, how it works, FAQ, checkout summary, thank-you copy, `PRIMARY_CTA`/`STICKY_CTA`).
+- `src/content/site.ts`: the three FYB legal documents (`fyb-refund`, `fyb-terms`, `fyb-privacy`) reference the price directly in several places (refund amounts, liability cap, offer description), so those were updated too, and each document's `lastUpdated` date was bumped to September 11, 2026 to reflect the substantive change. `effectiveDate` was left as the original date on purpose, same convention as every other dated field in this file.
+- `src/pages/ForYourBusinessPage.tsx` and `ForYourBusinessCheckoutPage.tsx`: page titles, meta description, and the two hardcoded price mentions in the payment-result panel.
+- `src/lib/contact.ts`'s `FYB_PREFILL` and `src/lib/analytics.ts`'s Meta `InitiateCheckout` value.
+- `functions/testpayment.ts`'s illustrative payload comment (this function itself is legacy/dead per §19's correction, updated only for documentation accuracy).
+
+**Deliberately left as `299`, not renamed:** the internal `metadata.offer: "foryourbusiness-299"` tag sent to ganap.net in `functions/api/checkout.ts`, and the historical bug-fix narrative in that same file's header comment ("the original code sent 29900 for what should be 299, a 100x overcharge"). The metadata tag is an internal category label no code branches on and nothing displays, functionally equivalent to a product SKU, not a live price statement, so renaming it isn't worth the inconsistency it would create against every payment already recorded under that tag. The bug-fix narrative describes a real historical event with specific numbers; changing "299" there would misrepresent what actually happened. Same reasoning applied consistently across all three repos, see clienthub's CLAUDE.md for its own version of this note (the `payments.source` CHECK constraint's `'foryourbusiness_299'` value, in particular, was left alone since renaming it would require the same risky CHECK-constraint table rebuild documented in clienthub's CLAUDE.md §16).
+
+**How this was tested:** `npm run build` and `npm run lint` passed clean. Grepped the entire repo for "299" before and after to confirm every remaining occurrence was one of the two deliberate exceptions above; grepped the built `dist/` bundles afterward and confirmed the compiled checkout page and shared content chunk contain the new "499" strings with no leftover "299" price text (the only "299" left in any built JS file is an unrelated coincidental match, a React internal error code and a PDF font metric, nothing to do with this offer).

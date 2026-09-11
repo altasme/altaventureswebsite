@@ -20,9 +20,9 @@ import Reveal from "../components/offer/Reveal";
 
 import LegalModal from "../components/modals/LegalModal";
 
-const PAGE_TITLE = "Get Your Business Online for ₱299 | Altaventures";
+const PAGE_TITLE = "Get Your Business Online for ₱499 | Altaventures";
 const PAGE_DESCRIPTION =
-  "A professional, mobile-friendly business website, done for you, for a one-time ₱299 payment. Ready in 4 to 7 days. See real Altaventures work.";
+  "A professional, mobile-friendly business website, done for you, for a one-time ₱499 payment. Ready in 4 to 7 days. See real Altaventures work.";
 
 const LEGAL_LINKS = [
   { label: "Refund Policy", id: "fyb-refund" as const },

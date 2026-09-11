@@ -114,6 +114,6 @@ export function trackLead(params: AnalyticsEventMap["lead"]) {
 export function trackInitiateCheckout() {
   track("checkout_started", {});
   if (typeof window !== "undefined" && typeof window.fbq === "function") {
-    window.fbq("track", "InitiateCheckout", { value: 299, currency: "PHP" });
+    window.fbq("track", "InitiateCheckout", { value: 499, currency: "PHP" });
   }
 }

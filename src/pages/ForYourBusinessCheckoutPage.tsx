@@ -8,7 +8,7 @@ import { ModalProvider, useModals } from "../lib/modalContext";
 import ContactModal from "../components/modals/ContactModal";
 import LegalModal from "../components/modals/LegalModal";
 
-const PAGE_TITLE = "Start Your ₱299 Website | Altaventures";
+const PAGE_TITLE = "Start Your ₱499 Website | Altaventures";
 
 const inputClasses =
   "w-full rounded-xl border border-ink/15 bg-white px-4 py-2.5 text-sm text-ink outline-none transition focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20";
@@ -97,7 +97,7 @@ function PaymentPanel({ result }: { result: PaymentResult }) {
       ) : (
         <>
           <p className="text-xs font-semibold uppercase tracking-wide text-brand-blue">Scan to Pay</p>
-          <h2 className="mt-1 text-xl font-bold text-brand-navy">₱299 &middot; Reference {result.referenceNumber}</h2>
+          <h2 className="mt-1 text-xl font-bold text-brand-navy">₱499 &middot; Reference {result.referenceNumber}</h2>
           <div className="mt-4 flex justify-center">
             {result.kind === "qr-image" ? (
               <img src={result.redirectUrl} alt="Scan with your banking or e-wallet app to pay" width={280} height={280} />
@@ -106,7 +106,7 @@ function PaymentPanel({ result }: { result: PaymentResult }) {
             )}
           </div>
           <p className="mx-auto mt-4 max-w-sm text-sm text-ink/60">
-            Scan this code with your GCash, Maya, or banking app to complete your ₱299 payment.
+            Scan this code with your GCash, Maya, or banking app to complete your ₱499 payment.
           </p>
         </>
       )}

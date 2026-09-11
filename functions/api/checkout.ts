@@ -1,6 +1,6 @@
 // Cloudflare Pages Function: POST /api/checkout
 //
-// Creates a ganap.net checkout session for the /foryourbusiness ₱299
+// Creates a ganap.net checkout session for the /foryourbusiness ₱499
 // website offer and returns what the browser needs to complete payment.
 // This is a server-only call: it signs the request with the ganap.net
 // signing secret, which must never reach the client.
@@ -40,7 +40,7 @@ interface Env {
 // own docs show the public alias api.ganap.net, since this is the host
 // actually given on the project's own dashboard/credentials page.
 const GANAP_CHECKOUT_URL = "https://convex-top-api.ganap.net/v1/checkout";
-const AMOUNT_PHP = 299; // whole pesos, decimals allowed per ganap's docs
+const AMOUNT_PHP = 499; // whole pesos, decimals allowed per ganap's docs. Raised from 299 [2026-09-11].
 const SUCCESS_REDIRECT_URL = "https://altasme.com/foryourbusiness/thank-you";
 const FAILURE_REDIRECT_URL = "https://altasme.com/foryourbusiness/checkout?retry=1";
 
