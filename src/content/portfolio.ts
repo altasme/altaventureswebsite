@@ -162,6 +162,28 @@ export const PORTFOLIO: Project[] = [
       "A landing page for a local freelance photographer to showcase his work to clients, subdomained to ours in support of youth entrepreneurship.",
     tags: ["Website", "Local", "Youth Entrepreneurship"],
   },
+  {
+    id: "amr-bookkeeping",
+    name: "AMR Bookkeeping & Accounting Support",
+    url: "https://amyrellora.com",
+    category: "Bookkeeping & Accounting Services Website",
+    tier: "site",
+    status: "live",
+    viewable: true,
+    description: "A professional landing page for an experienced bookkeeper serving a worldwide client base.",
+    tags: ["Website", "Professional Services"],
+  },
+  {
+    id: "adrayan-law",
+    name: "Atty. Omar Adrayan Law Office",
+    url: "https://adrayanlawoffice.altasme.com",
+    category: "Law Firm Website",
+    tier: "site",
+    status: "live",
+    viewable: true,
+    description: "A professional landing page for a law office, subdomained to ours.",
+    tags: ["Website", "Professional Services", "Local"],
+  },
 ];
 
 export const PORTFOLIO_BY_ID: Record<string, Project> = Object.fromEntries(

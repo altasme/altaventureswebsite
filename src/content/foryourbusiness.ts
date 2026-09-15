@@ -35,16 +35,16 @@ export const FYB_HERO = {
 } as const;
 
 // Real numbers only — same honesty guardrail as everywhere else on this
-// page (no fake scarcity, no fabricated stats). "15+" is the real total
+// page (no fake scarcity, no fabricated stats). "18+" is the real total
 // businesses served, per the operator directly (higher than
-// content/portfolio.ts's 10-entry PORTFOLIO array, since not every real
+// content/portfolio.ts's 14-entry PORTFOLIO array, since not every real
 // project has a public listing there). Update this by hand as the real
 // count grows — don't derive it from portfolio.ts, which was never meant
 // to be a complete client count.
 export const FYB_HERO_STATS = {
   eyebrow: "Trusted By Businesses",
   stats: [
-    { value: "15+", label: "Websites launched & counting" },
+    { value: "18+", label: "Websites launched & counting" },
     { value: "4-7 Days", label: "Average build time" },
     { value: "₱499", label: "Your starting price" },
   ],
@@ -58,7 +58,7 @@ export const PROBLEM = {
 export const WHATS_INCLUDED = {
   headline: "What Your ₱499 Website Includes",
   items: [
-    "A professional single-page website built around your business",
+    "A professional multi-page website built around your business",
     "Mobile-friendly design (most of your customers are on their phones)",
     "Your business information and what you offer",
     "Contact details and a clear way for customers to reach you",
@@ -84,7 +84,7 @@ export const WHO_ITS_FOR = {
 export const FYB_PORTFOLIO = {
   headline: "See What We Can Build",
   sub: "Real websites for real Philippine businesses. Tap any to see it live.",
-  primaryIds: ["dmhr", "vocalyze", "aulea", "pocketg7iii", "macquias", "ascend-volleyball", "clickandkeep"],
+  primaryIds: ["dmhr", "vocalyze", "aulea", "pocketg7iii", "macquias", "ascend-volleyball", "clickandkeep", "amr-bookkeeping", "adrayan-law"],
   advancedIds: ["aurielle", "leanandfit"],
   advancedLabel: "Beyond the ₱499 scope",
   cta: "See What We Can Build →",
@@ -108,7 +108,7 @@ export const FYB_FAQ = {
   items: [
     {
       q: "What exactly is included in ₱499?",
-      a: "A professional single-page website built around your business, mobile-friendly design, your business information, contact details, free hosting on your own subdomain, and SSL security. One-time fee.",
+      a: "A professional multi-page website built around your business, mobile-friendly design, your business information, contact details, free hosting on your own subdomain, and SSL security. One-time fee.",
     },
     { q: "How long does it take?", a: "Usually 4 to 7 days after we receive your details and content." },
     {
