@@ -640,3 +640,21 @@ Both automatically appear on the homepage's `SelectedWork` grid (no per-project 
 **A duplicate file in the operator's upload was not used.** The zip also contained `Ascend Volleyball Camp.jpg`, visually identical to the already-existing `public/images/projects/ascend-volleyball.jpg` already shipped in an earlier round. Treated as an accidental redundant include; no action taken.
 
 **How this was tested:** `npm run build` and `npm run lint` passed clean. Verified both new images exist in the built `dist/` output at the expected byte sizes and are served with `200` from a local `vite preview`. Visually confirmed both new `SelectedWork` cards via a Playwright screenshot, waiting for each `<img>`'s `load` event before capturing (the first screenshot attempt, taken immediately after `scrollIntoViewIfNeeded()`, caught the image mid-lazy-load and showed blank space — a screenshot-timing artifact of the verification script itself, not a real rendering bug; confirmed both images report `complete: true`, `naturalWidth: 2400` once given a moment to load).
+
+---
+
+## 23. Price reverted from ₱499 back to ₱299 [2026-09-16]
+
+Operator decision: the /foryourbusiness offer's price moved back from ₱499 to ₱299, five days after the §21 raise. Same scope as §21 in reverse — every real occurrence updated, in this repo and the two others that reference the same offer (`clienthub`, `clientkeeper`); nothing about the offer's scope, structure, or section order changed, only the number.
+
+**Changed in this repo (mirror of §21's list):**
+- `functions/api/checkout.ts`: `AMOUNT_PHP` is 299 again; its inline comment now reads "Raised to 499 [2026-09-11], reverted back to 299 [2026-09-16]" so the history stays visible in the code, not just here.
+- `src/content/foryourbusiness.ts`: every customer-facing price mention (hero, what's included, how it works, FAQ, checkout summary, thank-you copy, `PRIMARY_CTA`/`STICKY_CTA`), plus the file's own header comment.
+- `src/content/site.ts`: the three FYB legal documents (`fyb-refund`, `fyb-terms`, `fyb-privacy`) had every `₱499` reverted to `₱299`; each doc's `lastUpdated` bumped to September 16, 2026. `effectiveDate` left unchanged, same convention as every other dated field in this file.
+- `src/pages/ForYourBusinessPage.tsx` and `ForYourBusinessCheckoutPage.tsx`: page titles, meta description, the payment-result panel's price mentions.
+- `src/lib/contact.ts`'s `FYB_PREFILL` and `src/lib/analytics.ts`'s Meta `InitiateCheckout` value.
+- `functions/testpayment.ts`'s illustrative payload comment.
+
+**Deliberately left alone, same reasoning as §21:** the internal `metadata.offer: "foryourbusiness-299"` tag in `functions/api/checkout.ts` was already `299` and needed no change. The §21 bug-fix narrative in that same file's header comment ("used to send 29900 for what should be 299") is unaffected by this revert, it describes a real historical event unrelated to the price level itself.
+
+**How this was tested:** `npm run build` and `npm run lint` passed clean. Grepped the entire repo for "499" afterward: the only two remaining hits are the deliberate historical narrative comments in `content/foryourbusiness.ts`'s header and `functions/api/checkout.ts`'s `AMOUNT_PHP` line, both of which correctly state that the price was raised to 499 before being reverted. Grepped the built `dist/` bundles too: the one "499" hit left in any JS file is an unrelated coincidental substring inside a hashed/encoded blob in `WsaFreePage`'s bundle, nothing to do with this offer.
