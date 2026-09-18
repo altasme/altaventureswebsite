@@ -26,7 +26,7 @@ export default function FybHero({ onCheckout }: { onCheckout: () => void }) {
   return (
     <section className="relative overflow-hidden bg-brand-navy-deep">
       {/* Desktop / tablet: full-bleed wide shot. */}
-      <div className="relative hidden min-h-[560px] items-center px-6 sm:flex lg:min-h-[680px] lg:px-8">
+      <div className="relative hidden min-h-[620px] items-center px-6 sm:flex lg:min-h-[760px] lg:px-8">
         <img
           src={FYB_HERO.backgroundImageDesktop}
           alt={FYB_HERO.backgroundAlt}
@@ -52,21 +52,26 @@ export default function FybHero({ onCheckout }: { onCheckout: () => void }) {
         </div>
       </div>
 
-      {/* Mobile: full-bleed portrait shot, text sits in the image's own
-          upper zone (same assumption as the homepage's crop — adjust
-          object-position below if the supplied photo is framed differently). */}
+      {/* Mobile: full-bleed portrait shot. object-[50%_100%] (same as the
+          homepage's Hero.tsx mobile crop) bottom-anchors the image, pushing
+          the subject down and out of the text block's way — the first pass
+          used object-center, which put the CTA button directly over the
+          subject's head [confirmed against a real screenshot of the
+          deployed page, 2026-09-18]. Gradient stays dark behind the text
+          block (roughly the top half) then fades fast so the subject below
+          it is actually visible rather than a dark silhouette. */}
       <div className="relative flex min-h-[100svh] flex-col overflow-hidden px-6 pb-10 pt-14 sm:hidden">
         <img
           src={FYB_HERO.backgroundImageMobile}
           alt={FYB_HERO.backgroundAlt}
           fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          className="absolute inset-0 h-full w-full object-cover object-[50%_100%]"
         />
         <div
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, rgba(6,18,46,0.92) 0%, rgba(6,18,46,0.88) 50%, rgba(6,18,46,0.72) 74%, rgba(6,18,46,0.45) 100%)",
+              "linear-gradient(180deg, rgba(6,18,46,0.88) 0%, rgba(6,18,46,0.8) 42%, rgba(6,18,46,0.3) 58%, rgba(6,18,46,0.12) 100%)",
           }}
         />
         <div className="relative z-10">
