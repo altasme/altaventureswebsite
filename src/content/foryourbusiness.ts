@@ -80,12 +80,35 @@ export const PROBLEM = {
 export const WHATS_INCLUDED = {
   headline: "What Your ₱299 Website Includes",
   items: [
-    "A professional multi-page website built around your business",
-    "Mobile-friendly design (most of your customers are on their phones)",
-    "Your business information and what you offer",
-    "Contact details and a clear way for customers to reach you",
-    "Free hosting on your own subdomain (yourbusiness.altasme.com)",
-    "SSL security (the padlock customers trust)",
+    {
+      title: "A Website Designed Around Your Business",
+      copy: "A professional-looking website built to introduce your business and give visitors a clear idea of what you do.",
+    },
+    {
+      title: "Your Business Information, All in One Place",
+      copy: "Present your business details, About section, services or products, and contact information in one convenient place.",
+      note: "No page limit, as long as the number of pages is reasonable and within the agreed scope.",
+    },
+    {
+      title: "Mobile-Friendly Design",
+      copy: "Your website adapts to different screen sizes, so visitors can browse it on their phones, tablets, or computers.",
+    },
+    {
+      title: "A Clear Way for Customers to Contact You",
+      copy: "Give visitors a straightforward way to inquire about your business through your website's contact or inquiry call-to-action.",
+    },
+    {
+      title: "Hosting & SSL Security Included",
+      copy: "Your website gets hosted online with HTTPS security, so customers can access it through the web.",
+    },
+    {
+      title: "100% Done-for-You Website Creation",
+      copy: "No need to build it yourself. We handle the website creation and get it live once your required business information and materials are ready.",
+    },
+    {
+      title: "ALTAVENTURES Subdomain",
+      copy: "e.g., yourbusiness.altasme.com",
+    },
   ],
   scopeLine:
     "This is a simple website to get you online. Online stores, booking systems, and custom tools are things we can add later, but they are not part of the ₱299 build.",

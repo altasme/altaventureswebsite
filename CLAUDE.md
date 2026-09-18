@@ -692,3 +692,13 @@ The hero (`FybHero.tsx`) was a solid `bg-brand-navy-deep` two-column layout (hea
 `PROBLEM` in `content/foryourbusiness.ts` changed from a single-paragraph headline+body ("No Website Yet? Your Customers Notice." / one long paragraph) to a shorter headline ("No Website Yet?") with `body` restructured into a two-paragraph array, per the operator's direct copy request. `body` changed from a plain `string` to `string[]` to hold the two paragraphs — matches the existing pattern already used by `/limitedoffer`'s `AGITATION.body` in `content/offer.ts`. `Problem.tsx` updated to map over the array and render each paragraph as its own `<p>` (previously a single `<p>{PROBLEM.body}</p>`).
 
 **How this was tested:** `npm run build` and `npm run lint` passed clean. Grepped the repo for the old headline/body text to confirm no other page echoed it. Screenshot-verified the section renders both paragraphs correctly with proper spacing.
+
+---
+
+## 26. What's Included section rewrite [2026-09-18]
+
+`WHATS_INCLUDED.items` in `content/foryourbusiness.ts` changed from six plain-string checklist lines to seven `{ title, copy, note? }` objects, per the operator's direct copy request — each item now carries a bold title plus a one-sentence description, not just a single line. Field names (`title`/`copy`) match the existing `WHY_ALTAVENTURES.points` convention in `content/site.ts` rather than inventing new ones. One item (`Your Business Information, All in One Place`) carries an extra optional `note` field for the "no page limit" caveat, rendered as a smaller italic line beneath its copy — the only item with one. The subdomain item (`ALTAVENTURES Subdomain`) has a `copy` of just the example (`e.g., yourbusiness.altasme.com`) rather than a full sentence, matching how short the operator's own line for it was.
+
+`WhatsIncluded.tsx` updated to render each card's title (bold) and copy (smaller, muted) stacked under the check icon, with the optional `note` rendered last when present (`"note" in item && item.note`, since only one of the seven objects has that key). Kept the same 2-column card grid and `Reveal` stagger as before — this is a content/copy depth change, not a layout rebuild.
+
+**How this was tested:** `npm run build` and `npm run lint` passed clean. Screenshot-verified all seven cards render correctly (title, copy, and the one note line) with proper spacing at a desktop width, and the scope line below the grid is unaffected.

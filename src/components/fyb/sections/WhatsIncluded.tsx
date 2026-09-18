@@ -19,13 +19,17 @@ export default function WhatsIncluded() {
 
       <ul className="mt-8 grid gap-3 sm:grid-cols-2">
         {WHATS_INCLUDED.items.map((item, i) => (
-          <li key={item}>
+          <li key={item.title}>
             <Reveal
               delayMs={i * 60}
-              className="flex items-start gap-3 rounded-2xl border border-ink/8 bg-white p-4"
+              className="flex h-full items-start gap-3 rounded-2xl border border-ink/8 bg-white p-4"
             >
               <CheckIcon />
-              <span className="text-sm text-ink/80 sm:text-base">{item}</span>
+              <div>
+                <p className="text-sm font-semibold text-ink sm:text-base">{item.title}</p>
+                <p className="mt-1 text-sm text-ink/70">{item.copy}</p>
+                {"note" in item && item.note && <p className="mt-1.5 text-xs italic text-ink/50">{item.note}</p>}
+              </div>
             </Reveal>
           </li>
         ))}
