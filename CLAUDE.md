@@ -702,3 +702,15 @@ The hero (`FybHero.tsx`) was a solid `bg-brand-navy-deep` two-column layout (hea
 `WhatsIncluded.tsx` updated to render each card's title (bold) and copy (smaller, muted) stacked under the check icon, with the optional `note` rendered last when present (`"note" in item && item.note`, since only one of the seven objects has that key). Kept the same 2-column card grid and `Reveal` stagger as before — this is a content/copy depth change, not a layout rebuild.
 
 **How this was tested:** `npm run build` and `npm run lint` passed clean. Screenshot-verified all seven cards render correctly (title, copy, and the one note line) with proper spacing at a desktop width, and the scope line below the grid is unaffected.
+
+---
+
+## 27. `/foryourbusiness` portfolio re-curated, three new projects blocked on real images [2026-09-18]
+
+Per the operator's direct request, `FYB_PORTFOLIO` (`content/foryourbusiness.ts`) re-curated to a specific 6-project list, scoped to this page only — the homepage's `SelectedWork` (which renders all of canonical `PORTFOLIO` with no filtering) and `/limitedoffer`'s `OFFER_PORTFOLIO` wall are both untouched, per the operator's own "in /foryourbusiness page only" instruction.
+
+**Dropped from `primaryIds`:** `aulea`, `macquias`, `ascend-volleyball`, `clickandkeep`, `adrayan-law`. **Kept:** `dmhr`, `pocketg7iii`, `amr-bookkeeping`, `vocalyze` (primary grid) plus `aurielle`, `leanandfit` (unchanged in `advancedIds`, the "beyond the ₱299 scope" row).
+
+**Three more requested projects were NOT added — no real images were actually received for them.** The operator's message described Imago Productions (`imagoproductionsph.com`, photography/videography, Tarlac), Camsnap Camera Rental (`camsnap.altasme.com`, Batangas), and Onyx Clouds Premium Vape Co. (`onyxcloudvape.altasme.com`, already known from CLAUDE.md §22 as a real in-progress client with no screenshot at the time) as "(uploaded)", but this session's uploads directory held no new files for any of the three — only the existing zip from §22's round and two unrelated hero-verification phone screenshots from earlier the same day. Checked whether any of the three live URLs were reachable from this sandbox to self-capture a real screenshot instead (a genuine screenshot of a real live site would satisfy the real-work-only guardrail same as an operator-supplied one) — all three are blocked by the sandbox's egress proxy (confirmed via `curl`, `connect_rejected`). Per CLAUDE.md §16, none were added with a placeholder. **Next step once real screenshots are supplied:** add all three as new entries to canonical `content/portfolio.ts` first (`tier: "site"`, `viewable: true`, matching the existing convention), then add their ids to `FYB_PORTFOLIO.primaryIds` here.
+
+**How this was tested:** `npm run build` and `npm run lint` passed clean. Screenshot-verified the portfolio grid renders exactly the four kept primary-tier projects (DM HR Consultancy, Pocket G7iii Camera Rental, AMR Bookkeeping & Accounting Support, Vocalyze Lounge) with correct copy, tags, and "View Website" links, and none of the five dropped projects appear.
