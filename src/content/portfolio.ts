@@ -184,6 +184,39 @@ export const PORTFOLIO: Project[] = [
     description: "A professional landing page for a law office, subdomained to ours.",
     tags: ["Website", "Professional Services", "Local"],
   },
+  {
+    id: "imago-productions",
+    name: "Imago Productions",
+    url: "https://imagoproductionsph.com",
+    category: "Photography & Videography Company Website",
+    tier: "site",
+    status: "live",
+    viewable: true,
+    description: "A professional landing page for a local photography and videography production company based in Tarlac.",
+    tags: ["Website", "Local"],
+  },
+  {
+    id: "camsnap",
+    name: "Camsnap Camera Rental",
+    url: "https://camsnap.altasme.com",
+    category: "Local Camera Rental Website",
+    tier: "site",
+    status: "live",
+    viewable: true,
+    description: "A landing page for a local camera rental business based in Batangas, subdomained to ours.",
+    tags: ["Website", "Local"],
+  },
+  {
+    id: "onyx-clouds",
+    name: "Onyx Clouds Premium Vape Co.",
+    url: "https://onyxcloudvape.altasme.com",
+    category: "Local Vape & E-cig Supplier Website",
+    tier: "site",
+    status: "live",
+    viewable: true,
+    description: "A landing page for a local vape and e-cig supplier, subdomained to ours.",
+    tags: ["Website", "Retail", "Local"],
+  },
 ];
 
 export const PORTFOLIO_BY_ID: Record<string, Project> = Object.fromEntries(
@@ -208,16 +241,6 @@ export const ONGOING = [
     id: "argo",
     name: "ARGO Customs Brokerage",
     note: "A customs brokerage service.",
-  },
-  {
-    id: "onyx-clouds",
-    name: "ONYX CLOUDS PREMIUM VAPE CO.",
-    note: "A premium vape brand.",
-  },
-  {
-    id: "camsnaps",
-    name: "Camsnaps Camera Rental",
-    note: "A camera rental service.",
   },
   {
     id: "firsthand-travel",

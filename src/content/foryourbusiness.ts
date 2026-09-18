@@ -127,22 +127,22 @@ export const WHO_ITS_FOR = {
 // Primary grid = simple, live, ₱299-scale informational sites. Advanced row
 // is optional proof of range, explicitly labeled beyond this offer's scope.
 //
-// [2026-09-18] Re-curated to this specific 6-project list per the operator's
+// [2026-09-18] Re-curated to this specific 9-project list per the operator's
 // direct request (this page's grid only — homepage SelectedWork and
 // /limitedoffer's OFFER_PORTFOLIO wall are untouched, both keep the full
 // project set). Dropped: aulea, macquias, ascend-volleyball, clickandkeep,
-// adrayan-law. Three more the operator asked for (Imago Productions,
-// Camsnap Camera Rental, Onyx Clouds Premium Vape Co.) are NOT added yet —
-// no real screenshots were actually received for them (the message said
-// "uploaded" but no files came through, and none of the three live URLs
-// are reachable from this sandbox to self-capture one). Add all three to
-// `content/portfolio.ts` first, then to primaryIds here, once real images
-// are supplied — do not add with a placeholder, per the site-wide
-// real-work-only guardrail (CLAUDE.md §16).
+// adrayan-law.
+//
+// Imago Productions, Camsnap Camera Rental, and Onyx Clouds Premium Vape
+// Co. were added the same day once real screenshots actually arrived (an
+// earlier message said "uploaded" but no files came through that time).
+// All three are now real entries in `content/portfolio.ts`. Onyx Clouds
+// and Camsnap both graduated out of that file's `ONGOING` list (previously
+// ids `onyx-clouds`/`camsnaps`) now that they're live with real sites.
 export const FYB_PORTFOLIO = {
   headline: "See What We Can Build",
   sub: "Real websites for real Philippine businesses. Tap any to see it live.",
-  primaryIds: ["dmhr", "pocketg7iii", "amr-bookkeeping", "vocalyze"],
+  primaryIds: ["dmhr", "pocketg7iii", "amr-bookkeeping", "imago-productions", "camsnap", "onyx-clouds", "vocalyze"],
   advancedIds: ["aurielle", "leanandfit"],
   advancedLabel: "Beyond the ₱299 scope",
   cta: "See What We Can Build →",

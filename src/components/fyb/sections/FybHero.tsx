@@ -52,30 +52,33 @@ export default function FybHero({ onCheckout }: { onCheckout: () => void }) {
         </div>
       </div>
 
-      {/* Mobile: full-bleed portrait shot. object-[50%_100%] (same as the
-          homepage's Hero.tsx mobile crop) bottom-anchors the image, pushing
-          the subject down and out of the text block's way — the first pass
-          used object-center, which put the CTA button directly over the
-          subject's head [confirmed against a real screenshot of the
-          deployed page, 2026-09-18]. Gradient stays dark behind the text
-          block (roughly the top half) then fades fast so the subject below
-          it is actually visible rather than a dark silhouette. */}
-      <div className="relative flex min-h-[100svh] flex-col overflow-hidden px-6 pb-10 pt-14 sm:hidden">
-        <img
-          src={FYB_HERO.backgroundImageMobile}
-          alt={FYB_HERO.backgroundAlt}
-          fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover object-[50%_100%]"
-        />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(6,18,46,0.88) 0%, rgba(6,18,46,0.8) 42%, rgba(6,18,46,0.3) 58%, rgba(6,18,46,0.12) 100%)",
-          }}
-        />
-        <div className="relative z-10">
+      {/* Mobile: NOT an overlay anymore [2026-09-18, second fix]. The
+          previous approach stacked the text block on top of the full-bleed
+          photo via object-position cropping (object-center, then
+          object-[50%_100%] bottom-anchoring) — both attempts were tuned
+          blind (this sandbox can never load the actual Cloudinary photo)
+          and both failed the same way on a real screenshot of the deployed
+          page: the CTA button sat directly over the subject's face either
+          time. Bottom-anchoring only helps if the source photo has real
+          headroom above the subject to crop away; this one apparently
+          doesn't, and no CSS object-position value can invent headroom
+          that isn't in the photo. Fixed at the layout level instead: the
+          text block now has its own solid bg-brand-navy-deep space (sized
+          to its content, not a fixed viewport height), and the photo is a
+          separate block below it with its own fixed aspect ratio. Text and
+          photo now occupy non-overlapping DOM regions, so this can't
+          recur regardless of how the photo is actually framed. */}
+      <div className="sm:hidden">
+        <div className="bg-brand-navy-deep px-6 pb-10 pt-14">
           <HeroCopy onCheckout={onCheckout} />
+        </div>
+        <div className="relative aspect-[4/5] w-full overflow-hidden">
+          <img
+            src={FYB_HERO.backgroundImageMobile}
+            alt={FYB_HERO.backgroundAlt}
+            fetchPriority="high"
+            className="absolute inset-0 h-full w-full object-cover object-center"
+          />
         </div>
       </div>
     </section>
