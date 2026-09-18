@@ -70,8 +70,11 @@ export const FYB_TRUST_SIGNALS = {
 } as const;
 
 export const PROBLEM = {
-  headline: "No Website Yet? Your Customers Notice.",
-  body: "When someone hears about your business, they search for it. If nothing comes up, or just an old Facebook page, they wonder if you are still around, or they move on to someone who looks more established. A simple website gives them one clear place to see what you offer and how to reach you. You do not need something complicated. You just need to exist online, properly.",
+  headline: "No Website Yet?",
+  body: [
+    "Potential customers and clients may already be searching for you online. But without a website, they have no easy way to learn about your business, explore your services, or see what makes you worth choosing.",
+    "Give them one place to discover what you do, build confidence in your work, and get in touch.",
+  ],
 } as const;
 
 export const WHATS_INCLUDED = {
