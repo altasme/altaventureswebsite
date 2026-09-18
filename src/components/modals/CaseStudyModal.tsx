@@ -46,7 +46,7 @@ export default function CaseStudyModal() {
             type="button"
             onClick={closeCaseStudy}
             aria-label="Close"
-            className="shrink-0 rounded-full p-2 text-ink/50 transition hover:bg-paper-alt hover:text-ink"
+            className="shrink-0 rounded-full p-2 text-ink/60 transition hover:bg-paper-alt hover:text-ink"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -74,7 +74,7 @@ export default function CaseStudyModal() {
 
         <div className="mb-8 grid gap-8 sm:grid-cols-2">
           <div>
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-ink/50">What We Built</h3>
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-ink/60">What We Built</h3>
             <ul className="space-y-2">
               {details.whatWeBuilt.map((item) => (
                 <li key={item} className="flex gap-2 text-sm text-ink/80">
@@ -87,11 +87,11 @@ export default function CaseStudyModal() {
 
           <div className="space-y-6">
             <div>
-              <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-ink/50">Project Type</h3>
+              <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-ink/60">Project Type</h3>
               <p className="text-sm text-ink/80">{details.projectType}</p>
             </div>
             <div>
-              <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-ink/50">Business Value</h3>
+              <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-ink/60">Business Value</h3>
               <p className="text-sm text-ink/80">{details.businessValue}</p>
             </div>
           </div>

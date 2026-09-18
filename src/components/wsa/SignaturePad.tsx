@@ -186,7 +186,7 @@ const SignaturePad = forwardRef<SignaturePadHandle, Props>(function SignaturePad
         )}
       </div>
       <div className="mt-2 flex items-center justify-between gap-3">
-        <p className="text-xs text-ink/50">Draw your signature above using your mouse, trackpad, or finger.</p>
+        <p className="text-xs text-ink/60">Draw your signature above using your mouse, trackpad, or finger.</p>
         <button
           type="button"
           onClick={clear}

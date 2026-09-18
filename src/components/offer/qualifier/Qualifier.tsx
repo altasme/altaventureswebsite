@@ -110,7 +110,7 @@ export default function Qualifier({ open, onClose }: Props) {
             type="button"
             onClick={handleClose}
             aria-label="Close"
-            className="shrink-0 rounded-full p-2 text-ink/50 transition hover:bg-paper-alt hover:text-ink"
+            className="shrink-0 rounded-full p-2 text-ink/60 transition hover:bg-paper-alt hover:text-ink"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -121,7 +121,7 @@ export default function Qualifier({ open, onClose }: Props) {
         {step === 0 && (
           <div className="space-y-4">
             <div>
-              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/50" htmlFor="q-name">
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/60" htmlFor="q-name">
                 Your name (optional)
               </label>
               <input
@@ -136,7 +136,7 @@ export default function Qualifier({ open, onClose }: Props) {
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/50" htmlFor="q-business">
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/60" htmlFor="q-business">
                 Business name (optional)
               </label>
               <input
@@ -181,7 +181,7 @@ export default function Qualifier({ open, onClose }: Props) {
         {step === 2 && (
           <div>
             <p className="mb-2 text-sm font-semibold text-ink">What do you want your website to do?</p>
-            <p className="mb-3 text-xs text-ink/50">Pick as many as apply.</p>
+            <p className="mb-3 text-xs text-ink/60">Pick as many as apply.</p>
             <div className="flex flex-wrap gap-2">
               {QUALIFIER.objectives.map((item) => (
                 <Chip key={item} active={answers.objectives.includes(item)} onClick={() => toggleObjective(item)}>

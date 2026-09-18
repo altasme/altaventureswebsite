@@ -54,7 +54,7 @@ export default function LegalModal() {
             type="button"
             onClick={closeLegal}
             aria-label="Close"
-            className="shrink-0 rounded-full p-2 text-ink/50 transition hover:bg-paper-alt hover:text-ink"
+            className="shrink-0 rounded-full p-2 text-ink/60 transition hover:bg-paper-alt hover:text-ink"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path

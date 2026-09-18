@@ -27,6 +27,9 @@ import LegalModal from "./components/modals/LegalModal";
 
 const WsaFreePage = lazy(() => import("./pages/WsaFreePage"));
 const LimitedOfferPage = lazy(() => import("./pages/LimitedOfferPage"));
+const ForYourBusinessPage = lazy(() => import("./pages/ForYourBusinessPage"));
+const ForYourBusinessCheckoutPage = lazy(() => import("./pages/ForYourBusinessCheckoutPage"));
+const ForYourBusinessThankYouPage = lazy(() => import("./pages/ForYourBusinessThankYouPage"));
 
 function PageContent() {
   useScrollDepth();
@@ -83,6 +86,30 @@ export default function App() {
         element={
           <Suspense fallback={null}>
             <LimitedOfferPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/foryourbusiness"
+        element={
+          <Suspense fallback={null}>
+            <ForYourBusinessPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/foryourbusiness/checkout"
+        element={
+          <Suspense fallback={null}>
+            <ForYourBusinessCheckoutPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/foryourbusiness/thank-you"
+        element={
+          <Suspense fallback={null}>
+            <ForYourBusinessThankYouPage />
           </Suspense>
         }
       />

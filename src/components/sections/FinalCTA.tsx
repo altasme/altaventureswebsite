@@ -18,7 +18,7 @@ export default function FinalCTA() {
             onClick={() => openContactModal("final-cta")}
           />
         </div>
-        <p className="mt-5 text-xs uppercase tracking-wider text-white/40">
+        <p className="mt-5 text-xs uppercase tracking-wider text-white/50">
           {FINAL_CTA.channelsLine}
         </p>
       </div>

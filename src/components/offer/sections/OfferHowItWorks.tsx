@@ -14,7 +14,9 @@ export default function OfferHowItWorks({ onOpenQualifier }: { onOpenQualifier: 
         {OFFER_HOW_IT_WORKS.steps.map((step, i) => (
           <li key={step.number}>
             <Reveal delayMs={i * 80} className="rounded-2xl border border-ink/8 bg-white p-6">
-              <span className="text-3xl font-extrabold text-brand-blue/25">
+              {/* Decorative accent numeral, redundant with the <ol> item
+                  order a screen reader already announces. */}
+              <span aria-hidden="true" className="text-3xl font-extrabold text-brand-blue/75">
                 {String(step.number).padStart(2, "0")}
               </span>
               <h3 className="mt-3 text-lg font-semibold text-ink">{step.title}</h3>
@@ -24,7 +26,7 @@ export default function OfferHowItWorks({ onOpenQualifier }: { onOpenQualifier: 
         ))}
       </ol>
 
-      <p className="mt-8 text-sm font-medium text-ink/50">{OFFER_HOW_IT_WORKS.footerLine}</p>
+      <p className="mt-8 text-sm font-medium text-ink/60">{OFFER_HOW_IT_WORKS.footerLine}</p>
 
       <div className="mt-6">
         <CTAButton label={OFFER_HOW_IT_WORKS.cta} section="how-it-works" onClick={onOpenQualifier} size="lg" />

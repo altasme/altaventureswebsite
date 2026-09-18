@@ -29,7 +29,7 @@ export default function CredibilityStrip() {
               <p className="text-lg font-extrabold tracking-tight text-brand-navy">
                 {project.name.toUpperCase()}
               </p>
-              <p className="mt-1 text-xs text-ink/50">{project.category}</p>
+              <p className="mt-1 text-xs text-ink/60">{project.category}</p>
             </div>
           );
         })}

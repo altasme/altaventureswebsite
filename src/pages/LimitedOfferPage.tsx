@@ -127,7 +127,7 @@ export default function LimitedOfferPage() {
             <img src={BRAND.logo} alt={BRAND.name} width={240} height={30} className="h-6 w-auto" />
           </span>
           <p className="mt-4 text-sm text-white/60">{BRAND.tagline}</p>
-          <p className="mx-auto mt-2 max-w-sm text-xs text-white/40">
+          <p className="mx-auto mt-2 max-w-sm text-xs text-white/50">
             No forms. Nothing is collected or stored on this page: every conversation happens on the chat
             platform you choose.
           </p>

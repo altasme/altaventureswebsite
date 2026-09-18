@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { useInView } from "../../lib/useInView";
 
 interface RevealProps {
   children: ReactNode;
@@ -6,34 +7,18 @@ interface RevealProps {
   className?: string;
 }
 
-// Fades and lifts content in once as it scrolls into view. Triggers a
-// single time (never re-hides on scroll away) and respects
+// Fades and lifts content in once as it scrolls into view (useInView
+// handles the IntersectionObserver + fast-scroll fallback). Respects
 // prefers-reduced-motion by rendering fully visible immediately.
 export default function Reveal({ children, delayMs = 0, className = "" }: RevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [ref, inView] = useInView<HTMLDivElement>();
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setVisible(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
+    setReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   }, []);
+
+  const visible = inView || reducedMotion;
 
   return (
     <div

@@ -210,7 +210,7 @@ export default function WsaFreePage() {
           <Link to="/" aria-label={`${BRAND.name} home`}>
             <img src={BRAND.logo} alt={BRAND.name} width={240} height={30} className="h-7 w-auto" />
           </Link>
-          <p className="hidden text-xs font-medium text-ink/50 sm:block">Free Website Service Agreement</p>
+          <p className="hidden text-xs font-medium text-ink/60 sm:block">Free Website Service Agreement</p>
         </div>
       </header>
 
@@ -298,27 +298,27 @@ export default function WsaFreePage() {
                 />
               </Field>
               <Field label="Date">
-                <input type="text" value={today} readOnly disabled className={`${inputClasses} bg-paper-alt text-ink/50`} />
+                <input type="text" value={today} readOnly disabled className={`${inputClasses} bg-paper-alt text-ink/60`} />
               </Field>
             </div>
           </div>
 
           <div className="rounded-3xl border border-ink/10 bg-white p-6 shadow-sm sm:p-10">
             <h2 className="text-xl font-bold text-brand-navy">Altaventures</h2>
-            <p className="mt-1 text-sm text-ink/50">Already signed on our side; only the date updates automatically.</p>
+            <p className="mt-1 text-sm text-ink/60">Already signed on our side; only the date updates automatically.</p>
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
               <Field label="Authorized Representative">
-                <input type="text" value={WSA_ALTA_SIGNER} readOnly disabled className={`${inputClasses} bg-paper-alt text-ink/50`} />
+                <input type="text" value={WSA_ALTA_SIGNER} readOnly disabled className={`${inputClasses} bg-paper-alt text-ink/60`} />
               </Field>
               <Field label="Date">
-                <input type="text" value={today} readOnly disabled className={`${inputClasses} bg-paper-alt text-ink/50`} />
+                <input type="text" value={today} readOnly disabled className={`${inputClasses} bg-paper-alt text-ink/60`} />
               </Field>
             </div>
           </div>
 
           <div className="rounded-3xl border border-ink/10 bg-white p-6 shadow-sm sm:p-10">
             <h2 className="text-xl font-bold text-brand-navy">Your Signature</h2>
-            <p className="mt-1 text-sm text-ink/50">This will be placed on the CLIENT signature line of the agreement.</p>
+            <p className="mt-1 text-sm text-ink/60">This will be placed on the CLIENT signature line of the agreement.</p>
             <div className="mt-6">
               <SignaturePad ref={sigRef} onChangeEmpty={(empty) => setHasSignature(!empty)} />
             </div>
@@ -384,7 +384,7 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={htmlFor} className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/50">
+      <label htmlFor={htmlFor} className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/60">
         {label}
       </label>
       {children}

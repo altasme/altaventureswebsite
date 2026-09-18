@@ -78,7 +78,7 @@ export default function SelectedWork() {
         ))}
       </div>
 
-      <p className="mt-10 text-sm text-ink/50">
+      <p className="mt-10 text-sm text-ink/60">
         <span className="font-semibold text-ink/70">{SELECTED_WORK.studioLine}</span>{" "}
         {ONGOING.map((project, i) => (
           <span key={project.id}>
