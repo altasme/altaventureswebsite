@@ -29,25 +29,43 @@
 export const PRIMARY_CTA = "GET MY WEBSITE FOR ₱299 →";
 export const STICKY_CTA = "₱299 · GET MY WEBSITE →";
 
+// Hero background is a real supplied photo (operator-provided, hosted on
+// Cloudinary), full-bleed, same treatment as the homepage Hero.tsx: a
+// wide desktop crop and a separate portrait mobile crop, each with a navy
+// scrim gradient behind the text so it stays readable over the photo.
+// f_auto,q_auto in the URL lets Cloudinary negotiate the best format
+// (WebP/AVIF) and quality per browser automatically — the same goal the
+// homepage's self-hosted <picture>/WebP pair serves, without needing a
+// local asset + conversion step for an image already hosted externally.
 export const FYB_HERO = {
   headline: "Get a Website for Your Business for Only ₱299",
   sub: "A simple, professional website for business owners who want to be online without paying agency prices. We build it for you.",
   cta: PRIMARY_CTA,
+  backgroundImageDesktop:
+    "https://res.cloudinary.com/dlxhrxf1a/image/upload/f_auto,q_auto/v1789711789/Hero_full_bleed_cai8aw.jpg",
+  backgroundImageMobile:
+    "https://res.cloudinary.com/dlxhrxf1a/image/upload/f_auto,q_auto/v1789712320/Hero_mobile_zzu60d.jpg",
+  backgroundAlt: "A small business owner working on their new website",
 } as const;
 
 // Real numbers only — same honesty guardrail as everywhere else on this
 // page (no fake scarcity, no fabricated stats). "18+" is the real total
 // businesses served, per the operator directly (higher than
 // content/portfolio.ts's 14-entry PORTFOLIO array, since not every real
-// project has a public listing there). Update this by hand as the real
+// project has a public listing there). Update countTo by hand as the real
 // count grows — don't derive it from portfolio.ts, which was never meant
 // to be a complete client count.
-export const FYB_HERO_STATS = {
-  eyebrow: "Trusted By Businesses",
+//
+// Moved out of the hero into its own small animated trust-signal band
+// right below it [2026-09-18] — same discriminated-union shape and
+// useCountUp-driven animation as /limitedoffer's OFFER_HERO.stats, so the
+// numbers count up once the band scrolls into view instead of sitting
+// static in a hero stat panel.
+export const FYB_TRUST_SIGNALS = {
   stats: [
-    { value: "18+", label: "Websites launched & counting" },
-    { value: "4-7 Days", label: "Average build time" },
-    { value: "₱299", label: "Your starting price" },
+    { kind: "counter", countTo: 18, suffix: "+", label: "Websites launched & counting" },
+    { kind: "range", from: 4, to: 7, label: "Average build time" },
+    { kind: "static", value: "₱299", label: "Your starting price" },
   ],
 } as const;
 

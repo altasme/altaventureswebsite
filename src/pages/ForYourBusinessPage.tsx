@@ -8,6 +8,7 @@ import { track } from "../lib/analytics";
 import CTAButton from "../components/ui/CTAButton";
 
 import FybHero from "../components/fyb/sections/FybHero";
+import FybTrustSignals from "../components/fyb/sections/FybTrustSignals";
 import Problem from "../components/fyb/sections/Problem";
 import WhatsIncluded from "../components/fyb/sections/WhatsIncluded";
 import WhoItsFor from "../components/fyb/sections/WhoItsFor";
@@ -88,6 +89,7 @@ function PageContent() {
 
       <main>
         <FybHero onCheckout={() => goToCheckout("hero")} />
+        <FybTrustSignals />
         <Reveal>
           <Problem />
         </Reveal>
