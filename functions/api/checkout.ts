@@ -1,9 +1,23 @@
 // Cloudflare Pages Function: POST /api/checkout
 //
-// Creates a ganap.net checkout session for the /foryourbusiness ₱299
-// website offer and returns what the browser needs to complete payment.
-// This is a server-only call: it signs the request with the ganap.net
-// signing secret, which must never reach the client.
+// Creates a ganap.net checkout session and returns what the browser needs
+// to complete payment. This is a server-only call: it signs the request
+// with the ganap.net signing secret, which must never reach the client.
+//
+// Serves two offers off one function [2026-09-19, added for /b2b]: the
+// /foryourbusiness ₱299 website offer and the /b2b ₱4,999 complete
+// business website package. Both post the same shape of body (see
+// CheckoutPayload) plus an `offer` field selecting which OFFER_CONFIG
+// entry to use — same ganap.net project/credentials, same validation,
+// same HMAC signing and D1 insert, only the amount/metadata/redirect
+// URLs differ per offer. Parameterizing this instead of duplicating the
+// whole payment function (signing, the fetch to ganap, D1 writes,
+// classifyRedirectUrl) keeps there being exactly one place that can get
+// the amount or a redirect URL wrong, which matters a lot more for a
+// function that moves real money than the duplication it avoids would
+// otherwise be worth. `offer` defaults to "foryourbusiness" if omitted,
+// defensively, in case a stale cached frontend bundle ever posts here
+// without it.
 //
 // Field names and behavior below are taken from ganap.net's own
 // "Webhooks & API" documentation (PDF supplied directly by the client),
@@ -40,9 +54,31 @@ interface Env {
 // own docs show the public alias api.ganap.net, since this is the host
 // actually given on the project's own dashboard/credentials page.
 const GANAP_CHECKOUT_URL = "https://convex-top-api.ganap.net/v1/checkout";
-const AMOUNT_PHP = 299; // whole pesos, decimals allowed per ganap's docs. Raised to 499 [2026-09-11], reverted back to 299 [2026-09-16].
-const SUCCESS_REDIRECT_URL = "https://altasme.com/foryourbusiness/thank-you";
-const FAILURE_REDIRECT_URL = "https://altasme.com/foryourbusiness/checkout?retry=1";
+
+type OfferId = "foryourbusiness" | "b2b";
+
+type OfferConfig = {
+  amountPhp: number; // whole pesos, decimals allowed per ganap's docs
+  metadataOffer: string;
+  successRedirectUrl: string;
+  failureRedirectUrl: string;
+};
+
+// foryourbusiness: raised to 499 [2026-09-11], reverted back to 299 [2026-09-16].
+const OFFER_CONFIG: Record<OfferId, OfferConfig> = {
+  foryourbusiness: {
+    amountPhp: 299,
+    metadataOffer: "foryourbusiness-299",
+    successRedirectUrl: "https://altasme.com/foryourbusiness/thank-you",
+    failureRedirectUrl: "https://altasme.com/foryourbusiness/checkout?retry=1",
+  },
+  b2b: {
+    amountPhp: 4999,
+    metadataOffer: "b2b-4999",
+    successRedirectUrl: "https://altasme.com/b2b/thank-you",
+    failureRedirectUrl: "https://altasme.com/b2b/checkout?retry=1",
+  },
+};
 
 // Every test-mode checkout returns this literal placeholder as redirectUrl
 // (case can vary — browsers normalize URL schemes to lowercase when
@@ -57,6 +93,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_FIELD_LENGTH = 200;
 
 type CheckoutPayload = {
+  offer: OfferId;
   fullName: string;
   businessName: string;
   email: string;
@@ -83,6 +120,7 @@ function validate(body: unknown): { data: CheckoutPayload } | { error: string } 
   if (typeof body !== "object" || body === null) return { error: "Invalid request body." };
   const b = body as Record<string, unknown>;
 
+  const offer: OfferId = b.offer === "b2b" ? "b2b" : "foryourbusiness";
   const fullName = typeof b.fullName === "string" ? sanitizeLine(b.fullName) : "";
   const businessName = typeof b.businessName === "string" ? sanitizeLine(b.businessName) : "";
   const email = typeof b.email === "string" ? sanitizeLine(b.email) : "";
@@ -103,7 +141,7 @@ function validate(body: unknown): { data: CheckoutPayload } | { error: string } 
   if (!privacyAccepted) return { error: "Please agree to the Privacy Notice." };
 
   return {
-    data: { fullName, businessName, email, phone, facebook, instagram, existingWebsite },
+    data: { offer, fullName, businessName, email, phone, facebook, instagram, existingWebsite },
   };
 }
 
@@ -145,12 +183,13 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const result = validate(body);
   if ("error" in result) return jsonResponse(400, { error: result.error });
   const data = result.data;
+  const offerConfig = OFFER_CONFIG[data.offer];
 
   const idempotencyKey = crypto.randomUUID();
 
   const ganapBody = JSON.stringify({
     projectUuid: env.GANAP_PROJECT_UUID,
-    amount: AMOUNT_PHP,
+    amount: offerConfig.amountPhp,
     idempotencyKey,
     customerName: data.fullName,
     customerEmail: data.email,
@@ -161,10 +200,10 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       facebook: data.facebook || undefined,
       instagram: data.instagram || undefined,
       existingWebsite: data.existingWebsite || undefined,
-      offer: "foryourbusiness-299",
+      offer: offerConfig.metadataOffer,
     },
-    successRedirectUrl: SUCCESS_REDIRECT_URL,
-    failureRedirectUrl: FAILURE_REDIRECT_URL,
+    successRedirectUrl: offerConfig.successRedirectUrl,
+    failureRedirectUrl: offerConfig.failureRedirectUrl,
   });
 
   if (env.DB) {
@@ -183,7 +222,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
           data.facebook || null,
           data.instagram || null,
           data.existingWebsite || null,
-          AMOUNT_PHP,
+          offerConfig.amountPhp,
           now,
           now
         )

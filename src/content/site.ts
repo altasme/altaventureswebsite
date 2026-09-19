@@ -454,6 +454,9 @@ export const LEGAL: {
   "fyb-refund": LegalDocument;
   "fyb-terms": LegalDocument;
   "fyb-privacy": LegalDocument;
+  "b2b-refund": LegalDocument;
+  "b2b-terms": LegalDocument;
+  "b2b-privacy": LegalDocument;
 } = {
   privacy: {
     title: "Privacy Policy",
@@ -1829,6 +1832,281 @@ export const LEGAL: {
         blocks: [
           p(
             "By proceeding with the ₱299 offer, you confirm you have read this notice and consent to Altaventures collecting and processing your personal data for the purposes described.",
+          ),
+        ],
+      },
+    ],
+  },
+  "b2b-refund": {
+    title: "Refund Policy (₱4,999 Business Website Package)",
+    effectiveDate: "September 19, 2026",
+    lastUpdated: "September 19, 2026",
+    intro: [
+      p(
+        "This Refund Policy applies specifically to the ₱4,999 complete business website package at altasme.com/b2b (\"the package\"), provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). It should be read together with the Terms of Sale for the package.",
+      ),
+      p(
+        "This policy is separate from, and does not change, the general Refund Policy that applies to Altaventures' other services, or the Refund Policy for the ₱299 website offer.",
+      ),
+    ],
+    sections: [
+      {
+        heading: "1. Before Work Begins",
+        blocks: [
+          p(
+            "You may request a full refund of the ₱4,999 at any time before your discovery call takes place and before any build, domain registration, or hosting setup work has started. Email altasmeworks@gmail.com to request it.",
+          ),
+        ],
+      },
+      {
+        heading: "2. After the Discovery Call or Once Work Has Begun",
+        blocks: [
+          p(
+            "The ₱4,999 becomes non-refundable, because the consultation, build effort, domain registration, and hosting/security setup have already been rendered or initiated.",
+          ),
+        ],
+      },
+      {
+        heading: "3. If Your Project Needs More Than This Package",
+        blocks: [
+          p(
+            "If, during the discovery call, we determine your requirements go beyond a professional business website (for example complex e-commerce, custom applications, advanced business systems, or complex integrations), we will either (a) credit the full ₱4,999 toward the higher plan we recommend, or (b) proceed to build a professional business website within this package's scope. You receive value in either case. A cash refund is not owed simply because your needs exceed what this package covers.",
+          ),
+        ],
+      },
+      {
+        heading: "4. Satisfaction",
+        blocks: [
+          p(
+            "Our guarantee is that we will make the website meet the requirements we agreed on. If the delivered website does not match the agreed scope, we will revise it to meet that scope within the revision rounds in the Terms of Sale. This is a make-it-right guarantee, not a money-back-if-you-change-your-mind guarantee, and it is not a guarantee of any business result, traffic, ranking, or sales.",
+          ),
+        ],
+      },
+      {
+        heading: "5. Change of Mind",
+        blocks: [p("No refunds are given for change of mind after work has begun.")],
+      },
+      {
+        heading: "6. Client Responsiveness",
+        blocks: [
+          p(
+            "The build timeline starts only when we receive the required information and materials. If you do not provide the required materials, or you are unresponsive, for 30 days, we may close the project as fulfilled, and the ₱4,999 is non-refundable.",
+          ),
+        ],
+      },
+      {
+        heading: "7. Annual Renewal and Cancellation",
+        blocks: [
+          p(
+            "Your first year of domain registration, hosting, security, maintenance, and support is covered by the ₱4,999 payment. Starting Year 2, continuing these services requires a ₱2,499/year renewal, described further in the Terms of Sale. Renewal is optional. If you choose not to renew, we will let the corresponding services lapse and your website may go offline; we do not provide refunds for a partial year, and the ₱4,999 first-year payment and any renewal payment already made are non-refundable once the corresponding service period has begun.",
+          ),
+        ],
+      },
+      {
+        heading: "8. Chargebacks",
+        blocks: [
+          p(
+            "Initiating a chargeback or payment dispute for a service that has been rendered is a breach of these terms. We may suspend or remove the website and pursue recovery of amounts owed and related costs.",
+          ),
+        ],
+      },
+      {
+        heading: "9. How to Request a Refund",
+        blocks: [
+          p(
+            "Email altasmeworks@gmail.com with your business name and project details. We will review your request against this policy and respond within a reasonable time.",
+          ),
+        ],
+      },
+    ],
+  },
+  "b2b-terms": {
+    title: "Terms of Sale (₱4,999 Business Website Package)",
+    effectiveDate: "September 19, 2026",
+    lastUpdated: "September 19, 2026",
+    intro: [
+      p(
+        "These Terms of Sale govern the ₱4,999 complete business website package at altasme.com/b2b, provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). By purchasing the package, you (\"you,\" \"the client\") agree to these Terms of Sale, together with the Refund Policy (₱4,999 Business Website Package) and the Privacy Notice for the package.",
+      ),
+    ],
+    sections: [
+      {
+        heading: "1. What the ₱4,999 Package Includes",
+        blocks: [
+          p(
+            "A professional, mobile-friendly, multi-page business website designed around your business; a custom domain name registered on your behalf; hosting; SSL/HTTPS security; ongoing maintenance; and priority tech support. Domain registration, hosting, security, maintenance, and support are included free for your first year, per Section 7 below. Creation is fully done for you.",
+          ),
+        ],
+      },
+      {
+        heading: "2. What It Does Not Include",
+        blocks: [
+          p(
+            "Complex e-commerce, custom web applications, advanced business systems, complex integrations, and unlimited custom changes. If you need these, we will recommend and separately quote the appropriate solution.",
+          ),
+        ],
+      },
+      {
+        heading: "3. Your Content and Materials",
+        blocks: [
+          p(
+            "You are responsible for providing accurate, lawful business information and materials. You represent and warrant that you own or are licensed to use everything you submit (text, images, logos, media) and that it does not infringe any third party's rights or any law. You agree to indemnify and hold Altaventures harmless from any claim, loss, or cost arising from the content or materials you provide.",
+          ),
+        ],
+      },
+      {
+        heading: "4. Timeline",
+        blocks: [
+          p(
+            "Typical completion is 4 to 7 days after we receive the required information and materials. The timeline does not begin until those are received, and any delay on your side extends it accordingly.",
+          ),
+        ],
+      },
+      {
+        heading: "5. Revisions",
+        blocks: [
+          p(
+            "The package includes up to 2 rounds of reasonable revisions within the agreed scope at launch, plus routine updates covered by ongoing maintenance after launch. Additional revisions or any out-of-scope change may be quoted separately.",
+          ),
+        ],
+      },
+      {
+        heading: "6. Domain Registration",
+        blocks: [
+          p(
+            "We register a domain name for your business as part of this package, using the business and contact details you provide. Where the registrar's process allows it, the domain is registered with you or your business as the registrant of record; we manage the registration and renewal on your behalf as part of the domain, hosting, security, maintenance, and support bundle described in Section 7. Domain name availability is not guaranteed; if your first choice is unavailable, we will work with you to select an alternative.",
+          ),
+        ],
+      },
+      {
+        heading: "7. Domain, Hosting, Security, Maintenance & Support",
+        blocks: [
+          p(
+            "Domain registration, hosting, SSL/security, ongoing maintenance, and priority tech support are included at no additional cost for your first year from the date your website launches. Starting Year 2, continuing these services requires a ₱2,499/year renewal fee. We will contact you before your renewal date. Renewal is optional and there is no long-term contract; if you do not renew, we will let the corresponding services lapse, which may result in your website going offline and, in the case of an unrenewed domain, the domain registration eventually expiring in accordance with the registrar's standard policies. Moving your website or domain to a different provider is a separate, optional arrangement you may request at any time.",
+          ),
+        ],
+      },
+      {
+        heading: "8. Intellectual Property",
+        blocks: [
+          p(
+            "On full payment, you own the rights to the business content displayed on your website. Altaventures retains ownership of the underlying code, templates, frameworks, and design system, and grants you a license to use the delivered website. We may display the completed website and identify you as a client for portfolio and marketing purposes unless you opt out in writing.",
+          ),
+        ],
+      },
+      {
+        heading: "9. Availability",
+        blocks: [
+          p("Monthly build capacity is limited. We may queue or decline projects, including projects that fall outside the package."),
+        ],
+      },
+      {
+        heading: "10. No Outcome Guarantee",
+        blocks: [
+          p(
+            "A website is not a guarantee of customers, traffic, rankings, or sales. We do not warrant any specific business result.",
+          ),
+        ],
+      },
+      {
+        heading: "11. Limitation of Liability",
+        blocks: [
+          p(
+            "To the maximum extent permitted by law, Altaventures is not liable for indirect, incidental, special, or consequential damages, lost profits, or lost business. Our total aggregate liability for any claim relating to this package is limited to the amount you paid for the service period in which the claim arose (₱4,999 for your first year, or ₱2,499 for the renewal year in question).",
+          ),
+        ],
+      },
+      {
+        heading: "12. Acceptable Use and Takedown",
+        blocks: [
+          p("We may suspend or remove any website used for unlawful, fraudulent, infringing, or abusive purposes."),
+        ],
+      },
+      {
+        heading: "13. Changes to These Terms",
+        blocks: [p("We may update these terms; the version in effect at the time of your purchase governs that purchase.")],
+      },
+      {
+        heading: "14. Governing Law",
+        blocks: [
+          p(
+            "These terms are governed by the laws of the Republic of the Philippines. Venue for any dispute is subject to the jurisdiction of the appropriate courts of the Philippines.",
+          ),
+        ],
+      },
+      {
+        heading: "15. Severability and Entire Agreement",
+        blocks: [
+          p(
+            "If any provision is held unenforceable, the rest remains in effect. These terms, together with the Refund Policy (₱4,999 Business Website Package) and the Privacy Notice, are the entire agreement for this package.",
+          ),
+        ],
+      },
+      {
+        heading: "16. Contact",
+        blocks: [p("Questions about these Terms of Sale can be sent to altasmeworks@gmail.com.")],
+      },
+    ],
+  },
+  "b2b-privacy": {
+    title: "Privacy Notice (₱4,999 Business Website Package)",
+    effectiveDate: "September 19, 2026",
+    lastUpdated: "September 19, 2026",
+    intro: [
+      p(
+        "This Privacy Notice explains how Altaventures Business Development Services, operating under the brand name Altaventures, collects and processes personal data in connection with the ₱4,999 business website package at altasme.com/b2b, in accordance with the Data Privacy Act of 2012 (Republic Act 10173).",
+      ),
+    ],
+    sections: [
+      {
+        heading: "Who We Are",
+        blocks: [p("Altaventures Business Development Services, Philippines.")],
+      },
+      {
+        heading: "What We Collect",
+        blocks: [
+          p(
+            "The personal data you provide: full name, business name, email address, mobile number, domain preference, and the business information and materials you submit for your website.",
+          ),
+        ],
+      },
+      {
+        heading: "Why We Collect It",
+        blocks: [
+          p(
+            "To process your payment and any annual renewal, create and manage your account, register and renew your domain, deliver the website, hosting, security, maintenance, and support services, communicate with you about your project, and offer related services. Our lawful bases are your consent and the performance of our contract with you.",
+          ),
+        ],
+      },
+      {
+        heading: "Who We Share It With",
+        blocks: [
+          p(
+            "Trusted service providers acting on our behalf: our payment processor, our domain registrar, our email provider, and our hosting infrastructure. We do not sell your personal data.",
+          ),
+        ],
+      },
+      {
+        heading: "Storage, Security, and Retention",
+        blocks: [
+          p(
+            "We store your data with reasonable organizational, physical, and technical safeguards. We keep it only as long as necessary to deliver the service, including the ongoing annual renewal relationship, and to meet legal, tax, and accounting requirements, after which we dispose of it securely.",
+          ),
+        ],
+      },
+      {
+        heading: "Your Rights",
+        blocks: [
+          p(
+            "Under the Data Privacy Act you have the right to be informed, to access, to correct, to object, to erasure or blocking, to data portability, to withdraw consent, and to lodge a complaint with the National Privacy Commission. To exercise these, contact altasmeworks@gmail.com.",
+          ),
+        ],
+      },
+      {
+        heading: "Consent",
+        blocks: [
+          p(
+            "By proceeding with the package, you confirm you have read this notice and consent to Altaventures collecting and processing your personal data for the purposes described.",
           ),
         ],
       },

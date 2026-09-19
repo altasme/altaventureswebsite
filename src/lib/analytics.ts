@@ -117,3 +117,18 @@ export function trackInitiateCheckout() {
     window.fbq("track", "InitiateCheckout", { value: 299, currency: "PHP" });
   }
 }
+
+/**
+ * Fires when the /b2b checkout form is submitted and the ganap.net
+ * checkout session is being created. Same role as trackInitiateCheckout()
+ * above, kept as its own function (rather than parametrizing that one)
+ * since it's a distinct offer with its own Pixel value, matching this
+ * file's existing one-function-per-offer convention (trackLead's channel
+ * enum aside).
+ */
+export function trackInitiateCheckoutB2B() {
+  track("checkout_started", {});
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+    window.fbq("track", "InitiateCheckout", { value: 4999, currency: "PHP" });
+  }
+}
