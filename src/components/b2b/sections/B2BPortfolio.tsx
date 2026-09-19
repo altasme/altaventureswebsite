@@ -7,6 +7,7 @@ import Reveal from "../../offer/Reveal";
 
 function ProjectCard({ id }: { id: string }) {
   const project = PORTFOLIO_BY_ID[id];
+  const description = B2B_PORTFOLIO.descriptionOverrides[id] ?? project.description;
   return (
     <a
       href={project.url ?? undefined}
@@ -29,7 +30,7 @@ function ProjectCard({ id }: { id: string }) {
       <div className="flex flex-1 flex-col p-6">
         <p className="text-xs font-semibold tracking-wide text-brand-blue">{project.category}</p>
         <h3 className="mt-1 text-lg font-bold text-ink">{project.name}</h3>
-        <p className="mt-2 flex-1 text-sm text-ink/60">{project.description}</p>
+        <p className="mt-2 flex-1 text-sm text-ink/60">{description}</p>
 
         <div className="mt-4 flex flex-wrap gap-2">
           {project.tags.map((tag) => (

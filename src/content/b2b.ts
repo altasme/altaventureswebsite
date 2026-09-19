@@ -128,13 +128,28 @@ export const WHO_ITS_FOR = {
 // there's no separate "beyond this offer" row to show. B2BPortfolio.tsx
 // only renders that row when the array is non-empty, so leaving it empty
 // hides the section entirely rather than needing a special case.
+//
+// [2026-09-19] Re-curated per the operator's direct request: pocketg7iii
+// swapped out for leanandfit, vocalyze swapped out for aurielle, and both
+// replacements moved to the front of the grid. Scoped to this page only —
+// content/portfolio.ts (the shared canonical list) and every other page's
+// portfolio curation are untouched.
 export const B2B_PORTFOLIO = {
   headline: "See What We've Built for Businesses Like Yours",
   sub: "Real websites for real Philippine businesses. Tap any to see it live.",
-  primaryIds: ["dmhr", "pocketg7iii", "amr-bookkeeping", "imago-productions", "camsnap", "onyx-clouds", "vocalyze"],
+  primaryIds: ["leanandfit", "aurielle", "dmhr", "amr-bookkeeping", "imago-productions", "camsnap", "onyx-clouds"],
   advancedIds: [] as string[],
   advancedLabel: "",
   cta: "See What We Can Build for Your Business →",
+  // /b2b-only description overrides. The canonical content/portfolio.ts
+  // descriptions for camsnap and onyx-clouds mention "subdomained to
+  // ours," a technical detail the operator doesn't want surfaced on this
+  // page. Overridden here rather than editing the shared canonical copy,
+  // which the homepage and other funnels still display as-is.
+  descriptionOverrides: {
+    camsnap: "A landing page for a local camera rental business based in Batangas.",
+    "onyx-clouds": "A landing page for a local vape and e-cig supplier.",
+  } as Record<string, string>,
 } as const;
 
 export const B2B_HOW_IT_WORKS = {
