@@ -124,11 +124,14 @@ export function trackInitiateCheckout() {
  * above, kept as its own function (rather than parametrizing that one)
  * since it's a distinct offer with its own Pixel value, matching this
  * file's existing one-function-per-offer convention (trackLead's channel
- * enum aside).
+ * enum aside). Value is 2499.50, the ₱2,499.50 deposit this checkout step
+ * actually charges (₱4,999 total, 50/50 split, see content/b2b.ts and
+ * functions/api/checkout.ts) — not the full package price, so ad
+ * reporting reflects the real transaction this event corresponds to.
  */
 export function trackInitiateCheckoutB2B() {
   track("checkout_started", {});
   if (typeof window !== "undefined" && typeof window.fbq === "function") {
-    window.fbq("track", "InitiateCheckout", { value: 4999, currency: "PHP" });
+    window.fbq("track", "InitiateCheckout", { value: 2499.5, currency: "PHP" });
   }
 }

@@ -23,7 +23,7 @@ import LegalModal from "../components/modals/LegalModal";
 
 const PAGE_TITLE = "Complete Business Website Package, ₱4,999 | Altaventures";
 const PAGE_DESCRIPTION =
-  "A complete business website for established businesses: built, hosted, secured, maintained, and supported for a full year, for one flat ₱4,999 payment. See real Altaventures work.";
+  "A complete business website for established businesses: built, hosted, secured, maintained, and supported for a full year. ₱4,999 total, 50% down to start. See real Altaventures work.";
 
 const LEGAL_LINKS = [
   { label: "Refund Policy", id: "b2b-refund" as const },

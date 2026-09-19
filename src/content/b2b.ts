@@ -11,14 +11,29 @@
 // covers everything in that row's scope, so there's nothing "beyond" to
 // show separately). See CLAUDE.md for the full build writeup.
 //
+// Payment is split 50/50 [2026-09-19, operator clarification]: ₱2,499.50
+// is charged at checkout as a deposit, and the remaining ₱2,499.50 is
+// collected separately once the website is complete, via a manually
+// created Client Hub / ClientKeeper "Bill of Service" (that flow already
+// exists and already enforces ganap.net's ₱200 minimum, see CLAUDE.md
+// §20) — not a new checkout on this site. DEPOSIT_PHP/BALANCE_PHP/
+// TOTAL_PHP below are the one place those figures live for this page's
+// copy; functions/api/checkout.ts's OFFER_CONFIG has its own matching
+// amountPhp for the actual charge, since that function can't import from
+// this Vite-only content file.
+const DEPOSIT_PHP = "₱2,499.50";
+const BALANCE_PHP = "₱2,499.50";
+const TOTAL_PHP = "₱4,999";
+
 // Checkout is live (ganap.net, same consolidated project as
 // /foryourbusiness). Every CTA on this page navigates to /b2b/checkout,
 // which posts to functions/api/checkout.ts (now parameterized by an
 // `offer` field so one payment function serves both offers) and redirects
-// the browser to ganap.net's hosted payment page.
+// the browser to ganap.net's hosted payment page. That checkout charges
+// only the deposit above, not the full ₱4,999.
 
-export const PRIMARY_CTA = "GET MY WEBSITE FOR ₱4,999 →";
-export const STICKY_CTA = "₱4,999 · GET STARTED →";
+export const PRIMARY_CTA = `GET STARTED FOR ${DEPOSIT_PHP} →`;
+export const STICKY_CTA = `${DEPOSIT_PHP} DOWN · START →`;
 
 // Reuses the same hero photo as /foryourbusiness (content/foryourbusiness.ts's
 // FYB_HERO) rather than a new photo — no B2B-specific hero asset has been
@@ -27,7 +42,7 @@ export const STICKY_CTA = "₱4,999 · GET STARTED →";
 // gap. Swap these two URLs if/when a dedicated B2B hero photo is supplied.
 export const B2B_HERO = {
   headline: "Still Running Your Business Without a Real Website?",
-  sub: "A complete business website: built, hosted, secured, maintained, and supported for a full year, for one flat payment. No hidden fees. No guesswork.",
+  sub: `A complete business website: built, hosted, secured, maintained, and supported for a full year. ${TOTAL_PHP} total, just ${DEPOSIT_PHP} down to start, the rest due once it's complete. No hidden fees.`,
   cta: PRIMARY_CTA,
   backgroundImageDesktop:
     "https://res.cloudinary.com/dlxhrxf1a/image/upload/f_auto,q_auto/v1789711789/Hero_full_bleed_cai8aw.jpg",
@@ -88,8 +103,7 @@ export const WHATS_INCLUDED = {
       copy: "Your website looks and works great on phones, tablets, and computers.",
     },
   ],
-  scopeLine:
-    "Domain, hosting, security, maintenance, and support are included free for your first year. Starting Year 2, this renews at ₱2,499/year to keep everything active. We'll reach out before your renewal date, and you're free to cancel anytime.",
+  scopeLine: `Domain, hosting, security, maintenance, and support are included free for your first year. Pay ${DEPOSIT_PHP} to start and the remaining ${BALANCE_PHP} once your website is complete. Starting Year 2, this renews at ₱2,499/year to keep everything active. We'll reach out before your renewal date, and you're free to cancel anytime.`,
 } as const;
 
 export const WHO_ITS_FOR = {
@@ -126,16 +140,16 @@ export const B2B_PORTFOLIO = {
 export const B2B_HOW_IT_WORKS = {
   headline: "From Payment to Launch",
   steps: [
-    { number: "01", title: "Pay ₱4,999", body: "Secure checkout via GCash, Maya, or card." },
+    { number: "01", title: `Pay ${DEPOSIT_PHP} to Start`, body: "Secure checkout via GCash, Maya, or card." },
     {
       number: "02",
       title: "Tell Us About Your Business",
-      body: "After you pay, we set up your account and get your business details, domain preference, and content.",
+      body: "After you pay your deposit, we set up your account and get your business details, domain preference, and content.",
     },
     {
       number: "03",
       title: "We Build & Launch It",
-      body: "We build your complete website, register your domain, set up hosting and security, and get it live.",
+      body: `We build your complete website, register your domain, set up hosting and security, and get it live. The remaining ${BALANCE_PHP} is due once it's complete.`,
     },
   ],
 } as const;
@@ -144,8 +158,12 @@ export const B2B_FAQ = {
   headline: "Frequently Asked Questions",
   items: [
     {
-      q: "What exactly is included in the ₱4,999?",
-      a: "A complete, professional multi-page business website, a free domain for your first year, hosting, SSL security, ongoing maintenance, and priority tech support. One flat payment to start.",
+      q: `What exactly is included in the ${TOTAL_PHP}?`,
+      a: "A complete, professional multi-page business website, a free domain for your first year, hosting, SSL security, ongoing maintenance, and priority tech support.",
+    },
+    {
+      q: "Do I have to pay the full amount upfront?",
+      a: `No. You pay a ${DEPOSIT_PHP} deposit to start, and the remaining ${BALANCE_PHP} is due once your website is complete and ready to launch.`,
     },
     { q: "How long does it take?", a: "Usually 4 to 7 days after we receive your business details and content." },
     {
@@ -168,28 +186,28 @@ export const B2B_FAQ = {
       q: "How is this different from the ₱299 offer?",
       a: "This package is built for established businesses that want their own domain, hosting, security, and ongoing support handled for them, not just a one-time build.",
     },
-    { q: "What payment methods are accepted?", a: "GCash, Maya, and cards through our secure checkout." },
+    { q: "What payment methods are accepted?", a: "GCash, Maya, and cards, for both the deposit and the balance." },
     {
-      q: "What happens after I pay?",
+      q: "What happens after I pay my deposit?",
       a: "You'll get an email to set up your account, then we reach out to get your business details, domain preference, and content before we start building.",
     },
     {
       q: "Is there a contract?",
-      a: "No long-term contract. You pay ₱4,999 to start, and the annual renewal is optional. You can cancel anytime.",
+      a: `No long-term contract. You pay ${DEPOSIT_PHP} to start, ${BALANCE_PHP} on completion, and the annual renewal after that is optional. You can cancel anytime.`,
     },
   ],
 } as const;
 
 export const B2B_FINAL_CTA = {
   headline: "Ready to Look as Established Online as You Are in Real Life?",
-  body: "Get a complete business website, domain, hosting, security, maintenance, and support included, for one flat ₱4,999 payment.",
+  body: `Get a complete business website, domain, hosting, security, maintenance, and support included. ${TOTAL_PHP} total, ${DEPOSIT_PHP} down to start.`,
   cta: PRIMARY_CTA,
 } as const;
 
 export const CHECKOUT = {
   eyebrow: "SECURE YOUR BUSINESS WEBSITE",
-  price: "₱4,999",
-  priceNote: "ONE-TIME · THEN ₱2,499/YR",
+  price: DEPOSIT_PHP,
+  priceNote: `50% DEPOSIT · ${TOTAL_PHP} TOTAL`,
   summaryTitle: "Complete Business Website Package",
   summaryItems: [
     "Professional website",
@@ -199,13 +217,14 @@ export const CHECKOUT = {
     "Ongoing maintenance",
     "Priority tech support",
     "Typical buildtime: 4-7 days",
+    `${BALANCE_PHP} balance due on completion`,
   ],
-  cta: "PAY ₱4,999 & GET STARTED →",
+  cta: `PAY ${DEPOSIT_PHP} DEPOSIT & START →`,
 } as const;
 
 export const THANK_YOU = {
-  headline: "Payment Received. Let's Build Your Business Website.",
-  body: "Your ₱4,999 payment has been successfully received. You'll receive a confirmation email shortly. From there, you can create your Altaventures account and continue with your website setup.",
+  headline: "Deposit Received. Let's Build Your Business Website.",
+  body: `Your ${DEPOSIT_PHP} deposit has been successfully received. You'll receive a confirmation email shortly. From there, you can create your Altaventures account and continue with your website setup. The remaining ${BALANCE_PHP} balance will be invoiced once your website is complete.`,
   microcopy: "Having trouble, or didn't get a confirmation? Message us and we'll sort it out.",
   cta: "Message Us",
 } as const;
