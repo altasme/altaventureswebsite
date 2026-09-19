@@ -11,9 +11,10 @@
 // covers everything in that row's scope, so there's nothing "beyond" to
 // show separately). See CLAUDE.md for the full build writeup.
 //
-// Payment is split 50/50 [2026-09-19, operator clarification]: ₱2,499.50
-// is charged at checkout as a deposit, and the remaining ₱2,499.50 is
-// collected separately once the website is complete, via a manually
+// Payment is split into two installments [2026-09-19, operator
+// clarification, corrected same day from an even 50/50 to this]:
+// ₱2,499 is charged at checkout as a deposit, and the remaining ₱2,500
+// is collected separately once the website is complete, via a manually
 // created Client Hub / ClientKeeper "Bill of Service" (that flow already
 // exists and already enforces ganap.net's ₱200 minimum, see CLAUDE.md
 // §20) — not a new checkout on this site. DEPOSIT_PHP/BALANCE_PHP/
@@ -21,8 +22,8 @@
 // copy; functions/api/checkout.ts's OFFER_CONFIG has its own matching
 // amountPhp for the actual charge, since that function can't import from
 // this Vite-only content file.
-const DEPOSIT_PHP = "₱2,499.50";
-const BALANCE_PHP = "₱2,499.50";
+const DEPOSIT_PHP = "₱2,499";
+const BALANCE_PHP = "₱2,500";
 const TOTAL_PHP = "₱4,999";
 
 // Checkout is live (ganap.net, same consolidated project as
@@ -222,7 +223,7 @@ export const B2B_FINAL_CTA = {
 export const CHECKOUT = {
   eyebrow: "SECURE YOUR BUSINESS WEBSITE",
   price: DEPOSIT_PHP,
-  priceNote: `50% DEPOSIT · ${TOTAL_PHP} TOTAL`,
+  priceNote: `DEPOSIT · ${TOTAL_PHP} TOTAL`,
   summaryTitle: "Complete Business Website Package",
   summaryItems: [
     "Professional website",

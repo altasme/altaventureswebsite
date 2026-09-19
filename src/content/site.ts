@@ -1843,7 +1843,7 @@ export const LEGAL: {
     lastUpdated: "September 19, 2026",
     intro: [
       p(
-        "This Refund Policy applies specifically to the ₱4,999 complete business website package at altasme.com/b2b (\"the package\"), provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). The ₱4,999 is paid in two installments, a ₱2,499.50 deposit and a ₱2,499.50 balance, described further in the Terms of Sale for the package, which this policy should be read together with.",
+        "This Refund Policy applies specifically to the ₱4,999 complete business website package at altasme.com/b2b (\"the package\"), provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). The ₱4,999 is paid in two installments, a ₱2,499 deposit and a ₱2,500 balance, described further in the Terms of Sale for the package, which this policy should be read together with.",
       ),
       p(
         "This policy is separate from, and does not change, the general Refund Policy that applies to Altaventures' other services, or the Refund Policy for the ₱299 website offer.",
@@ -1854,7 +1854,7 @@ export const LEGAL: {
         heading: "1. Before Work Begins",
         blocks: [
           p(
-            "You may request a full refund of your ₱2,499.50 deposit at any time before your discovery call takes place and before any build, domain registration, or hosting setup work has started. Email altasmeworks@gmail.com to request it.",
+            "You may request a full refund of your ₱2,499 deposit at any time before your discovery call takes place and before any build, domain registration, or hosting setup work has started. Email altasmeworks@gmail.com to request it.",
           ),
         ],
       },
@@ -1862,7 +1862,7 @@ export const LEGAL: {
         heading: "2. After the Discovery Call or Once Work Has Begun",
         blocks: [
           p(
-            "The ₱2,499.50 deposit becomes non-refundable, because the consultation, build effort, domain registration, and hosting/security setup have already been rendered or initiated.",
+            "The ₱2,499 deposit becomes non-refundable, because the consultation, build effort, domain registration, and hosting/security setup have already been rendered or initiated.",
           ),
         ],
       },
@@ -1870,7 +1870,7 @@ export const LEGAL: {
         heading: "3. The Balance Payment",
         blocks: [
           p(
-            "The remaining ₱2,499.50 balance is due once your website is complete and ready to launch; we do not hand over, launch, or transfer the finished website until the balance is paid. If, after the website has been built to the agreed scope, you decide not to proceed at that stage, the ₱2,499.50 deposit remains non-refundable under Section 2, and the balance covers the completed build work.",
+            "The remaining ₱2,500 balance is due once your website is complete and ready to launch; we do not hand over, launch, or transfer the finished website until the balance is paid. If, after the website has been built to the agreed scope, you decide not to proceed at that stage, the ₱2,499 deposit remains non-refundable under Section 2, and the balance covers the completed build work.",
           ),
         ],
       },
@@ -1898,7 +1898,7 @@ export const LEGAL: {
         heading: "7. Client Responsiveness",
         blocks: [
           p(
-            "The build timeline starts only when we receive the required information and materials. If you do not provide the required materials, or you are unresponsive, for 30 days, we may close the project as fulfilled, and your ₱2,499.50 deposit is non-refundable.",
+            "The build timeline starts only when we receive the required information and materials. If you do not provide the required materials, or you are unresponsive, for 30 days, we may close the project as fulfilled, and your ₱2,499 deposit is non-refundable.",
           ),
         ],
       },
@@ -1906,7 +1906,7 @@ export const LEGAL: {
         heading: "8. Annual Renewal and Cancellation",
         blocks: [
           p(
-            "Your first year of domain registration, hosting, security, maintenance, and support is covered by your ₱4,999 payment (the ₱2,499.50 deposit plus the ₱2,499.50 balance). Starting Year 2, continuing these services requires a ₱2,499/year renewal, described further in the Terms of Sale. Renewal is optional. If you choose not to renew, we will let the corresponding services lapse and your website may go offline; we do not provide refunds for a partial year, and the first-year deposit, balance, and any renewal payment already made are non-refundable once the corresponding service period has begun.",
+            "Your first year of domain registration, hosting, security, maintenance, and support is covered by your ₱4,999 payment (the ₱2,499 deposit plus the ₱2,500 balance). Starting Year 2, continuing these services requires a ₱2,499/year renewal, described further in the Terms of Sale. Renewal is optional. If you choose not to renew, we will let the corresponding services lapse and your website may go offline; we do not provide refunds for a partial year, and the first-year deposit, balance, and any renewal payment already made are non-refundable once the corresponding service period has begun.",
           ),
         ],
       },
@@ -1950,7 +1950,7 @@ export const LEGAL: {
         heading: "2. Payment: Deposit and Balance",
         blocks: [
           p(
-            "The ₱4,999 is paid in two installments: a ₱2,499.50 deposit at checkout, to begin your project, and a ₱2,499.50 balance due once your website is complete and ready to launch. We will invoice the balance separately; your website is handed over and made fully live only after the balance is paid.",
+            "The ₱4,999 is paid in two installments: a ₱2,499 deposit at checkout, to begin your project, and a ₱2,500 balance due once your website is complete and ready to launch. We will invoice the balance separately; your website is handed over and made fully live only after the balance is paid.",
           ),
         ],
       },

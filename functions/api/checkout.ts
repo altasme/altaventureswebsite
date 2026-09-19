@@ -19,12 +19,13 @@
 // defensively, in case a stale cached frontend bundle ever posts here
 // without it.
 //
-// /b2b is a 50/50 split, not a single ₱4,999 charge [2026-09-19,
-// operator clarification]: this endpoint only ever charges the ₱2,499.50
-// deposit (OFFER_CONFIG.b2b.amountPhp below). The remaining ₱2,499.50
-// balance is collected separately once the website is complete, via a
-// manually created Client Hub / ClientKeeper "Bill of Service" — that
-// flow already exists and already enforces ganap.net's ₱200 minimum (see
+// /b2b is a two-installment split, not a single ₱4,999 charge
+// [2026-09-19, operator clarification, corrected same day from an even
+// 50/50 to this]: this endpoint only ever charges the ₱2,499 deposit
+// (OFFER_CONFIG.b2b.amountPhp below). The remaining ₱2,500 balance is
+// collected separately once the website is complete, via a manually
+// created Client Hub / ClientKeeper "Bill of Service" — that flow
+// already exists and already enforces ganap.net's ₱200 minimum (see
 // CLAUDE.md §20), so no second checkout was built on this site for the
 // balance. src/content/b2b.ts's DEPOSIT_PHP/BALANCE_PHP/TOTAL_PHP are the
 // matching figures for this page's copy; keep both in sync if the split
@@ -84,7 +85,7 @@ const OFFER_CONFIG: Record<OfferId, OfferConfig> = {
     failureRedirectUrl: "https://altasme.com/foryourbusiness/checkout?retry=1",
   },
   b2b: {
-    amountPhp: 2499.5, // 50% deposit of the ₱4,999 total; balance invoiced separately on completion
+    amountPhp: 2499, // deposit of the ₱4,999 total; ₱2,500 balance invoiced separately on completion
     metadataOffer: "b2b-4999-deposit",
     successRedirectUrl: "https://altasme.com/b2b/thank-you",
     failureRedirectUrl: "https://altasme.com/b2b/checkout?retry=1",
