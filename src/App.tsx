@@ -30,6 +30,9 @@ const LimitedOfferPage = lazy(() => import("./pages/LimitedOfferPage"));
 const ForYourBusinessPage = lazy(() => import("./pages/ForYourBusinessPage"));
 const ForYourBusinessCheckoutPage = lazy(() => import("./pages/ForYourBusinessCheckoutPage"));
 const ForYourBusinessThankYouPage = lazy(() => import("./pages/ForYourBusinessThankYouPage"));
+const B2BPage = lazy(() => import("./pages/B2BPage"));
+const B2BCheckoutPage = lazy(() => import("./pages/B2BCheckoutPage"));
+const B2BThankYouPage = lazy(() => import("./pages/B2BThankYouPage"));
 
 function PageContent() {
   useScrollDepth();
@@ -110,6 +113,30 @@ export default function App() {
         element={
           <Suspense fallback={null}>
             <ForYourBusinessThankYouPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/b2b"
+        element={
+          <Suspense fallback={null}>
+            <B2BPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/b2b/checkout"
+        element={
+          <Suspense fallback={null}>
+            <B2BCheckoutPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/b2b/thank-you"
+        element={
+          <Suspense fallback={null}>
+            <B2BThankYouPage />
           </Suspense>
         }
       />

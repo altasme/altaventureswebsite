@@ -1,4 +1,4 @@
-import { PROBLEM } from "../../../content/foryourbusiness";
+import { PROBLEM } from "../../../content/b2b";
 import Section from "../../ui/Section";
 
 export default function Problem() {

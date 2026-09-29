@@ -70,19 +70,45 @@ export const FYB_TRUST_SIGNALS = {
 } as const;
 
 export const PROBLEM = {
-  headline: "No Website Yet? Your Customers Notice.",
-  body: "When someone hears about your business, they search for it. If nothing comes up, or just an old Facebook page, they wonder if you are still around, or they move on to someone who looks more established. A simple website gives them one clear place to see what you offer and how to reach you. You do not need something complicated. You just need to exist online, properly.",
+  headline: "No Website Yet?",
+  body: [
+    "Potential customers and clients may already be searching for you online. But without a website, they have no easy way to learn about your business, explore your services, or see what makes you worth choosing.",
+    "Give them one place to discover what you do, build confidence in your work, and get in touch.",
+  ],
 } as const;
 
 export const WHATS_INCLUDED = {
   headline: "What Your ₱299 Website Includes",
   items: [
-    "A professional multi-page website built around your business",
-    "Mobile-friendly design (most of your customers are on their phones)",
-    "Your business information and what you offer",
-    "Contact details and a clear way for customers to reach you",
-    "Free hosting on your own subdomain (yourbusiness.altasme.com)",
-    "SSL security (the padlock customers trust)",
+    {
+      title: "A Website Designed Around Your Business",
+      copy: "A professional-looking website built to introduce your business and give visitors a clear idea of what you do.",
+    },
+    {
+      title: "Your Business Information, All in One Place",
+      copy: "Present your business details, About section, services or products, and contact information in one convenient place.",
+      note: "No page limit, as long as the number of pages is reasonable and within the agreed scope.",
+    },
+    {
+      title: "Mobile-Friendly Design",
+      copy: "Your website adapts to different screen sizes, so visitors can browse it on their phones, tablets, or computers.",
+    },
+    {
+      title: "A Clear Way for Customers to Contact You",
+      copy: "Give visitors a straightforward way to inquire about your business through your website's contact or inquiry call-to-action.",
+    },
+    {
+      title: "Hosting & SSL Security Included",
+      copy: "Your website gets hosted online with HTTPS security, so customers can access it through the web.",
+    },
+    {
+      title: "100% Done-for-You Website Creation",
+      copy: "No need to build it yourself. We handle the website creation and get it live once your required business information and materials are ready.",
+    },
+    {
+      title: "ALTAVENTURES Subdomain",
+      copy: "e.g., yourbusiness.altasme.com",
+    },
   ],
   scopeLine:
     "This is a simple website to get you online. Online stores, booking systems, and custom tools are things we can add later, but they are not part of the ₱299 build.",
@@ -100,10 +126,23 @@ export const WHO_ITS_FOR = {
 // delivers. Setmona/Kolekta (engine tier, no public URL) never belong here.
 // Primary grid = simple, live, ₱299-scale informational sites. Advanced row
 // is optional proof of range, explicitly labeled beyond this offer's scope.
+//
+// [2026-09-18] Re-curated to this specific 9-project list per the operator's
+// direct request (this page's grid only — homepage SelectedWork and
+// /limitedoffer's OFFER_PORTFOLIO wall are untouched, both keep the full
+// project set). Dropped: aulea, macquias, ascend-volleyball, clickandkeep,
+// adrayan-law.
+//
+// Imago Productions, Camsnap Camera Rental, and Onyx Clouds Premium Vape
+// Co. were added the same day once real screenshots actually arrived (an
+// earlier message said "uploaded" but no files came through that time).
+// All three are now real entries in `content/portfolio.ts`. Onyx Clouds
+// and Camsnap both graduated out of that file's `ONGOING` list (previously
+// ids `onyx-clouds`/`camsnaps`) now that they're live with real sites.
 export const FYB_PORTFOLIO = {
   headline: "See What We Can Build",
   sub: "Real websites for real Philippine businesses. Tap any to see it live.",
-  primaryIds: ["dmhr", "vocalyze", "aulea", "pocketg7iii", "macquias", "ascend-volleyball", "clickandkeep", "amr-bookkeeping", "adrayan-law"],
+  primaryIds: ["dmhr", "pocketg7iii", "amr-bookkeeping", "imago-productions", "camsnap", "onyx-clouds", "vocalyze"],
   advancedIds: ["aurielle", "leanandfit"],
   advancedLabel: "Beyond the ₱299 scope",
   cta: "See What We Can Build →",

@@ -54,3 +54,12 @@ export function buildQualifierPrefill(answers: QualifierAnswers): string {
  */
 export const FYB_PREFILL =
   "Hi Altaventures! I'd like to get the ₱299 website offer for my business.";
+
+/**
+ * WhatsApp prefill for /b2b's "Message us instead" fallbacks (a checkout
+ * failure, or the thank-you page's trouble link). Checkout itself is live
+ * (see functions/api/checkout.ts), so this is only a fallback path, same
+ * role FYB_PREFILL plays on /foryourbusiness.
+ */
+export const B2B_PREFILL =
+  "Hi Altaventures! I'd like to get the ₱4,999 business website package.";

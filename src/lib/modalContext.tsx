@@ -1,7 +1,16 @@
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
-type LegalDoc = "privacy" | "terms" | "refund" | "fyb-refund" | "fyb-terms" | "fyb-privacy";
+type LegalDoc =
+  | "privacy"
+  | "terms"
+  | "refund"
+  | "fyb-refund"
+  | "fyb-terms"
+  | "fyb-privacy"
+  | "b2b-refund"
+  | "b2b-terms"
+  | "b2b-privacy";
 
 interface ModalContextValue {
   contactSection: string | null;

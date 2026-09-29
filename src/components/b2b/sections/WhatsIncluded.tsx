@@ -1,4 +1,4 @@
-import { WHATS_INCLUDED } from "../../../content/foryourbusiness";
+import { WHATS_INCLUDED } from "../../../content/b2b";
 import Section from "../../ui/Section";
 import Reveal from "../../offer/Reveal";
 
@@ -28,7 +28,6 @@ export default function WhatsIncluded() {
               <div>
                 <p className="text-sm font-semibold text-ink sm:text-base">{item.title}</p>
                 <p className="mt-1 text-sm text-ink/70">{item.copy}</p>
-                {"note" in item && item.note && <p className="mt-1.5 text-xs italic text-ink/50">{item.note}</p>}
               </div>
             </Reveal>
           </li>
