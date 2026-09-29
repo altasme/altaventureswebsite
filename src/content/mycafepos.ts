@@ -88,12 +88,35 @@ export const PROBLEM = {
 } as const;
 
 export const DEMO = {
-  eyebrow: "Product walkthrough",
+  eyebrow: "Try it yourself",
   headline: "See MyCafe POS in action.",
-  copy: "Follow an actual order from menu selection to checkout, transaction history, receipt, and stock updates.",
-  steps: ["Open MyCafe POS", "Select a menu item", "Review the cart", "Complete a test checkout", "Check the record and receipt"],
+  copy: "This is a real, clickable walkthrough of the order-taking screen: pick a menu item, review the cart, complete checkout, and see the receipt. No sign-up, no real transaction, just the flow.",
   cta: "Try It for Free",
+  note: "Demo only — this uses a sample menu and no real payment or order is created.",
 } as const;
+
+// Sample menu + payment options powering the interactive demo below (Demo.tsx
+// / PosDemo.tsx). Deliberately fake/illustrative prices and item names (not a
+// real client's live menu) since this widget's whole point is letting a
+// visitor click through the order flow itself, not showcasing real data —
+// unlike the rest of the site's real-work-only guardrail, which governs
+// screenshots/testimonials standing in for real client work, not a
+// self-labeled interactive sample.
+export const DEMO_MENU = {
+  categories: ["Coffee", "Non-Coffee", "Snacks"] as const,
+  items: [
+    { id: 1, name: "Iced Americano", category: "Coffee", priceCentavos: 12900 },
+    { id: 2, name: "Cafe Latte", category: "Coffee", priceCentavos: 14900 },
+    { id: 3, name: "Spanish Latte", category: "Coffee", priceCentavos: 15900 },
+    { id: 4, name: "Caramel Macchiato", category: "Coffee", priceCentavos: 16900 },
+    { id: 5, name: "Matcha Latte", category: "Non-Coffee", priceCentavos: 15900 },
+    { id: 6, name: "Strawberry Milk", category: "Non-Coffee", priceCentavos: 13900 },
+    { id: 7, name: "Chocolate Croissant", category: "Snacks", priceCentavos: 8900 },
+    { id: 8, name: "Blueberry Muffin", category: "Snacks", priceCentavos: 7900 },
+  ],
+} as const;
+
+export const DEMO_PAYMENT_METHODS = ["Cash", "GCash"] as const;
 
 export const FEATURES = {
   eyebrow: "Available during testing",
@@ -225,6 +248,5 @@ export const MOBILE_ACCESS_BAR = {
 // without guessing dimensions. See CLAUDE.md's media replacement table.
 export const MEDIA = {
   hero: { width: 1600, height: 1200, ratio: "4:3", type: "WebP", title: "Hero product image", note: "Android phone or tablet showing the actual POS, café counter, and thermal printer" },
-  demo: { width: 1920, height: 1080, ratio: "16:9", type: "MP4 or WebM", title: "Product demo video", note: "Use real footage: add menu item → cart → checkout → receipt → sales and inventory" },
   community: { width: 1200, height: 900, ratio: "4:3", type: "WebP", title: "Testing community image", note: "Real café owner using MyCafe POS in a working environment" },
 } as const;

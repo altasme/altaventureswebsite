@@ -114,10 +114,6 @@
 .mcp-problem-row svg, .mcp-feature-icon svg { width: 1.25rem; height: 1.25rem; }
 .mcp-problem-row p { margin-top: .4rem; color: var(--mcp-muted-foreground); line-height: 1.6; }
 
-.mcp-step-list { display: grid; align-content: center; }
-.mcp-step-list li { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--mcp-footer-border); font-weight: 650; color: var(--mcp-dark-foreground); }
-.mcp-step-list span { color: var(--mcp-accent); font-size: .72rem; font-weight: 800; }
-
 .mcp-feature-card { padding: 1.75rem; border: 1px solid var(--mcp-border); border-radius: var(--mcp-radius); background: var(--mcp-card); box-shadow: 0 12px 36px color-mix(in oklch, var(--mcp-primary) 5%, transparent); }
 .mcp-feature-card p { margin-top: .4rem; color: var(--mcp-muted-foreground); line-height: 1.6; }
 .mcp-feature-card .mcp-media-placeholder { min-height: 190px; }
@@ -152,6 +148,59 @@
    CTA stayed visible and wrapped awkwardly on a 390px screenshot). */
 .mcp-desktop-only { display: none; }
 @media (min-width: 640px) { .mcp-desktop-only { display: inline-flex; } }
+
+/* Interactive order-taking demo (PosDemo.tsx) — a small self-contained
+   "device screen" card, modeled after the real app's PosView/CheckoutDialog/
+   ReceiptPaper look but reimplemented with sample data, no backend. */
+.mcp-demo { border-radius: var(--mcp-radius); overflow: hidden; border: 1px solid var(--mcp-footer-border); background: var(--mcp-card); color: var(--mcp-foreground); box-shadow: 0 24px 60px color-mix(in oklch, var(--mcp-primary) 25%, transparent); }
+.mcp-demo-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .85rem 1.25rem; background: var(--mcp-dark); color: var(--mcp-dark-foreground); }
+.mcp-demo-bar strong { font-size: .85rem; font-weight: 800; }
+.mcp-demo-steps { display: flex; gap: .4rem; font-size: .64rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.mcp-demo-steps span { padding: .3rem .55rem; border-radius: 999px; color: var(--mcp-dark-muted); }
+.mcp-demo-steps span[data-active="true"] { background: var(--mcp-accent); color: var(--mcp-accent-foreground); }
+.mcp-demo-body { padding: 1.25rem; }
+@media (min-width: 768px) { .mcp-demo-body { padding: 1.75rem; } }
+
+.mcp-demo-grid { display: grid; gap: 1.5rem; }
+@media (min-width: 900px) { .mcp-demo-grid { grid-template-columns: 1.5fr 1fr; align-items: start; } }
+
+.mcp-demo-categories { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: .25rem; margin-bottom: 1rem; }
+.mcp-demo-chip { flex: none; height: 2.25rem; padding-inline: .9rem; border-radius: 999px; border: 1px solid var(--mcp-border); background: var(--mcp-background); font-size: .8rem; font-weight: 700; color: var(--mcp-foreground); }
+.mcp-demo-chip[data-active="true"] { background: var(--mcp-primary); border-color: var(--mcp-primary); color: var(--mcp-primary-foreground); }
+
+.mcp-demo-products { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; }
+@media (min-width: 520px) { .mcp-demo-products { grid-template-columns: repeat(3, 1fr); } }
+
+.mcp-demo-product { text-align: left; padding: .9rem; border-radius: var(--mcp-radius); border: 1px solid var(--mcp-border); background: var(--mcp-background); transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease; }
+.mcp-demo-product:hover { transform: translateY(-2px); border-color: var(--mcp-primary); }
+.mcp-demo-product:active { transform: scale(.97); }
+.mcp-demo-product[data-added="true"] { border-color: var(--mcp-primary); box-shadow: 0 0 0 2px color-mix(in oklch, var(--mcp-primary) 35%, transparent); }
+.mcp-demo-product strong { display: block; margin-top: .5rem; font-size: .88rem; }
+.mcp-demo-product-row { display: flex; align-items: center; justify-content: space-between; gap: .5rem; color: var(--mcp-primary); }
+.mcp-demo-price { display: block; margin-top: .4rem; font-weight: 800; color: var(--mcp-primary); }
+
+.mcp-demo-cart { display: flex; flex-direction: column; border-radius: var(--mcp-radius); border: 1px solid var(--mcp-border); background: var(--mcp-background); min-height: 320px; }
+.mcp-demo-cart-header { padding: 1rem 1.1rem; border-bottom: 1px solid var(--mcp-border); display: flex; align-items: center; justify-content: space-between; }
+.mcp-demo-cart-lines { flex: 1; padding: .5rem 1.1rem; }
+.mcp-demo-cart-line { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .65rem 0; border-bottom: 1px dashed var(--mcp-border); }
+.mcp-demo-cart-line:last-child { border-bottom: none; }
+.mcp-demo-qty { display: flex; align-items: center; gap: .5rem; }
+.mcp-demo-qty button { width: 1.6rem; height: 1.6rem; border-radius: .35rem; border: 1px solid var(--mcp-border); background: var(--mcp-card); font-weight: 800; line-height: 1; display: grid; place-items: center; }
+.mcp-demo-empty { padding: 2rem 1rem; text-align: center; color: var(--mcp-muted-foreground); }
+.mcp-demo-cart-footer { padding: 1rem 1.1rem; border-top: 1px solid var(--mcp-border); }
+.mcp-demo-total-row { display: flex; align-items: baseline; justify-content: space-between; padding: .6rem 0; font-weight: 800; font-size: 1.2rem; }
+
+.mcp-demo-methods { display: grid; grid-template-columns: repeat(2, 1fr); gap: .6rem; }
+.mcp-demo-method { height: 2.75rem; border-radius: var(--mcp-radius); border: 1px solid var(--mcp-border); background: var(--mcp-card); font-weight: 700; }
+.mcp-demo-method[data-active="true"] { border-color: var(--mcp-primary); background: var(--mcp-accent-soft); color: var(--mcp-primary); }
+
+.mcp-demo-input { display: block; width: 100%; height: 2.75rem; margin-top: .4rem; padding-inline: .85rem; border-radius: var(--mcp-radius); border: 1px solid var(--mcp-border); background: var(--mcp-card); color: var(--mcp-foreground); font-size: 1rem; }
+.mcp-demo-input:focus-visible { outline: 2px solid var(--mcp-ring); outline-offset: 1px; }
+
+.mcp-demo-receipt { max-width: 26rem; margin-inline: auto; padding: 1.75rem; border: 1px solid var(--mcp-border); background: var(--mcp-card); border-radius: .25rem; }
+.mcp-demo-receipt-head { text-align: center; }
+.mcp-demo-receipt-marker { margin: .85rem 0; padding: .6rem 0; border-block: 1px dashed var(--mcp-border); }
+.mcp-demo-receipt-line { display: flex; justify-content: space-between; gap: .5rem; font-size: .82rem; padding: .3rem 0; }
 
 @media (max-width: 767px) {
   .mcp-section { padding-block: 4.5rem; }
