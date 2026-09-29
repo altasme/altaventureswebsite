@@ -90,7 +90,7 @@ export const PROBLEM = {
 export const DEMO = {
   eyebrow: "Try it yourself",
   headline: "See MyCafe POS in action.",
-  copy: "This is a real, clickable walkthrough of the order screen: pick a size, watch stock update live, add a senior/PWD discount, split a payment, and get a receipt. No sign-up, no real transaction, just the flow.",
+  copy: "This is a real, clickable walkthrough of the order screen: pick a size and hot or iced, watch stock update live, add a senior/PWD discount, split the bill, pay by cash, GCash, or bank transfer, and get a receipt. No sign-up, no real transaction, just the flow.",
   cta: "Try It for Free",
   note: "Demo only — this uses a sample menu and no real payment or order is created.",
   receiptCta: "Like how that felt? Get MyCafe POS free during testing.",
@@ -102,26 +102,32 @@ export const DEMO = {
 // visitor click through the order flow itself, not showcasing real data —
 // unlike the rest of the site's real-work-only guardrail, which governs
 // screenshots/testimonials standing in for real client work, not a
-// self-labeled interactive sample. `sizes` mirrors the real app's modifier
-// groups (PosView's ModifierDialog); `stock` mirrors its inventory tracking
+// self-labeled interactive sample. `modifierGroups` mirrors the real app's
+// modifier groups (PosView's ModifierDialog, which supports more than one
+// group per product, e.g. Size + Temperature) — deliberately varied across
+// items (two groups, one group, none) so the demo exercises all three
+// shapes, not just the simplest one. `stock` mirrors its inventory tracking
 // (InventoryView) on one item only, so a visitor can see a real feature
 // (live stock decrementing, then "Sold out") without simulating the whole
 // Inventory screen.
+const SIZE_GROUP = { label: "Size", options: [{ label: "Regular", deltaCentavos: 0 }, { label: "Large", deltaCentavos: 2000 }] };
+const TEMPERATURE_GROUP = { label: "Temperature", options: [{ label: "Hot", deltaCentavos: 0 }, { label: "Iced", deltaCentavos: 0 }] };
+
 export const DEMO_MENU = {
   categories: ["Coffee", "Non-Coffee", "Snacks"] as const,
   items: [
-    { id: 1, name: "Iced Americano", category: "Coffee", priceCentavos: 12900, sizes: [{ label: "Regular", deltaCentavos: 0 }, { label: "Large", deltaCentavos: 2000 }] },
-    { id: 2, name: "Cafe Latte", category: "Coffee", priceCentavos: 14900, sizes: [{ label: "Regular", deltaCentavos: 0 }, { label: "Large", deltaCentavos: 2000 }] },
-    { id: 3, name: "Spanish Latte", category: "Coffee", priceCentavos: 15900, sizes: [{ label: "Regular", deltaCentavos: 0 }, { label: "Large", deltaCentavos: 2000 }] },
-    { id: 4, name: "Caramel Macchiato", category: "Coffee", priceCentavos: 16900, sizes: [{ label: "Regular", deltaCentavos: 0 }, { label: "Large", deltaCentavos: 2000 }] },
-    { id: 5, name: "Matcha Latte", category: "Non-Coffee", priceCentavos: 15900, sizes: [{ label: "Regular", deltaCentavos: 0 }, { label: "Large", deltaCentavos: 2000 }] },
-    { id: 6, name: "Strawberry Milk", category: "Non-Coffee", priceCentavos: 13900 },
+    { id: 1, name: "Americano", category: "Coffee", priceCentavos: 12900, modifierGroups: [SIZE_GROUP, TEMPERATURE_GROUP] },
+    { id: 2, name: "Cafe Latte", category: "Coffee", priceCentavos: 14900, modifierGroups: [SIZE_GROUP, TEMPERATURE_GROUP] },
+    { id: 3, name: "Spanish Latte", category: "Coffee", priceCentavos: 15900, modifierGroups: [SIZE_GROUP, TEMPERATURE_GROUP] },
+    { id: 4, name: "Caramel Macchiato", category: "Coffee", priceCentavos: 16900, modifierGroups: [SIZE_GROUP, TEMPERATURE_GROUP] },
+    { id: 5, name: "Matcha Latte", category: "Non-Coffee", priceCentavos: 15900, modifierGroups: [SIZE_GROUP, TEMPERATURE_GROUP] },
+    { id: 6, name: "Strawberry Milk", category: "Non-Coffee", priceCentavos: 13900, modifierGroups: [SIZE_GROUP] },
     { id: 7, name: "Chocolate Croissant", category: "Snacks", priceCentavos: 8900 },
     { id: 8, name: "Blueberry Muffin", category: "Snacks", priceCentavos: 7900, stock: 5 },
   ],
 } as const;
 
-export const DEMO_PAYMENT_METHODS = ["Cash", "GCash"] as const;
+export const DEMO_PAYMENT_METHODS = ["Cash", "GCash", "Bank Transfer"] as const;
 export const DEMO_ORDER_TYPES = ["Dine-in", "Takeout"] as const;
 
 export const FEATURES = {

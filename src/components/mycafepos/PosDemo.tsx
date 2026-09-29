@@ -17,20 +17,25 @@ import { track } from "../../lib/analytics";
 import AccessButton from "./AccessButton";
 
 type MenuItem = (typeof DEMO_MENU.items)[number];
-type SizeOption = { label: string; deltaCentavos: number };
 type PaymentMethod = (typeof DEMO_PAYMENT_METHODS)[number];
 type Step = "order" | "checkout" | "receipt";
+type Selection = { group: string; option: string; deltaCentavos: number };
+
+const MIN_SPLIT_WAYS = 2;
+const MAX_SPLIT_WAYS = 5;
 
 type CartLine = {
   lineId: string;
   productId: number;
   name: string;
-  sizeLabel?: string;
+  modifierLabel?: string;
   unitPriceCentavos: number;
   qty: number;
 };
 
-type ReceiptPayment = { method: PaymentMethod; amountCentavos: number; changeCentavos: number };
+type SplitLine = { method: PaymentMethod; cashReceived: string; reference: string };
+
+type ReceiptPayment = { method: PaymentMethod; amountCentavos: number; changeCentavos: number; reference?: string };
 
 type ReceiptSnapshot = {
   no: string;
@@ -59,14 +64,35 @@ function pesosToCentavos(pesos: string): number {
   return Math.round(Number(pesos || 0) * 100);
 }
 
+// Splits `totalCentavos` into `ways` shares as evenly as possible: any
+// odd centavos left over after an even floor-division go to the first
+// N shares, one each, so the shares always sum back to the exact total
+// (never off by a centavo from rounding).
+function splitShares(totalCentavos: number, ways: number): number[] {
+  const base = Math.floor(totalCentavos / ways);
+  const remainder = totalCentavos - base * ways;
+  return Array.from({ length: ways }, (_, i) => base + (i < remainder ? 1 : 0));
+}
+
+function buildSplitLines(ways: number, totalCentavos: number, previous: SplitLine[]): SplitLine[] {
+  const shares = splitShares(totalCentavos, ways);
+  return shares.map((share, i) => ({
+    method: previous[i]?.method ?? "Cash",
+    cashReceived: (share / 100).toFixed(2),
+    reference: previous[i]?.reference ?? "",
+  }));
+}
+
 // A real, clickable simulation of MyCafe POS's order screen, scoped to what a
 // visitor can safely play with on a marketing page but deliberately deep
-// enough to show off more than just "tap, pay, done": size modifiers, a
-// live-depleting stock item, the SC/PWD statutory discount math, a split
-// payment, and a running "today's demo sales" tally. Modeled after the real
-// app's PosView/ModifierDialog/CheckoutDialog/ReceiptPaper (mycafe-pos-system
-// repo) but reimplemented here as a self-contained, client-only widget with
-// sample data — no account, no backend, no real order or payment, ever.
+// enough to show off more than just "tap, pay, done": multi-group modifiers
+// (size + hot/iced), a live-depleting stock item, the SC/PWD statutory
+// discount math, an even split-the-bill flow across cash/GCash/bank
+// transfer, and a running "today's demo sales" tally. Modeled after the real
+// app's PosView/ModifierDialog/CheckoutDialog/ReceiptPaper
+// (mycafe-pos-system repo) but reimplemented here as a self-contained,
+// client-only widget with sample data — no account, no backend, no real
+// order or payment, ever.
 export default function PosDemo() {
   const [step, setStep] = useState<Step>("order");
   const [category, setCategory] = useState<string>("All");
@@ -75,20 +101,15 @@ export default function PosDemo() {
   const [justAddedId, setJustAddedId] = useState<number | null>(null);
   const [justAddedLine, setJustAddedLine] = useState<string | null>(null);
   const [modifierItem, setModifierItem] = useState<MenuItem | null>(null);
+  const [modifierChoices, setModifierChoices] = useState<Record<string, string>>({});
   const [orderType, setOrderType] = useState<(typeof DEMO_ORDER_TYPES)[number]>("Dine-in");
   const [discountEnabled, setDiscountEnabled] = useState(false);
   const [holderName, setHolderName] = useState("");
   const [holderId, setHolderId] = useState("");
   const [notes, setNotes] = useState("");
 
-  const [method, setMethod] = useState<PaymentMethod>("Cash");
-  const [cashReceived, setCashReceived] = useState("");
-  const [splitEnabled, setSplitEnabled] = useState(false);
-  const [payment1Method, setPayment1Method] = useState<PaymentMethod>("Cash");
-  const [payment2Method, setPayment2Method] = useState<PaymentMethod>("Cash");
-  const [payment1Amount, setPayment1Amount] = useState("");
-  const [payment1CashReceived, setPayment1CashReceived] = useState("");
-  const [payment2CashReceived, setPayment2CashReceived] = useState("");
+  const [splitWays, setSplitWays] = useState(1);
+  const [splitLines, setSplitLines] = useState<SplitLine[]>([{ method: "Cash", cashReceived: "", reference: "" }]);
 
   const [receipt, setReceipt] = useState<ReceiptSnapshot | null>(null);
   const [salesTally, setSalesTally] = useState({ orders: 0, totalCentavos: 0 });
@@ -119,16 +140,17 @@ export default function PosDemo() {
     }
   };
 
-  const addLine = (item: MenuItem, size?: SizeOption) => {
+  const addLine = (item: MenuItem, selections: Selection[]) => {
     const remaining = stockRemaining(item);
     if (remaining !== null && remaining <= 0) return;
     playedOnce();
-    const unitPrice = item.priceCentavos + (size?.deltaCentavos ?? 0);
-    const key = `${item.id}:${size?.label ?? ""}`;
+    const unitPrice = item.priceCentavos + selections.reduce((s, sel) => s + sel.deltaCentavos, 0);
+    const modifierLabel = selections.length > 0 ? selections.map((s) => s.option).join(", ") : undefined;
+    const key = `${item.id}:${selections.map((s) => s.option).join("|")}`;
     setCart((current) => {
       const found = current.find((l) => l.lineId === key);
       if (found) return current.map((l) => (l.lineId === key ? { ...l, qty: l.qty + 1 } : l));
-      return [...current, { lineId: key, productId: item.id, name: item.name, sizeLabel: size?.label, unitPriceCentavos: unitPrice, qty: 1 }];
+      return [...current, { lineId: key, productId: item.id, name: item.name, modifierLabel, unitPriceCentavos: unitPrice, qty: 1 }];
     });
     setJustAddedId(item.id);
     setJustAddedLine(key);
@@ -139,51 +161,77 @@ export default function PosDemo() {
   };
 
   const selectItem = (item: MenuItem) => {
-    if ("sizes" in item && item.sizes) setModifierItem(item);
-    else addLine(item);
+    if ("modifierGroups" in item && item.modifierGroups && item.modifierGroups.length > 0) {
+      setModifierChoices(Object.fromEntries(item.modifierGroups.map((g) => [g.label, g.options[0].label])));
+      setModifierItem(item);
+    } else {
+      addLine(item, []);
+    }
   };
 
-  const chooseSize = (size: SizeOption) => {
-    if (modifierItem) addLine(modifierItem, size);
+  const confirmModifier = () => {
+    if (!modifierItem || !("modifierGroups" in modifierItem) || !modifierItem.modifierGroups) return;
+    const selections: Selection[] = modifierItem.modifierGroups.map((g) => {
+      const chosenLabel = modifierChoices[g.label] ?? g.options[0].label;
+      const option = g.options.find((o) => o.label === chosenLabel) ?? g.options[0];
+      return { group: g.label, option: option.label, deltaCentavos: option.deltaCentavos };
+    });
+    addLine(modifierItem, selections);
     setModifierItem(null);
+  };
+
+  const modifierPreviewCentavos = (): number => {
+    if (!modifierItem || !("modifierGroups" in modifierItem) || !modifierItem.modifierGroups) return 0;
+    let deltaSum = 0;
+    for (const g of modifierItem.modifierGroups) {
+      const chosenLabel = modifierChoices[g.label] ?? g.options[0].label;
+      const option = g.options.find((o) => o.label === chosenLabel) ?? g.options[0];
+      deltaSum += option.deltaCentavos;
+    }
+    return modifierItem.priceCentavos + deltaSum;
   };
 
   const updateQty = (lineId: string, delta: number) =>
     setCart((current) => current.flatMap((l) => (l.lineId === lineId ? (l.qty + delta > 0 ? [{ ...l, qty: l.qty + delta }] : []) : [l])));
 
   const goToCheckout = () => {
-    setMethod("Cash");
-    setCashReceived((totalCentavos / 100).toFixed(2));
-    setSplitEnabled(false);
-    const half = Math.round(totalCentavos / 2);
-    setPayment1Method("Cash");
-    setPayment2Method("Cash");
-    setPayment1Amount((half / 100).toFixed(2));
-    setPayment1CashReceived((half / 100).toFixed(2));
-    setPayment2CashReceived(((totalCentavos - half) / 100).toFixed(2));
+    setSplitWays(1);
+    setSplitLines([{ method: "Cash", cashReceived: (totalCentavos / 100).toFixed(2), reference: "" }]);
     setStep("checkout");
   };
 
-  const payment1Centavos = splitEnabled ? Math.min(Math.max(pesosToCentavos(payment1Amount), 0), totalCentavos) : totalCentavos;
-  const payment2Centavos = splitEnabled ? totalCentavos - payment1Centavos : 0;
-  const payment1Change = payment1Method === "Cash" ? Math.max(0, pesosToCentavos(payment1CashReceived) - payment1Centavos) : 0;
-  const payment2Change = payment2Method === "Cash" ? Math.max(0, pesosToCentavos(payment2CashReceived) - payment2Centavos) : 0;
-  const singleChange = method === "Cash" ? Math.max(0, pesosToCentavos(cashReceived) - totalCentavos) : 0;
+  const toggleSplit = () => {
+    if (splitWays > 1) {
+      setSplitWays(1);
+      setSplitLines([{ method: "Cash", cashReceived: (totalCentavos / 100).toFixed(2), reference: "" }]);
+    } else {
+      setSplitWays(2);
+      setSplitLines(buildSplitLines(2, totalCentavos, splitLines));
+    }
+  };
 
-  const canConfirm = splitEnabled
-    ? payment1Centavos > 0 &&
-      payment2Centavos > 0 &&
-      (payment1Method !== "Cash" || pesosToCentavos(payment1CashReceived) >= payment1Centavos) &&
-      (payment2Method !== "Cash" || pesosToCentavos(payment2CashReceived) >= payment2Centavos)
-    : method !== "Cash" || pesosToCentavos(cashReceived) >= totalCentavos;
+  const changeSplitWays = (delta: number) => {
+    const next = Math.min(MAX_SPLIT_WAYS, Math.max(MIN_SPLIT_WAYS, splitWays + delta));
+    setSplitWays(next);
+    setSplitLines(buildSplitLines(next, totalCentavos, splitLines));
+  };
+
+  const updateSplitLine = (index: number, patch: Partial<SplitLine>) =>
+    setSplitLines((current) => current.map((line, i) => (i === index ? { ...line, ...patch } : line)));
+
+  const shares = splitShares(totalCentavos, splitWays);
+  const lineChange = (line: SplitLine, shareCentavos: number) => (line.method === "Cash" ? Math.max(0, pesosToCentavos(line.cashReceived) - shareCentavos) : 0);
+  const combinedChange = splitLines.reduce((sum, line, i) => sum + lineChange(line, shares[i] ?? 0), 0);
+
+  const canConfirm = splitLines.every((line, i) => line.method !== "Cash" || pesosToCentavos(line.cashReceived) >= (shares[i] ?? 0));
 
   const confirmSale = () => {
-    const payments: ReceiptPayment[] = splitEnabled
-      ? [
-          { method: payment1Method, amountCentavos: payment1Centavos, changeCentavos: payment1Change },
-          { method: payment2Method, amountCentavos: payment2Centavos, changeCentavos: payment2Change },
-        ]
-      : [{ method, amountCentavos: totalCentavos, changeCentavos: singleChange }];
+    const payments: ReceiptPayment[] = splitLines.map((line, i) => ({
+      method: line.method,
+      amountCentavos: shares[i] ?? 0,
+      changeCentavos: lineChange(line, shares[i] ?? 0),
+      reference: line.reference.trim() || undefined,
+    }));
 
     setReceipt({
       no: `DEMO-${Math.floor(1000 + Math.random() * 9000)}`,
@@ -313,7 +361,7 @@ export default function PosDemo() {
                   </button>
                 )}
               </div>
-              <div className="mcp-demo-toggle-row" style={{ margin: "0 1.1rem" }}>
+              <div className="mcp-demo-toggle-row" style={{ margin: "0 1.1rem", gridTemplateColumns: `repeat(${DEMO_ORDER_TYPES.length}, 1fr)` }}>
                 {DEMO_ORDER_TYPES.map((t) => (
                   <button key={t} type="button" className="mcp-demo-toggle-btn" data-active={orderType === t} onClick={() => setOrderType(t)}>
                     {t}
@@ -331,10 +379,8 @@ export default function PosDemo() {
                   cart.map((line) => (
                     <div key={line.lineId} className="mcp-demo-cart-line" data-flash={justAddedLine === line.lineId}>
                       <div>
-                        <strong className="block text-sm">
-                          {line.name}
-                          {line.sizeLabel && <span className="mcp-muted"> · {line.sizeLabel}</span>}
-                        </strong>
+                        <strong className="block text-sm">{line.name}</strong>
+                        {line.modifierLabel && <span className="mcp-muted text-xs">{line.modifierLabel} · </span>}
                         <span className="mcp-muted text-xs">{money(line.unitPriceCentavos)} each</span>
                       </div>
                       <div className="mcp-demo-qty">
@@ -398,29 +444,45 @@ export default function PosDemo() {
           </div>
         )}
 
-        {modifierItem && "sizes" in modifierItem && modifierItem.sizes && (
+        {modifierItem && "modifierGroups" in modifierItem && modifierItem.modifierGroups && (
           <div className="mcp-demo-overlay">
             <div className="mcp-demo-overlay-card">
               <div className="mcp-demo-cart-header">
-                <strong>Choose a size — {modifierItem.name}</strong>
+                <strong>{modifierItem.name}</strong>
                 <button type="button" className="mcp-btn--ghost" aria-label="Cancel" onClick={() => setModifierItem(null)}>
                   <X size={18} aria-hidden="true" />
                 </button>
               </div>
               <div className="mcp-demo-size-list">
-                {modifierItem.sizes.map((size) => (
-                  <button key={size.label} type="button" className="mcp-demo-size-btn" onClick={() => chooseSize(size)}>
-                    <span>{size.label}</span>
-                    <span>{money(modifierItem.priceCentavos + size.deltaCentavos)}</span>
-                  </button>
+                {modifierItem.modifierGroups.map((group) => (
+                  <div key={group.label}>
+                    <span className="mcp-demo-modgroup-label">{group.label}</span>
+                    <div className="mt-2 grid gap-2" style={{ gridTemplateColumns: `repeat(${group.options.length}, 1fr)` }}>
+                      {group.options.map((opt) => (
+                        <button
+                          key={opt.label}
+                          type="button"
+                          className="mcp-demo-toggle-btn"
+                          data-active={(modifierChoices[group.label] ?? group.options[0].label) === opt.label}
+                          onClick={() => setModifierChoices((c) => ({ ...c, [group.label]: opt.label }))}
+                        >
+                          {opt.label}
+                          {opt.deltaCentavos > 0 && <small className="mcp-muted"> +{money(opt.deltaCentavos)}</small>}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 ))}
+                <button type="button" className="mcp-btn w-full" onClick={confirmModifier}>
+                  Add to Order — {money(modifierPreviewCentavos())}
+                </button>
               </div>
             </div>
           </div>
         )}
 
         {step === "checkout" && (
-          <div className="mcp-demo-cart" style={{ maxWidth: "26rem", margin: "0 auto" }}>
+          <div className="mcp-demo-cart" style={{ maxWidth: "28rem", margin: "0 auto" }}>
             <div className="mcp-demo-cart-header">
               <strong>Record payment</strong>
             </div>
@@ -430,76 +492,82 @@ export default function PosDemo() {
                 <span>{money(totalCentavos)}</span>
               </div>
 
-              <button type="button" className="mcp-demo-dashed-btn" onClick={() => setSplitEnabled((v) => !v)}>
-                <span>Split into two payments</span>
-                {splitEnabled ? <CheckCircle2 size={16} aria-hidden="true" /> : <Plus size={16} aria-hidden="true" />}
+              <button type="button" className="mcp-demo-dashed-btn" onClick={toggleSplit}>
+                <span>Split the bill</span>
+                {splitWays > 1 ? <CheckCircle2 size={16} aria-hidden="true" /> : <Plus size={16} aria-hidden="true" />}
               </button>
 
-              {!splitEnabled ? (
-                <>
-                  <div className="mcp-demo-toggle-row mt-3">
-                    {DEMO_PAYMENT_METHODS.map((m) => (
-                      <button key={m} type="button" className="mcp-demo-toggle-btn" data-active={method === m} onClick={() => setMethod(m)}>
-                        {m}
-                      </button>
-                    ))}
+              {splitWays > 1 && (
+                <div className="mcp-demo-split-header">
+                  <span>Split {splitWays} ways</span>
+                  <div className="mcp-demo-stepper">
+                    <button type="button" aria-label="Fewer ways" onClick={() => changeSplitWays(-1)} disabled={splitWays <= MIN_SPLIT_WAYS}>
+                      <Minus size={14} aria-hidden="true" />
+                    </button>
+                    <button type="button" aria-label="More ways" onClick={() => changeSplitWays(1)} disabled={splitWays >= MAX_SPLIT_WAYS}>
+                      <Plus size={14} aria-hidden="true" />
+                    </button>
                   </div>
-                  {method === "Cash" && (
-                    <div className="mt-4">
-                      <label className="text-sm font-bold" htmlFor="mcp-demo-cash">
-                        Cash received
-                      </label>
-                      <input id="mcp-demo-cash" className="mcp-demo-input" inputMode="decimal" value={cashReceived} onChange={(e) => setCashReceived(e.target.value)} />
-                      <div className="mcp-demo-total-row" style={{ fontSize: "1rem" }}>
-                        <span>Change</span>
-                        <span>{money(singleChange)}</span>
+                </div>
+              )}
+
+              <div className="mt-3 grid gap-4">
+                {splitLines.map((line, i) => (
+                  <div key={i} className={splitWays > 1 ? "mcp-demo-split-block" : ""}>
+                    {splitWays > 1 && (
+                      <span className="mcp-demo-split-label">
+                        Payment {i + 1} of {splitWays} · {money(shares[i] ?? 0)}
+                      </span>
+                    )}
+                    <div className="mcp-demo-toggle-row" style={{ gridTemplateColumns: `repeat(${DEMO_PAYMENT_METHODS.length}, 1fr)` }}>
+                      {DEMO_PAYMENT_METHODS.map((m) => (
+                        <button key={m} type="button" className="mcp-demo-toggle-btn" data-active={line.method === m} onClick={() => updateSplitLine(i, { method: m })}>
+                          {m}
+                        </button>
+                      ))}
+                    </div>
+                    {line.method === "Cash" && (
+                      <div className="mt-3">
+                        <label className="text-sm font-bold" htmlFor={`mcp-demo-cash-${i}`}>
+                          Cash received
+                        </label>
+                        <input
+                          id={`mcp-demo-cash-${i}`}
+                          className="mcp-demo-input"
+                          inputMode="decimal"
+                          value={line.cashReceived}
+                          onChange={(e) => updateSplitLine(i, { cashReceived: e.target.value })}
+                        />
+                        <div className="mcp-demo-total-row" style={{ fontSize: "1rem" }}>
+                          <span>Change</span>
+                          <span>{money(lineChange(line, shares[i] ?? 0))}</span>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                  {method === "GCash" && <p className="mcp-muted mt-4 text-xs">Simulated GCash payment — no real transaction is sent.</p>}
-                </>
-              ) : (
-                <div className="mt-3 grid gap-4">
-                  <div className="mcp-demo-split-block">
-                    <span className="mcp-demo-split-label">Payment 1</span>
-                    <div className="mcp-demo-toggle-row">
-                      {DEMO_PAYMENT_METHODS.map((m) => (
-                        <button key={m} type="button" className="mcp-demo-toggle-btn" data-active={payment1Method === m} onClick={() => setPayment1Method(m)}>
-                          {m}
-                        </button>
-                      ))}
-                    </div>
-                    <label className="mt-2 block text-xs font-bold">
-                      Amount
-                      <input className="mcp-demo-input" inputMode="decimal" value={payment1Amount} onChange={(e) => setPayment1Amount(e.target.value)} />
-                    </label>
-                    {payment1Method === "Cash" && (
-                      <label className="mt-2 block text-xs font-bold">
-                        Cash received
-                        <input className="mcp-demo-input" inputMode="decimal" value={payment1CashReceived} onChange={(e) => setPayment1CashReceived(e.target.value)} />
-                      </label>
+                    )}
+                    {line.method === "GCash" && <p className="mcp-muted mt-3 text-xs">Simulated GCash payment — no real transaction is sent.</p>}
+                    {line.method === "Bank Transfer" && (
+                      <div className="mt-3">
+                        <label className="text-sm font-bold" htmlFor={`mcp-demo-ref-${i}`}>
+                          Reference (optional)
+                        </label>
+                        <input
+                          id={`mcp-demo-ref-${i}`}
+                          className="mcp-demo-input"
+                          placeholder="Enter transfer reference"
+                          value={line.reference}
+                          onChange={(e) => updateSplitLine(i, { reference: e.target.value })}
+                        />
+                        <p className="mcp-muted mt-2 text-xs">Simulated bank transfer — no real transaction is sent.</p>
+                      </div>
                     )}
                   </div>
-                  <div className="mcp-demo-split-block">
-                    <span className="mcp-demo-split-label">Payment 2 · {money(payment2Centavos)}</span>
-                    <div className="mcp-demo-toggle-row">
-                      {DEMO_PAYMENT_METHODS.map((m) => (
-                        <button key={m} type="button" className="mcp-demo-toggle-btn" data-active={payment2Method === m} onClick={() => setPayment2Method(m)}>
-                          {m}
-                        </button>
-                      ))}
-                    </div>
-                    {payment2Method === "Cash" && (
-                      <label className="mt-2 block text-xs font-bold">
-                        Cash received
-                        <input className="mcp-demo-input" inputMode="decimal" value={payment2CashReceived} onChange={(e) => setPayment2CashReceived(e.target.value)} />
-                      </label>
-                    )}
-                  </div>
-                  <div className="mcp-demo-line-row">
-                    <span>Combined change</span>
-                    <span>{money(payment1Change + payment2Change)}</span>
-                  </div>
+                ))}
+              </div>
+
+              {splitWays > 1 && combinedChange > 0 && (
+                <div className="mcp-demo-line-row mt-2">
+                  <span>Combined change</span>
+                  <span>{money(combinedChange)}</span>
                 </div>
               )}
 
@@ -559,7 +627,7 @@ export default function PosDemo() {
                   <div key={line.lineId} className="mcp-demo-receipt-line">
                     <span>
                       {line.qty}× {line.name}
-                      {line.sizeLabel && <small className="mcp-muted"> ({line.sizeLabel})</small>}
+                      {line.modifierLabel && <small className="mcp-muted"> ({line.modifierLabel})</small>}
                     </span>
                     <span>{money(line.unitPriceCentavos * line.qty)}</span>
                   </div>
@@ -582,7 +650,10 @@ export default function PosDemo() {
                 </div>
                 {receipt.payments.map((p, i) => (
                   <div key={i} className="mcp-demo-receipt-line">
-                    <span>Payment{receipt.payments.length > 1 ? ` ${i + 1}` : ""}</span>
+                    <span>
+                      Payment{receipt.payments.length > 1 ? ` ${i + 1}` : ""}
+                      {p.reference && <small className="mcp-muted"> (Ref: {p.reference})</small>}
+                    </span>
                     <span>
                       {p.method}
                       {receipt.payments.length > 1 ? ` · ${money(p.amountCentavos)}` : ""}

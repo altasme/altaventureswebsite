@@ -208,7 +208,7 @@
 .mcp-demo-total-row { display: flex; align-items: baseline; justify-content: space-between; padding: .6rem 0; font-weight: 800; font-size: 1.2rem; }
 
 .mcp-demo-toggle-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: .6rem; }
-.mcp-demo-toggle-btn { height: 2.75rem; border-radius: var(--mcp-radius); border: 1px solid var(--mcp-border); background: var(--mcp-card); font-weight: 700; }
+.mcp-demo-toggle-btn { min-height: 2.75rem; padding: .4rem .5rem; border-radius: var(--mcp-radius); border: 1px solid var(--mcp-border); background: var(--mcp-card); font-weight: 700; line-height: 1.3; }
 .mcp-demo-toggle-btn[data-active="true"] { border-color: var(--mcp-primary); background: var(--mcp-accent-soft); color: var(--mcp-primary); }
 
 .mcp-demo-input { display: block; width: 100%; height: 2.75rem; margin-top: .4rem; padding-inline: .85rem; border-radius: var(--mcp-radius); border: 1px solid var(--mcp-border); background: var(--mcp-card); color: var(--mcp-foreground); font-size: 1rem; }
@@ -220,13 +220,16 @@
 .mcp-demo-line-row { display: flex; justify-content: space-between; padding: .3rem 0; color: var(--mcp-muted-foreground); font-size: .85rem; }
 
 .mcp-demo-overlay { position: absolute; inset: 0; z-index: 5; display: grid; place-items: center; padding: 1rem; background: color-mix(in oklch, var(--mcp-foreground) 45%, transparent); border-radius: var(--mcp-radius); }
-.mcp-demo-overlay-card { width: 100%; max-width: 22rem; border-radius: var(--mcp-radius); background: var(--mcp-background); border: 1px solid var(--mcp-border); box-shadow: 0 20px 48px color-mix(in oklch, var(--mcp-primary) 25%, transparent); overflow: hidden; }
-.mcp-demo-size-list { display: grid; gap: .6rem; padding: 1rem 1.1rem 1.25rem; }
-.mcp-demo-size-btn { display: flex; align-items: center; justify-content: space-between; height: 3rem; padding-inline: 1rem; border-radius: var(--mcp-radius); border: 1px solid var(--mcp-border); background: var(--mcp-card); font-weight: 700; }
-.mcp-demo-size-btn:hover { border-color: var(--mcp-primary); }
+.mcp-demo-overlay-card { width: 100%; max-width: 24rem; border-radius: var(--mcp-radius); background: var(--mcp-background); border: 1px solid var(--mcp-border); box-shadow: 0 20px 48px color-mix(in oklch, var(--mcp-primary) 25%, transparent); overflow: hidden; }
+.mcp-demo-size-list { display: grid; gap: .9rem; padding: 1rem 1.1rem 1.25rem; }
 
 .mcp-demo-split-block { padding: .85rem; border: 1px solid var(--mcp-border); border-radius: var(--mcp-radius); background: var(--mcp-card); }
 .mcp-demo-split-label { display: block; margin-bottom: .5rem; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: var(--mcp-muted-foreground); }
+.mcp-demo-split-header { display: flex; align-items: center; justify-content: space-between; margin-top: .85rem; font-size: .82rem; font-weight: 800; }
+.mcp-demo-stepper { display: flex; gap: .5rem; }
+.mcp-demo-stepper button { width: 1.8rem; height: 1.8rem; border-radius: .4rem; border: 1px solid var(--mcp-border); background: var(--mcp-card); display: grid; place-items: center; }
+.mcp-demo-stepper button:disabled { opacity: .4; }
+.mcp-demo-modgroup-label { display: block; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: var(--mcp-muted-foreground); }
 
 .mcp-demo-receipt { max-width: 26rem; margin-inline: auto; padding: 1.75rem; border: 1px solid var(--mcp-border); background: var(--mcp-card); border-radius: .25rem; }
 .mcp-demo-receipt-head { text-align: center; }
