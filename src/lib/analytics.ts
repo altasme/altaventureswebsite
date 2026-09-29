@@ -40,6 +40,11 @@ type AnalyticsEventMap = {
   lead: { channel: "messenger" | "viber" | "whatsapp"; businessType?: string; yearsInBusiness?: string; objectives?: string };
   checkout_started: Record<string, never>;
   payment_return: Record<string, never>;
+  mycafe_landing_view: Record<string, never>;
+  mycafe_hero_cta_click: Record<string, never>;
+  mycafe_demo_play: Record<string, never>;
+  mycafe_feature_section_view: Record<string, never>;
+  mycafe_free_access_click: { location: string };
 };
 
 export function track<E extends keyof AnalyticsEventMap>(
