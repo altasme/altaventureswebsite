@@ -10,7 +10,7 @@ export default function FAQ() {
     <section id="faq" className="mcp-section" style={{ background: "var(--mcp-surface)" }}>
       <div className="mcp-container grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
-          <SectionTitle eyebrow={FAQ_CONTENT.eyebrow} title={FAQ_CONTENT.headline} />
+          <SectionTitle title={FAQ_CONTENT.headline} />
           <div className="mcp-muted mt-7 flex gap-3 text-sm leading-6">
             <CircleAlert size={20} className="mt-0.5 shrink-0" style={{ color: "var(--mcp-accent)" }} />
             {FAQ_CONTENT.note}

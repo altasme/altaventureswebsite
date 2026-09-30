@@ -474,7 +474,7 @@ export default function PosDemo() {
                   </div>
                 ))}
                 <button type="button" className="mcp-btn w-full" onClick={confirmModifier}>
-                  Add to Order — {money(modifierPreviewCentavos())}
+                  Add to Order, {money(modifierPreviewCentavos())}
                 </button>
               </div>
             </div>
@@ -544,7 +544,7 @@ export default function PosDemo() {
                         </div>
                       </div>
                     )}
-                    {line.method === "GCash" && <p className="mcp-muted mt-3 text-xs">Simulated GCash payment — no real transaction is sent.</p>}
+                    {line.method === "GCash" && <p className="mcp-muted mt-3 text-xs">Simulated GCash payment. No real transaction is sent.</p>}
                     {line.method === "Bank Transfer" && (
                       <div className="mt-3">
                         <label className="text-sm font-bold" htmlFor={`mcp-demo-ref-${i}`}>
@@ -557,7 +557,7 @@ export default function PosDemo() {
                           value={line.reference}
                           onChange={(e) => updateSplitLine(i, { reference: e.target.value })}
                         />
-                        <p className="mcp-muted mt-2 text-xs">Simulated bank transfer — no real transaction is sent.</p>
+                        <p className="mcp-muted mt-2 text-xs">Simulated bank transfer. No real transaction is sent.</p>
                       </div>
                     )}
                   </div>
@@ -668,7 +668,7 @@ export default function PosDemo() {
                 )}
               </div>
               <p className="mcp-muted mt-4 text-center text-[11px]">
-                Thank you for trying the demo. This is a sample order — no real payment or record was created.
+                Thank you for trying the demo. This is a sample order, and no real payment or record was created.
               </p>
             </div>
             <div className="mt-6 text-center">

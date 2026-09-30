@@ -7,7 +7,7 @@ export default function Demo() {
   return (
     <section id="demo" className="mcp-section mcp-dark" style={{ background: "var(--mcp-dark)", color: "var(--mcp-dark-foreground)" }}>
       <div className="mcp-container">
-        <SectionTitle eyebrow={DEMO.eyebrow} title={DEMO.headline} copy={DEMO.copy} />
+        <SectionTitle title={DEMO.headline} copy={DEMO.copy} />
         <div className="mt-10">
           <PosDemo />
           <p className="mcp-muted mt-4 text-center text-xs">{DEMO.note}</p>

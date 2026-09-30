@@ -57,7 +57,6 @@ export const HEADER = {
 
 export const HERO = {
   badge: "Free during ongoing testing",
-  eyebrow: "For cafés & small food businesses",
   headline: ["Your Café,", "Made Easier."],
   sub: "A simple POS for your daily operations.",
   body: "Take orders, track sales, manage inventory, and print receipts with MyCafe POS. We're testing and improving the system, and your café can help.",
@@ -77,7 +76,6 @@ export const BENEFITS = [
 export const BENEFITS_LINE = "Everything starts with a simpler way to manage your café.";
 
 export const PROBLEM = {
-  eyebrow: "Less juggling. More clarity.",
   headline: "Running a café is already a lot of work.",
   copy: "Orders, payments, inventory, and daily sales all need your attention. MyCafe POS brings these everyday tasks into one place, helping you keep your café organized.",
   rows: [
@@ -88,11 +86,10 @@ export const PROBLEM = {
 } as const;
 
 export const DEMO = {
-  eyebrow: "Try it yourself",
   headline: "See MyCafe POS in action.",
   copy: "This is a real, clickable walkthrough of the order screen: pick a size and hot or iced, watch stock update live, add a senior/PWD discount, split the bill, pay by cash, GCash, or bank transfer, and get a receipt. No sign-up, no real transaction, just the flow.",
   cta: "Try It for Free",
-  note: "Demo only — this uses a sample menu and no real payment or order is created.",
+  note: "Demo only. This uses a sample menu, and no real payment or order is created.",
   receiptCta: "Like how that felt? Get MyCafe POS free during testing.",
 } as const;
 
@@ -131,7 +128,6 @@ export const DEMO_PAYMENT_METHODS = ["Cash", "GCash", "Bank Transfer"] as const;
 export const DEMO_ORDER_TYPES = ["Dine-in", "Takeout"] as const;
 
 export const FEATURES = {
-  eyebrow: "Available during testing",
   headline: "The tools to keep your café organized.",
   copy: "Practical tools for the everyday flow of small cafés, coffee shops, and food stalls.",
   items: [
@@ -157,7 +153,6 @@ export const FEATURES = {
 } as const;
 
 export const HOW_IT_WORKS = {
-  eyebrow: "Start simply",
   headline: "Get started and help us improve MyCafe.",
   steps: [
     { number: "01", title: "Get free access", copy: "Create your account and enter the testing phase." },
@@ -168,7 +163,6 @@ export const HOW_IT_WORKS = {
 } as const;
 
 export const OFFER = {
-  eyebrow: "Current offer",
   headline: "Try MyCafe POS for Free.",
   copy: "Explore the features, try it with your café, and help us build a better POS for small businesses.",
   bullets: ["Access to available testing features", "Try the system with your café", "Share feedback and report issues"],
@@ -180,7 +174,6 @@ export const OFFER = {
 } as const;
 
 export const FUTURE_TOOLS = {
-  eyebrow: "Looking ahead",
   headline: "More possibilities for your café.",
   copy: "These ideas are part of the longer-term product vision. They are not included in the current testing access.",
   badge: "Future / optional",
@@ -193,14 +186,12 @@ export const FUTURE_TOOLS = {
 } as const;
 
 export const FEEDBACK = {
-  eyebrow: "Built with café owners",
   headline: "Help us build a POS that works for real cafés.",
   copy: "We're improving MyCafe POS through testing and feedback. Your experience can help us identify what needs to work better.",
   note: "A feedback channel will be linked here once it is active and ready to receive tester input.",
 } as const;
 
 export const FAQ = {
-  eyebrow: "Clear answers",
   headline: "Frequently asked questions.",
   note: "Device, printer, offline, and invoicing details are stated carefully while verification is ongoing.",
   items: [
@@ -229,7 +220,6 @@ export const FAQ = {
 } as const;
 
 export const FINAL_CTA = {
-  eyebrow: "Free access during testing",
   headline: "Ready to Try MyCafe POS?",
   copy: "Explore the system, test it with your café, and help us make it better.",
   cta: "Get Free Access",

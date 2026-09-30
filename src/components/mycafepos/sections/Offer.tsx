@@ -8,8 +8,7 @@ export default function Offer() {
       <div className="mcp-container">
         <div className="mcp-offer-panel">
           <div>
-            <p className="mcp-eyebrow">{OFFER.eyebrow}</p>
-            <h2 className="mt-3">{OFFER.headline}</h2>
+            <h2>{OFFER.headline}</h2>
             <p className="mt-5 max-w-xl text-lg leading-8" style={{ color: "var(--mcp-dark-muted)" }}>
               {OFFER.copy}
             </p>

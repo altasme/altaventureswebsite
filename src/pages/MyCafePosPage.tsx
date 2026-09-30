@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { META } from "../content/mycafepos";
 import { track } from "../lib/analytics";
+import "@fontsource/fraunces/600.css";
+import "@fontsource/fraunces/800.css";
 import "../components/mycafepos/mycafepos.css";
 
 import Header from "../components/mycafepos/sections/Header";

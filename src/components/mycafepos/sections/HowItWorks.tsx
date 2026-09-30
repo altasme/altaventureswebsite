@@ -6,7 +6,7 @@ export default function HowItWorks() {
   return (
     <section id="how-it-works" className="mcp-section" style={{ background: "var(--mcp-surface)" }}>
       <div className="mcp-container">
-        <SectionTitle eyebrow={HOW_IT_WORKS.eyebrow} title={HOW_IT_WORKS.headline} />
+        <SectionTitle title={HOW_IT_WORKS.headline} />
         <div className="mt-12 grid gap-0 md:grid-cols-4">
           {HOW_IT_WORKS.steps.map((step) => (
             <div className="mcp-process-step" key={step.number}>
