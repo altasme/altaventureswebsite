@@ -36,6 +36,37 @@
 // doc's own instruction not to invent destinations.
 export const ACCESS_LINK = "#access";
 
+// Real MyCafe POS brand mark, supplied by the operator [2026-09-30] as a
+// layered SVG (an embedded raster illustration + a luminance mask, from a
+// logo-design tool's export). Extracted and re-composited into plain
+// transparent PNGs since the source SVG was a ~1MB masking trick, not a
+// real vector — see CLAUDE.md for the extraction writeup. `icon` is the
+// circular cup+tablet mark alone (no wordmark baked in, since the header
+// and footer already render "MyCafe POS" as real text via HEADER/FOOTER
+// above); `full` is the complete lockup (icon + wordmark) for larger,
+// standalone uses if a spot for it comes up later.
+export const LOGO = {
+  icon: "/images/mycafepos/logo-icon.png",
+  full: "/images/mycafepos/logo-full.png",
+  favicon: "/images/mycafepos/favicon.png",
+} as const;
+
+// Real hero photo, supplied by the operator [2026-09-30]: a café owner
+// using a tablet POS at the counter. Self-hosted (not Cloudinary-linked
+// like /foryourbusiness's hero) since it was uploaded directly. Desktop
+// and mobile are two different crops of the same source photo (not two
+// separate shoots), each exported as WebP with a JPEG fallback, matching
+// this site's established hero-image pattern (homepage Hero.tsx,
+// FybHero.tsx). The tablet's screen is off/blank in the source photo, so
+// this doesn't run into the site's no-fabricated-UI guardrail.
+export const HERO_PHOTO = {
+  desktopWebp: "/images/mycafepos/hero-desktop.webp",
+  desktopJpg: "/images/mycafepos/hero-desktop.jpg",
+  mobileWebp: "/images/mycafepos/hero-mobile.webp",
+  mobileJpg: "/images/mycafepos/hero-mobile.jpg",
+  alt: "A café owner using MyCafe POS on a tablet at the counter",
+} as const;
+
 export const META = {
   title: "MyCafe POS | Simple POS for Cafés",
   description:
@@ -248,7 +279,8 @@ export const MOBILE_ACCESS_BAR = {
 // Each placeholder states its required canvas/aspect/type/subject exactly
 // as specified so it can be swapped for verified product media later
 // without guessing dimensions. See CLAUDE.md's media replacement table.
+// Hero's placeholder slot was replaced by the real HERO_PHOTO above
+// [2026-09-30]; `community` is still a real, unfilled slot.
 export const MEDIA = {
-  hero: { width: 1600, height: 1200, ratio: "4:3", type: "WebP", title: "Hero product image", note: "Android phone or tablet showing the actual POS, café counter, and thermal printer" },
   community: { width: 1200, height: 900, ratio: "4:3", type: "WebP", title: "Testing community image", note: "Real café owner using MyCafe POS in a working environment" },
 } as const;

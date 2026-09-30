@@ -1,7 +1,7 @@
 import { Check, Play } from "lucide-react";
-import { HERO, MEDIA } from "../../../content/mycafepos";
+import { HERO } from "../../../content/mycafepos";
 import AccessButton from "../AccessButton";
-import MediaPlaceholder from "../MediaPlaceholder";
+import HeroPhoto from "../HeroPhoto";
 
 export default function Hero() {
   return (
@@ -28,9 +28,9 @@ export default function Hero() {
           </p>
         </div>
 
-        <div className="relative">
+        <div className="relative min-h-[320px] sm:min-h-[400px] lg:min-h-[560px]">
           <div className="mcp-hero-callout hidden lg:block">{HERO.imageCallout}</div>
-          <MediaPlaceholder {...MEDIA.hero} />
+          <HeroPhoto />
         </div>
       </div>
     </section>

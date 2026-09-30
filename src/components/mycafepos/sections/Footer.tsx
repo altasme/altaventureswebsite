@@ -1,5 +1,4 @@
-import { Coffee } from "lucide-react";
-import { FOOTER } from "../../../content/mycafepos";
+import { FOOTER, LOGO } from "../../../content/mycafepos";
 
 export default function Footer() {
   return (
@@ -7,7 +6,7 @@ export default function Footer() {
       <div className="mcp-container flex flex-col justify-between gap-8 sm:flex-row">
         <div>
           <p className="flex items-center gap-2 font-extrabold" style={{ fontFamily: "var(--mcp-font-heading)" }}>
-            <Coffee size={20} style={{ color: "var(--mcp-accent)" }} />
+            <img src={LOGO.icon} alt="" width={28} height={22} className="h-6 w-auto" />
             {FOOTER.wordmark}
           </p>
           <p className="mt-3 max-w-sm text-sm" style={{ color: "var(--mcp-footer-muted)" }}>

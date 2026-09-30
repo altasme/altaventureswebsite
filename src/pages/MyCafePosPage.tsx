@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { META } from "../content/mycafepos";
+import { META, LOGO } from "../content/mycafepos";
 import { track } from "../lib/analytics";
 import "@fontsource/fraunces/600.css";
 import "@fontsource/fraunces/800.css";
@@ -41,6 +41,7 @@ export default function MyCafePosPage() {
       setMeta('meta[name="twitter:title"]', "content", META.ogTitle),
       setMeta('meta[name="twitter:description"]', "content", META.ogDescription),
       setMeta('link[rel="canonical"]', "href", "https://altasme.com/mycafepos"),
+      setMeta('link[rel="icon"]', "href", LOGO.favicon),
     ];
 
     track("mycafe_landing_view", {});

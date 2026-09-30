@@ -1,15 +1,13 @@
-import { Coffee, Menu } from "lucide-react";
-import { HEADER } from "../../../content/mycafepos";
+import { Menu } from "lucide-react";
+import { HEADER, LOGO } from "../../../content/mycafepos";
 import AccessButton from "../AccessButton";
 
 export default function Header() {
   return (
     <header className="sticky top-0 z-50 border-b" style={{ borderColor: "var(--mcp-border)", background: "color-mix(in oklch, var(--mcp-background) 95%, transparent)", backdropFilter: "blur(8px)" }}>
       <div className="mcp-container flex h-[4.5rem] items-center justify-between gap-5">
-        <a href="#top" className="flex items-center gap-3 text-lg font-extrabold" style={{ fontFamily: "var(--mcp-font-heading)" }} aria-label="MyCafe POS home">
-          <span className="grid h-9 w-9 place-items-center rounded-md" style={{ background: "var(--mcp-primary)", color: "var(--mcp-primary-foreground)" }}>
-            <Coffee size={20} />
-          </span>
+        <a href="#top" className="flex items-center gap-2.5 text-lg font-extrabold" style={{ fontFamily: "var(--mcp-font-heading)" }} aria-label="MyCafe POS home">
+          <img src={LOGO.icon} alt="" width={40} height={31} className="h-9 w-auto" />
           {HEADER.wordmark} <span style={{ color: "var(--mcp-accent)" }}>{HEADER.wordmarkAccent}</span>
         </a>
 
