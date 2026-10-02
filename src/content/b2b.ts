@@ -7,7 +7,7 @@
 // same live ganap.net checkout, same D1/account-creation flow — but
 // targets established businesses instead of first-time website buyers, so
 // the copy is more direct and CTR-focused, and the portfolio drops the
-// "Beyond the ₱299 scope" advanced row entirely (this offer already
+// "Beyond the ₱599 scope" advanced row entirely (this offer already
 // covers everything in that row's scope, so there's nothing "beyond" to
 // show separately). See CLAUDE.md for the full build writeup.
 //
@@ -120,15 +120,15 @@ export const WHO_ITS_FOR = {
 } as const;
 
 // Same primary portfolio grid as /foryourbusiness's FYB_PORTFOLIO
-// (content/foryourbusiness.ts), scoped to this page only per the operator's
-// instruction — the homepage's SelectedWork and /limitedoffer's
-// OFFER_PORTFOLIO wall are untouched and unrelated to this list.
-// advancedIds is deliberately empty: unlike the ₱299 offer, this ₱4,999
-// package already covers the domain/hosting/security/maintenance/support
-// bundle those "beyond scope" projects would be shown to illustrate, so
-// there's no separate "beyond this offer" row to show. B2BPortfolio.tsx
-// only renders that row when the array is non-empty, so leaving it empty
-// hides the section entirely rather than needing a special case.
+// (content/foryourbusiness.ts) — /foryourbusiness was re-curated
+// [2026-10-02] to match this list exactly, same order and same empty
+// advancedIds, per the operator's direct request. advancedIds is
+// deliberately empty here: this ₱4,999 package already covers the
+// domain/hosting/security/maintenance/support bundle a "beyond scope" row
+// would otherwise be shown to illustrate, so there's no separate "beyond
+// this offer" row to show. B2BPortfolio.tsx only renders that row when the
+// array is non-empty, so leaving it empty hides the section entirely
+// rather than needing a special case.
 //
 // [2026-09-19] Re-curated per the operator's direct request: pocketg7iii
 // swapped out for leanandfit, vocalyze swapped out for aurielle, and both
@@ -199,7 +199,7 @@ export const B2B_FAQ = {
       a: "Yes. Once your website is live, we can quote additional systems separately as your business grows.",
     },
     {
-      q: "How is this different from the ₱299 offer?",
+      q: "How is this different from the ₱599 offer?",
       a: "This package is built for established businesses that want their own domain, hosting, security, and ongoing support handled for them, not just a one-time build.",
     },
     { q: "What payment methods are accepted?", a: "GCash, Maya, and cards, for both the deposit and the balance." },

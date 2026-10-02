@@ -5,7 +5,7 @@
 // with the ganap.net signing secret, which must never reach the client.
 //
 // Serves two offers off one function [2026-09-19, added for /b2b]: the
-// /foryourbusiness ₱299 website offer and the /b2b ₱4,999 complete
+// /foryourbusiness ₱599 website offer and the /b2b ₱4,999 complete
 // business website package. Both post the same shape of body (see
 // CheckoutPayload) plus an `offer` field selecting which OFFER_CONFIG
 // entry to use — same ganap.net project/credentials, same validation,
@@ -76,10 +76,15 @@ type OfferConfig = {
   failureRedirectUrl: string;
 };
 
-// foryourbusiness: raised to 499 [2026-09-11], reverted back to 299 [2026-09-16].
+// foryourbusiness: raised to 499 [2026-09-11], reverted back to 299
+// [2026-09-16], raised again to 599 [2026-10-02]. metadataOffer is
+// deliberately left as "foryourbusiness-299" through all three changes —
+// it's a SKU-like category label nothing branches on or displays, not a
+// live price statement, so renaming it would just drift out of sync with
+// every payment already recorded under that tag for no real benefit.
 const OFFER_CONFIG: Record<OfferId, OfferConfig> = {
   foryourbusiness: {
-    amountPhp: 299,
+    amountPhp: 599,
     metadataOffer: "foryourbusiness-299",
     successRedirectUrl: "https://altasme.com/foryourbusiness/thank-you",
     failureRedirectUrl: "https://altasme.com/foryourbusiness/checkout?retry=1",

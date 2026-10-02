@@ -53,7 +53,7 @@ export function buildQualifierPrefill(answers: QualifierAnswers): string {
  * flow once payment is ready; see CLAUDE.md §19.
  */
 export const FYB_PREFILL =
-  "Hi Altaventures! I'd like to get the ₱299 website offer for my business.";
+  "Hi Altaventures! I'd like to get the ₱599 website offer for my business.";
 
 /**
  * WhatsApp prefill for /b2b's "Message us instead" fallbacks (a checkout

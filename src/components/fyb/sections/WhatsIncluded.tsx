@@ -16,6 +16,7 @@ export default function WhatsIncluded() {
       <h2 className="max-w-2xl text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
         {WHATS_INCLUDED.headline}
       </h2>
+      <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink/70">{WHATS_INCLUDED.intro}</p>
 
       <ul className="mt-8 grid gap-3 sm:grid-cols-2">
         {WHATS_INCLUDED.items.map((item, i) => (
@@ -28,16 +29,16 @@ export default function WhatsIncluded() {
               <div>
                 <p className="text-sm font-semibold text-ink sm:text-base">{item.title}</p>
                 <p className="mt-1 text-sm text-ink/70">{item.copy}</p>
-                {"note" in item && item.note && <p className="mt-1.5 text-xs italic text-ink/50">{item.note}</p>}
               </div>
             </Reveal>
           </li>
         ))}
       </ul>
 
-      <p className="mt-8 max-w-xl rounded-2xl border border-ink/10 bg-white p-5 text-sm leading-relaxed text-ink/65">
-        {WHATS_INCLUDED.scopeLine}
-      </p>
+      <div className="mt-8 max-w-xl rounded-2xl border border-ink/10 bg-white p-5">
+        <p className="text-sm font-semibold text-ink">{WHATS_INCLUDED.closing.lead}</p>
+        <p className="mt-1 text-sm leading-relaxed text-ink/65">{WHATS_INCLUDED.closing.body}</p>
+      </div>
     </Section>
   );
 }

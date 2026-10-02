@@ -2,10 +2,12 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BRAND } from "../content/site";
 import { PRIMARY_CTA } from "../content/foryourbusiness";
+import { FYB_PREFILL } from "../lib/contact";
 import { useScrollDepth } from "../lib/useScrollDepth";
 import { ModalProvider, useModals } from "../lib/modalContext";
 import { track } from "../lib/analytics";
 import CTAButton from "../components/ui/CTAButton";
+import ContactModal from "../components/modals/ContactModal";
 
 import FybHero from "../components/fyb/sections/FybHero";
 import FybTrustSignals from "../components/fyb/sections/FybTrustSignals";
@@ -21,9 +23,9 @@ import Reveal from "../components/offer/Reveal";
 
 import LegalModal from "../components/modals/LegalModal";
 
-const PAGE_TITLE = "Get Your Business Online for ₱299 | Altaventures";
+const PAGE_TITLE = "Get Your Business Online for ₱599 | Altaventures";
 const PAGE_DESCRIPTION =
-  "A professional, mobile-friendly business website, done for you, for a one-time ₱299 payment. Ready in 4 to 7 days. See real Altaventures work.";
+  "A professional, mobile-friendly business website, done for you, for a one-time ₱599 payment. Ready in 3 to 7 days. See real Altaventures work.";
 
 const LEGAL_LINKS = [
   { label: "Refund Policy", id: "fyb-refund" as const },
@@ -40,7 +42,7 @@ function setMeta(selector: string, attr: string, value: string): (() => void) | 
 }
 
 function PageContent() {
-  const { openLegal } = useModals();
+  const { openLegal, openContactModal } = useModals();
   const navigate = useNavigate();
   useScrollDepth();
 
@@ -69,6 +71,11 @@ function PageContent() {
     navigate("/foryourbusiness/checkout");
   };
 
+  const talkToUs = (section: string) => {
+    track("cta_click", { label: "Talk to Us", section });
+    openContactModal(section, FYB_PREFILL);
+  };
+
   return (
     <div className="min-h-screen bg-paper pb-16 md:pb-0">
       {/* No outbound nav on this funnel: logo only, no link back to the
@@ -88,7 +95,7 @@ function PageContent() {
       </header>
 
       <main>
-        <FybHero onCheckout={() => goToCheckout("hero")} />
+        <FybHero onCheckout={() => goToCheckout("hero")} onTalkToUs={() => talkToUs("hero-talk-to-us")} />
         <FybTrustSignals />
         <Reveal>
           <Problem />
@@ -142,6 +149,7 @@ function PageContent() {
       <StickyMobileFybCTA onCheckout={() => goToCheckout("sticky-mobile")} />
 
       <LegalModal />
+      <ContactModal />
     </div>
   );
 }

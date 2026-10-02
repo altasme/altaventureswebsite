@@ -12,7 +12,27 @@ import CTAButton from "../../ui/CTAButton";
 // block inside the dark upper zone of the mobile photo above the subject's
 // head (see the mobile section's comment). It never reaches the desktop
 // instance, which doesn't pass it, so desktop sizing is unaffected.
-function HeroCopy({ onCheckout, compact = false }: { onCheckout: () => void; compact?: boolean }) {
+//
+// The second "Talk to Us" CTA [2026-10-02] adds real height on top of the
+// headline/sub/CTA block this compact layout was originally clearance-
+// tuned for (§29 in CLAUDE.md: as little as ~22px of margin above the
+// subject's head on an iPhone SE, measured against the real photo). To
+// avoid eating into that margin, `compact` mode drops the supporting
+// `line` paragraph entirely and renders the second CTA as a plain text
+// link instead of a second full-height pill button — both only on mobile;
+// the desktop instance keeps the full line + two-button treatment
+// unchanged. This can't be re-measured against the real photo from this
+// sandbox (Cloudinary is network-blocked here, same as every prior round
+// on this hero), so confirm on a real short phone once deployed.
+function HeroCopy({
+  onCheckout,
+  onTalkToUs,
+  compact = false,
+}: {
+  onCheckout: () => void;
+  onTalkToUs: () => void;
+  compact?: boolean;
+}) {
   return (
     <div className="relative max-w-xl">
       <h1
@@ -25,14 +45,39 @@ function HeroCopy({ onCheckout, compact = false }: { onCheckout: () => void; com
       <p className={`text-white/85 ${compact ? "mt-3 text-sm leading-snug" : "mt-6 text-lg leading-relaxed"}`}>
         {FYB_HERO.sub}
       </p>
-      <div className={compact ? "mt-4" : "mt-8"}>
-        <CTAButton label={FYB_HERO.cta} section="hero" onClick={onCheckout} size="lg" className="w-full sm:w-auto" />
+      {!compact && <p className="mt-3 text-sm text-white/70">{FYB_HERO.line}</p>}
+      <div className={`flex flex-wrap items-center gap-3 ${compact ? "mt-4" : "mt-8"}`}>
+        <CTAButton
+          label={FYB_HERO.cta}
+          section="hero"
+          onClick={onCheckout}
+          size="lg"
+          className={compact ? "w-full" : "w-full sm:w-auto"}
+        />
+        {compact ? (
+          <button
+            type="button"
+            onClick={onTalkToUs}
+            className="text-sm font-semibold text-white underline underline-offset-4"
+          >
+            {FYB_HERO.talkToUsCta}
+          </button>
+        ) : (
+          <CTAButton
+            label={FYB_HERO.talkToUsCta}
+            section="hero"
+            onClick={onTalkToUs}
+            variant="ghost"
+            size="lg"
+            className="w-full sm:w-auto"
+          />
+        )}
       </div>
     </div>
   );
 }
 
-export default function FybHero({ onCheckout }: { onCheckout: () => void }) {
+export default function FybHero({ onCheckout, onTalkToUs }: { onCheckout: () => void; onTalkToUs: () => void }) {
   return (
     <section className="relative overflow-hidden bg-brand-navy-deep">
       {/* Desktop / tablet: full-bleed wide shot. */}
@@ -58,7 +103,7 @@ export default function FybHero({ onCheckout }: { onCheckout: () => void }) {
           }}
         />
         <div className="relative z-10 mx-auto w-full max-w-6xl">
-          <HeroCopy onCheckout={onCheckout} />
+          <HeroCopy onCheckout={onCheckout} onTalkToUs={onTalkToUs} />
         </div>
       </div>
 
@@ -100,7 +145,7 @@ export default function FybHero({ onCheckout }: { onCheckout: () => void }) {
           }}
         />
         <div className="relative flex min-h-[100svh] flex-col justify-start px-6 pb-10 pt-6">
-          <HeroCopy onCheckout={onCheckout} compact />
+          <HeroCopy onCheckout={onCheckout} onTalkToUs={onTalkToUs} compact />
         </div>
       </div>
     </section>

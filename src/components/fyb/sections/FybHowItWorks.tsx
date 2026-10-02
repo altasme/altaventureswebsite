@@ -8,6 +8,7 @@ export default function FybHowItWorks() {
       <h2 className="max-w-2xl text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
         {FYB_HOW_IT_WORKS.headline}
       </h2>
+      <p className="mt-4 max-w-xl text-base leading-relaxed text-ink/70">{FYB_HOW_IT_WORKS.sub}</p>
 
       <ol className="mt-10 grid gap-6 sm:grid-cols-3">
         {FYB_HOW_IT_WORKS.steps.map((step, i) => (
