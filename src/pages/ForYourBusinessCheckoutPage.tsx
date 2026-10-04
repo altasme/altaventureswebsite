@@ -1,317 +1,117 @@
 import { useEffect, useState } from "react";
-import QRCode from "qrcode";
 import { BRAND } from "../content/site";
-import { CHECKOUT } from "../content/foryourbusiness";
-import { trackInitiateCheckout } from "../lib/analytics";
-import { FYB_PREFILL } from "../lib/contact";
-import { ModalProvider, useModals } from "../lib/modalContext";
+import type { FybUpgradeType } from "../content/foryourbusiness";
+import { ModalProvider } from "../lib/modalContext";
+import { initMetaPixel } from "../lib/analytics";
 import ContactModal from "../components/modals/ContactModal";
 import LegalModal from "../components/modals/LegalModal";
+import QuestionnaireStep, { type QuestionnaireData } from "../components/fyb/checkout/QuestionnaireStep";
+import PackageStep from "../components/fyb/checkout/PackageStep";
+import UpgradeStep from "../components/fyb/checkout/UpgradeStep";
+import PaymentStep from "../components/fyb/checkout/PaymentStep";
+
+// Checkout is a 4-step guest wizard [2026-10-04, operator direction]:
+// Questionnaire -> Package Review -> Optional Upgrade -> Payment. No
+// account creation or Client Hub access anywhere in this journey — see
+// src/pages/ForYourBusinessThankYouPage.tsx for the "talk to your
+// developer" step that replaces the old account-creation panel.
+//
+// All four steps live under this one route rather than four separate
+// routes, and nothing is written to the backend until the Payment step's
+// actual submit — the same single /api/checkout call that creates the
+// ganap session also creates the one D1 order row, exactly like the old
+// single-step checkout did, just with a bigger payload (the questionnaire
+// answers + the selected upgrade, both validated server-side). Wizard
+// progress is kept in sessionStorage only (not a backend "draft" row), so
+// a refresh mid-wizard doesn't lose it, without needing any account to
+// store it against.
 
 const PAGE_TITLE = "Start Your ₱599 Website | Altaventures";
+const STORAGE_KEY = "fyb-checkout-wizard";
 
-const inputClasses =
-  "w-full rounded-xl border border-ink/15 bg-white px-4 py-2.5 text-sm text-ink outline-none transition focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20";
+type WizardStep = "questionnaire" | "package" | "upgrade" | "payment";
 
-type RedirectKind = "url" | "qr-image" | "qr-payload" | "test-placeholder";
-
-type PaymentResult = {
-  redirectUrl: string;
-  referenceNumber: string;
-  kind: RedirectKind;
+type WizardState = {
+  step: WizardStep;
+  questionnaire: QuestionnaireData;
+  upgradeType: FybUpgradeType;
 };
 
-function Field({
-  label,
-  htmlFor,
-  optional,
-  error,
-  children,
-}: {
-  label: string;
-  htmlFor?: string;
-  optional?: boolean;
-  error?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <label htmlFor={htmlFor} className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/60">
-        {label} {optional && <span className="normal-case text-ink/30">(optional)</span>}
-      </label>
-      {children}
-      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
-    </div>
-  );
+const EMPTY_QUESTIONNAIRE: QuestionnaireData = {
+  businessName: "",
+  businessCategory: "",
+  businessDescription: "",
+  contactPerson: "",
+  email: "",
+  phone: "",
+};
+
+const DEFAULT_STATE: WizardState = {
+  step: "questionnaire",
+  questionnaire: EMPTY_QUESTIONNAIRE,
+  upgradeType: "none",
+};
+
+function loadState(): WizardState {
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    if (!raw) return DEFAULT_STATE;
+    const parsed = JSON.parse(raw) as Partial<WizardState>;
+    const steps: WizardStep[] = ["questionnaire", "package", "upgrade", "payment"];
+    return {
+      step: parsed.step && steps.includes(parsed.step) ? parsed.step : DEFAULT_STATE.step,
+      questionnaire: { ...EMPTY_QUESTIONNAIRE, ...parsed.questionnaire },
+      upgradeType: parsed.upgradeType ?? "none",
+    };
+  } catch {
+    return DEFAULT_STATE;
+  }
 }
 
-function LegalLink({ label, onOpen }: { label: string; onOpen: () => void }) {
-  return (
-    <button type="button" onClick={onOpen} className="font-semibold text-brand-blue underline hover:no-underline">
-      {label}
-    </button>
-  );
-}
-
-// Generates a scannable QR code client-side from a raw payload string
-// (e.g. a QR Ph payload) using the qrcode package. Not used for the
-// "qr-image" kind, where ganap already hands back a ready-made image.
-function QrPayload({ payload }: { payload: string }) {
-  const [dataUrl, setDataUrl] = useState<string | null>(null);
+function CheckoutWizard() {
+  const [state, setState] = useState<WizardState>(() => (typeof window === "undefined" ? DEFAULT_STATE : loadState()));
 
   useEffect(() => {
-    let cancelled = false;
-    QRCode.toDataURL(payload, { width: 280, margin: 2 })
-      .then((url) => {
-        if (!cancelled) setDataUrl(url);
-      })
-      .catch((err) => console.error("Failed to render QR code", err));
-    return () => {
-      cancelled = true;
-    };
-  }, [payload]);
-
-  if (!dataUrl) {
-    return <div className="flex h-[280px] w-[280px] items-center justify-center text-sm text-ink/40">Generating QR code&hellip;</div>;
-  }
-
-  return <img src={dataUrl} alt="Scan with your banking or e-wallet app to pay" width={280} height={280} />;
-}
-
-function PaymentPanel({ result }: { result: PaymentResult }) {
-  return (
-    <div className="rounded-2xl border border-ink/10 bg-paper-alt p-6 text-center sm:p-8">
-      {result.kind === "test-placeholder" ? (
-        <>
-          <p className="text-xs font-semibold uppercase tracking-wide text-brand-blue">Test Mode</p>
-          <h2 className="mt-1 text-xl font-bold text-brand-navy">This is a Test Transaction</h2>
-          <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-ink/70">
-            ganap.net doesn't show a real payment screen in test mode. To simulate this payment, go to the ganap.net
-            dashboard's <strong>Test mode</strong> section, find reference{" "}
-            <code className="rounded bg-white px-1.5 py-0.5 font-mono text-xs text-brand-navy">
-              {result.referenceNumber}
-            </code>
-            , and click <strong>Simulate successful payment</strong>.
-          </p>
-        </>
-      ) : (
-        <>
-          <p className="text-xs font-semibold uppercase tracking-wide text-brand-blue">Scan to Pay</p>
-          <h2 className="mt-1 text-xl font-bold text-brand-navy">₱599 &middot; Reference {result.referenceNumber}</h2>
-          <div className="mt-4 flex justify-center">
-            {result.kind === "qr-image" ? (
-              <img src={result.redirectUrl} alt="Scan with your banking or e-wallet app to pay" width={280} height={280} />
-            ) : (
-              <QrPayload payload={result.redirectUrl} />
-            )}
-          </div>
-          <p className="mx-auto mt-4 max-w-sm text-sm text-ink/60">
-            Scan this code with your GCash, Maya, or banking app to complete your ₱599 payment.
-          </p>
-        </>
-      )}
-    </div>
-  );
-}
-
-function CheckoutForm() {
-  const { openLegal, openContactModal } = useModals();
-
-  const [fullName, setFullName] = useState("");
-  const [businessName, setBusinessName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [facebook, setFacebook] = useState("");
-  const [instagram, setInstagram] = useState("");
-  const [existingWebsite, setExistingWebsite] = useState("");
-  const [termsAccepted, setTermsAccepted] = useState(false);
-  const [privacyAccepted, setPrivacyAccepted] = useState(false);
-  const [touched, setTouched] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [paymentResult, setPaymentResult] = useState<PaymentResult | null>(null);
-
-  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const fieldsValid = fullName.trim().length > 1 && businessName.trim().length > 1 && emailValid && phone.trim().length > 3;
-  const canSubmit = fieldsValid && termsAccepted && privacyAccepted && !submitting;
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setTouched(true);
-    if (!canSubmit) return;
-
-    setSubmitting(true);
-    setErrorMessage(null);
-    trackInitiateCheckout();
-
     try {
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName: fullName.trim(),
-          businessName: businessName.trim(),
-          email: email.trim(),
-          phone: phone.trim(),
-          facebook: facebook.trim(),
-          instagram: instagram.trim(),
-          existingWebsite: existingWebsite.trim(),
-          termsAccepted,
-          privacyAccepted,
-        }),
-      });
-
-      const data = (await response.json().catch(() => null)) as
-        | { redirectUrl?: string; referenceNumber?: string; kind?: RedirectKind; error?: string }
-        | null;
-
-      if (!response.ok || !data?.redirectUrl || !data.referenceNumber || !data.kind) {
-        setErrorMessage(data?.error || "We couldn't start your payment right now. Please try again shortly.");
-        setSubmitting(false);
-        return;
-      }
-
-      if (data.kind === "url") {
-        window.location.href = data.redirectUrl;
-        return;
-      }
-
-      // QR / test-placeholder kinds stay on this page and render a panel
-      // instead of navigating away, since there's nowhere to navigate to.
-      setPaymentResult({ redirectUrl: data.redirectUrl, referenceNumber: data.referenceNumber, kind: data.kind });
-      setSubmitting(false);
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch {
-      setErrorMessage("We couldn't reach our payment provider. Please check your connection and try again.");
-      setSubmitting(false);
+      // sessionStorage can throw in private-browsing/storage-blocked contexts;
+      // losing resume-on-refresh there is an acceptable degradation, not a hard failure.
     }
-  };
+  }, [state]);
 
-  if (paymentResult) {
-    return <PaymentPanel result={paymentResult} />;
+  const goTo = (step: WizardStep) => setState((s) => ({ ...s, step }));
+
+  switch (state.step) {
+    case "questionnaire":
+      return (
+        <QuestionnaireStep
+          initial={state.questionnaire}
+          onNext={(questionnaire) => setState((s) => ({ ...s, questionnaire, step: "package" }))}
+        />
+      );
+    case "package":
+      return <PackageStep onNext={() => goTo("upgrade")} onBack={() => goTo("questionnaire")} />;
+    case "upgrade":
+      return (
+        <UpgradeStep
+          selected={state.upgradeType}
+          onSelect={(upgradeType) => setState((s) => ({ ...s, upgradeType }))}
+          onNext={() => goTo("payment")}
+          onBack={() => goTo("package")}
+        />
+      );
+    case "payment":
+      return <PaymentStep questionnaire={state.questionnaire} upgradeType={state.upgradeType} onBack={() => goTo("upgrade")} />;
+    default:
+      return null;
   }
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-8">
-      <div className="rounded-2xl border border-ink/10 bg-paper-alt p-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-brand-blue">{CHECKOUT.eyebrow}</p>
-        <h1 className="mt-1 text-2xl font-bold text-brand-navy sm:text-3xl">{CHECKOUT.summaryTitle}</h1>
-        <div className="mt-3 flex items-baseline gap-2">
-          <span className="text-3xl font-extrabold text-brand-navy">{CHECKOUT.price}</span>
-          <span className="text-xs font-semibold text-ink/60">{CHECKOUT.priceNote}</span>
-        </div>
-        <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3">
-          {CHECKOUT.summaryItems.map((item) => (
-            <li key={item} className="flex items-center gap-2 text-sm text-ink/70">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="shrink-0 text-brand-blue" aria-hidden="true">
-                <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="space-y-5">
-        <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Full Name" htmlFor="fullName">
-            <input id="fullName" className={inputClasses} value={fullName} onChange={(e) => setFullName(e.target.value)} required />
-          </Field>
-          <Field label="Business Name" htmlFor="businessName">
-            <input
-              id="businessName"
-              className={inputClasses}
-              value={businessName}
-              onChange={(e) => setBusinessName(e.target.value)}
-              required
-            />
-          </Field>
-          <Field
-            label="Email"
-            htmlFor="email"
-            error={touched && email.length > 0 && !emailValid ? "Enter a valid email address." : undefined}
-          >
-            <input
-              id="email"
-              type="email"
-              className={inputClasses}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </Field>
-          <Field label="Mobile Number" htmlFor="phone">
-            <input id="phone" type="tel" className={inputClasses} value={phone} onChange={(e) => setPhone(e.target.value)} required />
-          </Field>
-          <Field label="Facebook Page" htmlFor="facebook" optional>
-            <input id="facebook" className={inputClasses} value={facebook} onChange={(e) => setFacebook(e.target.value)} />
-          </Field>
-          <Field label="Instagram" htmlFor="instagram" optional>
-            <input id="instagram" className={inputClasses} value={instagram} onChange={(e) => setInstagram(e.target.value)} />
-          </Field>
-          <Field label="Existing Website" htmlFor="existingWebsite" optional>
-            <input
-              id="existingWebsite"
-              className={inputClasses}
-              value={existingWebsite}
-              onChange={(e) => setExistingWebsite(e.target.value)}
-            />
-          </Field>
-        </div>
-
-        <div className="space-y-3 rounded-2xl border border-ink/10 bg-paper-alt p-5">
-          <label className="flex items-start gap-3 text-sm text-ink/75">
-            <input
-              type="checkbox"
-              checked={termsAccepted}
-              onChange={(e) => setTermsAccepted(e.target.checked)}
-              className="mt-0.5 h-4 w-4 shrink-0 rounded border-ink/30 text-brand-blue focus:ring-brand-blue"
-            />
-            <span>
-              I have read and agree to the <LegalLink label="Terms of Sale" onOpen={() => openLegal("fyb-terms")} /> and{" "}
-              <LegalLink label="Refund Policy" onOpen={() => openLegal("fyb-refund")} />.
-            </span>
-          </label>
-          <label className="flex items-start gap-3 text-sm text-ink/75">
-            <input
-              type="checkbox"
-              checked={privacyAccepted}
-              onChange={(e) => setPrivacyAccepted(e.target.checked)}
-              className="mt-0.5 h-4 w-4 shrink-0 rounded border-ink/30 text-brand-blue focus:ring-brand-blue"
-            />
-            <span>
-              I consent to Altaventures collecting and processing my personal data as described in the{" "}
-              <LegalLink label="Privacy Notice" onOpen={() => openLegal("fyb-privacy")} />, to deliver this service.
-            </span>
-          </label>
-        </div>
-
-        {errorMessage && (
-          <div className="rounded-xl bg-red-50 px-4 py-3">
-            <p className="text-sm font-medium text-red-600">{errorMessage}</p>
-            <button
-              type="button"
-              onClick={() => openContactModal("checkout-error", FYB_PREFILL)}
-              className="mt-1.5 text-sm font-semibold text-brand-blue hover:underline"
-            >
-              Message us instead &rarr;
-            </button>
-          </div>
-        )}
-
-        <button
-          type="submit"
-          disabled={!canSubmit}
-          className="inline-flex w-full items-center justify-center rounded-full bg-brand-blue px-6 py-4 text-base font-semibold text-white shadow-lg shadow-black/15 transition hover:-translate-y-0.5 hover:bg-[#0b57cc] disabled:cursor-not-allowed disabled:translate-y-0 disabled:bg-ink/10 disabled:text-ink/60 disabled:shadow-none sm:w-auto"
-        >
-          {submitting ? "Starting your payment..." : CHECKOUT.cta}
-        </button>
-      </div>
-    </form>
-  );
 }
 
 function PageContent() {
   useEffect(() => {
+    initMetaPixel();
+
     document.title = PAGE_TITLE;
     let meta = document.querySelector('meta[name="robots"]');
     if (!meta) {
@@ -335,7 +135,7 @@ function PageContent() {
       </header>
 
       <main className="mx-auto max-w-3xl px-6 py-12 lg:px-8">
-        <CheckoutForm />
+        <CheckoutWizard />
       </main>
 
       <LegalModal />

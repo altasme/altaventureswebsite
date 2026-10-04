@@ -11,9 +11,18 @@
 // TODO(analytics): set when GA4 / Meta Pixel IDs are provided by the client.
 const MEASUREMENT_ID = "";
 
-// TODO(pixel): set when the client provides a Meta Pixel ID for /limitedoffer.
-// initMetaPixel() and trackLead() no-op safely until this is set.
-const META_PIXEL_ID = "";
+// Real Meta Pixel ID, supplied by the operator [2026-10-04] specifically
+// for /foryourbusiness. This is the one site-wide Pixel constant every
+// initMetaPixel()/track*() call below already shares (trackInitiateCheckout,
+// trackInitiateCheckoutB2B, trackLead) — setting it here means any page that
+// calls initMetaPixel() now actually loads and fires the Pixel, which
+// currently means /limitedoffer (already called it, previously a no-op)
+// and /foryourbusiness's three pages (landing/checkout/thank-you, wired up
+// the same day this ID was supplied). /b2b's own InitiateCheckout call
+// will also start firing, but only once window.fbq has been loaded by a
+// visit to one of the above, since no /b2b page calls initMetaPixel()
+// itself yet.
+const META_PIXEL_ID = "1776226086741887";
 
 declare global {
   interface Window {
@@ -64,8 +73,13 @@ export function track<E extends keyof AnalyticsEventMap>(
 /**
  * Loads the Meta Pixel base code and fires PageView, but only when
  * META_PIXEL_ID is configured. Safe to call unconditionally; no-ops (and
- * loads nothing) otherwise. Call once, near the top of the /limitedoffer
- * page component.
+ * loads nothing) otherwise. Also safe to call from more than one page
+ * component in the same session — it checks window.fbq and does nothing
+ * if the Pixel is already loaded, so it won't double-init or double-fire
+ * PageView on client-side navigation between pages that each call it.
+ * Call once, near the top of each page component that should track a
+ * PageView: currently /limitedoffer and /foryourbusiness (landing,
+ * checkout, thank-you).
  */
 export function initMetaPixel() {
   if (!META_PIXEL_ID || typeof window === "undefined" || window.fbq) return;

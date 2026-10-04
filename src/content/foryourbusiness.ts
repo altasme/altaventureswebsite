@@ -35,6 +35,20 @@
 // is a SKU-like category label no code branches on and nothing displays,
 // not a live price statement, so it stays as-is rather than drifting out
 // of sync with every payment already recorded under that tag.
+//
+// Checkout rebuilt into a 4-step guest wizard [2026-10-04, operator
+// direction]: Questionnaire -> Package Review -> Optional Upgrade ->
+// Payment, with NO account creation or Client Hub step anywhere in this
+// journey (that's a hard requirement, not a preference). Contact info
+// (name/email/phone) now lives on the Questionnaire step, not re-asked at
+// payment. Two new optional annual upgrades were introduced for the first
+// time (Custom Domain & Managed Hosting ₱1,500/yr, Website + Business
+// Tools ₱5,700/yr) — see QUESTIONNAIRE/PACKAGE_REVIEW/UPGRADES below and
+// functions/api/checkout.ts for the server-side pricing table. The old
+// single-step form's optional Facebook/Instagram/existing-website fields
+// were dropped entirely, since the operator's own exact questionnaire spec
+// doesn't include them — functions/api/checkout.ts still accepts them as
+// optional/empty for /b2b, which is untouched by any of this.
 
 export const PRIMARY_CTA = "GET MY WEBSITE FOR ₱599 →";
 export const STICKY_CTA = "₱599 · GET MY WEBSITE →";
@@ -221,12 +235,12 @@ export const FYB_FAQ = {
     { q: "Can I add more pages or features?", a: "Yes, those can be quoted separately." },
     {
       q: "How do I send my business information?",
-      a: "After you pay, we guide you: a quick call and a simple form.",
+      a: "You tell us upfront, before you pay: a short questionnaire about your business and what you want on your site. No account or call needed.",
     },
     { q: "What payment methods are accepted?", a: "GCash, Maya, and cards through our secure checkout." },
     {
       q: "What happens after I pay?",
-      a: "You get an email to set up your account, then you book a quick call so we get everything right, then we build.",
+      a: "You'll get your order reference right away. Message your developer with a screenshot of it, and we'll start building based on what you told us in the questionnaire.",
     },
     {
       q: "Why is it only ₱599?",
@@ -241,12 +255,42 @@ export const FYB_FINAL_CTA = {
   cta: PRIMARY_CTA,
 } as const;
 
-export const CHECKOUT = {
-  eyebrow: "START YOUR WEBSITE",
+// Checkout wizard, step 1 of 4: Questionnaire. No pricing or upgrades are
+// shown here at all — purely the website requirements + contact details
+// needed to both build the site and coordinate payment/delivery. Field
+// order and copy are the operator's own exact spec, reproduced as given.
+export const BUSINESS_CATEGORIES = ["Aesthetic Clinic", "Restaurant", "Retail", "Professional Services", "Other"] as const;
+
+export const QUESTIONNAIRE = {
+  stepLabel: "Step 1 of 4",
+  headline: "Tell Us About Your Business",
+  sub: "A few quick details so we can start planning your website. No payment information yet.",
+  fields: {
+    businessName: { label: "Business Name", hint: "The name to display on the website." },
+    businessCategory: { label: "Business Category", hint: "E.g., Aesthetic Clinic, Restaurant, Retail, Professional Services, Other." },
+    businessDescription: {
+      label: "Tell us about your business and what you offer",
+      hint: "A brief description of the business, products, or services.",
+    },
+    contactPerson: { label: "Contact Person", hint: "Who the developer should coordinate with." },
+    email: { label: "Email Address", hint: "For order updates and communication." },
+    phone: { label: "Mobile Number", hint: "For quick coordination with the developer." },
+  },
+  cta: "Continue",
+} as const;
+
+// Step 2 of 4: Package Review. The Starter package and its inclusions
+// only — still no upgrade shown, so the customer confirms the base offer
+// before any upsell enters the picture.
+export const STARTER_PHP = 599;
+
+export const PACKAGE_REVIEW = {
+  stepLabel: "Step 2 of 4",
+  headline: "Your Starter Website",
   price: "₱599",
   priceNote: "ONE-TIME PAYMENT",
   summaryTitle: "Professional Business Website",
-  summaryItems: [
+  items: [
     "Professional website",
     "Mobile-friendly",
     "Business information",
@@ -255,18 +299,87 @@ export const CHECKOUT = {
     "Done for you",
     "Typical buildtime: 3-7 days",
   ],
-  cta: "PAY ₱599 & START →",
+  cta: "Continue",
 } as const;
+
+// Step 3 of 4: Optional Upgrade. Exactly one of these may be selected (or
+// none, the default) — the ₱5,700 package replaces the ₱1,500 one, they
+// are never charged together. Prices here are the display copy only; the
+// actual charge is computed server-side in functions/api/checkout.ts from
+// the validated upgradeType, never trusted from the client.
+export const DOMAIN_HOSTING_UPGRADE_PHP = 1500;
+export const BUSINESS_TOOLS_UPGRADE_PHP = 5700;
+
+export const UPGRADES = {
+  stepLabel: "Step 3 of 4",
+  headline: "Want More? Add an Optional Upgrade",
+  sub: "Completely optional. The Starter Website is already included either way.",
+  none: {
+    id: "none",
+    title: "No Upgrade",
+    body: "Just the Starter Website for ₱599.",
+    firstYearTotal: "₱599",
+  },
+  domainHosting: {
+    id: "domain_hosting",
+    title: "Custom Domain & Managed Hosting",
+    price: "₱1,500/year",
+    annualNote: "Billed annually, starting Year 1.",
+    items: ["Custom domain", "Managed website hosting", "SSL security", "Website maintenance", "Best effort technical support"],
+    firstYearTotal: "₱2,099",
+  },
+  businessTools: {
+    id: "business_tools",
+    title: "Website + Business Tools",
+    price: "₱5,700/year",
+    annualNote: "Billed annually, starting Year 1.",
+    items: [
+      "Managed custom domain and hosting",
+      "SSL security",
+      "Your own website control panel",
+      "Manage website products and pricing",
+      "A lightweight order management or booking system",
+      "Standard technical support",
+    ],
+    note: "You'll get either an order management system or a booking system, not both by default.",
+    firstYearTotal: "₱6,299",
+  },
+  cta: "Continue",
+} as const;
+
+// Step 4 of 4: Payment. Final order summary + the real "Pay" button. No
+// contact-info fields here — all of that was already collected on the
+// Questionnaire step, so this step only asks for consent and confirmation.
+export const CHECKOUT = {
+  stepLabel: "Step 4 of 4",
+  eyebrow: "REVIEW & PAY",
+  headline: "Review Your Order",
+  starterLine: "Starter Website (one-time)",
+  cta: "PAY {amount} & START →",
+} as const;
+
+// Shared upgrade-type literal, used by both the checkout wizard components
+// and functions/api/checkout.ts's own matching type (duplicated there
+// since that Cloudflare Function can't import from this Vite-only file).
+export type FybUpgradeType = "none" | "domain_hosting" | "business_tools";
 
 export const THANK_YOU = {
   headline: "Payment Received. Let's Get Started.",
-  body: "Your ₱599 payment has been successfully received. You'll receive a confirmation email shortly. From there, you can create your Altaventures account and continue with your website setup.",
+  body: "Your payment has been successfully received. Below is your order reference, plus how to reach your developer and get your project moving.",
+  referenceLabel: "Your Order Reference",
   microcopy: "Having trouble, or didn't get a confirmation? Message us and we'll sort it out.",
   cta: "Message Us",
 } as const;
 
-export const ACCOUNT = {
-  headline: "Ready to Get Started?",
-  body: "Create your account to continue your website setup.",
-  cta: "Create Your Account",
+// Replaces the old ACCOUNT/Client Hub panel entirely [2026-10-04] — no
+// account creation or Client Hub access anywhere in this purchase journey.
+// The only real contact mechanism this site has is the same three-channel
+// ContactModal used everywhere else; "talk to your developer" honestly
+// means "message us, a person replies," not an automated assignment
+// system, since no such system exists here or anywhere this repo connects
+// to.
+export const DEVELOPER_HANDOFF = {
+  headline: "Talk to Your Developer",
+  body: "Take a screenshot of this page, including your order reference, and send it to us. That's how your developer will know to start on your project.",
+  cta: "Message Us on WhatsApp, Messenger, or Viber",
 } as const;

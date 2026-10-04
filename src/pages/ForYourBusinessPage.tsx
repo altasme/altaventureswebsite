@@ -5,7 +5,7 @@ import { PRIMARY_CTA } from "../content/foryourbusiness";
 import { FYB_PREFILL } from "../lib/contact";
 import { useScrollDepth } from "../lib/useScrollDepth";
 import { ModalProvider, useModals } from "../lib/modalContext";
-import { track } from "../lib/analytics";
+import { track, initMetaPixel } from "../lib/analytics";
 import CTAButton from "../components/ui/CTAButton";
 import ContactModal from "../components/modals/ContactModal";
 
@@ -47,6 +47,8 @@ function PageContent() {
   useScrollDepth();
 
   useEffect(() => {
+    initMetaPixel();
+
     const previousTitle = document.title;
     document.title = PAGE_TITLE;
 
