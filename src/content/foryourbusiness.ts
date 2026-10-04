@@ -258,9 +258,68 @@ export const CHECKOUT = {
   cta: "PAY ₱599 & START →",
 } as const;
 
+// Upgrade selection (added for the checkout redesign): the Starter Website
+// above is always in the order; a customer may optionally add ONE of these
+// two annual upgrades on top of it. Prices/features/renewal amounts are
+// NOT invented here -- they match clienthub's existing "basic"/"essential"
+// catalog entries exactly (functions/_lib/pricing.ts and
+// src/content/pricing.ts in the clienthub repo), since those are the same
+// plans already sold as an internal upsell after a client signs up. This
+// checkout just offers the same two plans at the front door instead of
+// only after the fact. renewalPrice is what clienthub's webhook will
+// actually bill in year 2+ (see that repo's PRICING_CATALOG) -- shown here
+// so the annual-renewal disclosure in section 7 of the spec is a real
+// number, not a guess.
+export type UpgradeId = "none" | "domain_hosting" | "business_tools";
+
+export interface UpgradeOption {
+  id: Exclude<UpgradeId, "none">;
+  name: string;
+  priceLabel: string;
+  annualPrice: number;
+  firstYearTotal: number;
+  renewalPrice: number;
+  features: string[];
+  note: string;
+}
+
+export const UPGRADE_OPTIONS: UpgradeOption[] = [
+  {
+    id: "domain_hosting",
+    name: "Custom Domain & Managed Hosting",
+    priceLabel: "₱1,500/year",
+    annualPrice: 1500,
+    firstYearTotal: 2099,
+    renewalPrice: 1500,
+    features: ["Custom domain", "Managed website hosting", "SSL security", "Website maintenance", "Best-effort technical support"],
+    note: "Annual service. Renews at ₱1,500/year.",
+  },
+  {
+    id: "business_tools",
+    name: "Website + Business Tools",
+    priceLabel: "₱5,700/year",
+    annualPrice: 5700,
+    firstYearTotal: 6299,
+    renewalPrice: 4200,
+    features: [
+      "Managed custom domain and hosting",
+      "SSL security",
+      "Own website control panel",
+      "Manage website products and pricing",
+      "Lightweight order management or booking system",
+      "Standard technical support",
+    ],
+    note: "Annual service. You receive either order management or a booking system, not both. First year ₱5,700, renews at ₱4,200/year.",
+  },
+];
+
+export function findUpgradeOption(id: UpgradeId): UpgradeOption | undefined {
+  return UPGRADE_OPTIONS.find((u) => u.id === id);
+}
+
 export const THANK_YOU = {
   headline: "Payment Received. Let's Get Started.",
-  body: "Your ₱599 payment has been successfully received. You'll receive a confirmation email shortly. From there, you can create your Altaventures account and continue with your website setup.",
+  body: "Your payment has been successfully received. You'll receive a confirmation email shortly. From there, you can create your Altaventures account and continue with your website setup.",
   microcopy: "Having trouble, or didn't get a confirmation? Message us and we'll sort it out.",
   cta: "Message Us",
 } as const;

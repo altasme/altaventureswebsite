@@ -54,6 +54,17 @@
 // ganap.net, so functions/testpayment.ts can later match the webhook back
 // to this order and mark it paid. Best-effort — a DB hiccup here never
 // blocks the actual checkout/payment flow.
+//
+// Optional annual upgrade on the foryourbusiness offer [2026-10-02, added
+// for the checkout redesign]: a customer may add ONE of two annual plans
+// on top of the Starter Website (UPGRADE_AMOUNT_PHP below) — never both,
+// never a client-supplied price. `amount` sent to ganap is always
+// offerConfig.amountPhp + the server's own upgrade price for the
+// `upgrade` id the client selected, and that same `upgrade` id rides along
+// in `metadata` so clienthub's webhook (functions/api/webhooks/ganap.ts,
+// handleForYourBusinessSignup) knows to assign the matching plan instead
+// of always defaulting to Starter — see that function for the other half
+// of this change.
 
 interface Env {
   GANAP_SECRET: string;
@@ -97,6 +108,31 @@ const OFFER_CONFIG: Record<OfferId, OfferConfig> = {
   },
 };
 
+// Optional annual upgrade on top of the foryourbusiness Starter Website —
+// never applies to the b2b offer. Mirrors clienthub's own "basic"/
+// "essential" catalog entries (functions/_lib/pricing.ts there) exactly,
+// since those are the same two plans this checkout now offers up front
+// instead of only as a later internal upsell; see that repo's webhook
+// (functions/api/webhooks/ganap.ts, handleForYourBusinessSignup) for the
+// matching clienthub-side catalog-item id each upgrade maps to.
+//
+// Amounts here are the only ones this server trusts -- the client sends an
+// `upgrade` id, never a price, and this table is the single source of
+// truth for what gets charged. OFFER_CONFIG.foryourbusiness.amountPhp
+// (599) is reused as the base for every upgrade total below, so a future
+// Starter price change only needs editing in one place.
+type UpgradeId = "none" | "domain_hosting" | "business_tools";
+
+const UPGRADE_AMOUNT_PHP: Record<UpgradeId, number> = {
+  none: 0,
+  domain_hosting: 1500,
+  business_tools: 5700,
+};
+
+function isUpgradeId(value: unknown): value is UpgradeId {
+  return value === "none" || value === "domain_hosting" || value === "business_tools";
+}
+
 // Every test-mode checkout returns this literal placeholder as redirectUrl
 // (case can vary — browsers normalize URL schemes to lowercase when
 // reporting them, so match case-insensitively), regardless of the
@@ -111,6 +147,7 @@ const MAX_FIELD_LENGTH = 200;
 
 type CheckoutPayload = {
   offer: OfferId;
+  upgrade: UpgradeId;
   fullName: string;
   businessName: string;
   email: string;
@@ -138,6 +175,17 @@ function validate(body: unknown): { data: CheckoutPayload } | { error: string } 
   const b = body as Record<string, unknown>;
 
   const offer: OfferId = b.offer === "b2b" ? "b2b" : "foryourbusiness";
+  // Upgrades only exist on the foryourbusiness offer. b2b never carries one,
+  // regardless of what the client sends, so a stale/tampered b2b request
+  // can't smuggle an upgrade price onto that offer's own flat amount.
+  if (offer === "b2b" && b.upgrade !== undefined && b.upgrade !== "none") {
+    return { error: "This offer does not support upgrades." };
+  }
+  const requestedUpgrade = offer === "foryourbusiness" ? b.upgrade : "none";
+  if (requestedUpgrade !== undefined && !isUpgradeId(requestedUpgrade)) {
+    return { error: "Invalid upgrade selection." };
+  }
+  const upgrade: UpgradeId = isUpgradeId(requestedUpgrade) ? requestedUpgrade : "none";
   const fullName = typeof b.fullName === "string" ? sanitizeLine(b.fullName) : "";
   const businessName = typeof b.businessName === "string" ? sanitizeLine(b.businessName) : "";
   const email = typeof b.email === "string" ? sanitizeLine(b.email) : "";
@@ -158,7 +206,7 @@ function validate(body: unknown): { data: CheckoutPayload } | { error: string } 
   if (!privacyAccepted) return { error: "Please agree to the Privacy Notice." };
 
   return {
-    data: { offer, fullName, businessName, email, phone, facebook, instagram, existingWebsite },
+    data: { offer, upgrade, fullName, businessName, email, phone, facebook, instagram, existingWebsite },
   };
 }
 
@@ -202,11 +250,18 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const data = result.data;
   const offerConfig = OFFER_CONFIG[data.offer];
 
+  // The server computes the amount from offerConfig + UPGRADE_AMOUNT_PHP,
+  // never from anything the client sent — this is the one number that
+  // actually reaches ganap.net, so a tampered/guessed price in the request
+  // body has no effect on what gets charged.
+  const upgradeAmountPhp = UPGRADE_AMOUNT_PHP[data.upgrade];
+  const totalAmountPhp = offerConfig.amountPhp + upgradeAmountPhp;
+
   const idempotencyKey = crypto.randomUUID();
 
   const ganapBody = JSON.stringify({
     projectUuid: env.GANAP_PROJECT_UUID,
-    amount: offerConfig.amountPhp,
+    amount: totalAmountPhp,
     idempotencyKey,
     customerName: data.fullName,
     customerEmail: data.email,
@@ -218,6 +273,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       instagram: data.instagram || undefined,
       existingWebsite: data.existingWebsite || undefined,
       offer: offerConfig.metadataOffer,
+      // Read by clienthub's webhook (handleForYourBusinessSignup) to decide
+      // which catalog plan to assign — "none" keeps today's Starter-only
+      // behavior; the other two map to clienthub's existing "basic"/
+      // "essential" catalog entries. Always "none" for the b2b offer
+      // (validate() already rejects anything else for that offer).
+      upgrade: data.upgrade,
     },
     successRedirectUrl: offerConfig.successRedirectUrl,
     failureRedirectUrl: offerConfig.failureRedirectUrl,
@@ -227,8 +288,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     try {
       const now = new Date().toISOString();
       await env.DB.prepare(
-        `INSERT INTO orders (id, status, full_name, business_name, email, phone, facebook, instagram, existing_website, amount, created_at, updated_at)
-         VALUES (?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        `INSERT INTO orders (id, status, full_name, business_name, email, phone, facebook, instagram, existing_website, amount, offer, upgrade, upgrade_amount, created_at, updated_at)
+         VALUES (?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
       )
         .bind(
           idempotencyKey,
@@ -239,7 +300,10 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
           data.facebook || null,
           data.instagram || null,
           data.existingWebsite || null,
-          offerConfig.amountPhp,
+          totalAmountPhp,
+          data.offer,
+          data.upgrade,
+          upgradeAmountPhp,
           now,
           now
         )

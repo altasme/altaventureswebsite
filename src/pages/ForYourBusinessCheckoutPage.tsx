@@ -1,17 +1,35 @@
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
 import { BRAND } from "../content/site";
-import { CHECKOUT } from "../content/foryourbusiness";
+import { CHECKOUT, UPGRADE_OPTIONS, findUpgradeOption, type UpgradeId } from "../content/foryourbusiness";
 import { trackInitiateCheckout } from "../lib/analytics";
 import { FYB_PREFILL } from "../lib/contact";
 import { ModalProvider, useModals } from "../lib/modalContext";
 import ContactModal from "../components/modals/ContactModal";
 import LegalModal from "../components/modals/LegalModal";
 
-const PAGE_TITLE = "Start Your ₱599 Website | Altaventures";
+const PAGE_TITLE = "Start Your Website | Altaventures";
 
 const inputClasses =
   "w-full rounded-xl border border-ink/15 bg-white px-4 py-2.5 text-sm text-ink outline-none transition focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20";
+
+const STARTER_PRICE = 599;
+
+function formatPhp(amount: number): string {
+  return `₱${amount.toLocaleString("en-PH")}`;
+}
+
+// The only place this page computes a total — mirrors
+// functions/api/checkout.ts's own UPGRADE_AMOUNT_PHP/offerConfig.amountPhp
+// math exactly (599 base + the selected upgrade's annualPrice), so what
+// the customer sees here always matches what the server will actually
+// validate and charge. This is a display convenience only: the server
+// never trusts this number, it recomputes its own from the `upgrade` id
+// alone (see that file's header comment).
+function totalForUpgrade(upgrade: UpgradeId): number {
+  const option = upgrade === "none" ? undefined : findUpgradeOption(upgrade);
+  return STARTER_PRICE + (option?.annualPrice ?? 0);
+}
 
 type RedirectKind = "url" | "qr-image" | "qr-payload" | "test-placeholder";
 
@@ -78,7 +96,7 @@ function QrPayload({ payload }: { payload: string }) {
   return <img src={dataUrl} alt="Scan with your banking or e-wallet app to pay" width={280} height={280} />;
 }
 
-function PaymentPanel({ result }: { result: PaymentResult }) {
+function PaymentPanel({ result, amount }: { result: PaymentResult; amount: number }) {
   return (
     <div className="rounded-2xl border border-ink/10 bg-paper-alt p-6 text-center sm:p-8">
       {result.kind === "test-placeholder" ? (
@@ -97,7 +115,9 @@ function PaymentPanel({ result }: { result: PaymentResult }) {
       ) : (
         <>
           <p className="text-xs font-semibold uppercase tracking-wide text-brand-blue">Scan to Pay</p>
-          <h2 className="mt-1 text-xl font-bold text-brand-navy">₱599 &middot; Reference {result.referenceNumber}</h2>
+          <h2 className="mt-1 text-xl font-bold text-brand-navy">
+            {formatPhp(amount)} &middot; Reference {result.referenceNumber}
+          </h2>
           <div className="mt-4 flex justify-center">
             {result.kind === "qr-image" ? (
               <img src={result.redirectUrl} alt="Scan with your banking or e-wallet app to pay" width={280} height={280} />
@@ -106,9 +126,146 @@ function PaymentPanel({ result }: { result: PaymentResult }) {
             )}
           </div>
           <p className="mx-auto mt-4 max-w-sm text-sm text-ink/60">
-            Scan this code with your GCash, Maya, or banking app to complete your ₱599 payment.
+            Scan this code with your GCash, Maya, or banking app to complete your {formatPhp(amount)} payment.
           </p>
         </>
+      )}
+    </div>
+  );
+}
+
+// Order Summary (spec §3.A) — the Starter Website, always in the order,
+// never selectable/removable.
+function OrderSummary() {
+  return (
+    <div className="rounded-2xl border border-ink/10 bg-paper-alt p-6">
+      <p className="text-xs font-semibold uppercase tracking-wide text-brand-blue">{CHECKOUT.eyebrow}</p>
+      <h1 className="mt-1 text-2xl font-bold text-brand-navy sm:text-3xl">{CHECKOUT.summaryTitle}</h1>
+      <div className="mt-3 flex items-baseline gap-2">
+        <span className="text-3xl font-extrabold text-brand-navy">{CHECKOUT.price}</span>
+        <span className="text-xs font-semibold text-ink/60">{CHECKOUT.priceNote}</span>
+      </div>
+      <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3">
+        {CHECKOUT.summaryItems.map((item) => (
+          <li key={item} className="flex items-center gap-2 text-sm text-ink/70">
+            <CheckIcon />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="shrink-0 text-brand-blue" aria-hidden="true">
+      <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// Choose an Optional Upgrade (spec §3.B) — single-select, default "no
+// upgrade" (never preselected), reselecting the already-active choice
+// deselects it back to none since that's the only other way to reach
+// "continue without an upgrade" once something is picked.
+function UpgradeSelector({
+  selected,
+  onSelect,
+}: {
+  selected: UpgradeId;
+  onSelect: (id: UpgradeId) => void;
+}) {
+  return (
+    <div className="space-y-3" role="radiogroup" aria-label="Optional annual upgrade">
+      <h2 className="text-sm font-bold uppercase tracking-wide text-ink/60">Choose an Optional Upgrade</h2>
+      <button
+        type="button"
+        role="radio"
+        aria-checked={selected === "none"}
+        onClick={() => onSelect("none")}
+        className={`w-full rounded-2xl border p-4 text-left transition ${
+          selected === "none" ? "border-brand-blue bg-brand-blue/5 ring-1 ring-brand-blue" : "border-ink/10 bg-white hover:border-ink/25"
+        }`}
+      >
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-sm font-semibold text-brand-navy">Continue without an upgrade</span>
+          <span className="text-sm font-semibold text-ink/60">{formatPhp(STARTER_PRICE)} total</span>
+        </div>
+      </button>
+
+      {UPGRADE_OPTIONS.map((option) => {
+        const isSelected = selected === option.id;
+        return (
+          <button
+            key={option.id}
+            type="button"
+            role="radio"
+            aria-checked={isSelected}
+            onClick={() => onSelect(isSelected ? "none" : option.id)}
+            className={`w-full rounded-2xl border p-5 text-left transition ${
+              isSelected ? "border-brand-blue bg-brand-blue/5 ring-1 ring-brand-blue" : "border-ink/10 bg-white hover:border-ink/25"
+            }`}
+          >
+            <div className="flex flex-wrap items-start justify-between gap-2">
+              <div>
+                <p className="text-base font-bold text-brand-navy">{option.name}</p>
+                <p className="text-sm font-semibold text-brand-blue">{option.priceLabel}</p>
+              </div>
+              <span className="rounded-full bg-ink/5 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-ink/60">
+                Annual service
+              </span>
+            </div>
+            <ul className="mt-3 grid gap-1.5 sm:grid-cols-2">
+              {option.features.map((f) => (
+                <li key={f} className="flex items-center gap-2 text-sm text-ink/70">
+                  <CheckIcon />
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-xs text-ink/60">{option.note}</p>
+            <p className="mt-2 text-sm font-semibold text-brand-navy">
+              First-year total: {formatPhp(option.firstYearTotal)}
+            </p>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// Final Order Summary (spec §3.C) — recomputed live from `upgrade`, never
+// a second source of truth for pricing (same STARTER_PRICE/UPGRADE_OPTIONS
+// the selector above reads from).
+function FinalSummary({ upgrade }: { upgrade: UpgradeId }) {
+  const option = upgrade === "none" ? undefined : findUpgradeOption(upgrade);
+  const total = totalForUpgrade(upgrade);
+
+  return (
+    <div className="rounded-2xl border border-ink/10 bg-white p-5">
+      <h2 className="text-sm font-bold uppercase tracking-wide text-ink/60">Order Summary</h2>
+      <div className="mt-3 space-y-2 text-sm">
+        <div className="flex justify-between">
+          <span className="text-ink/70">Starter Website</span>
+          <span className="font-semibold text-brand-navy">{formatPhp(STARTER_PRICE)} one-time</span>
+        </div>
+        {option && (
+          <div className="flex justify-between">
+            <span className="text-ink/70">{option.name}</span>
+            <span className="font-semibold text-brand-navy">{formatPhp(option.annualPrice)}/year</span>
+          </div>
+        )}
+      </div>
+      <div className="mt-3 flex items-baseline justify-between border-t border-ink/10 pt-3">
+        <span className="text-sm font-semibold text-ink/70">Total due today</span>
+        <span className="text-xl font-extrabold text-brand-navy">{formatPhp(total)}</span>
+      </div>
+      {option && (
+        <p className="mt-2 text-xs text-ink/60">
+          {option.name} is billed annually. After the first year, it renews at {formatPhp(option.renewalPrice)}/year to
+          continue the service — we'll reach out before then.
+        </p>
       )}
     </div>
   );
@@ -124,8 +281,10 @@ function CheckoutForm() {
   const [facebook, setFacebook] = useState("");
   const [instagram, setInstagram] = useState("");
   const [existingWebsite, setExistingWebsite] = useState("");
+  const [upgrade, setUpgrade] = useState<UpgradeId>("none");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [reviewedConfirmed, setReviewedConfirmed] = useState(false);
   const [touched, setTouched] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -133,7 +292,8 @@ function CheckoutForm() {
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const fieldsValid = fullName.trim().length > 1 && businessName.trim().length > 1 && emailValid && phone.trim().length > 3;
-  const canSubmit = fieldsValid && termsAccepted && privacyAccepted && !submitting;
+  const canSubmit = fieldsValid && termsAccepted && privacyAccepted && reviewedConfirmed && !submitting;
+  const total = totalForUpgrade(upgrade);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -142,13 +302,15 @@ function CheckoutForm() {
 
     setSubmitting(true);
     setErrorMessage(null);
-    trackInitiateCheckout();
+    trackInitiateCheckout(total);
 
     try {
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          offer: "foryourbusiness",
+          upgrade,
           fullName: fullName.trim(),
           businessName: businessName.trim(),
           email: email.trim(),
@@ -187,29 +349,16 @@ function CheckoutForm() {
   };
 
   if (paymentResult) {
-    return <PaymentPanel result={paymentResult} />;
+    return <PaymentPanel result={paymentResult} amount={total} />;
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
-      <div className="rounded-2xl border border-ink/10 bg-paper-alt p-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-brand-blue">{CHECKOUT.eyebrow}</p>
-        <h1 className="mt-1 text-2xl font-bold text-brand-navy sm:text-3xl">{CHECKOUT.summaryTitle}</h1>
-        <div className="mt-3 flex items-baseline gap-2">
-          <span className="text-3xl font-extrabold text-brand-navy">{CHECKOUT.price}</span>
-          <span className="text-xs font-semibold text-ink/60">{CHECKOUT.priceNote}</span>
-        </div>
-        <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3">
-          {CHECKOUT.summaryItems.map((item) => (
-            <li key={item} className="flex items-center gap-2 text-sm text-ink/70">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="shrink-0 text-brand-blue" aria-hidden="true">
-                <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <OrderSummary />
+
+      <UpgradeSelector selected={upgrade} onSelect={setUpgrade} />
+
+      <FinalSummary upgrade={upgrade} />
 
       <div className="space-y-5">
         <div className="grid gap-5 sm:grid-cols-2">
@@ -283,6 +432,18 @@ function CheckoutForm() {
               <LegalLink label="Privacy Notice" onOpen={() => openLegal("fyb-privacy")} />, to deliver this service.
             </span>
           </label>
+          <label className="flex items-start gap-3 text-sm text-ink/75">
+            <input
+              type="checkbox"
+              checked={reviewedConfirmed}
+              onChange={(e) => setReviewedConfirmed(e.target.checked)}
+              className="mt-0.5 h-4 w-4 shrink-0 rounded border-ink/30 text-brand-blue focus:ring-brand-blue"
+            />
+            <span>
+              I've reviewed the order summary above — the package inclusions and pricing
+              {upgrade !== "none" ? ", including the annual renewal terms for my selected upgrade" : ""}.
+            </span>
+          </label>
         </div>
 
         {errorMessage && (
@@ -303,7 +464,7 @@ function CheckoutForm() {
           disabled={!canSubmit}
           className="inline-flex w-full items-center justify-center rounded-full bg-brand-blue px-6 py-4 text-base font-semibold text-white shadow-lg shadow-black/15 transition hover:-translate-y-0.5 hover:bg-[#0b57cc] disabled:cursor-not-allowed disabled:translate-y-0 disabled:bg-ink/10 disabled:text-ink/60 disabled:shadow-none sm:w-auto"
         >
-          {submitting ? "Starting your payment..." : CHECKOUT.cta}
+          {submitting ? "Starting your payment..." : `PAY ${formatPhp(total)} & START →`}
         </button>
       </div>
     </form>
