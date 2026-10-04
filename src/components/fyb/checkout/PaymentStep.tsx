@@ -110,7 +110,7 @@ export default function PaymentStep({
     if (!canSubmit) return;
     setSubmitting(true);
     setErrorMessage(null);
-    trackInitiateCheckout();
+    trackInitiateCheckout(total);
 
     try {
       const response = await fetch("/api/checkout", {

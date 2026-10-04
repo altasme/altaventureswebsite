@@ -293,6 +293,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       businessCategory: data.businessCategory || undefined,
       upgradeType: data.offer === "foryourbusiness" ? data.upgradeType : undefined,
       upgradePrice: data.offer === "foryourbusiness" ? upgradePrice : undefined,
+      // Duplicate of upgradeType under the key name a different, concurrently-
+      // built checkout-redesign attempt used (see CLAUDE.md §38's merge note)
+      // — kept alongside upgradeType in case any webhook consumer (e.g. a
+      // clienthub-side plan-assignment handler) was already built against
+      // that key. Purely additive; this function's own logic never reads it.
+      upgrade: data.offer === "foryourbusiness" ? data.upgradeType : undefined,
       offer: offerConfig.metadataOffer,
     },
     successRedirectUrl,

@@ -137,6 +137,13 @@ function parsePayload(rawBody: string): GanapWebhookPayload | null {
   };
 }
 
+// Idempotent against ganap's documented at-least-once delivery [2026-10-02,
+// added for the checkout redesign spec's explicit idempotency requirement]:
+// a retried/redelivered event for an order already marked 'paid' is a
+// no-op here rather than re-running the UPDATE. This only guards the D1
+// write — sendNotification() below still fires on every delivery, same as
+// before (a duplicate email stays a smaller cost than a silently-dropped
+// one, per this file's own header comment).
 async function updateMatchingOrder(env: Env, rawBody: string, payload: GanapWebhookPayload): Promise<void> {
   if (!env.DB) return;
 
@@ -145,6 +152,14 @@ async function updateMatchingOrder(env: Env, rawBody: string, payload: GanapWebh
   // referenceNumber is ganap's own id, not ours, so it's only a fallback.
   const orderId = payload.externalReference || payload.referenceNumber;
   if (!orderId) return;
+
+  const existing = await env.DB.prepare(`SELECT status FROM orders WHERE id = ?`)
+    .bind(orderId)
+    .first<{ status: string }>();
+  if (existing?.status === "paid") {
+    console.log(`Order "${orderId}" already marked paid; skipping duplicate webhook delivery.`);
+    return;
+  }
 
   const now = new Date().toISOString();
 
