@@ -173,24 +173,52 @@ export const WHO_ITS_FOR = {
   line: "Whatever stage you're at, your business deserves more than just a social media page.",
 } as const;
 
-// [2026-10-02] Re-curated to match /b2b's portfolio exactly (same project
-// list, same order, no "advanced" row, same description overrides), per
-// the operator's direct request. Supersedes the 2026-09-18 7-project
-// curation and its "Beyond the ₱299 scope" advanced row below it — this
-// offer's portfolio no longer draws that scope line visually, matching how
-// /b2b (content/b2b.ts's B2B_PORTFOLIO) presents its own wider project mix.
+// [2026-10-05] Switched to the full canonical portfolio, per the operator's
+// direct request ("show the full portfolio in one, exclude setmona and
+// kolekta"), scoped to this page only — supersedes the 2026-10-02 /b2b-
+// matching 7-project curation above. Shown as a single list (no "advanced"
+// row), in the same order as content/portfolio.ts, with every project
+// except the two engine-tier, non-viewable ones (setmona, kolekta — no
+// public URL, so they'd have nothing to link "View Website" to). The id
+// list is still hand-maintained rather than derived from
+// VIEWABLE_PORTFOLIO_IDS, matching this project's existing convention
+// elsewhere (see portfolio.ts's own comment) so a newly-added canonical
+// project needs a deliberate decision before it appears here too.
 export const FYB_PORTFOLIO = {
   headline: "See What We Can Build",
   sub: "Real websites for real Philippine businesses. Tap any to see it live.",
-  primaryIds: ["leanandfit", "aurielle", "dmhr", "amr-bookkeeping", "imago-productions", "camsnap", "onyx-clouds"],
+  primaryIds: [
+    "altamotors",
+    "aurielle",
+    "leanandfit",
+    "dmhr",
+    "vocalyze",
+    "aulea",
+    "pocketg7iii",
+    "macquias",
+    "ascend-volleyball",
+    "clickandkeep",
+    "amr-bookkeeping",
+    "adrayan-law",
+    "imago-productions",
+    "camsnap",
+    "onyx-clouds",
+  ],
   advancedIds: [] as string[],
   advancedLabel: "",
   cta: "See What We Can Build →",
-  // Same /b2b-only-style overrides, carried over verbatim: the canonical
-  // content/portfolio.ts descriptions for camsnap and onyx-clouds mention
-  // "subdomained to ours," a technical detail not meant for this page
-  // either. Overridden here rather than editing the shared canonical copy.
+  // Several canonical descriptions mention "subdomained to ours," a
+  // technical detail not meant for this page (per the same no-subdomain-
+  // mention preference already established for /b2b and /foryourbusiness,
+  // see CLAUDE.md). Overridden here rather than editing the shared
+  // canonical copy in content/portfolio.ts.
   descriptionOverrides: {
+    pocketg7iii:
+      "A landing page for a local camera rental business based in Puerto Princesa, Palawan, in support of youth entrepreneurship. Booking page and system development in future talks.",
+    macquias: "A landing page for a local camera rental business based in Tarlac City, in support of youth entrepreneurship.",
+    clickandkeep:
+      "A landing page for a local freelance photographer to showcase his work to clients, in support of youth entrepreneurship.",
+    "adrayan-law": "A professional landing page for a law office.",
     camsnap: "A landing page for a local camera rental business based in Batangas.",
     "onyx-clouds": "A landing page for a local vape and e-cig supplier.",
   } as Record<string, string>,
