@@ -39,7 +39,7 @@ These override anything in the source spec that conflicts. Where the source `ALT
 | 1 | ~~About section copy~~ **RESOLVED** | Real founder/company story supplied by client, in `content/site.ts` -> `ABOUT`. | N/A |
 | 2 | ~~Real project screenshots~~ **RESOLVED** | Real screenshots supplied for Setmona, Altamotors, Kolekta, Vocalyze (`public/images/projects/`). | N/A |
 | 3 | ~~Brand color + logo~~ **RESOLVED [v1.1]** | Logo supplied; palette locked from logo (see §11.1). Tagline supplied. | N/A |
-| 4 | **Messenger branding mismatch** | Link points to `m.me/vanamaranto.moto`, which shows a personal-style profile ("Van Amaranto"), not "Altaventures". | Consider a dedicated Altaventures Facebook Page for brand consistency. |
+| 4 | ~~Messenger branding mismatch~~ **RESOLVED [2026-10-05]** | Operator supplied a dedicated Facebook Page id (`61584449870702`); `CONTACT.messenger.handle` in `content/site.ts` updated, replacing the old personal-style `vanamaranto.moto` profile. See §43. | N/A |
 | 5 | **Analytics ID** | Tracking layer scaffolded with a `MEASUREMENT_ID` constant left blank; events fire to `dataLayer` regardless. | Provide GA4 / Meta Pixel IDs when ready. |
 | 6 | ~~Legal pages~~ **RESOLVED** | Real Privacy Policy + Terms of Service supplied by client, rendered as modals from `content/site.ts` -> `LEGAL`. | N/A |
 
@@ -1151,3 +1151,13 @@ The operator supplied a real Discord webhook URL and asked for a staff notificat
 - **`DISCORD_WEBHOOK_URL` still needs to be added to the Cloudflare Pages dashboard** before this fires in production — not required to build or deploy, but the notification silently no-ops until it's set.
 - **The `discord_notified_at` migration still needs to be run against the live database** (`ALTER TABLE orders ADD COLUMN discord_notified_at TEXT;`, see `d1/schema.sql`), same standing requirement as every prior D1 schema change in this project's history.
 - **This real end-to-end path (a genuine ganap.net payment → the real production webhook URL) could not be verified from this sandbox**, same standing limitation as every other payment-flow round — the operator should do one real test checkout after both of the above are set, and confirm the Discord message actually arrives in the channel.
+
+---
+
+## 43. Messenger link switched to a dedicated Facebook Page, resolving open item #4 [2026-10-05]
+
+The operator supplied a real Facebook Page id, `61584449870702`, replacing the old personal-style profile handle (`vanamaranto.moto`, "Van Amaranto") that §1's open-items table had flagged as a brand mismatch since the very first build. `CONTACT.messenger.handle` in `content/site.ts` is the single source every Messenger link on the site routes through — `lib/contact.ts`'s `messengerUrl()` builds `https://m.me/${CONTACT.messenger.handle}` from it, so this one-line change updates the `ContactModal` Messenger option, the footer Messenger link, and every other call site simultaneously, with no per-component edits needed.
+
+**`index.html`'s static JSON-LD `Organization.sameAs` array also updated** (`https://m.me/vanamaranto.moto` → `https://m.me/61584449870702`), since that's a second, independent hardcoded copy of the Messenger URL outside the `CONTACT` constant (structured data read by search engines, not rendered by React, so it doesn't pull from `content/site.ts` at all).
+
+**How this was tested:** `npm run build` and `npm run lint` passed clean. Grepped the built `dist/` output afterward and confirmed `61584449870702` appears in both the compiled JS bundle and `index.html`, with zero remaining occurrences of the old `vanamaranto` handle anywhere in `dist/`. Ran a local `vite preview` + Playwright pass: opened the `ContactModal` via the Nav CTA and confirmed its Messenger option's `href` resolves to exactly `https://m.me/61584449870702`. All scratch tooling (`playwright-core`, the verification script, the local preview server) removed/stopped afterward; confirmed via `git status`/`git diff package.json` that only `index.html` and `content/site.ts` changed.

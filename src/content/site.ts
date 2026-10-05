@@ -21,7 +21,7 @@ export const CONTACT = {
     supportsPrefill: false,
   },
   messenger: {
-    handle: "vanamaranto.moto",
+    handle: "61584449870702",
     supportsPrefill: false,
   },
 } as const;
