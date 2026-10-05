@@ -1,6 +1,6 @@
 // content/portfolio.ts
-// Canonical portfolio data, shared by the main marketing site (altasme.com)
-// and the free-website landing page (altasme.com/limitedoffer). Descriptions
+// Canonical portfolio data, shared by the main marketing site (www.altasme.com)
+// and the free-website landing page (www.altasme.com/limitedoffer). Descriptions
 // are client-approved wording. No fabrication, no embellishment beyond what's
 // written here — see CLAUDE.md for placement rules per surface.
 

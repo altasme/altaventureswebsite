@@ -381,5 +381,5 @@ export const THANK_YOU = {
 export const DEVELOPER_HANDOFF = {
   headline: "Talk to Your Developer",
   body: "Take a screenshot of this page, including your order reference, and send it to us. That's how your developer will know to start on your project.",
-  cta: "Message Us on WhatsApp, Messenger, or Viber",
+  cta: "Talk to your developer",
 } as const;

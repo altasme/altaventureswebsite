@@ -1584,7 +1584,7 @@ export const LEGAL: {
     lastUpdated: "October 2, 2026",
     intro: [
       p(
-        "This Refund Policy applies specifically to the ₱599 one-time professional website offer at altasme.com/foryourbusiness (\"the ₱599 offer\"), provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). It should be read together with the Terms of Sale for the ₱599 offer.",
+        "This Refund Policy applies specifically to the ₱599 one-time professional website offer at www.altasme.com/foryourbusiness (\"the ₱599 offer\"), provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). It should be read together with the Terms of Sale for the ₱599 offer.",
       ),
       p(
         "This policy is separate from, and does not change, the general Refund Policy that applies to Altaventures' other services.",
@@ -1659,7 +1659,7 @@ export const LEGAL: {
     lastUpdated: "October 2, 2026",
     intro: [
       p(
-        "These Terms of Sale govern the ₱599 one-time professional website offer at altasme.com/foryourbusiness, provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). By purchasing the ₱599 offer, you (\"you,\" \"the client\") agree to these Terms of Sale, together with the Refund Policy (₱599 Website Offer) and the Privacy Notice for the ₱599 offer.",
+        "These Terms of Sale govern the ₱599 one-time professional website offer at www.altasme.com/foryourbusiness, provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). By purchasing the ₱599 offer, you (\"you,\" \"the client\") agree to these Terms of Sale, together with the Refund Policy (₱599 Website Offer) and the Privacy Notice for the ₱599 offer.",
       ),
     ],
     sections: [
@@ -1779,7 +1779,7 @@ export const LEGAL: {
     lastUpdated: "October 2, 2026",
     intro: [
       p(
-        "This Privacy Notice explains how Altaventures Business Development Services, operating under the brand name Altaventures, collects and processes personal data in connection with the ₱599 website offer at altasme.com/foryourbusiness, in accordance with the Data Privacy Act of 2012 (Republic Act 10173).",
+        "This Privacy Notice explains how Altaventures Business Development Services, operating under the brand name Altaventures, collects and processes personal data in connection with the ₱599 website offer at www.altasme.com/foryourbusiness, in accordance with the Data Privacy Act of 2012 (Republic Act 10173).",
       ),
     ],
     sections: [
@@ -1843,7 +1843,7 @@ export const LEGAL: {
     lastUpdated: "September 19, 2026",
     intro: [
       p(
-        "This Refund Policy applies specifically to the ₱4,999 complete business website package at altasme.com/b2b (\"the package\"), provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). The ₱4,999 is paid in two installments, a ₱2,499 deposit and a ₱2,500 balance, described further in the Terms of Sale for the package, which this policy should be read together with.",
+        "This Refund Policy applies specifically to the ₱4,999 complete business website package at www.altasme.com/b2b (\"the package\"), provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). The ₱4,999 is paid in two installments, a ₱2,499 deposit and a ₱2,500 balance, described further in the Terms of Sale for the package, which this policy should be read together with.",
       ),
       p(
         "This policy is separate from, and does not change, the general Refund Policy that applies to Altaventures' other services, or the Refund Policy for the ₱599 website offer.",
@@ -1934,7 +1934,7 @@ export const LEGAL: {
     lastUpdated: "September 19, 2026",
     intro: [
       p(
-        "These Terms of Sale govern the ₱4,999 complete business website package at altasme.com/b2b, provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). By purchasing the package, you (\"you,\" \"the client\") agree to these Terms of Sale, together with the Refund Policy (₱4,999 Business Website Package) and the Privacy Notice for the package.",
+        "These Terms of Sale govern the ₱4,999 complete business website package at www.altasme.com/b2b, provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). By purchasing the package, you (\"you,\" \"the client\") agree to these Terms of Sale, together with the Refund Policy (₱4,999 Business Website Package) and the Privacy Notice for the package.",
       ),
     ],
     sections: [
@@ -2070,7 +2070,7 @@ export const LEGAL: {
     lastUpdated: "September 19, 2026",
     intro: [
       p(
-        "This Privacy Notice explains how Altaventures Business Development Services, operating under the brand name Altaventures, collects and processes personal data in connection with the ₱4,999 business website package at altasme.com/b2b, in accordance with the Data Privacy Act of 2012 (Republic Act 10173).",
+        "This Privacy Notice explains how Altaventures Business Development Services, operating under the brand name Altaventures, collects and processes personal data in connection with the ₱4,999 business website package at www.altasme.com/b2b, in accordance with the Data Privacy Act of 2012 (Republic Act 10173).",
       ),
     ],
     sections: [

@@ -52,10 +52,10 @@ function PageContent() {
       setMeta('meta[name="description"]', "content", PAGE_DESCRIPTION),
       setMeta('meta[property="og:title"]', "content", PAGE_TITLE),
       setMeta('meta[property="og:description"]', "content", PAGE_DESCRIPTION),
-      setMeta('meta[property="og:url"]', "content", "https://altasme.com/b2b"),
+      setMeta('meta[property="og:url"]', "content", "https://www.altasme.com/b2b"),
       setMeta('meta[name="twitter:title"]', "content", PAGE_TITLE),
       setMeta('meta[name="twitter:description"]', "content", PAGE_DESCRIPTION),
-      setMeta('link[rel="canonical"]', "href", "https://altasme.com/b2b"),
+      setMeta('link[rel="canonical"]', "href", "https://www.altasme.com/b2b"),
     ];
 
     return () => {

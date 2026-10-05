@@ -37,10 +37,10 @@ export default function MyCafePosPage() {
       setMeta('meta[name="description"]', "content", META.description),
       setMeta('meta[property="og:title"]', "content", META.ogTitle),
       setMeta('meta[property="og:description"]', "content", META.ogDescription),
-      setMeta('meta[property="og:url"]', "content", "https://altasme.com/mycafepos"),
+      setMeta('meta[property="og:url"]', "content", "https://www.altasme.com/mycafepos"),
       setMeta('meta[name="twitter:title"]', "content", META.ogTitle),
       setMeta('meta[name="twitter:description"]', "content", META.ogDescription),
-      setMeta('link[rel="canonical"]', "href", "https://altasme.com/mycafepos"),
+      setMeta('link[rel="canonical"]', "href", "https://www.altasme.com/mycafepos"),
       setMeta('link[rel="icon"]', "href", LOGO.favicon),
     ];
 

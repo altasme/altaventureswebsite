@@ -92,14 +92,14 @@ const OFFER_CONFIG: Record<OfferId, OfferConfig> = {
   foryourbusiness: {
     amountPhp: 599,
     metadataOffer: "foryourbusiness-299",
-    successRedirectUrl: "https://altasme.com/foryourbusiness/thank-you",
-    failureRedirectUrl: "https://altasme.com/foryourbusiness/checkout?retry=1",
+    successRedirectUrl: "https://www.altasme.com/foryourbusiness/thank-you",
+    failureRedirectUrl: "https://www.altasme.com/foryourbusiness/checkout?retry=1",
   },
   b2b: {
     amountPhp: 2499, // deposit of the ₱4,999 total; ₱2,500 balance invoiced separately on completion
     metadataOffer: "b2b-4999-deposit",
-    successRedirectUrl: "https://altasme.com/b2b/thank-you",
-    failureRedirectUrl: "https://altasme.com/b2b/checkout?retry=1",
+    successRedirectUrl: "https://www.altasme.com/b2b/thank-you",
+    failureRedirectUrl: "https://www.altasme.com/b2b/checkout?retry=1",
   },
 };
 
