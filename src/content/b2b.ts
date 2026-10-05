@@ -46,9 +46,9 @@ export const B2B_HERO = {
   sub: `A complete business website: built, hosted, secured, maintained, and supported for a full year. ${TOTAL_PHP} total, just ${DEPOSIT_PHP} down to start, the rest due once it's complete. No hidden fees.`,
   cta: PRIMARY_CTA,
   backgroundImageDesktop:
-    "https://res.cloudinary.com/dlxhrxf1a/image/upload/f_auto,q_auto/v1789711789/Hero_full_bleed_cai8aw.jpg",
+    "https://res.cloudinary.com/dikrjc8nx/image/upload/f_auto,q_auto/v1791164586/Hero_full_bleed_cai8aw_zhqmrf.jpg",
   backgroundImageMobile:
-    "https://res.cloudinary.com/dlxhrxf1a/image/upload/f_auto,q_auto/v1789712320/Hero_mobile_zzu60d.jpg",
+    "https://res.cloudinary.com/dikrjc8nx/image/upload/f_auto,q_auto/v1791164587/Hero_mobile_zzu60d_gsgsxm.jpg",
   backgroundAlt: "A business owner working on their new website",
 } as const;
 
