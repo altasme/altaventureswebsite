@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS orders (
   upgrade_price INTEGER NOT NULL DEFAULT 0,  -- whole pesos, server-computed from upgrade_type
   amount INTEGER NOT NULL,           -- total whole pesos actually charged (Starter + upgrade_price, or b2b's deposit)
   webhook_payload TEXT,              -- raw JSON from the confirmed ganap.net webhook
+  discord_notified_at TEXT,          -- set once functions/api/notify-discord.ts has posted this order, for idempotency
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
@@ -43,6 +44,10 @@ CREATE INDEX IF NOT EXISTS idx_orders_email ON orders(email);
 -- Existing rows get 'none'/0 for the two new NOT NULL columns, which is
 -- correct: every order placed before this migration was the Starter
 -- package with no upgrade concept to retroactively assign.
+
+-- Migration [2026-10-05], for functions/api/notify-discord.ts: run this
+-- against an already-deployed database, same as above.
+--   npx wrangler d1 execute <database-name> --remote --command "ALTER TABLE orders ADD COLUMN discord_notified_at TEXT;"
 
 -- One row per WorkOS AuthKit account created from the post-payment
 -- "Create Your Account" flow. Linked to the order that most recently

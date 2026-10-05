@@ -53,8 +53,26 @@ function PageContent() {
       document.head.appendChild(meta);
     }
     meta.setAttribute("content", "noindex, nofollow");
-    setReference(new URLSearchParams(window.location.search).get("ref"));
+    const ref = new URLSearchParams(window.location.search).get("ref");
+    setReference(ref);
     track("payment_return", {});
+
+    // Staff Discord notification, fired only here: this page is only ever
+    // reached via ganap.net's successRedirectUrl (a declined/failed payment
+    // redirects back to checkout instead), so a ref present on this page
+    // already means the payment succeeded. The actual order data is looked
+    // up server-side from D1 by this reference, not sent from here, and the
+    // Function is idempotent against a reload/revisit — see
+    // functions/api/notify-discord.ts. Fire-and-forget: a failure here must
+    // never affect what the customer sees.
+    if (ref) {
+      fetch("/api/notify-discord", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ref }),
+      }).catch(() => {});
+    }
+
     return () => {
       document.title = "Altaventures: Websites, Booking Systems & Business Digitalization (Philippines)";
       meta?.setAttribute("content", "index, follow");
