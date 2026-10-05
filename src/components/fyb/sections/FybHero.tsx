@@ -1,29 +1,30 @@
 import { FYB_HERO } from "../../../content/foryourbusiness";
 import CTAButton from "../../ui/CTAButton";
 
-// Full-bleed hero, same treatment as the homepage's Hero.tsx: a wide
-// desktop crop and a separate portrait mobile crop, each with a navy
-// scrim gradient behind the text so it stays readable over the photo.
-// Replaces the earlier solid-navy two-column layout (headline/CTA +
-// FybHeroVisual's stat panel) [2026-09-18] — the stats moved into their
-// own small animated trust-signal band right below the hero instead (see
-// FybTrustSignals.tsx), so this section is copy + CTA only now.
-// `compact` is used only by the mobile instance below, to fit the copy
-// block inside the dark upper zone of the mobile photo above the subject's
-// head (see the mobile section's comment). It never reaches the desktop
-// instance, which doesn't pass it, so desktop sizing is unaffected.
+// Full-bleed hero on desktop, same treatment as the homepage's Hero.tsx:
+// a wide crop with a navy scrim gradient behind the text so it stays
+// readable over the photo. Replaces the earlier solid-navy two-column
+// layout (headline/CTA + FybHeroVisual's stat panel) [2026-09-18] — the
+// stats moved into their own small animated trust-signal band right below
+// the hero instead (see FybTrustSignals.tsx), so this section is copy +
+// CTA only now.
 //
-// The second "Talk to Us" CTA [2026-10-02] adds real height on top of the
-// headline/sub/CTA block this compact layout was originally clearance-
-// tuned for (§29 in CLAUDE.md: as little as ~22px of margin above the
-// subject's head on an iPhone SE, measured against the real photo). To
-// avoid eating into that margin, `compact` mode drops the supporting
-// `line` paragraph entirely and renders the second CTA as a plain text
-// link instead of a second full-height pill button — both only on mobile;
-// the desktop instance keeps the full line + two-button treatment
-// unchanged. This can't be re-measured against the real photo from this
-// sandbox (Cloudinary is network-blocked here, same as every prior round
-// on this hero), so confirm on a real short phone once deployed.
+// [2026-10-05, mobile rebuilt again] The mobile overlay approach from the
+// previous version of this file (photo as a full-screen background, copy
+// pinned to its dark upper zone) kept breaking every time the hero copy
+// grew: §29 originally clearance-tuned it against the real photo, then
+// §37's copy rewrite (a longer sub, a third line, a second CTA) quietly
+// pushed the copy block's height past that safe zone again on common
+// narrow phones (measured: -16px to -49px of overlap at 360-375px widths
+// against the real, now-reachable photo), reproducing exactly the
+// operator's real-device report ("cut off my head"). Chasing clearance
+// math by hand every time the copy changes is fragile and has now failed
+// twice. Fixed structurally instead: mobile no longer overlays text on
+// the photo at all. The copy renders in normal flow on a solid
+// bg-brand-navy-deep block, and the photo is a separate, fixed-height
+// panel below it — overlap is no longer physically possible regardless of
+// how long the copy gets. Desktop is unchanged (plenty of width, not what
+// was reported broken).
 function HeroCopy({
   onCheckout,
   onTalkToUs,
@@ -45,33 +46,23 @@ function HeroCopy({
       <p className={`text-white/85 ${compact ? "mt-3 text-sm leading-snug" : "mt-6 text-lg leading-relaxed"}`}>
         {FYB_HERO.sub}
       </p>
-      {!compact && <p className="mt-3 text-sm text-white/70">{FYB_HERO.line}</p>}
-      <div className={`flex flex-wrap items-center gap-3 ${compact ? "mt-4" : "mt-8"}`}>
+      <p className={`text-white/70 ${compact ? "mt-2 text-xs" : "mt-3 text-sm"}`}>{FYB_HERO.line}</p>
+      <div className={`flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center ${compact ? "mt-5" : "mt-8"}`}>
         <CTAButton
           label={FYB_HERO.cta}
           section="hero"
           onClick={onCheckout}
           size="lg"
-          className={compact ? "w-full" : "w-full sm:w-auto"}
+          className="w-full sm:w-auto"
         />
-        {compact ? (
-          <button
-            type="button"
-            onClick={onTalkToUs}
-            className="text-sm font-semibold text-white underline underline-offset-4"
-          >
-            {FYB_HERO.talkToUsCta}
-          </button>
-        ) : (
-          <CTAButton
-            label={FYB_HERO.talkToUsCta}
-            section="hero"
-            onClick={onTalkToUs}
-            variant="ghost"
-            size="lg"
-            className="w-full sm:w-auto"
-          />
-        )}
+        <CTAButton
+          label={FYB_HERO.talkToUsCta}
+          section="hero"
+          onClick={onTalkToUs}
+          variant="ghost"
+          size="lg"
+          className="w-full sm:w-auto"
+        />
       </div>
     </div>
   );
@@ -107,45 +98,42 @@ export default function FybHero({ onCheckout, onTalkToUs }: { onCheckout: () => 
         </div>
       </div>
 
-      {/* Mobile: back to a full-bleed overlay [2026-09-18, third fix],
-          this time verified against the real photo instead of guessed.
-          The stacked "text block, then photo block" layout from the
-          second fix guaranteed no overlap but gave up the full-bleed look
-          entirely. The operator then supplied the actual mobile hero file
-          directly (not just a Cloudinary link this sandbox can't fetch),
-          which showed why the two earlier object-position guesses failed:
-          the image is a 1080x1920 (9:16) portrait with a plain dark
-          background filling roughly the top 43% and the subject occupying
-          the bottom ~57% (shoulders up, cropped at the very bottom). On a
-          typical phone viewport, object-cover against a ~9:16-ish
-          container is height-bound (scale = containerHeight / imageHeight,
-          per CSS's object-fit spec), so there is little to no vertical
-          slack to crop — meaning object-position's Y value was never the
-          lever that mattered here. The real fix is keeping the text block
-          top-anchored (not vertically centered) with a top padding shallow
-          enough to sit entirely within that top ~43% dark zone, which
-          verified clean above the subject at both a short (~650px) and
-          tall (~930px) phone viewport height using this exact image (see
-          the "How this was tested" note in CLAUDE.md). object-top is kept
-          on the <img> as a safety net for any device where the container
-          does end up width-bound and some vertical crop occurs, so the
-          background gets trimmed before the subject would. */}
-      <div className="relative min-h-[100svh] overflow-hidden sm:hidden">
-        <img
-          src={FYB_HERO.backgroundImageMobile}
-          alt={FYB_HERO.backgroundAlt}
-          fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover object-top"
-        />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(6,18,46,0.55) 0%, rgba(6,18,46,0.15) 30%, transparent 46%)",
-          }}
-        />
-        <div className="relative flex min-h-[100svh] flex-col justify-start px-6 pb-10 pt-6">
+      {/* Mobile [rebuilt 2026-10-05]: copy in normal flow on a solid
+          bg-brand-navy-deep block, photo as its own panel below — see the
+          comment above HeroCopy for why the previous full-screen overlay
+          was abandoned. The panel uses a fixed aspect-ratio (aspect-square)
+          rather than a fixed pixel height so the crop is identical in
+          relative terms at every device width — a fixed height combined
+          with object-cover produced a different, width-dependent crop at
+          each test width (375px cropped the whole face out; 360px and
+          390px looked fine), which an aspect-locked box avoids entirely.
+          object-position 50% 83% was tuned against the real photo (not
+          plain "top") to land on a little dark headroom above the head,
+          his full face, and his crossed-arms pose, cropping only the dark
+          background above and a sliver of his forearms below — verified
+          by screenshot at 320/360/375/390/430px widths, see CLAUDE.md. A
+          short top/bottom scrim blends the panel into the navy block above
+          and the next section below. */}
+      <div className="bg-brand-navy-deep sm:hidden">
+        <div className="px-6 pb-8 pt-8">
           <HeroCopy onCheckout={onCheckout} onTalkToUs={onTalkToUs} compact />
+        </div>
+        <div className="relative aspect-square w-full overflow-hidden">
+          <img
+            src={FYB_HERO.backgroundImageMobile}
+            alt={FYB_HERO.backgroundAlt}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ objectPosition: "50% 83%" }}
+          />
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 h-12"
+            style={{ background: "linear-gradient(180deg, rgba(6,18,46,1) 0%, rgba(6,18,46,0) 100%)" }}
+          />
+          <div
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-12"
+            style={{ background: "linear-gradient(0deg, rgba(6,18,46,0.85) 0%, rgba(6,18,46,0) 100%)" }}
+          />
         </div>
       </div>
     </section>
