@@ -128,7 +128,7 @@ export const WHATS_INCLUDED = {
     },
     {
       title: "Your Own Business Link",
-      copy: "A dedicated web address you can share on Facebook, Messenger, business cards, and anywhere else your customers find you.",
+      copy: "A dedicated web address on your own subdomain of altasme.com that you can share on Facebook, Messenger, business cards, and anywhere else your customers find you.",
     },
     {
       title: "The Pages Your Business Needs",
