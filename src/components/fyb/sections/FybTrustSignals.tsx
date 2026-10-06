@@ -2,6 +2,7 @@ import { FYB_TRUST_SIGNALS } from "../../../content/foryourbusiness";
 import { useCountUp } from "../../../lib/useCountUp";
 import { useInView } from "../../../lib/useInView";
 import Section from "../../ui/Section";
+import DecorativeShapes from "../DecorativeShapes";
 
 // Small animated trust-signal band, moved out of the hero [2026-09-18] so
 // the hero itself is just the full-bleed photo + copy + CTA. Same
@@ -47,13 +48,16 @@ export default function FybTrustSignals() {
 
   return (
     <Section tone="alt" className="!py-10 sm:!py-12 lg:!py-12">
-      <div ref={ref} className="grid grid-cols-1 divide-y divide-ink/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-        {FYB_TRUST_SIGNALS.stats.map((stat) => (
-          <div key={stat.label} className="py-4 text-center first:pt-0 last:pb-0 sm:py-0">
-            <StatValue stat={stat} animate={inView} />
-            <p className="mt-1 text-sm text-ink/60">{stat.label}</p>
-          </div>
-        ))}
+      <div className="relative">
+        <DecorativeShapes variant={2} />
+        <div ref={ref} className="relative grid grid-cols-1 divide-y divide-ink/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+          {FYB_TRUST_SIGNALS.stats.map((stat) => (
+            <div key={stat.label} className="py-4 text-center first:pt-0 last:pb-0 sm:py-0">
+              <StatValue stat={stat} animate={inView} />
+              <p className="mt-1 text-sm text-ink/60">{stat.label}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </Section>
   );

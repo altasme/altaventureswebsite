@@ -1,6 +1,7 @@
 import { WHATS_INCLUDED } from "../../../content/foryourbusiness";
 import Section from "../../ui/Section";
 import Reveal from "../../offer/Reveal";
+import DecorativeShapes from "../DecorativeShapes";
 
 function CheckIcon() {
   return (
@@ -10,47 +11,11 @@ function CheckIcon() {
   );
 }
 
-// Decorative vector shapes, not photographic/stock imagery, echoing the
-// brand's own "A" triangle mark (CLAUDE.md §11.1's A-mark device) and a
-// simple dot cluster — filling the section's otherwise-dull whitespace
-// without resorting to the blurred-glow/grid treatment this project's own
-// design history (§18) already flagged as an AI-generated-template tell.
-// Confined to this component's own wrapper (overflow-hidden), not Section
-// itself, so no shared component needs touching and nothing bleeds into
-// neighboring sections.
-function DecorativeShapes() {
-  return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-      <svg
-        className="absolute -right-16 -top-20 h-64 w-64 text-brand-blue/[0.07] sm:h-80 sm:w-80"
-        viewBox="0 0 200 200"
-        fill="none"
-      >
-        <path d="M100 10L190 180H10L100 10Z" stroke="currentColor" strokeWidth="6" />
-      </svg>
-      <svg
-        className="absolute -bottom-10 -left-10 h-40 w-40 text-brand-navy/[0.06] sm:h-56 sm:w-56"
-        viewBox="0 0 160 160"
-        fill="none"
-      >
-        <circle cx="80" cy="80" r="76" stroke="currentColor" strokeWidth="5" />
-      </svg>
-      <svg className="absolute bottom-24 right-8 hidden h-24 w-24 text-brand-blue/[0.12] sm:block" viewBox="0 0 80 80" fill="currentColor">
-        {Array.from({ length: 4 }).map((_, row) =>
-          Array.from({ length: 4 }).map((_, col) => (
-            <circle key={`${row}-${col}`} cx={10 + col * 20} cy={10 + row * 20} r="2.5" />
-          ))
-        )}
-      </svg>
-    </div>
-  );
-}
-
 export default function WhatsIncluded() {
   return (
     <Section tone="alt">
       <div className="relative">
-        <DecorativeShapes />
+        <DecorativeShapes variant={1} />
 
         <div className="relative">
           <h2 className="max-w-2xl text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
