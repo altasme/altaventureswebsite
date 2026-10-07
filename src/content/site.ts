@@ -40,19 +40,27 @@ export const NAV_LINKS = [
 
 export const HERO = {
   eyebrow: BRAND.tagline,
-  headline: "Build a Better Digital Business.",
-  sub: "Altaventures builds professional websites, digital tools, and business systems designed around the way your business actually works.",
-  line: "For Philippine businesses ready to build, improve, or digitalize their business online.",
+  headline: "Stop Losing Customers to a Website That Doesn't Work as Hard as You Do.",
+  sub: "Altaventures builds professional websites, booking systems, and business tools designed around how your business actually runs, not a generic template that holds it back.",
+  line: "From your very first website to a complete business system, built for Philippine businesses ready to grow online.",
   primaryCta: "Let's Talk About Your Business",
   secondaryCta: "See What We've Built",
-  trustLine: "Built for real businesses. Designed around real business needs.",
-  // WebP variants (62-64% smaller than the JPEGs) are tried first via
-  // <picture>; the JPEGs stay as the fallback source, not dead files.
-  backgroundImageDesktopWebp: "/images/hero/hero-bg-wide.webp",
-  backgroundImageDesktop: "/images/hero/hero-bg-wide.jpg",
-  backgroundImageMobileWebp: "/images/hero/hero-bg-mobile.webp",
-  backgroundImageMobile: "/images/hero/hero-bg-mobile.jpg",
-  backgroundAlt: "Business owner smiling with coffee in a modern office, surrounded by laptops and monitors",
+  trustLine: "Real businesses. Real systems. Built around how you actually work.",
+  // [2026-10-07] Switched from the self-hosted AI-generated photo (§0.7's
+  // original exception) to the same real, operator-supplied photo already
+  // used on /foryourbusiness and /b2b, per the operator's direct request to
+  // align the homepage hero with the other funnel pages. Cloudinary's
+  // f_auto,q_auto negotiates WebP/AVIF automatically per request even on a
+  // plain <img> (no <picture>/source needed, unlike the old self-hosted
+  // JPEG+WebP pair), so there's no separate Webp field here, matching
+  // FYB_HERO's own shape in content/foryourbusiness.ts. The old self-hosted
+  // files remain in public/images/hero/ (unused, not deleted) in case a
+  // homepage-specific photo is wanted again later.
+  backgroundImageDesktop:
+    "https://res.cloudinary.com/dikrjc8nx/image/upload/f_auto,q_auto/v1791164586/Hero_full_bleed_cai8aw_zhqmrf.jpg",
+  backgroundImageMobile:
+    "https://res.cloudinary.com/dikrjc8nx/image/upload/f_auto,q_auto/v1791164587/Hero_mobile_zzu60d_gsgsxm.jpg",
+  backgroundAlt: "A small business owner working on their new website",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -61,7 +69,7 @@ export const HERO = {
 
 export const CREDIBILITY_STRIP = {
   headline: "Not Just Websites. Real Business Systems.",
-  sub: "Every project below is a live, working system built for a real Philippine business, not a template or a mockup.",
+  sub: "Not a template. Not a mockup. Every project below is a live, working system built for a real Philippine business.",
   cta: "Explore Our Work",
   // Shows range: two systems, one commerce, one site. Data itself lives in
   // content/portfolio.ts, the canonical source shared with /limitedoffer.
@@ -73,7 +81,7 @@ export const CREDIBILITY_STRIP = {
 // ---------------------------------------------------------------------------
 
 export const PROBLEMS = {
-  headline: "Does Your Business Need More Than a Facebook Page?",
+  headline: "Still Running Your Business on Just a Facebook Page?",
   cta: "Tell Us What's Holding Your Business Back",
   items: [
     {
@@ -100,7 +108,7 @@ export const PROBLEMS = {
 // ---------------------------------------------------------------------------
 
 export const SERVICES = {
-  headline: "Digital Solutions Built Around Your Business",
+  headline: "Digital Solutions Built Around Your Business, Not the Other Way Around",
   items: [
       {
       id: "websites",
@@ -240,7 +248,7 @@ export const PORTFOLIO_CONVERSION = {
 // ---------------------------------------------------------------------------
 
 export const WHY_ALTAVENTURES = {
-  headline: "Built Around Your Business.",
+  headline: "Built Around Your Business. Not a Template.",
   points: [
     {
       title: "Business First",
@@ -269,7 +277,7 @@ export const COMPLIMENTARY_OFFER = {
   headline: "Need a Website? Let Us Build It.",
   offerLine: "We'll build your flagship website free: you only pay for the domain.",
   support:
-    "Tell us about your business. If you're a good fit, we'll discuss how we can build and launch a professional website around your business.",
+    "Tell us about your business. If you're a good fit, we'll build and launch a professional website around it, no development fee, no pressure.",
   cta: "See If We're a Good Fit",
 } as const;
 
@@ -373,8 +381,8 @@ export const FAQ = {
 // ---------------------------------------------------------------------------
 
 export const FINAL_CTA = {
-  headline: "Ready to Build Something Better?",
-  sub: "Your business deserves more than a Facebook page. Let's talk about what you actually need.",
+  headline: "Ready to Build Something That Actually Works for Your Business?",
+  sub: "Your business deserves more than a Facebook page. Let's talk about what you actually need, no pressure, no obligation.",
   cta: "Let's Talk About Your Business",
   channelsLine: "Messenger | Viber | WhatsApp",
 } as const;
