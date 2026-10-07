@@ -1,5 +1,5 @@
 import { SELECTED_WORK } from "../../content/site";
-import { ONGOING, PORTFOLIO, type ProjectTier } from "../../content/portfolio";
+import { ONGOING, PORTFOLIO_BY_ID, type ProjectTier } from "../../content/portfolio";
 import { useModals } from "../../lib/modalContext";
 import { track } from "../../lib/analytics";
 import Section from "../ui/Section";
@@ -26,10 +26,11 @@ export default function SelectedWork() {
         <h2 className="max-w-2xl text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
           {SELECTED_WORK.headline}
         </h2>
+        <p className="mt-4 max-w-2xl text-base text-ink/65">{SELECTED_WORK.sub}</p>
       </Reveal>
 
       <div className="mt-10 grid gap-6 sm:grid-cols-2">
-        {PORTFOLIO.map((project, i) => (
+        {SELECTED_WORK.order.map((id) => PORTFOLIO_BY_ID[id]).map((project, i) => (
           // Delay capped at a 6-item cycle (not i * delay unbounded) so a
           // 15-project grid doesn't queue a long tail of pop-ins the first
           // time it scrolls into view.

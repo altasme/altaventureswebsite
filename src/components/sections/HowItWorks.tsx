@@ -1,4 +1,4 @@
-import { MessageCircle, Search, Lightbulb, Hammer, Rocket, TrendingUp } from "lucide-react";
+import { MessageCircle, Search, Lightbulb, Hammer } from "lucide-react";
 import { HOW_IT_WORKS } from "../../content/site";
 import { useModals } from "../../lib/modalContext";
 import Section from "../ui/Section";
@@ -6,7 +6,7 @@ import CTAButton from "../ui/CTAButton";
 import Reveal from "../offer/Reveal";
 import DecorativeShapes from "../fyb/DecorativeShapes";
 
-const ICONS = [MessageCircle, Search, Lightbulb, Hammer, Rocket, TrendingUp];
+const ICONS = [MessageCircle, Search, Lightbulb, Hammer];
 
 export default function HowItWorks() {
   const { openContactModal } = useModals();
@@ -21,7 +21,7 @@ export default function HowItWorks() {
           </h2>
         </Reveal>
 
-        <ol className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ol className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {HOW_IT_WORKS.steps.map((step, i) => {
             const Icon = ICONS[i];
             return (

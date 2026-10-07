@@ -14,9 +14,8 @@ function HeroCopy({ compact = false }: { compact?: boolean }) {
 
   return (
     <div className="relative flex flex-col items-start text-left">
-      <p className="text-sm font-semibold tracking-wide text-[#5fa2ff]">{HERO.eyebrow}</p>
       <h1
-        className={`mt-4 max-w-xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl ${
+        className={`max-w-xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl ${
           compact ? "text-3xl" : "text-4xl"
         }`}
       >
@@ -40,8 +39,6 @@ function HeroCopy({ compact = false }: { compact?: boolean }) {
           variant="ghost"
         />
       </div>
-
-      <p className="mt-8 max-w-sm text-xs tracking-wide text-white/60">{HERO.trustLine}</p>
     </div>
   );
 }

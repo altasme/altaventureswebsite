@@ -1,9 +1,9 @@
-import { Target, Layers, TrendingUp, CircleCheck } from "lucide-react";
+import { Target, CircleCheck, TrendingUp, Layers } from "lucide-react";
 import { WHY_ALTAVENTURES } from "../../content/site";
 import Section from "../ui/Section";
 import Reveal from "../offer/Reveal";
 
-const ICONS = [Target, Layers, TrendingUp, CircleCheck];
+const ICONS = [Target, CircleCheck, TrendingUp, Layers];
 
 export default function WhyAltaventures() {
   return (
@@ -12,6 +12,7 @@ export default function WhyAltaventures() {
         <h2 className="max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">
           {WHY_ALTAVENTURES.headline}
         </h2>
+        <p className="mt-4 max-w-2xl text-base text-white/70">{WHY_ALTAVENTURES.sub}</p>
       </Reveal>
 
       <div className="mt-10 grid gap-8 sm:grid-cols-2">
@@ -24,8 +25,7 @@ export default function WhyAltaventures() {
               </span>
               <div>
                 <h3 className="text-lg font-semibold">{point.title}</h3>
-                <p className="mt-1.5 text-sm font-semibold leading-snug text-white">{point.hook}</p>
-                <p className="mt-1 text-sm leading-relaxed text-white/60">{point.copy}</p>
+                <p className="mt-1.5 text-sm leading-relaxed text-white/60">{point.copy}</p>
               </div>
             </Reveal>
           );

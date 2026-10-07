@@ -53,13 +53,11 @@ export const TRUST_SIGNALS = {
 } as const;
 
 export const HERO = {
-  eyebrow: BRAND.tagline,
-  headline: "Stop Losing Customers to a Website That Doesn't Work as Hard as You Do.",
-  sub: "Altaventures builds professional websites, booking systems, and business tools designed around how your business actually runs, not a generic template that holds it back.",
-  line: "From your very first website to a complete business system, built for Philippine businesses ready to grow online.",
+  headline: "Get a Website That Helps Your Business Grow.",
+  sub: "We build professional websites, booking systems, and business tools that make it easier for customers to find you, trust you, and do business with you.",
+  line: "Tell us what your business needs, and we'll recommend the right solution for you.",
   primaryCta: "Let's Talk About Your Business",
   secondaryCta: "See What We've Built",
-  trustLine: "Real businesses. Real systems. Built around how you actually work.",
   // [2026-10-07] Switched from the self-hosted AI-generated photo (§0.7's
   // original exception) to the same real, operator-supplied photo already
   // used on /foryourbusiness and /b2b, per the operator's direct request to
@@ -82,30 +80,34 @@ export const HERO = {
 // ---------------------------------------------------------------------------
 
 export const PROBLEMS = {
-  headline: "Still Running Your Business on Just a Facebook Page?",
-  cta: "Tell Us What's Holding Your Business Back",
+  headline: "Is Your Business Ready for the Next Level?",
+  intro: [
+    "As your business grows, the way you work needs to grow with it.",
+    "You might be dealing with one of these:",
+  ],
   items: [
     {
-      title: "You're Losing Customers to a Weak First Impression",
-      hook: "Customers judge you in seconds, then move on just as fast.",
-      copy: "A Facebook page can't rank on Google, load fast on mobile, or make your business look as established as it actually is.",
+      title: "Customers Can't Easily Find or Trust Your Business",
+      copy: "Your Facebook page gets attention, but customers need a better place to learn about your business, explore your services, and take the next step.",
     },
     {
-      title: "You're Managing Bookings, Orders, or Payments by Hand",
-      hook: "One missed message is one lost customer.",
-      copy: "Messenger threads, spreadsheets, and sticky notes don't scale. Every manual step is a chance for something to be missed, double-booked, or lost.",
+      title: "You're Doing Too Much Manually",
+      copy: "Taking bookings, answering the same questions, collecting information, or managing orders shouldn't require you to do everything yourself.",
     },
     {
-      title: "Your Systems Don't Talk to Each Other",
-      hook: "More customers just means more chaos, not more revenue.",
-      copy: "Sales in one place, records in another, follow-ups nowhere. Without a connected system, growth creates work instead of profit.",
+      title: "Your Tools Don't Work Together",
+      copy: "Your website, bookings, customer information, payments, and other processes can become scattered across different platforms. That's when things start getting messy.",
     },
     {
-      title: "You Don't Have Time to Manage Any of This Yourself",
-      hook: "You're running a business, not building software.",
-      copy: "You need a system that works quietly in the background, not another project on your plate.",
+      title: "Your Business Is Growing, But Your System Isn't",
+      copy: "More customers should mean more opportunities. Not more spreadsheets, messages, follow-ups, and things to keep track of.",
     },
   ],
+  closing: {
+    lead: "You don't necessarily need more tools. You need the right system for your business.",
+    body: "That's where Altaventures comes in.",
+  },
+  cta: "Tell Us What Your Business Needs",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -113,72 +115,70 @@ export const PROBLEMS = {
 // ---------------------------------------------------------------------------
 
 export const SERVICES = {
-  headline: "Digital Solutions Built Around Your Business, Not the Other Way Around",
+  headline: "Whatever Your Business Needs, We Can Build Around It.",
+  sub: "From getting your first website online to replacing manual processes with connected systems, we build practical digital solutions around the way your business actually works.",
   items: [
-      {
+    {
       id: "websites",
-      name: "Business Websites",
-      outcome: "A Website That Works as Hard as You Do",
+      name: "Get Your Business Online",
+      outcome: "A website that gives customers a better way to discover and contact you.",
       capabilities: [
-        "Professional, mobile-first design",
-        "Built to convert visitors into conversations",
-        "Fast-loading, search-friendly pages",
-        "Easy to update as your business grows",
+        "Professional, mobile-friendly design",
+        "Services, products, and business information",
+        "Inquiry and contact features",
+        "Built around your goals",
       ],
-      cta: "I Need a Website",
-      referenceIds: [],
+      cta: "I want to improve my online presence",
     },
     {
       id: "booking",
-      name: "Booking & Scheduling",
-      outcome: "Stop Managing Bookings by Hand",
+      name: "Make Booking Easier",
+      outcome: "Give customers an easier way to book while reducing the work your team has to do.",
       capabilities: [
-        "Online booking and calendar management",
+        "Online booking",
+        "Calendar management",
         "Automated confirmations and reminders",
         "Staff and resource scheduling",
-        "Built around how your business actually operates",
       ],
-      cta: "I Need a Booking System",
-      referenceIds: ["setmona"],
+      cta: "I need a better booking process",
     },
     {
       id: "management",
-      name: "Business Management Systems",
-      outcome: "Run Your Operations From One Place",
+      name: "Organize Your Business",
+      outcome: "Replace scattered spreadsheets, messages, and manual processes with a system built around your workflow.",
       capabilities: [
-        "Loan, billing, and collections tracking",
-        "Financing and sales record management",
-        "Custom dashboards for owners and staff",
-        "Built to match your existing workflow, not replace it",
+        "Customer and sales records",
+        "Billing and collections",
+        "Dashboards and reporting",
+        "Custom workflows",
       ],
-      cta: "I Need a Management System",
-      referenceIds: ["altamotors", "kolekta"],
+      cta: "I need a better way to manage my business",
     },
     {
       id: "ecommerce",
-      name: "E-commerce",
-      outcome: "Sell Online Without the Guesswork",
+      name: "Start Selling Online",
+      outcome: "Give customers a simple way to browse, order, and pay online.",
       capabilities: [
-        "Product catalogs and online ordering",
-        "Payment and inventory-aware workflows",
-        "Mobile-first shopping experience",
-        "Designed to grow with your catalog",
+        "Product catalogs",
+        "Online ordering",
+        "Payment workflows",
+        "Inventory-aware processes",
       ],
-      cta: "I Need to Sell Online",
-      referenceIds: [],
+      cta: "I want to sell online",
     },
     {
       id: "digitalization",
-      name: "Business Digitalization",
-      outcome: "Move Your Business Online, Properly",
+      name: "Digitalize Your Business",
+      outcome: "Have a Process That Needs Fixing? Let's Build Around It.",
+      intro:
+        "If you're still relying on paper, spreadsheets, chat messages, or disconnected tools, we'll help you figure out what can be simplified or automated.",
       capabilities: [
-        "Digitizing manual, paper-based processes",
-        "Centralizing scattered records and tools",
-        "Systems that fit your business, not the other way around",
-        "A clear, guided path from where you are to where you want to be",
+        "Digitize manual processes",
+        "Connect scattered information",
+        "Build custom workflows",
+        "Create systems around how your business operates",
       ],
-      cta: "I Need to Digitalize My Business",
-      referenceIds: [],
+      cta: "Talk to us about your business",
     },
   ],
 } as const;
@@ -232,20 +232,33 @@ export const CASE_STUDY_DETAILS: Record<
 };
 
 export const SELECTED_WORK = {
-  headline: "We've Built It. Now Let's Build Yours.",
+  headline: "Built for Real Businesses. Designed to Do Real Work.",
+  sub: "See how we've helped businesses turn ideas, manual processes, and online needs into websites and digital systems that actually work.",
   viewWebsiteLabel: "View Website",
   viewDetailsLabel: "View Details",
   studioLine: "Currently in the studio:",
-} as const;
-
-// ---------------------------------------------------------------------------
-// Portfolio conversion
-// ---------------------------------------------------------------------------
-
-export const PORTFOLIO_CONVERSION = {
-  headline: "What Could We Build for Your Business?",
-  sub: "Every system on this page started as a conversation about a real business problem. Yours could be next.",
-  cta: "Let's Talk About Your Business",
+  // Explicit display order [2026-10-07], per the operator's direct request:
+  // Lean and Fit, Aurielle, AMR, Imago lead the grid; Setmona and Kolekta
+  // (engine-tier, no public URL) are hidden entirely; Altamotors closes the
+  // grid. Every other project keeps its prior canonical-order position.
+  // This supersedes rendering content/portfolio.ts's PORTFOLIO directly.
+  order: [
+    "leanandfit",
+    "aurielle",
+    "amr-bookkeeping",
+    "imago-productions",
+    "dmhr",
+    "vocalyze",
+    "aulea",
+    "pocketg7iii",
+    "macquias",
+    "ascend-volleyball",
+    "clickandkeep",
+    "adrayan-law",
+    "camsnap",
+    "onyx-clouds",
+    "altamotors",
+  ],
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -253,42 +266,26 @@ export const PORTFOLIO_CONVERSION = {
 // ---------------------------------------------------------------------------
 
 export const WHY_ALTAVENTURES = {
-  headline: "Built Around Your Business. Not a Template.",
+  headline: "We Don't Just Build Websites. We Understand the Business Behind Them.",
+  sub: "A website is only useful when it supports what your business is trying to accomplish. That's why we start by understanding how your business works, what your customers need, and what you're trying to improve.",
   points: [
     {
-      title: "Business First",
-      hook: "The system fits your business, not the other way around.",
-      copy: "We start with how your business actually operates, not with a template.",
+      title: "Built Around Your Business",
+      copy: "No one-size-fits-all solution. We build around your actual requirements.",
     },
     {
-      title: "More Than Websites",
-      hook: "One partner for everything your business needs to run online.",
-      copy: "Websites, booking systems, management tools, e-commerce: we build it all, together.",
+      title: "Practical, Not Overcomplicated",
+      copy: "We focus on tools and features that serve a purpose.",
     },
     {
-      title: "Designed to Grow",
-      hook: "You won't need to start over as your business scales.",
-      copy: "What we build today is built to be extended tomorrow.",
+      title: "Built to Grow With You",
+      copy: "Start with what you need today and expand as your business grows.",
     },
     {
-      title: "Practical",
-      hook: "Just the systems your business needs to run better.",
-      copy: "No unnecessary complexity, no features you'll never use.",
+      title: "One Partner for More Than Just a Website",
+      copy: "From your website to booking, e-commerce, and custom business systems.",
     },
   ],
-} as const;
-
-// ---------------------------------------------------------------------------
-// Talk to us (formerly "Complimentary Offer" [2026-10-07]: reframed away
-// from pricing/free-offer language entirely, per the operator's direct
-// instruction. See CLAUDE.md §50.)
-// ---------------------------------------------------------------------------
-
-export const TALK_TO_US = {
-  headline: "Not Sure What You Need, or What It Costs?",
-  support:
-    "Every business and every project is different. Tell us what you're working with and we'll walk you through your options, clearly and honestly, no pressure.",
-  cta: "Let's Talk About It",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -296,59 +293,78 @@ export const TALK_TO_US = {
 // ---------------------------------------------------------------------------
 
 export const HOW_IT_WORKS = {
-  headline: "From Idea to Launch.",
+  headline: "Not Sure What You Need? We'll Figure It Out Together.",
   cta: "Start a Conversation",
   steps: [
     {
       number: 1,
-      title: "Talk",
-      copy: "Start a conversation on Messenger, Viber, or WhatsApp and tell us about your business.",
+      title: "Tell Us About Your Business",
+      copy: "Tell us what you do, what's currently working, and what's giving you trouble.",
     },
     {
       number: 2,
-      title: "Understand",
-      copy: "We ask questions about how your business actually runs, not just what you think you want built.",
+      title: "We Understand What You Need",
+      copy: "We'll look at your goals, workflow, and requirements and identify the right approach.",
     },
     {
       number: 3,
-      title: "Recommend",
-      copy: "We recommend the right solution for your business and budget, not the most expensive one.",
+      title: "We Recommend a Solution",
+      copy: "We'll explain what we recommend, what it can do, and what the project involves.",
     },
     {
       number: 4,
-      title: "Build",
-      copy: "We design and build your website or system, keeping you in the loop the whole way.",
-    },
-    {
-      number: 5,
-      title: "Launch",
-      copy: "We launch your site or system and make sure it's working the way your business needs it to.",
-    },
-    {
-      number: 6,
-      title: "Grow",
-      copy: "We're available as your business grows and your needs change. This isn't a one-and-done handoff.",
+      title: "We Build It",
+      copy: "Once we're aligned, we turn the plan into a working website or system.",
     },
   ],
 } as const;
 
 // ---------------------------------------------------------------------------
-// Industries
+// Testimonials [2026-10-07]. No real testimonial photos have actually been
+// supplied yet (the operator's own request referenced "uploaded" photos,
+// but this session's uploads held only the instruction text file, confirmed
+// via directory listing before writing this). Per the site-wide
+// real-work-only guardrail (§16), `items` stays empty until real photos
+// are supplied — Testimonials.tsx renders an honest "coming soon" state
+// instead of a placeholder/fabricated grid. Add real entries here (each a
+// real supplied photo) once available; the component's zoomable lightbox
+// already works for however many are added.
 // ---------------------------------------------------------------------------
 
-export const INDUSTRIES = {
-  headline: "Built for Businesses Like Yours.",
-  line: "Don't see your industry? That's okay. Tell us what your business needs.",
-  cta: "Tell Us About Your Business",
+export const TESTIMONIALS = {
+  headline: "Don't Take Our Word For It.",
+  sub: "See what our clients have to say about working with Altaventures.",
+  items: [] as { src: string; alt: string }[],
+} as const;
+
+// ---------------------------------------------------------------------------
+// Who we build for (replaces the old industry-vertical "Industries"
+// section [2026-10-07]: business readiness/stage, not industry type)
+// ---------------------------------------------------------------------------
+
+export const WHO_WE_BUILD_FOR = {
+  headline: "Built for Businesses That Are Ready to Move Forward.",
   items: [
-    "Automotive & Motorcycle Dealers",
-    "Lending & Financing",
-    "Salons & Spas",
-    "Clinics & Wellness",
-    "Home & Trade Services",
-    "Retail & E-commerce",
-    "Entertainment & Events",
-    "Professional Services",
+    {
+      title: "Starting a Business",
+      copy: "You need a professional online presence without overcomplicating things.",
+    },
+    {
+      title: "Growing Business",
+      copy: "Your current website or processes aren't keeping up anymore.",
+    },
+    {
+      title: "Service Business",
+      copy: "You need better inquiries, booking, customer management, or scheduling.",
+    },
+    {
+      title: "Selling Online",
+      copy: "You want customers to browse, order, and pay online.",
+    },
+    {
+      title: "Businesses With Manual Processes",
+      copy: "You're tired of spreadsheets, paperwork, and repetitive work.",
+    },
   ],
 } as const;
 
@@ -357,7 +373,7 @@ export const INDUSTRIES = {
 // ---------------------------------------------------------------------------
 
 export const FAQ = {
-  headline: "Frequently Asked Questions",
+  headline: "Questions? Let's Clear Them Up.",
   items: [
     {
       q: "What exactly does Altaventures build?",
@@ -391,10 +407,12 @@ export const FAQ = {
 // ---------------------------------------------------------------------------
 
 export const FINAL_CTA = {
-  headline: "Ready to Build Something That Actually Works for Your Business?",
-  sub: "Your business deserves more than a Facebook page. Let's talk about what you actually need, no pressure, no obligation.",
-  cta: "Let's Talk About Your Business",
-  channelsLine: "Messenger | Viber | WhatsApp",
+  kicker: "Ready to build your website?",
+  headline: "Let's Build Something That Works for Your Business.",
+  sub: "Tell us what you're trying to improve, and we'll help you figure out the right digital solution.",
+  line: "You don't need to know exactly what you need yet. Just start the conversation.",
+  cta: "Talk to Altaventures",
+  channelsLine: "Websites · Booking · E-commerce · Business Systems · Custom Solutions",
 } as const;
 
 // ---------------------------------------------------------------------------

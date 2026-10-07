@@ -12,11 +12,10 @@ import TrustSignals from "./components/sections/TrustSignals";
 import ProblemSection from "./components/sections/ProblemSection";
 import ServicesSection from "./components/sections/ServicesSection";
 import SelectedWork from "./components/sections/SelectedWork";
-import PortfolioConversion from "./components/sections/PortfolioConversion";
 import WhyAltaventures from "./components/sections/WhyAltaventures";
-import TalkToUs from "./components/sections/TalkToUs";
 import HowItWorks from "./components/sections/HowItWorks";
-import Industries from "./components/sections/Industries";
+import Testimonials from "./components/sections/Testimonials";
+import WhoWeBuildFor from "./components/sections/WhoWeBuildFor";
 import FAQ from "./components/sections/FAQ";
 import FinalCTA from "./components/sections/FinalCTA";
 import About from "./components/sections/About";
@@ -47,11 +46,10 @@ function PageContent() {
         <ProblemSection />
         <ServicesSection />
         <SelectedWork />
-        <PortfolioConversion />
         <WhyAltaventures />
-        <TalkToUs />
         <HowItWorks />
-        <Industries />
+        <Testimonials />
+        <WhoWeBuildFor />
         <FAQ />
         <FinalCTA />
         <About />
