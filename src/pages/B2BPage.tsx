@@ -13,6 +13,7 @@ import Problem from "../components/b2b/sections/Problem";
 import WhatsIncluded from "../components/b2b/sections/WhatsIncluded";
 import WhoItsFor from "../components/b2b/sections/WhoItsFor";
 import B2BPortfolio from "../components/b2b/sections/B2BPortfolio";
+import Testimonials from "../components/sections/Testimonials";
 import B2BHowItWorks from "../components/b2b/sections/B2BHowItWorks";
 import B2BFAQ from "../components/b2b/sections/B2BFAQ";
 import B2BFinalCTA from "../components/b2b/sections/B2BFinalCTA";
@@ -102,6 +103,7 @@ function PageContent() {
         <Reveal>
           <B2BPortfolio onCheckout={() => goToCheckout("portfolio")} />
         </Reveal>
+        <Testimonials tone="dark" />
         <Reveal>
           <B2BHowItWorks />
         </Reveal>

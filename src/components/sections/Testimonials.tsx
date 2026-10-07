@@ -30,17 +30,24 @@ function Lightbox({ item, onClose }: { item: { src: string; alt: string }; onClo
   );
 }
 
-export default function Testimonials() {
+const TONE_TEXT = {
+  light: { headline: "text-brand-navy", sub: "text-ink/65", placeholder: "border-ink/15 bg-paper-alt text-ink/60" },
+  alt: { headline: "text-brand-navy", sub: "text-ink/65", placeholder: "border-ink/15 bg-white text-ink/60" },
+  dark: { headline: "text-white", sub: "text-white/70", placeholder: "border-white/20 bg-white/5 text-white/60" },
+} as const;
+
+export default function Testimonials({ tone = "light" }: { tone?: "light" | "alt" | "dark" }) {
   const [selected, setSelected] = useState<number | null>(null);
   const hasItems = TESTIMONIALS.items.length > 0;
+  const text = TONE_TEXT[tone];
 
   return (
-    <Section tone="light">
+    <Section tone={tone}>
       <Reveal>
-        <h2 className="max-w-2xl text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
+        <h2 className={`max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl ${text.headline}`}>
           {TESTIMONIALS.headline}
         </h2>
-        <p className="mt-4 max-w-2xl text-base text-ink/65">{TESTIMONIALS.sub}</p>
+        <p className={`mt-4 max-w-2xl text-base ${text.sub}`}>{TESTIMONIALS.sub}</p>
       </Reveal>
 
       {hasItems ? (
@@ -68,8 +75,8 @@ export default function Testimonials() {
         // (§16): no fabricated testimonial photos or quotes. Replace this
         // block the moment real client photos are supplied, by adding
         // entries to TESTIMONIALS.items in content/site.ts.
-        <Reveal className="mt-10 rounded-2xl border border-dashed border-ink/15 bg-paper-alt px-6 py-12 text-center">
-          <p className="text-sm text-ink/60">Real client testimonials are on their way. Check back soon.</p>
+        <Reveal className={`mt-10 rounded-2xl border border-dashed px-6 py-12 text-center ${text.placeholder}`}>
+          <p className="text-sm">Real client testimonials are on their way. Check back soon.</p>
         </Reveal>
       )}
 

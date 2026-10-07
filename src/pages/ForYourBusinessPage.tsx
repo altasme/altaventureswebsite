@@ -15,6 +15,7 @@ import Problem from "../components/fyb/sections/Problem";
 import WhatsIncluded from "../components/fyb/sections/WhatsIncluded";
 import WhoItsFor from "../components/fyb/sections/WhoItsFor";
 import FybPortfolio from "../components/fyb/sections/FybPortfolio";
+import Testimonials from "../components/sections/Testimonials";
 import FybHowItWorks from "../components/fyb/sections/FybHowItWorks";
 import FybFAQ from "../components/fyb/sections/FybFAQ";
 import FybFinalCTA from "../components/fyb/sections/FybFinalCTA";
@@ -111,6 +112,7 @@ function PageContent() {
         <Reveal>
           <FybPortfolio onCheckout={() => goToCheckout("portfolio")} />
         </Reveal>
+        <Testimonials tone="dark" />
         <Reveal>
           <FybHowItWorks />
         </Reveal>

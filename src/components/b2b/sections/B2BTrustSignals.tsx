@@ -51,7 +51,7 @@ export default function B2BTrustSignals() {
     <Section tone="alt" className="!py-10 sm:!py-12 lg:!py-12">
       <div ref={ref} className="grid grid-cols-1 divide-y divide-ink/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
         {B2B_TRUST_SIGNALS.stats.map((stat) => (
-          <div key={stat.label} className="py-4 text-center first:pt-0 last:pb-0 sm:py-0">
+          <div key={stat.label} className="px-4 py-4 text-center first:pt-0 last:pb-0 sm:py-0">
             <StatValue stat={stat} animate={inView} />
             <p className="mt-1 text-sm text-ink/60">{stat.label}</p>
           </div>
