@@ -2,13 +2,14 @@ import { FINAL_CTA } from "../../content/site";
 import { useModals } from "../../lib/modalContext";
 import Section from "../ui/Section";
 import CTAButton from "../ui/CTAButton";
+import Reveal from "../offer/Reveal";
 
 export default function FinalCTA() {
   const { openContactModal } = useModals();
 
   return (
     <Section tone="dark" className="text-center">
-      <div className="mx-auto max-w-2xl">
+      <Reveal className="mx-auto max-w-2xl">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{FINAL_CTA.headline}</h2>
         <p className="mx-auto mt-4 max-w-sm text-lg text-white/70">{FINAL_CTA.sub}</p>
         <div className="mt-8 flex justify-center">
@@ -21,7 +22,7 @@ export default function FinalCTA() {
         <p className="mt-5 text-xs uppercase tracking-wider text-white/50">
           {FINAL_CTA.channelsLine}
         </p>
-      </div>
+      </Reveal>
     </Section>
   );
 }

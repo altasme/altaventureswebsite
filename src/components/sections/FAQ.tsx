@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { FAQ as FAQ_CONTENT } from "../../content/site";
 import Section from "../ui/Section";
+import Reveal from "../offer/Reveal";
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <Section tone="light">
+      <Reveal>
       <h2 className="max-w-2xl text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
         {FAQ_CONTENT.headline}
       </h2>
@@ -59,6 +61,7 @@ export default function FAQ() {
           );
         })}
       </div>
+      </Reveal>
     </Section>
   );
 }

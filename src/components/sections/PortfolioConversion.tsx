@@ -2,13 +2,14 @@ import { PORTFOLIO_CONVERSION } from "../../content/site";
 import { useModals } from "../../lib/modalContext";
 import Section from "../ui/Section";
 import CTAButton from "../ui/CTAButton";
+import Reveal from "../offer/Reveal";
 
 export default function PortfolioConversion() {
   const { openContactModal } = useModals();
 
   return (
     <Section tone="light" className="text-center">
-      <div className="mx-auto max-w-2xl">
+      <Reveal className="mx-auto max-w-2xl">
         <h2 className="text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
           {PORTFOLIO_CONVERSION.headline}
         </h2>
@@ -20,7 +21,7 @@ export default function PortfolioConversion() {
             onClick={() => openContactModal("portfolio-conversion")}
           />
         </div>
-      </div>
+      </Reveal>
     </Section>
   );
 }

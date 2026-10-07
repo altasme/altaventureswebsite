@@ -3,6 +3,7 @@ import { TRUST_SIGNALS } from "../../content/site";
 import { useCountUp } from "../../lib/useCountUp";
 import { useInView } from "../../lib/useInView";
 import Section from "../ui/Section";
+import DecorativeShapes from "../fyb/DecorativeShapes";
 
 // Small animated stat band directly below the hero, mirroring the
 // discriminated-union pattern + useCountUp/useInView gating already
@@ -52,22 +53,25 @@ export default function TrustSignals() {
 
   return (
     <Section tone="light" className="!py-10 sm:!py-12 lg:!py-12">
-      <div
-        ref={ref}
-        className="grid grid-cols-1 divide-y divide-ink/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0"
-      >
-        {TRUST_SIGNALS.stats.map((stat, i) => {
-          const Icon = ICONS[i];
-          return (
-            <div key={stat.label} className="flex flex-col items-center py-4 text-center first:pt-0 last:pb-0 sm:py-0">
-              <Icon className="h-5 w-5 text-brand-blue" aria-hidden="true" />
-              <div className="mt-2">
-                <StatValue stat={stat} animate={inView} />
+      <div className="relative">
+        <DecorativeShapes variant={2} />
+        <div
+          ref={ref}
+          className="relative grid grid-cols-1 divide-y divide-ink/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0"
+        >
+          {TRUST_SIGNALS.stats.map((stat, i) => {
+            const Icon = ICONS[i];
+            return (
+              <div key={stat.label} className="flex flex-col items-center py-4 text-center first:pt-0 last:pb-0 sm:py-0">
+                <Icon className="h-5 w-5 text-brand-blue" aria-hidden="true" />
+                <div className="mt-2">
+                  <StatValue stat={stat} animate={inView} />
+                </div>
+                <p className="mt-1 text-sm text-ink/60">{stat.label}</p>
               </div>
-              <p className="mt-1 text-sm text-ink/60">{stat.label}</p>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </Section>
   );
