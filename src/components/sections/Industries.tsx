@@ -1,8 +1,11 @@
+import { Car, Banknote, Sparkles, HeartPulse, Wrench, ShoppingBag, PartyPopper, Briefcase } from "lucide-react";
 import { INDUSTRIES } from "../../content/site";
 import { useModals } from "../../lib/modalContext";
 import { track } from "../../lib/analytics";
 import Section from "../ui/Section";
 import CTAButton from "../ui/CTAButton";
+
+const ICONS = [Car, Banknote, Sparkles, HeartPulse, Wrench, ShoppingBag, PartyPopper, Briefcase];
 
 export default function Industries() {
   const { openContactModal } = useModals();
@@ -14,16 +17,20 @@ export default function Industries() {
       </h2>
 
       <div className="mt-8 flex flex-wrap gap-3">
-        {INDUSTRIES.items.map((industry) => (
-          <button
-            key={industry}
-            type="button"
-            onMouseEnter={() => track("industry_engagement", { industry })}
-            className="rounded-full border border-brand-blue/20 bg-white px-4 py-2 text-sm font-medium text-brand-navy transition hover:border-brand-blue hover:bg-brand-blue/5"
-          >
-            {industry}
-          </button>
-        ))}
+        {INDUSTRIES.items.map((industry, i) => {
+          const Icon = ICONS[i];
+          return (
+            <button
+              key={industry}
+              type="button"
+              onMouseEnter={() => track("industry_engagement", { industry })}
+              className="flex items-center gap-2 rounded-full border border-brand-blue/20 bg-white px-4 py-2 text-sm font-medium text-brand-navy transition hover:border-brand-blue hover:bg-brand-blue/5"
+            >
+              <Icon className="h-4 w-4 text-brand-blue" aria-hidden="true" />
+              {industry}
+            </button>
+          );
+        })}
       </div>
 
       <p className="mt-8 max-w-sm text-sm text-ink/60">{INDUSTRIES.line}</p>

@@ -1,3 +1,4 @@
+import { Globe, CalendarCheck, LayoutDashboard, ShoppingCart, Workflow } from "lucide-react";
 import { SERVICES } from "../../content/site";
 import { PORTFOLIO_BY_ID } from "../../content/portfolio";
 import { useModals } from "../../lib/modalContext";
@@ -5,6 +6,8 @@ import { track } from "../../lib/analytics";
 import Section from "../ui/Section";
 import CTAButton from "../ui/CTAButton";
 import Tag from "../ui/Tag";
+
+const ICONS = [Globe, CalendarCheck, LayoutDashboard, ShoppingCart, Workflow];
 
 export default function ServicesSection() {
   const { openContactModal } = useModals();
@@ -21,6 +24,7 @@ export default function ServicesSection() {
           // spans full width and lays its bullets out in two columns, reading
           // as a deliberate closing card rather than an orphaned leftover.
           const isFeatured = i === SERVICES.items.length - 1 && SERVICES.items.length % 2 === 1;
+          const Icon = ICONS[i];
 
           return (
             <div
@@ -28,7 +32,10 @@ export default function ServicesSection() {
               onMouseEnter={() => track("service_interaction", { service: service.id })}
               className={`flex flex-col rounded-2xl border border-ink/8 p-7 ${isFeatured ? "lg:col-span-2" : ""}`}
             >
-              <p className="text-xs font-semibold tracking-wide text-brand-blue">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-blue/10 text-brand-blue">
+                <Icon className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <p className="mt-4 text-xs font-semibold tracking-wide text-brand-blue">
                 {service.name}
               </p>
               <h3 className="mt-2 text-xl font-bold text-ink">{service.outcome}</h3>

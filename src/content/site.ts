@@ -38,6 +38,20 @@ export const NAV_LINKS = [
 // Hero
 // ---------------------------------------------------------------------------
 
+// Below-hero stat band. Same discriminated-union shape (kind: "counter" |
+// "range" | "static") as /foryourbusiness's FYB_TRUST_SIGNALS, animated via
+// useCountUp + useInView (scroll-gated, since this band can sit below the
+// fold on shorter viewports). "static" isn't a number here, just a short
+// status phrase, which the shared StatValue pattern already supports as a
+// plain string value.
+export const TRUST_SIGNALS = {
+  stats: [
+    { kind: "counter", countTo: 20, suffix: "+", label: "Websites and businesses launched" },
+    { kind: "range", from: 3, to: 7, label: "Days average turnaround time" },
+    { kind: "static", value: "Open", label: "For projects and partnerships" },
+  ],
+} as const;
+
 export const HERO = {
   eyebrow: BRAND.tagline,
   headline: "Stop Losing Customers to a Website That Doesn't Work as Hard as You Do.",
@@ -265,15 +279,16 @@ export const WHY_ALTAVENTURES = {
 } as const;
 
 // ---------------------------------------------------------------------------
-// Complimentary offer
+// Talk to us (formerly "Complimentary Offer" [2026-10-07]: reframed away
+// from pricing/free-offer language entirely, per the operator's direct
+// instruction. See CLAUDE.md §50.)
 // ---------------------------------------------------------------------------
 
-export const COMPLIMENTARY_OFFER = {
-  headline: "Need a Website? Let Us Build It.",
-  offerLine: "We'll build your flagship website free: you only pay for the domain.",
+export const TALK_TO_US = {
+  headline: "Not Sure What You Need, or What It Costs?",
   support:
-    "Tell us about your business. If you're a good fit, we'll build and launch a professional website around it, no development fee, no pressure.",
-  cta: "See If We're a Good Fit",
+    "Every business and every project is different. Tell us what you're working with and we'll walk you through your options, clearly and honestly, no pressure.",
+  cta: "Let's Talk About It",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -349,8 +364,8 @@ export const FAQ = {
       a: "Websites, booking and scheduling systems, business management tools, e-commerce, and general business digitalization: whatever your business needs to run better online.",
     },
     {
-      q: "Is the free website offer really free?",
-      a: "Yes. We'll build your flagship website at no development cost: you only pay for the domain. We'll discuss the details once we understand your business and confirm it's a good fit.",
+      q: "How much does a project cost?",
+      a: "It depends entirely on what you need: a simple website costs less than a full business system. Tell us about your project and we'll give you a clear, honest answer, no hidden fees, no pressure.",
     },
     {
       q: "How long does a project take?",
