@@ -334,7 +334,32 @@ export const HOW_IT_WORKS = {
 export const TESTIMONIALS = {
   headline: "Don't Take Our Word For It.",
   sub: "See what our clients have to say about working with Altaventures.",
-  items: [] as { src: string; alt: string }[],
+  items: [
+    {
+      src: "/images/testimonials/testimonial-1.png",
+      alt: "Facebook recommendation from Larmy Ramirez: \"Highly recommended Sir Van and Altaventures for your website needs! Smooth transaction, professional service, and very easy to work with.\"",
+    },
+    {
+      src: "/images/testimonials/testimonial-2.png",
+      alt: "Messenger message from a client: \"Good morning po sir napaganda po ng nagawa nyo appreciated po solid.\"",
+    },
+    {
+      src: "/images/testimonials/testimonial-3.png",
+      alt: "Messenger exchange where a client confirms their new website is being used and visited by renters, and linked in their business's social media bios.",
+    },
+    {
+      src: "/images/testimonials/testimonial-4.png",
+      alt: "Messenger exchange announcing the Imago Productions website going live, with the client replying \"thank you galing!\"",
+    },
+    {
+      src: "/images/testimonials/testimonial-5.png",
+      alt: "Messenger message from a client: \"thank you po, ang gandaaa i like the preview din, salamat po.\"",
+    },
+    {
+      src: "/images/testimonials/testimonial-6.png",
+      alt: "Messenger message from Pauline: \"Thank you po sir. The website looks amazingggg!\"",
+    },
+  ] as { src: string; alt: string }[],
 } as const;
 
 // ---------------------------------------------------------------------------
