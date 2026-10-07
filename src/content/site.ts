@@ -64,19 +64,6 @@ export const HERO = {
 } as const;
 
 // ---------------------------------------------------------------------------
-// Credibility strip
-// ---------------------------------------------------------------------------
-
-export const CREDIBILITY_STRIP = {
-  headline: "Not Just Websites. Real Business Systems.",
-  sub: "Not a template. Not a mockup. Every project below is a live, working system built for a real Philippine business.",
-  cta: "Explore Our Work",
-  // Shows range: two systems, one commerce, one site. Data itself lives in
-  // content/portfolio.ts, the canonical source shared with /limitedoffer.
-  featuredIds: ["altamotors", "aurielle", "leanandfit", "vocalyze"],
-} as const;
-
-// ---------------------------------------------------------------------------
 // Problem section
 // ---------------------------------------------------------------------------
 
@@ -86,19 +73,23 @@ export const PROBLEMS = {
   items: [
     {
       title: "You're Losing Customers to a Weak First Impression",
-      copy: "A Facebook page can't show up in Google search, load fast on mobile, or make your business look as established as it actually is. Customers judge credibility in seconds.",
+      hook: "Customers judge you in seconds, then move on just as fast.",
+      copy: "A Facebook page can't rank on Google, load fast on mobile, or make your business look as established as it actually is.",
     },
     {
       title: "You're Managing Bookings, Orders, or Payments by Hand",
+      hook: "One missed message is one lost customer.",
       copy: "Messenger threads, spreadsheets, and sticky notes don't scale. Every manual step is a chance for something to be missed, double-booked, or lost.",
     },
     {
       title: "Your Systems Don't Talk to Each Other",
-      copy: "Sales in one place, records in another, follow-ups nowhere. Without a connected system, growth just means more chaos, not more revenue.",
+      hook: "More customers just means more chaos, not more revenue.",
+      copy: "Sales in one place, records in another, follow-ups nowhere. Without a connected system, growth creates work instead of profit.",
     },
     {
       title: "You Don't Have Time to Manage Any of This Yourself",
-      copy: "You're running the business, not building software. You need a system that works quietly in the background, not another project on your plate.",
+      hook: "You're running a business, not building software.",
+      copy: "You need a system that works quietly in the background, not another project on your plate.",
     },
   ],
 } as const;
@@ -252,19 +243,23 @@ export const WHY_ALTAVENTURES = {
   points: [
     {
       title: "Business First",
-      copy: "We start with how your business actually operates, not with a template. The system fits the business, not the other way around.",
+      hook: "The system fits your business, not the other way around.",
+      copy: "We start with how your business actually operates, not with a template.",
     },
     {
       title: "More Than Websites",
-      copy: "Websites, booking systems, management tools, e-commerce: we build the parts of your business that need to run online, together.",
+      hook: "One partner for everything your business needs to run online.",
+      copy: "Websites, booking systems, management tools, e-commerce: we build it all, together.",
     },
     {
       title: "Designed to Grow",
-      copy: "What we build today is built to be extended tomorrow. You won't need to start over as your business scales.",
+      hook: "You won't need to start over as your business scales.",
+      copy: "What we build today is built to be extended tomorrow.",
     },
     {
       title: "Practical",
-      copy: "No unnecessary complexity, no features you'll never use. Just the systems your business needs to run better.",
+      hook: "Just the systems your business needs to run better.",
+      copy: "No unnecessary complexity, no features you'll never use.",
     },
   ],
 } as const;

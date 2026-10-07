@@ -16,7 +16,8 @@ export default function ProblemSection() {
         {PROBLEMS.items.map((item) => (
           <div key={item.title} className="rounded-2xl bg-white p-6 shadow-sm">
             <h3 className="text-lg font-semibold text-ink">{item.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-ink/65">{item.copy}</p>
+            <p className="mt-2 text-sm font-semibold leading-snug text-ink">{item.hook}</p>
+            <p className="mt-1.5 text-sm leading-relaxed text-ink/65">{item.copy}</p>
           </div>
         ))}
       </div>

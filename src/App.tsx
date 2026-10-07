@@ -8,7 +8,6 @@ import Footer from "./components/layout/Footer";
 import StickyMobileCTA from "./components/layout/StickyMobileCTA";
 
 import Hero from "./components/sections/Hero";
-import CredibilityStrip from "./components/sections/CredibilityStrip";
 import ProblemSection from "./components/sections/ProblemSection";
 import ServicesSection from "./components/sections/ServicesSection";
 import SelectedWork from "./components/sections/SelectedWork";
@@ -43,7 +42,6 @@ function PageContent() {
       <Nav />
       <main className="pb-16 md:pb-0">
         <Hero />
-        <CredibilityStrip />
         <ProblemSection />
         <ServicesSection />
         <SelectedWork />

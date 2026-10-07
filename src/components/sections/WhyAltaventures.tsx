@@ -16,7 +16,8 @@ export default function WhyAltaventures() {
             </span>
             <div>
               <h3 className="text-lg font-semibold">{point.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-white/60">{point.copy}</p>
+              <p className="mt-1.5 text-sm font-semibold leading-snug text-white">{point.hook}</p>
+              <p className="mt-1 text-sm leading-relaxed text-white/60">{point.copy}</p>
             </div>
           </div>
         ))}
