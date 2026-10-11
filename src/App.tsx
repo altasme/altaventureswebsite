@@ -25,6 +25,7 @@ import CaseStudyModal from "./components/modals/CaseStudyModal";
 import LegalModal from "./components/modals/LegalModal";
 
 const WsaFreePage = lazy(() => import("./pages/WsaFreePage"));
+const WsaProPage = lazy(() => import("./pages/WsaProPage"));
 const LimitedOfferPage = lazy(() => import("./pages/LimitedOfferPage"));
 const ForYourBusinessPage = lazy(() => import("./pages/ForYourBusinessPage"));
 const ForYourBusinessCheckoutPage = lazy(() => import("./pages/ForYourBusinessCheckoutPage"));
@@ -81,6 +82,14 @@ export default function App() {
         element={
           <Suspense fallback={null}>
             <WsaFreePage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/WSA-pro"
+        element={
+          <Suspense fallback={null}>
+            <WsaProPage />
           </Suspense>
         }
       />

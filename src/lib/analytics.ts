@@ -42,6 +42,7 @@ type AnalyticsEventMap = {
   scroll_depth: { depth: 25 | 50 | 75 | 100 };
   industry_engagement: { industry: string };
   wsa_agreement_submit: Record<string, never>;
+  wsa_pro_agreement_submit: Record<string, never>;
   qualifier_start: Record<string, never>;
   qualifier_complete: Record<string, never>;
   portfolio_view: { project: string };
