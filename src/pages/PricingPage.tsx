@@ -11,6 +11,7 @@ import ContactModal from "../components/modals/ContactModal";
 import LegalModal from "../components/modals/LegalModal";
 import StickyMobileCTA from "../components/layout/StickyMobileCTA";
 import PricingTable from "../components/pricing/PricingTable";
+import PricingAddOns from "../components/pricing/PricingAddOns";
 import PricingNotes from "../components/pricing/PricingNotes";
 
 const PAGE_TITLE = "Pricing | Altaventures";
@@ -107,6 +108,15 @@ function PageContent() {
         </section>
 
         <section className="bg-paper-alt px-6 py-16 sm:py-20 lg:px-8">
+          <div className="relative mx-auto max-w-6xl">
+            <DecorativeShapes variant={3} />
+            <Reveal className="relative">
+              <PricingAddOns />
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="bg-paper px-6 py-16 sm:py-20 lg:px-8">
           <div className="relative mx-auto max-w-6xl">
             <DecorativeShapes variant={2} />
             <Reveal className="relative">

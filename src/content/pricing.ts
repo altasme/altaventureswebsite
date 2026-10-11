@@ -26,9 +26,27 @@
 // add on rates that we have," the real ₱5,700/year figure is used here,
 // not the graphic's number. The feature checklist below was also
 // reconciled against the real UPGRADES.domainHosting/businessTools item
-// lists rather than copied from the graphic verbatim (e.g. the graphic
-// showed a Website Control Panel on the Professional tier; the real
-// domain_hosting upgrade doesn't include one, only business_tools does).
+// lists rather than copied from the graphic verbatim, with one correction
+// from the operator directly [2026-10-11]: Professional also gets its own
+// Website Control Panel and can manage its own products/pricing, same as
+// Business — both are true for Professional and Business, not Business
+// only as a first draft had it.
+//
+// Add-on catalog (§ADDON_CATEGORIES below) is transcribed verbatim from
+// the real, authoritative catalog in the altasme/clienthub repo
+// (src/content/pricing.ts's ADDON_CATEGORIES, itself kept id-for-id in
+// sync with functions/_lib/pricing.ts's PRICING_CATALOG, the one that
+// actually prices a Client Hub checkout). That catalog's own code comment
+// says it's meant to stay gated to existing clients post-presentation,
+// consistent with this site's own §0.5/§16 "no Website Care/growth
+// pricing on the public site" guardrail — the operator was asked directly
+// whether to publish it here anyway (given real figures, not invented
+// ones) and confirmed yes, show the full catalog with real prices. If the
+// add-on catalog in clienthub changes, this needs the same manual
+// re-transcription — there is no cross-repo import, matching the
+// no-cross-build-target-imports convention clienthub's own two pricing
+// files (functions/_lib vs. src/content) already follow for the same
+// reason.
 
 export const PRICING_HERO = {
   headline: "Simple, Transparent Pricing",
@@ -131,8 +149,8 @@ export const PRICING_MATRIX: Record<PricingTierId, Record<string, FeatureValue>>
     domain: true,
     maintenance: true,
     support: "Best Effort",
-    panel: false,
-    selfmanage: false,
+    panel: true,
+    selfmanage: true,
     ordersystem: false,
     launch: true,
     delivery: true,
@@ -183,6 +201,90 @@ export const PRICING_NOTES = {
     },
   ],
 } as const;
+
+export interface AddonItem {
+  id: string;
+  name: string;
+  description: string;
+  priceLabel: string;
+}
+
+export interface AddonCategory {
+  id: string;
+  name: string;
+  tagline: string;
+  items: AddonItem[];
+}
+
+export const ADDONS_SECTION = {
+  headline: "Add-Ons & Custom Work",
+  sub: "Beyond the plans above, these are available whenever your business needs more.",
+  footnote: "Prices are starting prices and may vary depending on requirements. Talk to us for an exact quote.",
+} as const;
+
+export const ADDON_CATEGORIES: AddonCategory[] = [
+  {
+    id: "additional-development",
+    name: "Additional Development",
+    tagline: "Expand. Enhance. Grow.",
+    items: [
+      { id: "addon-website", name: "Additional Website", description: "Add another website to your account.", priceLabel: "₱8,000+" },
+      { id: "addon-lightweight-system", name: "Additional Lightweight Business System", description: "Add a simple business system to streamline operations.", priceLabel: "₱5,000+" },
+      { id: "addon-advanced-system", name: "Additional Advanced Business System", description: "Add an advanced system for more complex workflows.", priceLabel: "₱10,000+" },
+      { id: "addon-landing-page", name: "Additional Landing Page", description: "Add a custom landing page for campaigns or promos.", priceLabel: "₱1,500+" },
+      { id: "addon-redesign", name: "Major Website Redesign", description: "A fresh new look and improved user experience.", priceLabel: "₱5,000+" },
+      { id: "addon-dfy-update", name: "Additional Done-for-You Update", description: "Need more updates? We've got you covered.", priceLabel: "₱500+" },
+      { id: "addon-major-custom-dev", name: "Major / Custom Development", description: "Complex features or custom solutions built just for you.", priceLabel: "Subject to quote" },
+    ],
+  },
+  {
+    id: "media-infrastructure",
+    name: "Media & Infrastructure",
+    tagline: "Powerful add-ons to support your growth.",
+    items: [
+      { id: "addon-video-storage-monthly", name: "Video Storage / Hosting (Monthly)", description: "Host and stream your videos with reliable, high-performance infrastructure. Starting at 10GB.", priceLabel: "₱500/month" },
+      { id: "addon-video-storage-annual", name: "Video Storage / Hosting (Annual)", description: "Host and stream your videos with reliable, high-performance infrastructure. Starting at 10GB.", priceLabel: "₱6,000/year" },
+      { id: "addon-media-storage", name: "Additional Media Storage", description: "Need more space? We'll scale it based on your requirements.", priceLabel: "Subject to capacity" },
+      { id: "addon-bandwidth", name: "High-Bandwidth / Heavy Usage", description: "For high traffic, large delivery and heavy streaming needs.", priceLabel: "Subject to quote" },
+    ],
+  },
+  {
+    id: "integrations-business-tools",
+    name: "Integrations & Business Tools",
+    tagline: "Connect. Automate. Grow.",
+    items: [
+      { id: "addon-payment-gateway", name: "Payment Gateway Integration", description: "Accept payments securely with trusted payment gateways.", priceLabel: "₱3,000+" },
+      { id: "addon-booking-system", name: "Advanced Booking System", description: "Enable appointments, reservations and scheduling with ease.", priceLabel: "₱5,000+" },
+      { id: "addon-ordering-system", name: "Advanced Ordering System", description: "Power online orders, menus, carts and order management.", priceLabel: "₱5,000+" },
+      { id: "addon-crm", name: "CRM / Customer Management", description: "Manage leads, customers and relationships in one organized system.", priceLabel: "₱5,000+" },
+      { id: "addon-automation", name: "Automation / Workflow Integration", description: "Automate tasks and workflows to save time and improve efficiency.", priceLabel: "₱3,000+" },
+      { id: "addon-api-integration", name: "Third-Party API Integration", description: "Connect your website with external services and platforms.", priceLabel: "₱3,000+" },
+      { id: "addon-analytics", name: "Custom Analytics / Reporting", description: "Custom reports and dashboards tailored to your business needs.", priceLabel: "₱3,000+" },
+      { id: "addon-data-migration", name: "Data Migration", description: "Migrate your data safely and accurately from existing platforms.", priceLabel: "₱3,000+" },
+    ],
+  },
+  {
+    id: "domains-email",
+    name: "Domains & Email",
+    tagline: "Add-ons to establish your professional identity.",
+    items: [
+      { id: "addon-additional-domain", name: "Additional Domain", description: "Add another domain to your account.", priceLabel: "Client-paid + setup" },
+      { id: "addon-business-email", name: "Additional Business Email Account", description: "Get a professional email address for your team.", priceLabel: "₱500+/year" },
+      { id: "addon-email-integration", name: "External Email / Service Integration", description: "Integrate with external email services and tools.", priceLabel: "₱1,500+" },
+    ],
+  },
+  {
+    id: "specialized",
+    name: "Specialized",
+    tagline: "Advanced solutions for growing businesses.",
+    items: [
+      { id: "addon-multilingual", name: "Multilingual Website", description: "Reach more customers with a multilingual website.", priceLabel: "₱3,000+" },
+      { id: "addon-advanced-seo", name: "Advanced SEO", description: "Boost your visibility with advanced SEO strategies.", priceLabel: "Subject to quote" },
+      { id: "addon-expedited-dev", name: "Expedited Development", description: "Fast-track your project with priority development.", priceLabel: "Subject to quote" },
+      { id: "addon-complex-systems", name: "Complex / Scaled Systems", description: "Custom systems built to scale with your business.", priceLabel: "Subject to quote" },
+    ],
+  },
+];
 
 export const PRICING_FINAL_CTA = {
   headline: "Not Sure Which Plan Fits Your Business?",
