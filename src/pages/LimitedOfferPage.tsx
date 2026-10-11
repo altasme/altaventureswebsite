@@ -131,7 +131,7 @@ export default function LimitedOfferPage() {
             No forms. Nothing is collected or stored on this page: every conversation happens on the chat
             platform you choose.
           </p>
-          <p className="mt-6 text-xs text-white/30">
+          <p className="mt-6 text-xs text-white/50">
             &copy; {new Date().getFullYear()} {BRAND.legalName}.
           </p>
         </div>

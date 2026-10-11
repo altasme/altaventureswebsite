@@ -144,7 +144,7 @@ function PageContent() {
             ))}
           </div>
 
-          <p className="mt-6 text-xs text-white/30">
+          <p className="mt-6 text-xs text-white/50">
             &copy; {new Date().getFullYear()} {BRAND.legalName}.
           </p>
         </div>

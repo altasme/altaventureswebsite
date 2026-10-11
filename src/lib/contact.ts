@@ -63,3 +63,13 @@ export const FYB_PREFILL =
  */
 export const B2B_PREFILL =
   "Hi Altaventures! I'd like to get the ₱4,999 business website package.";
+
+/**
+ * WhatsApp prefill for the standalone /pricing page, tier-aware. That page
+ * is presentation-only (no checkout of its own), so every CTA opens
+ * ContactModal with a message naming the specific tier the visitor tapped,
+ * same spirit as FYB_PREFILL/B2B_PREFILL but personalized per plan.
+ */
+export function buildPricingPrefill(tierName: string, priceLabel: string): string {
+  return `Hi Altaventures! I'm interested in the ${tierName} plan (${priceLabel}). Can we talk about my business?`;
+}
