@@ -242,13 +242,17 @@ export const SELECTED_WORK = {
   // (engine-tier, no public URL) are hidden entirely; Altamotors closes the
   // grid. Every other project keeps its prior canonical-order position.
   // This supersedes rendering content/portfolio.ts's PORTFOLIO directly.
+  // Updated [2026-10-11]: AlfiesCarDeals added next to DM HR, and Vocalyze
+  // moved to the bottom of the regular list (just before Altamotors, which
+  // stays last by its own earlier, separate instruction), both per the
+  // operator's direct request.
   order: [
     "leanandfit",
     "aurielle",
     "amr-bookkeeping",
     "imago-productions",
     "dmhr",
-    "vocalyze",
+    "alfiescardeals",
     "aulea",
     "pocketg7iii",
     "macquias",
@@ -257,6 +261,7 @@ export const SELECTED_WORK = {
     "adrayan-law",
     "camsnap",
     "onyx-clouds",
+    "vocalyze",
     "altamotors",
   ],
 } as const;

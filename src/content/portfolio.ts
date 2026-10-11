@@ -69,6 +69,18 @@ export const PORTFOLIO: Project[] = [
     tags: ["Website", "Professional Services"],
   },
   {
+    id: "alfiescardeals",
+    name: "AlfiesCarDeals.com",
+    url: "https://www.alfiescardeals.com",
+    category: "Car Dealership Website & Admin Panel",
+    tier: "system",
+    status: "live",
+    viewable: true,
+    description:
+      "A full car showcase website for a car agent, with an admin control panel to fully manage the website and its content. Application management system and CRM in future development talks.",
+    tags: ["Admin Panel", "Automotive", "Local"],
+  },
+  {
     id: "vocalyze",
     name: "Vocalyze Lounge",
     url: "https://vocalyze.altasme.com",

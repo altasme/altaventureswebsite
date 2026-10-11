@@ -32,7 +32,6 @@ export const WSA_PRO_DOCUMENT: {
   intro: WsaBlock[];
   clientInfoFields: string[];
   sections: WsaSection[];
-  projectDetailsFields: string[];
 } = {
   title: "Website Development and Service Agreement",
   planLabel: "ALTAVENTURES | ₱2,099 Website Plan",
@@ -394,15 +393,6 @@ export const WSA_PRO_DOCUMENT: {
         p("By signing below, the Parties acknowledge that they have read and understood this Agreement and agree to its terms."),
       ],
     },
-  ],
-  projectDetailsFields: [
-    "Website / Business Name",
-    "Agreed Website Scope",
-    "Custom Domain Requested",
-    "Project Reference Number",
-    "Payment Reference Number",
-    "Service Activation Date",
-    "First-Year Renewal Date",
   ],
 };
 

@@ -263,20 +263,6 @@ export default function WsaProPage() {
             ))}
           </div>
 
-          <div className="mt-8">
-            <h3 className="mb-3 text-base font-bold text-brand-navy">Project Details</h3>
-            <p className="mb-2 text-[15px] leading-relaxed text-ink/60">
-              To be completed by Altaventures once the project is underway.
-            </p>
-            <ul className="space-y-1">
-              {WSA_PRO_DOCUMENT.projectDetailsFields.map((field) => (
-                <li key={field} className="text-[15px] text-ink/60">
-                  {field}: ______________________________
-                </li>
-              ))}
-            </ul>
-          </div>
-
           <div ref={sentinelRef} className="mt-10 border-t border-dashed border-ink/15 pt-6">
             <p className="text-xs font-medium uppercase tracking-wide text-ink/40">
               End of agreement

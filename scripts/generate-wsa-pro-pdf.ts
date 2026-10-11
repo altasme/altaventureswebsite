@@ -312,23 +312,6 @@ async function main() {
   }
 
   // ---------------------------------------------------------------------
-  // Project Details appendix (left blank; filled in operationally by staff
-  // after signing, same precedent as WSA-free's "Website / Domain" field)
-  // ---------------------------------------------------------------------
-  ensureSpace(40);
-  cursorY -= 6;
-  page.drawLine({
-    start: { x: MARGIN_X, y: cursorY },
-    end: { x: MARGIN_X + CONTENT_WIDTH, y: cursorY },
-    thickness: 0.75,
-    color: TABLE_LINE,
-  });
-  cursorY -= 24;
-
-  drawHeading("Project Details");
-  for (const label of WSA_PRO_DOCUMENT.projectDetailsFields) drawFieldLine(label);
-
-  // ---------------------------------------------------------------------
   // Save + report coordinates
   // ---------------------------------------------------------------------
   const outBytes = await pdf.save();
