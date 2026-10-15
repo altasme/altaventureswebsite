@@ -139,6 +139,18 @@ export const PORTFOLIO: Project[] = [
     tags: ["Website", "Local", "Youth Entrepreneurship"],
   },
   {
+    id: "batumi-sales-partner",
+    name: "Batumi Sales Partner",
+    url: "https://batumisalespartner.altasme.com",
+    category: "Real Estate Sales Agency Website",
+    tier: "site",
+    status: "live",
+    viewable: true,
+    description:
+      "A multi-language website for an independent sales partner representing a luxury property development in Batumi, Georgia, marketing prime units to international buyers across Russia, Turkey, Armenia, Poland, Saudi Arabia, and more.",
+    tags: ["Website", "Real Estate", "Multi-Language"],
+  },
+  {
     id: "macquias",
     name: "Macquia's Camera Rental",
     url: "https://macquias.altasme.com",
