@@ -287,7 +287,11 @@ export default function QuestionsPage() {
                     )}
                     {q.fieldType === "file" && (
                       <div>
-                        <input type="file" onChange={(e) => handleFileChange(q, e.target.files?.[0] ?? null)} className="text-sm" />
+                        <input
+                          type="file"
+                          onChange={(e) => handleFileChange(q, e.target.files?.[0] ?? null)}
+                          className="block w-full max-w-full text-sm file:mr-3 file:rounded-full file:border file:border-ink/15 file:bg-white file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-brand-navy"
+                        />
                         {answer?.kind === "file" && answer.uploading && <p className="mt-1 text-xs text-ink/50">Uploading&hellip;</p>}
                         {answer?.kind === "file" && answer.url && <p className="mt-1 text-xs text-green-700">Uploaded: {answer.fileName}</p>}
                         {answer?.kind === "file" && answer.error && <p className="mt-1 text-xs text-red-600">{answer.error}</p>}
