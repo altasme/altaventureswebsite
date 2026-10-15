@@ -85,23 +85,15 @@ export const PROBLEMS = {
     "As your business grows, the way you work needs to grow with it.",
     "You might be dealing with one of these:",
   ],
+  // [2026-10-15] copy trimmed to title-only per the operator's request to
+  // shorten this section so visitors reach Portfolio faster while
+  // scrolling -- the icon + title alone carries the scan, the longer
+  // explanatory sentence that used to sit under each one is gone.
   items: [
-    {
-      title: "Customers Can't Easily Find or Trust Your Business",
-      copy: "Your Facebook page gets attention, but customers need a better place to learn about your business, explore your services, and take the next step.",
-    },
-    {
-      title: "You're Doing Too Much Manually",
-      copy: "Taking bookings, answering the same questions, collecting information, or managing orders shouldn't require you to do everything yourself.",
-    },
-    {
-      title: "Your Tools Don't Work Together",
-      copy: "Your website, bookings, customer information, payments, and other processes can become scattered across different platforms. That's when things start getting messy.",
-    },
-    {
-      title: "Your Business Is Growing, But Your System Isn't",
-      copy: "More customers should mean more opportunities. Not more spreadsheets, messages, follow-ups, and things to keep track of.",
-    },
+    { title: "Customers Can't Easily Find or Trust Your Business" },
+    { title: "You're Doing Too Much Manually" },
+    { title: "Your Tools Don't Work Together" },
+    { title: "Your Business Is Growing, But Your System Isn't" },
   ],
   closing: {
     lead: "You don't necessarily need more tools. You need the right system for your business.",
@@ -114,6 +106,13 @@ export const PROBLEMS = {
 // Services
 // ---------------------------------------------------------------------------
 
+// [2026-10-15] Capability bullets, per-card CTAs, and the digitalization
+// item's extra intro line were all dropped per the operator's request to
+// shorten this section so visitors reach Portfolio faster while
+// scrolling -- each card is now just an icon, a name, and one outcome
+// sentence. The fuller capability lists these cards used to carry still
+// live on /pricing and the funnel pages, so nothing is lost site-wide,
+// just moved off the homepage's critical scroll path.
 export const SERVICES = {
   headline: "Whatever Your Business Needs, We Can Build Around It.",
   sub: "From getting your first website online to replacing manual processes with connected systems, we build practical digital solutions around the way your business actually works.",
@@ -122,63 +121,26 @@ export const SERVICES = {
       id: "websites",
       name: "Get Your Business Online",
       outcome: "A website that gives customers a better way to discover and contact you.",
-      capabilities: [
-        "Professional, mobile-friendly design",
-        "Services, products, and business information",
-        "Inquiry and contact features",
-        "Built around your goals",
-      ],
-      cta: "I want to improve my online presence",
     },
     {
       id: "booking",
       name: "Make Booking Easier",
       outcome: "Give customers an easier way to book while reducing the work your team has to do.",
-      capabilities: [
-        "Online booking",
-        "Calendar management",
-        "Automated confirmations and reminders",
-        "Staff and resource scheduling",
-      ],
-      cta: "I need a better booking process",
     },
     {
       id: "management",
       name: "Organize Your Business",
       outcome: "Replace scattered spreadsheets, messages, and manual processes with a system built around your workflow.",
-      capabilities: [
-        "Customer and sales records",
-        "Billing and collections",
-        "Dashboards and reporting",
-        "Custom workflows",
-      ],
-      cta: "I need a better way to manage my business",
     },
     {
       id: "ecommerce",
       name: "Start Selling Online",
       outcome: "Give customers a simple way to browse, order, and pay online.",
-      capabilities: [
-        "Product catalogs",
-        "Online ordering",
-        "Payment workflows",
-        "Inventory-aware processes",
-      ],
-      cta: "I want to sell online",
     },
     {
       id: "digitalization",
       name: "Digitalize Your Business",
-      outcome: "Have a Process That Needs Fixing? Let's Build Around It.",
-      intro:
-        "If you're still relying on paper, spreadsheets, chat messages, or disconnected tools, we'll help you figure out what can be simplified or automated.",
-      capabilities: [
-        "Digitize manual processes",
-        "Connect scattered information",
-        "Build custom workflows",
-        "Create systems around how your business operates",
-      ],
-      cta: "Talk to us about your business",
+      outcome: "Turn paper, spreadsheets, and disconnected tools into one system built around how your business actually works.",
     },
   ],
 } as const;
