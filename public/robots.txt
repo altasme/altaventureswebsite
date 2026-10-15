@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://altasme.com/sitemap.xml
+Sitemap: https://www.altasme.com/sitemap.xml

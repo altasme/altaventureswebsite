@@ -2,10 +2,12 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BRAND } from "../content/site";
 import { PRIMARY_CTA } from "../content/foryourbusiness";
+import { FYB_PREFILL } from "../lib/contact";
 import { useScrollDepth } from "../lib/useScrollDepth";
 import { ModalProvider, useModals } from "../lib/modalContext";
-import { track } from "../lib/analytics";
+import { track, initMetaPixel } from "../lib/analytics";
 import CTAButton from "../components/ui/CTAButton";
+import ContactModal from "../components/modals/ContactModal";
 
 import FybHero from "../components/fyb/sections/FybHero";
 import FybTrustSignals from "../components/fyb/sections/FybTrustSignals";
@@ -13,6 +15,7 @@ import Problem from "../components/fyb/sections/Problem";
 import WhatsIncluded from "../components/fyb/sections/WhatsIncluded";
 import WhoItsFor from "../components/fyb/sections/WhoItsFor";
 import FybPortfolio from "../components/fyb/sections/FybPortfolio";
+import Testimonials from "../components/sections/Testimonials";
 import FybHowItWorks from "../components/fyb/sections/FybHowItWorks";
 import FybFAQ from "../components/fyb/sections/FybFAQ";
 import FybFinalCTA from "../components/fyb/sections/FybFinalCTA";
@@ -21,9 +24,9 @@ import Reveal from "../components/offer/Reveal";
 
 import LegalModal from "../components/modals/LegalModal";
 
-const PAGE_TITLE = "Get Your Business Online for ₱299 | Altaventures";
+const PAGE_TITLE = "Get Your Business Online for ₱599 | Altaventures";
 const PAGE_DESCRIPTION =
-  "A professional, mobile-friendly business website, done for you, for a one-time ₱299 payment. Ready in 4 to 7 days. See real Altaventures work.";
+  "A professional, mobile-friendly business website, done for you, for a one-time ₱599 payment. Ready in 3 to 7 days. See real Altaventures work.";
 
 const LEGAL_LINKS = [
   { label: "Refund Policy", id: "fyb-refund" as const },
@@ -40,11 +43,13 @@ function setMeta(selector: string, attr: string, value: string): (() => void) | 
 }
 
 function PageContent() {
-  const { openLegal } = useModals();
+  const { openLegal, openContactModal } = useModals();
   const navigate = useNavigate();
   useScrollDepth();
 
   useEffect(() => {
+    initMetaPixel();
+
     const previousTitle = document.title;
     document.title = PAGE_TITLE;
 
@@ -52,10 +57,10 @@ function PageContent() {
       setMeta('meta[name="description"]', "content", PAGE_DESCRIPTION),
       setMeta('meta[property="og:title"]', "content", PAGE_TITLE),
       setMeta('meta[property="og:description"]', "content", PAGE_DESCRIPTION),
-      setMeta('meta[property="og:url"]', "content", "https://altasme.com/foryourbusiness"),
+      setMeta('meta[property="og:url"]', "content", "https://www.altasme.com/foryourbusiness"),
       setMeta('meta[name="twitter:title"]', "content", PAGE_TITLE),
       setMeta('meta[name="twitter:description"]', "content", PAGE_DESCRIPTION),
-      setMeta('link[rel="canonical"]', "href", "https://altasme.com/foryourbusiness"),
+      setMeta('link[rel="canonical"]', "href", "https://www.altasme.com/foryourbusiness"),
     ];
 
     return () => {
@@ -67,6 +72,11 @@ function PageContent() {
   const goToCheckout = (section: string) => {
     track("cta_click", { label: PRIMARY_CTA, section });
     navigate("/foryourbusiness/checkout");
+  };
+
+  const talkToUs = (section: string) => {
+    track("cta_click", { label: "Talk to Us", section });
+    openContactModal(section, FYB_PREFILL);
   };
 
   return (
@@ -88,7 +98,7 @@ function PageContent() {
       </header>
 
       <main>
-        <FybHero onCheckout={() => goToCheckout("hero")} />
+        <FybHero onCheckout={() => goToCheckout("hero")} onTalkToUs={() => talkToUs("hero-talk-to-us")} />
         <FybTrustSignals />
         <Reveal>
           <Problem />
@@ -102,6 +112,7 @@ function PageContent() {
         <Reveal>
           <FybPortfolio onCheckout={() => goToCheckout("portfolio")} />
         </Reveal>
+        <Testimonials tone="dark" />
         <Reveal>
           <FybHowItWorks />
         </Reveal>
@@ -133,7 +144,7 @@ function PageContent() {
             ))}
           </div>
 
-          <p className="mt-6 text-xs text-white/30">
+          <p className="mt-6 text-xs text-white/50">
             &copy; {new Date().getFullYear()} {BRAND.legalName}.
           </p>
         </div>
@@ -142,6 +153,7 @@ function PageContent() {
       <StickyMobileFybCTA onCheckout={() => goToCheckout("sticky-mobile")} />
 
       <LegalModal />
+      <ContactModal />
     </div>
   );
 }

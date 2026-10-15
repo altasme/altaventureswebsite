@@ -13,6 +13,7 @@ import Problem from "../components/b2b/sections/Problem";
 import WhatsIncluded from "../components/b2b/sections/WhatsIncluded";
 import WhoItsFor from "../components/b2b/sections/WhoItsFor";
 import B2BPortfolio from "../components/b2b/sections/B2BPortfolio";
+import Testimonials from "../components/sections/Testimonials";
 import B2BHowItWorks from "../components/b2b/sections/B2BHowItWorks";
 import B2BFAQ from "../components/b2b/sections/B2BFAQ";
 import B2BFinalCTA from "../components/b2b/sections/B2BFinalCTA";
@@ -52,10 +53,10 @@ function PageContent() {
       setMeta('meta[name="description"]', "content", PAGE_DESCRIPTION),
       setMeta('meta[property="og:title"]', "content", PAGE_TITLE),
       setMeta('meta[property="og:description"]', "content", PAGE_DESCRIPTION),
-      setMeta('meta[property="og:url"]', "content", "https://altasme.com/b2b"),
+      setMeta('meta[property="og:url"]', "content", "https://www.altasme.com/b2b"),
       setMeta('meta[name="twitter:title"]', "content", PAGE_TITLE),
       setMeta('meta[name="twitter:description"]', "content", PAGE_DESCRIPTION),
-      setMeta('link[rel="canonical"]', "href", "https://altasme.com/b2b"),
+      setMeta('link[rel="canonical"]', "href", "https://www.altasme.com/b2b"),
     ];
 
     return () => {
@@ -102,6 +103,7 @@ function PageContent() {
         <Reveal>
           <B2BPortfolio onCheckout={() => goToCheckout("portfolio")} />
         </Reveal>
+        <Testimonials tone="dark" />
         <Reveal>
           <B2BHowItWorks />
         </Reveal>
@@ -133,7 +135,7 @@ function PageContent() {
             ))}
           </div>
 
-          <p className="mt-6 text-xs text-white/30">
+          <p className="mt-6 text-xs text-white/50">
             &copy; {new Date().getFullYear()} {BRAND.legalName}.
           </p>
         </div>

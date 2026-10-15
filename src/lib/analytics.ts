@@ -11,9 +11,18 @@
 // TODO(analytics): set when GA4 / Meta Pixel IDs are provided by the client.
 const MEASUREMENT_ID = "";
 
-// TODO(pixel): set when the client provides a Meta Pixel ID for /limitedoffer.
-// initMetaPixel() and trackLead() no-op safely until this is set.
-const META_PIXEL_ID = "";
+// Real Meta Pixel ID, supplied by the operator [2026-10-04] specifically
+// for /foryourbusiness. This is the one site-wide Pixel constant every
+// initMetaPixel()/track*() call below already shares (trackInitiateCheckout,
+// trackInitiateCheckoutB2B, trackLead) — setting it here means any page that
+// calls initMetaPixel() now actually loads and fires the Pixel, which
+// currently means /limitedoffer (already called it, previously a no-op)
+// and /foryourbusiness's three pages (landing/checkout/thank-you, wired up
+// the same day this ID was supplied). /b2b's own InitiateCheckout call
+// will also start firing, but only once window.fbq has been loaded by a
+// visit to one of the above, since no /b2b page calls initMetaPixel()
+// itself yet.
+const META_PIXEL_ID = "1776226086741887";
 
 declare global {
   interface Window {
@@ -33,6 +42,7 @@ type AnalyticsEventMap = {
   scroll_depth: { depth: 25 | 50 | 75 | 100 };
   industry_engagement: { industry: string };
   wsa_agreement_submit: Record<string, never>;
+  wsa_pro_agreement_submit: Record<string, never>;
   qualifier_start: Record<string, never>;
   qualifier_complete: Record<string, never>;
   portfolio_view: { project: string };
@@ -40,6 +50,11 @@ type AnalyticsEventMap = {
   lead: { channel: "messenger" | "viber" | "whatsapp"; businessType?: string; yearsInBusiness?: string; objectives?: string };
   checkout_started: Record<string, never>;
   payment_return: Record<string, never>;
+  mycafe_landing_view: Record<string, never>;
+  mycafe_hero_cta_click: Record<string, never>;
+  mycafe_demo_play: Record<string, never>;
+  mycafe_feature_section_view: Record<string, never>;
+  mycafe_free_access_click: { location: string };
 };
 
 export function track<E extends keyof AnalyticsEventMap>(
@@ -59,8 +74,13 @@ export function track<E extends keyof AnalyticsEventMap>(
 /**
  * Loads the Meta Pixel base code and fires PageView, but only when
  * META_PIXEL_ID is configured. Safe to call unconditionally; no-ops (and
- * loads nothing) otherwise. Call once, near the top of the /limitedoffer
- * page component.
+ * loads nothing) otherwise. Also safe to call from more than one page
+ * component in the same session — it checks window.fbq and does nothing
+ * if the Pixel is already loaded, so it won't double-init or double-fire
+ * PageView on client-side navigation between pages that each call it.
+ * Call once, near the top of each page component that should track a
+ * PageView: currently /limitedoffer and /foryourbusiness (landing,
+ * checkout, thank-you).
  */
 export function initMetaPixel() {
   if (!META_PIXEL_ID || typeof window === "undefined" || window.fbq) return;
@@ -110,11 +130,18 @@ export function trackLead(params: AnalyticsEventMap["lead"]) {
  * Fires when the /foryourbusiness checkout form is submitted and the
  * ganap.net checkout session is being created. Mirrors Meta's
  * InitiateCheckout, no-ops on the Pixel side until META_PIXEL_ID is set.
+ *
+ * `value` defaults to 599 (the Starter Website alone) but the checkout
+ * page now passes the actual server-validated total [2026-10-02, added
+ * for the optional-upgrade checkout redesign] -- 2099 or 6299 when the
+ * customer added an upgrade -- so ad reporting reflects what was really
+ * charged, same reasoning trackInitiateCheckoutB2B below already applies
+ * to its own deposit-only value.
  */
-export function trackInitiateCheckout() {
+export function trackInitiateCheckout(value: number = 599) {
   track("checkout_started", {});
   if (typeof window !== "undefined" && typeof window.fbq === "function") {
-    window.fbq("track", "InitiateCheckout", { value: 299, currency: "PHP" });
+    window.fbq("track", "InitiateCheckout", { value, currency: "PHP" });
   }
 }
 

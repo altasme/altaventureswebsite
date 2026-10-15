@@ -2,12 +2,12 @@ import { B2B_HERO } from "../../../content/b2b";
 import CTAButton from "../../ui/CTAButton";
 
 // Mirrors src/components/fyb/sections/FybHero.tsx exactly (same full-bleed
-// treatment, same verified mobile fix from CLAUDE.md §29: top-anchored
-// compact copy over the same real photo, no stacked-blocks fallback).
-// Kept as its own component (not a shared/parametrized one) to match this
-// codebase's established per-funnel convention (offer.ts + components/offer,
-// foryourbusiness.ts + components/fyb) rather than introducing a new
-// cross-funnel abstraction for a two-page reuse.
+// desktop treatment; same aspect-locked mobile photo panel [2026-10-05],
+// see FybHero.tsx's own comments for why the earlier full-screen overlay
+// was replaced). Kept as its own component (not a shared/parametrized one)
+// to match this codebase's established per-funnel convention (offer.ts +
+// components/offer, foryourbusiness.ts + components/fyb) rather than
+// introducing a new cross-funnel abstraction for a two-page reuse.
 function HeroCopy({ onCheckout, compact = false }: { onCheckout: () => void; compact?: boolean }) {
   return (
     <div className="relative max-w-xl">
@@ -58,25 +58,31 @@ export default function B2BHero({ onCheckout }: { onCheckout: () => void }) {
         </div>
       </div>
 
-      {/* Mobile: full-bleed overlay, top-anchored compact copy. Same
-          verified geometry as FybHero.tsx (CLAUDE.md §29) since this is
-          the same photo reused, not a new one needing re-verification. */}
-      <div className="relative min-h-[100svh] overflow-hidden sm:hidden">
-        <img
-          src={B2B_HERO.backgroundImageMobile}
-          alt={B2B_HERO.backgroundAlt}
-          fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover object-top"
-        />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(6,18,46,0.55) 0%, rgba(6,18,46,0.15) 30%, transparent 46%)",
-          }}
-        />
-        <div className="relative flex min-h-[100svh] flex-col justify-start px-6 pb-10 pt-6">
+      {/* Mobile: copy in normal flow on a solid bg-brand-navy-deep block,
+          photo as its own aspect-locked panel below — same structural fix
+          as FybHero.tsx [2026-10-05], same tuned crop (object-position
+          50% 83%, aspect-square) since it's the identical photo. See
+          FybHero.tsx's comments for the full reasoning. */}
+      <div className="bg-brand-navy-deep sm:hidden">
+        <div className="px-6 pb-8 pt-8">
           <HeroCopy onCheckout={onCheckout} compact />
+        </div>
+        <div className="relative aspect-square w-full overflow-hidden">
+          <img
+            src={B2B_HERO.backgroundImageMobile}
+            alt={B2B_HERO.backgroundAlt}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ objectPosition: "50% 83%" }}
+          />
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 h-12"
+            style={{ background: "linear-gradient(180deg, rgba(6,18,46,1) 0%, rgba(6,18,46,0) 100%)" }}
+          />
+          <div
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-12"
+            style={{ background: "linear-gradient(0deg, rgba(6,18,46,0.85) 0%, rgba(6,18,46,0) 100%)" }}
+          />
         </div>
       </div>
     </section>

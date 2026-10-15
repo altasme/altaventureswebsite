@@ -1,0 +1,261 @@
+/* mycafepos.css
+   Scoped design system for /mycafepos, ported from the supplied
+   Lovable build's styles.css. This is a different product (MyCafe POS,
+   a POS app) from the Altaventures service offers sharing brand-navy/
+   brand-blue, so it gets its own warm café palette (espresso, coffee,
+   caramel, cream) rather than reusing the site's Tailwind theme tokens.
+
+   Everything here is scoped under .mcp so it can never leak into or
+   collide with the rest of the site — this file is only imported by
+   MyCafePosPage.tsx, which is itself lazy-loaded, so it never ships in
+   the homepage bundle either. Plain CSS custom properties + hand-written
+   classes (not Tailwind @layer/@apply) since this repo runs Tailwind v3
+   with a JIT content scan, not the v4 CSS-first theme the source file
+   used — same visual result, adapted build tooling. */
+
+.mcp {
+  --mcp-radius: 0.5rem;
+  --mcp-background: oklch(0.975 0.018 76);
+  --mcp-foreground: oklch(0.25 0.058 50);
+  --mcp-card: oklch(0.995 0.006 80);
+  --mcp-primary: oklch(0.31 0.09 44);
+  --mcp-primary-foreground: oklch(0.98 0.018 76);
+  --mcp-secondary: oklch(0.91 0.055 78);
+  --mcp-secondary-foreground: oklch(0.28 0.072 45);
+  --mcp-muted: oklch(0.93 0.023 76);
+  --mcp-muted-foreground: oklch(0.49 0.042 54);
+  --mcp-accent: oklch(0.59 0.14 52);
+  --mcp-accent-foreground: oklch(0.99 0.006 80);
+  --mcp-accent-soft: oklch(0.92 0.055 70);
+  --mcp-border: oklch(0.84 0.04 70);
+  --mcp-ring: oklch(0.59 0.14 52);
+  --mcp-surface: oklch(0.95 0.027 78);
+  --mcp-dark: oklch(0.22 0.055 49);
+  --mcp-dark-foreground: oklch(0.97 0.02 78);
+  --mcp-dark-muted: oklch(0.82 0.034 73);
+  --mcp-footer: oklch(0.17 0.037 48);
+  --mcp-footer-foreground: oklch(0.97 0.02 78);
+  --mcp-footer-muted: oklch(0.72 0.034 71);
+  --mcp-footer-border: oklch(0.31 0.038 51);
+  --mcp-font-body: "Inter", system-ui, sans-serif;
+  --mcp-font-heading: "Fraunces", Georgia, serif;
+
+  background: var(--mcp-background);
+  color: var(--mcp-foreground);
+  font-family: var(--mcp-font-body);
+}
+
+.mcp h1,
+.mcp h2,
+.mcp h3 {
+  font-family: var(--mcp-font-heading);
+}
+.mcp h2 {
+  font-size: clamp(2.25rem, 4vw, 3.8rem);
+  line-height: 1.05;
+  font-weight: 800;
+}
+.mcp h3 {
+  font-size: 1.15rem;
+  line-height: 1.3;
+  font-weight: 600;
+}
+.mcp a {
+  transition: color 160ms ease, background-color 160ms ease, opacity 160ms ease;
+}
+
+.mcp-container { width: min(100% - 2rem, 1180px); margin-inline: auto; }
+.mcp-section { padding-block: 6rem; }
+
+/* Muted body text: swaps to a light tone automatically inside a dark
+   section (.mcp-dark), same override the source stylesheet applied to
+   .text-muted-foreground — the light-mode muted color has poor contrast
+   against var(--mcp-dark)'s dark background otherwise. */
+.mcp-muted { color: var(--mcp-muted-foreground); }
+.mcp-dark .mcp-muted { color: var(--mcp-dark-muted); }
+
+.mcp-hero { background: var(--mcp-background); border-bottom: 1px solid var(--mcp-border); }
+.mcp-hero-badge { display: inline-block; font-size: .78rem; font-weight: 700; color: var(--mcp-primary); padding-bottom: .6rem; border-bottom: 2px solid var(--mcp-accent); }
+.mcp-hero-callout { position: absolute; left: 1.5rem; top: 2rem; z-index: 1; border-radius: var(--mcp-radius); padding: .75rem 1.1rem; font-size: .85rem; font-weight: 700; background: var(--mcp-primary); color: var(--mcp-primary-foreground); box-shadow: 0 12px 28px color-mix(in oklch, var(--mcp-primary) 30%, transparent); }
+.mcp-hero-photo { height: 100%; width: 100%; overflow: hidden; }
+.mcp-hero-photo picture, .mcp-hero-photo img { display: block; height: 100%; width: 100%; }
+
+.mcp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  height: 3rem;
+  padding-inline: 1.5rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 700;
+  background: var(--mcp-primary);
+  color: var(--mcp-primary-foreground);
+  box-shadow: 0 8px 24px color-mix(in oklch, var(--mcp-primary) 15%, transparent);
+  transition: transform 160ms ease, opacity 160ms ease;
+}
+.mcp-btn:hover { transform: translateY(-1px); opacity: .94; }
+.mcp-btn--ghost { background: transparent; color: var(--mcp-foreground); box-shadow: none; }
+.mcp-btn--secondary { background: var(--mcp-secondary); color: var(--mcp-secondary-foreground); box-shadow: none; }
+.mcp-btn--sm { height: 2.5rem; padding-inline: 1rem; font-size: .9rem; }
+
+.mcp-media-placeholder { display: grid; min-height: 260px; place-items: center; border: 1px dashed var(--mcp-border); border-radius: var(--mcp-radius); background: linear-gradient(160deg, var(--mcp-surface), var(--mcp-secondary)); overflow: hidden; }
+.mcp-media-placeholder__inner { max-width: 34rem; margin: 1.5rem; padding: 1.5rem; text-align: center; }
+.mcp-media-placeholder__inner svg { width: 2rem; height: 2rem; margin: 0 auto .75rem; color: var(--mcp-accent); }
+.mcp-media-placeholder__inner .mcp-mp-title { font-family: var(--mcp-font-heading); font-size: 1.125rem; font-weight: 600; color: var(--mcp-foreground); }
+.mcp-media-placeholder__inner .mcp-mp-dims { margin-top: .35rem; font-size: .78rem; font-weight: 700; color: var(--mcp-accent); }
+.mcp-media-placeholder__inner .mcp-mp-note { display: block; margin-top: .65rem; font-size: .75rem; line-height: 1.45; color: var(--mcp-muted-foreground); }
+
+.mcp-dark .mcp-media-placeholder { border-color: color-mix(in oklch, var(--mcp-accent) 60%, transparent); background: linear-gradient(160deg, var(--mcp-dark), color-mix(in oklch, var(--mcp-dark) 70%, black)); }
+.mcp-dark .mcp-media-placeholder__inner .mcp-mp-title { color: var(--mcp-dark-foreground); }
+.mcp-dark .mcp-media-placeholder__inner .mcp-mp-note { color: var(--mcp-dark-muted); }
+
+.mcp-problem-row { display: flex; gap: 1rem; padding: 1.35rem; border-bottom: 1px solid var(--mcp-border); }
+.mcp-problem-row > span { display: grid; width: 2.75rem; height: 2.75rem; flex: none; place-items: center; border-radius: var(--mcp-radius); background: var(--mcp-secondary); color: var(--mcp-secondary-foreground); }
+.mcp-feature-icon { display: grid; width: 2.75rem; height: 2.75rem; flex: none; place-items: center; border-radius: var(--mcp-radius); background: var(--mcp-accent-soft); color: var(--mcp-primary); }
+.mcp-problem-row svg, .mcp-feature-icon svg { width: 1.25rem; height: 1.25rem; }
+.mcp-problem-row p { margin-top: .4rem; color: var(--mcp-muted-foreground); line-height: 1.6; }
+
+.mcp-feature-card { padding: 1.75rem; border: 1px solid var(--mcp-border); border-radius: var(--mcp-radius); background: var(--mcp-card); box-shadow: 0 12px 36px color-mix(in oklch, var(--mcp-primary) 5%, transparent); }
+.mcp-feature-card p { margin-top: .4rem; color: var(--mcp-muted-foreground); line-height: 1.6; }
+.mcp-feature-card .mcp-media-placeholder { min-height: 190px; }
+.mcp-status-current { border-radius: 99px; background: var(--mcp-accent-soft); padding: .35rem .6rem; color: var(--mcp-primary); font-size: .68rem; font-weight: 800; text-transform: uppercase; }
+
+.mcp-process-step { position: relative; padding: 1.75rem; border-left: 1px solid var(--mcp-border); }
+.mcp-process-step > span { display: block; margin-bottom: 2rem; color: var(--mcp-accent); font-size: .78rem; font-weight: 800; }
+.mcp-process-step p { margin-top: .4rem; color: var(--mcp-muted-foreground); line-height: 1.6; }
+
+.mcp-offer-panel { display: grid; gap: 3rem; padding: clamp(2rem, 5vw, 4.5rem); border-radius: var(--mcp-radius); background: var(--mcp-dark); color: var(--mcp-dark-foreground); box-shadow: 0 24px 60px color-mix(in oklch, var(--mcp-primary) 18%, transparent); }
+.mcp-offer-panel h2 { color: var(--mcp-dark-foreground); }
+.mcp-offer-price { padding: 2rem; border: 1px solid var(--mcp-footer-border); border-radius: var(--mcp-radius); background: color-mix(in oklch, var(--mcp-dark) 72%, var(--mcp-background)); text-align: center; }
+.mcp-offer-price > span { color: var(--mcp-accent); font-size: .72rem; font-weight: 800; letter-spacing: .14em; }
+.mcp-offer-price strong { display: block; margin-top: .5rem; font: 800 4.5rem/1 var(--mcp-font-heading); }
+.mcp-offer-price > p { color: var(--mcp-dark-muted); }
+.mcp-offer-price small { display: block; margin-top: 1rem; color: var(--mcp-dark-muted); }
+@media (min-width: 768px) { .mcp-offer-panel { grid-template-columns: 1.35fr .65fr; align-items: center; } }
+
+.mcp-future-card { position: relative; min-height: 230px; padding: 1.5rem; border-radius: var(--mcp-radius); border-left: 3px solid var(--mcp-accent); background: var(--mcp-card); box-shadow: 0 8px 24px color-mix(in oklch, var(--mcp-primary) 5%, transparent); }
+.mcp-future-card svg { width: 1.6rem; height: 1.6rem; color: var(--mcp-accent); }
+.mcp-future-card > span { display: inline-block; margin: 1.5rem 0 .75rem; border-radius: 99px; padding: .25rem .5rem; background: var(--mcp-accent-soft); color: var(--mcp-primary); font-size: .65rem; font-weight: 800; text-transform: uppercase; }
+.mcp-future-card p { color: var(--mcp-muted-foreground); line-height: 1.6; }
+
+.mcp-mobile-access-bar { display: none; }
+
+/* Explicit show/hide-at-breakpoint helpers, scoped to this stylesheet.
+   Tailwind's own hidden/sm:inline-flex utilities are unreliable here:
+   this file loads as a separate stylesheet from Tailwind's generated
+   CSS, so which one wins a display:none vs display:inline-flex tie at
+   equal specificity depends on import order, not source order within
+   either file — confirmed broken in testing (the header's desktop-only
+   CTA stayed visible and wrapped awkwardly on a 390px screenshot). */
+.mcp-desktop-only { display: none; }
+@media (min-width: 640px) { .mcp-desktop-only { display: inline-flex; } }
+
+/* Interactive order-taking demo (PosDemo.tsx) — a small self-contained
+   "device screen" card, modeled after the real app's PosView/CheckoutDialog/
+   ReceiptPaper look but reimplemented with sample data, no backend. */
+.mcp-demo { border-radius: var(--mcp-radius); overflow: hidden; border: 1px solid var(--mcp-footer-border); background: var(--mcp-card); color: var(--mcp-foreground); box-shadow: 0 24px 60px color-mix(in oklch, var(--mcp-primary) 25%, transparent); }
+.mcp-demo-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .85rem 1.25rem; background: var(--mcp-dark); color: var(--mcp-dark-foreground); }
+.mcp-demo-bar strong { font-size: .85rem; font-weight: 800; }
+.mcp-demo-steps { display: flex; gap: .4rem; font-size: .64rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.mcp-demo-steps span { padding: .3rem .55rem; border-radius: 999px; color: var(--mcp-dark-muted); }
+.mcp-demo-steps span[data-active="true"] { background: var(--mcp-accent); color: var(--mcp-accent-foreground); }
+.mcp-demo-body { padding: 1.25rem; }
+@media (min-width: 768px) { .mcp-demo-body { padding: 1.75rem; } }
+
+.mcp-demo-grid { display: grid; gap: 1.5rem; }
+@media (min-width: 900px) { .mcp-demo-grid { grid-template-columns: 1.5fr 1fr; align-items: start; } }
+
+.mcp-demo-tally { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .55rem 1.25rem; background: color-mix(in oklch, var(--mcp-accent) 12%, var(--mcp-dark)); color: var(--mcp-dark-foreground); font-size: .74rem; font-weight: 700; }
+.mcp-demo-tally span { display: inline-flex; align-items: center; gap: .35rem; color: var(--mcp-dark-muted); }
+.mcp-demo-tally strong { color: var(--mcp-dark-foreground); }
+
+.mcp-demo-search { position: relative; margin-bottom: .85rem; }
+.mcp-demo-search svg { position: absolute; left: .85rem; top: 50%; transform: translateY(-50%); color: var(--mcp-muted-foreground); }
+.mcp-demo-search-input { padding-left: 2.4rem; margin-top: 0; }
+
+.mcp-demo-categories { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: .25rem; margin-bottom: 1rem; }
+.mcp-demo-chip { flex: none; height: 2.25rem; padding-inline: .9rem; border-radius: 999px; border: 1px solid var(--mcp-border); background: var(--mcp-background); font-size: .8rem; font-weight: 700; color: var(--mcp-foreground); }
+.mcp-demo-chip[data-active="true"] { background: var(--mcp-primary); border-color: var(--mcp-primary); color: var(--mcp-primary-foreground); }
+
+.mcp-demo-products { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; }
+@media (min-width: 520px) { .mcp-demo-products { grid-template-columns: repeat(3, 1fr); } }
+
+.mcp-demo-product { text-align: left; padding: .9rem; border-radius: var(--mcp-radius); border: 1px solid var(--mcp-border); background: var(--mcp-background); transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease; }
+.mcp-demo-product:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--mcp-primary); }
+.mcp-demo-product:active:not(:disabled) { transform: scale(.97); }
+.mcp-demo-product[data-added="true"] { border-color: var(--mcp-primary); box-shadow: 0 0 0 2px color-mix(in oklch, var(--mcp-primary) 35%, transparent); }
+.mcp-demo-product[data-soldout="true"] { opacity: .55; cursor: not-allowed; }
+.mcp-demo-product strong { display: block; margin-top: .5rem; font-size: .88rem; }
+.mcp-demo-product-row { display: flex; align-items: center; justify-content: space-between; gap: .5rem; color: var(--mcp-primary); }
+.mcp-demo-price { display: block; margin-top: .4rem; font-weight: 800; color: var(--mcp-primary); }
+.mcp-demo-stock { display: inline-flex; align-items: center; gap: .25rem; margin-top: .4rem; font-size: .68rem; font-weight: 700; color: var(--mcp-muted-foreground); }
+.mcp-demo-stock[data-low="true"] { color: var(--mcp-accent); }
+.mcp-demo-stock[data-out="true"] { color: var(--mcp-foreground); }
+
+@keyframes mcp-check-pop { 0% { transform: scale(.4); } 60% { transform: scale(1.25); } 100% { transform: scale(1); } }
+.mcp-demo-check-pop { animation: mcp-check-pop 320ms ease-out; }
+
+.mcp-demo-cart { display: flex; flex-direction: column; border-radius: var(--mcp-radius); border: 1px solid var(--mcp-border); background: var(--mcp-background); min-height: 320px; }
+.mcp-demo-cart-header { padding: 1rem 1.1rem; border-bottom: 1px solid var(--mcp-border); display: flex; align-items: center; justify-content: space-between; }
+.mcp-demo-cart-lines { flex: 1; padding: .5rem 1.1rem; }
+.mcp-demo-cart-line { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .65rem 0; border-bottom: 1px dashed var(--mcp-border); border-radius: .3rem; }
+.mcp-demo-cart-line:last-child { border-bottom: none; }
+@keyframes mcp-line-flash { 0% { background: color-mix(in oklch, var(--mcp-accent) 22%, transparent); } 100% { background: transparent; } }
+.mcp-demo-cart-line[data-flash="true"] { animation: mcp-line-flash 550ms ease-out; }
+.mcp-demo-qty { display: flex; align-items: center; gap: .5rem; }
+.mcp-demo-qty button { width: 1.6rem; height: 1.6rem; border-radius: .35rem; border: 1px solid var(--mcp-border); background: var(--mcp-card); font-weight: 800; line-height: 1; display: grid; place-items: center; }
+.mcp-demo-empty { padding: 2rem 1rem; text-align: center; color: var(--mcp-muted-foreground); }
+.mcp-demo-cart-footer { padding: 1rem 1.1rem; border-top: 1px solid var(--mcp-border); }
+.mcp-demo-total-row { display: flex; align-items: baseline; justify-content: space-between; padding: .6rem 0; font-weight: 800; font-size: 1.2rem; }
+
+.mcp-demo-toggle-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: .6rem; }
+.mcp-demo-toggle-btn { min-height: 2.75rem; padding: .4rem .5rem; border-radius: var(--mcp-radius); border: 1px solid var(--mcp-border); background: var(--mcp-card); font-weight: 700; line-height: 1.3; }
+.mcp-demo-toggle-btn[data-active="true"] { border-color: var(--mcp-primary); background: var(--mcp-accent-soft); color: var(--mcp-primary); }
+
+.mcp-demo-input { display: block; width: 100%; height: 2.75rem; margin-top: .4rem; padding-inline: .85rem; border-radius: var(--mcp-radius); border: 1px solid var(--mcp-border); background: var(--mcp-card); color: var(--mcp-foreground); font-size: 1rem; }
+.mcp-demo-input:focus-visible { outline: 2px solid var(--mcp-ring); outline-offset: 1px; }
+.mcp-demo-textarea { display: block; width: 100%; min-height: 3.5rem; margin-top: .75rem; padding: .65rem .85rem; border-radius: var(--mcp-radius); border: 1px solid var(--mcp-border); background: var(--mcp-card); color: var(--mcp-foreground); font: inherit; font-size: .85rem; resize: none; }
+.mcp-demo-textarea:focus-visible { outline: 2px solid var(--mcp-ring); outline-offset: 1px; }
+
+.mcp-demo-dashed-btn { display: flex; width: 100%; align-items: center; justify-content: space-between; padding: .7rem .9rem; border: 1px dashed var(--mcp-border); border-radius: var(--mcp-radius); background: transparent; font-size: .82rem; font-weight: 700; color: var(--mcp-primary); text-align: left; }
+.mcp-demo-line-row { display: flex; justify-content: space-between; padding: .3rem 0; color: var(--mcp-muted-foreground); font-size: .85rem; }
+
+.mcp-demo-overlay { position: absolute; inset: 0; z-index: 5; display: grid; place-items: center; padding: 1rem; background: color-mix(in oklch, var(--mcp-foreground) 45%, transparent); border-radius: var(--mcp-radius); }
+.mcp-demo-overlay-card { width: 100%; max-width: 24rem; border-radius: var(--mcp-radius); background: var(--mcp-background); border: 1px solid var(--mcp-border); box-shadow: 0 20px 48px color-mix(in oklch, var(--mcp-primary) 25%, transparent); overflow: hidden; }
+.mcp-demo-size-list { display: grid; gap: .9rem; padding: 1rem 1.1rem 1.25rem; }
+
+.mcp-demo-split-block { padding: .85rem; border: 1px solid var(--mcp-border); border-radius: var(--mcp-radius); background: var(--mcp-card); }
+.mcp-demo-split-label { display: block; margin-bottom: .5rem; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: var(--mcp-muted-foreground); }
+.mcp-demo-split-header { display: flex; align-items: center; justify-content: space-between; margin-top: .85rem; font-size: .82rem; font-weight: 800; }
+.mcp-demo-stepper { display: flex; gap: .5rem; }
+.mcp-demo-stepper button { width: 1.8rem; height: 1.8rem; border-radius: .4rem; border: 1px solid var(--mcp-border); background: var(--mcp-card); display: grid; place-items: center; }
+.mcp-demo-stepper button:disabled { opacity: .4; }
+.mcp-demo-modgroup-label { display: block; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: var(--mcp-muted-foreground); }
+
+.mcp-demo-receipt { max-width: 26rem; margin-inline: auto; padding: 1.75rem; border: 1px solid var(--mcp-border); background: var(--mcp-card); border-radius: .25rem; }
+.mcp-demo-receipt-head { text-align: center; }
+.mcp-demo-receipt-marker { margin: .85rem 0; padding: .6rem 0; border-block: 1px dashed var(--mcp-border); }
+.mcp-demo-receipt-line { display: flex; justify-content: space-between; gap: .5rem; font-size: .82rem; padding: .3rem 0; }
+
+.mcp-demo-success { position: relative; display: grid; place-items: center; height: 5.5rem; margin-bottom: -1.25rem; }
+.mcp-demo-success-check { color: var(--mcp-accent); animation: mcp-check-pop 420ms ease-out; }
+.mcp-demo-success-ring { position: absolute; width: 3.5rem; height: 3.5rem; border-radius: 999px; border: 2px solid var(--mcp-accent); animation: mcp-ring-pulse 900ms ease-out; }
+@keyframes mcp-ring-pulse { 0% { transform: scale(.6); opacity: .7; } 70% { opacity: 0; } 100% { transform: scale(1.7); opacity: 0; } }
+.mcp-demo-confetti-dot { position: absolute; width: .4rem; height: .4rem; border-radius: 999px; animation: mcp-confetti 700ms ease-out forwards; }
+@keyframes mcp-confetti { 0% { transform: translate(0, 0) rotate(0deg); opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); opacity: 0; } }
+
+@media (max-width: 767px) {
+  .mcp-section { padding-block: 4.5rem; }
+  .mcp-hero { background: var(--mcp-background); }
+  .mcp-mobile-access-bar { position: fixed; z-index: 60; right: .75rem; bottom: .75rem; left: .75rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .6rem .65rem .6rem 1rem; border: 1px solid var(--mcp-footer-border); border-radius: var(--mcp-radius); background: var(--mcp-dark); color: var(--mcp-dark-foreground); box-shadow: 0 12px 32px color-mix(in oklch, var(--mcp-primary) 32%, transparent); }
+  .mcp-mobile-access-bar strong, .mcp-mobile-access-bar span { display: block; }
+  .mcp-mobile-access-bar strong { font-size: .82rem; }
+  .mcp-mobile-access-bar span { color: var(--mcp-dark-muted); font-size: .67rem; }
+  .mcp-footer { padding-bottom: 7rem !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mcp * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

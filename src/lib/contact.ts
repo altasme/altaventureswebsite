@@ -53,7 +53,7 @@ export function buildQualifierPrefill(answers: QualifierAnswers): string {
  * flow once payment is ready; see CLAUDE.md §19.
  */
 export const FYB_PREFILL =
-  "Hi Altaventures! I'd like to get the ₱299 website offer for my business.";
+  "Hi Altaventures! I'd like to get the ₱599 website offer for my business.";
 
 /**
  * WhatsApp prefill for /b2b's "Message us instead" fallbacks (a checkout
@@ -63,3 +63,13 @@ export const FYB_PREFILL =
  */
 export const B2B_PREFILL =
   "Hi Altaventures! I'd like to get the ₱4,999 business website package.";
+
+/**
+ * WhatsApp prefill for the standalone /pricing page, tier-aware. That page
+ * is presentation-only (no checkout of its own), so every CTA opens
+ * ContactModal with a message naming the specific tier the visitor tapped,
+ * same spirit as FYB_PREFILL/B2B_PREFILL but personalized per plan.
+ */
+export function buildPricingPrefill(tierName: string, priceLabel: string): string {
+  return `Hi Altaventures! I'm interested in the ${tierName} plan (${priceLabel}). Can we talk about my business?`;
+}

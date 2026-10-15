@@ -1,6 +1,6 @@
 // content/portfolio.ts
-// Canonical portfolio data, shared by the main marketing site (altasme.com)
-// and the free-website landing page (altasme.com/limitedoffer). Descriptions
+// Canonical portfolio data, shared by the main marketing site (www.altasme.com)
+// and the free-website landing page (www.altasme.com/limitedoffer). Descriptions
 // are client-approved wording. No fabrication, no embellishment beyond what's
 // written here — see CLAUDE.md for placement rules per surface.
 
@@ -67,6 +67,18 @@ export const PORTFOLIO: Project[] = [
     description:
       "A professional landing page for an HR consultancy firm, with hosting and maintenance. Payroll and timekeeping system in future development talks.",
     tags: ["Website", "Professional Services"],
+  },
+  {
+    id: "alfiescardeals",
+    name: "AlfiesCarDeals.com",
+    url: "https://www.alfiescardeals.com",
+    category: "Car Dealership Website & Admin Panel",
+    tier: "system",
+    status: "live",
+    viewable: true,
+    description:
+      "A full car showcase website for a car agent, with an admin control panel to fully manage the website and its content. Application management system and CRM in future development talks.",
+    tags: ["Admin Panel", "Automotive", "Local"],
   },
   {
     id: "vocalyze",

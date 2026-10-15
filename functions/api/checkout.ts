@@ -5,7 +5,7 @@
 // with the ganap.net signing secret, which must never reach the client.
 //
 // Serves two offers off one function [2026-09-19, added for /b2b]: the
-// /foryourbusiness ₱299 website offer and the /b2b ₱4,999 complete
+// /foryourbusiness ₱599 website offer and the /b2b ₱4,999 complete
 // business website package. Both post the same shape of body (see
 // CheckoutPayload) plus an `offer` field selecting which OFFER_CONFIG
 // entry to use — same ganap.net project/credentials, same validation,
@@ -76,21 +76,52 @@ type OfferConfig = {
   failureRedirectUrl: string;
 };
 
-// foryourbusiness: raised to 499 [2026-09-11], reverted back to 299 [2026-09-16].
+// foryourbusiness: raised to 499 [2026-09-11], reverted back to 299
+// [2026-09-16], raised again to 599 [2026-10-02]. metadataOffer is
+// deliberately left as "foryourbusiness-299" through all three changes —
+// it's a SKU-like category label nothing branches on or displays, not a
+// live price statement, so renaming it would just drift out of sync with
+// every payment already recorded under that tag for no real benefit.
+//
+// foryourbusiness's amountPhp below is a fallback/base only — as of
+// 2026-10-04 the real charge is STARTER_PHP plus whatever optional annual
+// upgrade (if any) the customer validated-selected; see
+// FYB_UPGRADE_PRICES and resolveForyourbusinessAmount() below. b2b is
+// unaffected and still a flat deposit.
 const OFFER_CONFIG: Record<OfferId, OfferConfig> = {
   foryourbusiness: {
-    amountPhp: 299,
+    amountPhp: 599,
     metadataOffer: "foryourbusiness-299",
-    successRedirectUrl: "https://altasme.com/foryourbusiness/thank-you",
-    failureRedirectUrl: "https://altasme.com/foryourbusiness/checkout?retry=1",
+    successRedirectUrl: "https://www.altasme.com/foryourbusiness/thank-you",
+    failureRedirectUrl: "https://www.altasme.com/foryourbusiness/checkout?retry=1",
   },
   b2b: {
     amountPhp: 2499, // deposit of the ₱4,999 total; ₱2,500 balance invoiced separately on completion
     metadataOffer: "b2b-4999-deposit",
-    successRedirectUrl: "https://altasme.com/b2b/thank-you",
-    failureRedirectUrl: "https://altasme.com/b2b/checkout?retry=1",
+    successRedirectUrl: "https://www.altasme.com/b2b/thank-you",
+    failureRedirectUrl: "https://www.altasme.com/b2b/checkout?retry=1",
   },
 };
+
+// Optional annual upgrades for the foryourbusiness offer only [added
+// 2026-10-04]. "none" is the default; the ₱5,700 tier replaces the ₱1,500
+// one, they are never charged together — enforced simply by this being a
+// single selected value, not a set. These are the only amounts this
+// function will ever compute for foryourbusiness; the client never sends
+// (or is trusted for) a price or total directly.
+type FybUpgradeType = "none" | "domain_hosting" | "business_tools";
+
+const STARTER_PHP = 599;
+
+const FYB_UPGRADE_PRICES: Record<FybUpgradeType, number> = {
+  none: 0,
+  domain_hosting: 1500,
+  business_tools: 5700,
+};
+
+function isFybUpgradeType(value: unknown): value is FybUpgradeType {
+  return value === "none" || value === "domain_hosting" || value === "business_tools";
+}
 
 // Every test-mode checkout returns this literal placeholder as redirectUrl
 // (case can vary — browsers normalize URL schemes to lowercase when
@@ -106,13 +137,18 @@ const MAX_FIELD_LENGTH = 200;
 
 type CheckoutPayload = {
   offer: OfferId;
-  fullName: string;
+  fullName: string; // on foryourbusiness, this is the questionnaire's "Contact Person"
   businessName: string;
   email: string;
   phone: string;
   facebook: string;
   instagram: string;
   existingWebsite: string;
+  // foryourbusiness-only fields [2026-10-04]. b2b never sends these;
+  // defaulted so b2b's existing request shape still validates unchanged.
+  businessCategory: string;
+  businessDescription: string;
+  upgradeType: FybUpgradeType;
 };
 
 type RedirectKind = "url" | "qr-image" | "qr-payload" | "test-placeholder";
@@ -140,6 +176,9 @@ function validate(body: unknown): { data: CheckoutPayload } | { error: string } 
   const facebook = typeof b.facebook === "string" ? sanitizeLine(b.facebook) : "";
   const instagram = typeof b.instagram === "string" ? sanitizeLine(b.instagram) : "";
   const existingWebsite = typeof b.existingWebsite === "string" ? sanitizeLine(b.existingWebsite) : "";
+  const businessCategory = typeof b.businessCategory === "string" ? sanitizeLine(b.businessCategory) : "";
+  const businessDescription = typeof b.businessDescription === "string" ? b.businessDescription.trim() : "";
+  const upgradeType: FybUpgradeType = isFybUpgradeType(b.upgradeType) ? b.upgradeType : "none";
   const termsAccepted = b.termsAccepted === true;
   const privacyAccepted = b.privacyAccepted === true;
 
@@ -152,8 +191,31 @@ function validate(body: unknown): { data: CheckoutPayload } | { error: string } 
   if (!termsAccepted) return { error: "Please agree to the Terms of Sale and Refund Policy." };
   if (!privacyAccepted) return { error: "Please agree to the Privacy Notice." };
 
+  // Only foryourbusiness's questionnaire collects these; b2b's checkout
+  // form never sends them, so they're not required when offer is "b2b".
+  if (offer === "foryourbusiness") {
+    if (!businessCategory || businessCategory.length > MAX_FIELD_LENGTH) {
+      return { error: "Business category is required." };
+    }
+    if (!businessDescription || businessDescription.length > 2000) {
+      return { error: "Please tell us about your business and what you offer." };
+    }
+  }
+
   return {
-    data: { offer, fullName, businessName, email, phone, facebook, instagram, existingWebsite },
+    data: {
+      offer,
+      fullName,
+      businessName,
+      email,
+      phone,
+      facebook,
+      instagram,
+      existingWebsite,
+      businessCategory,
+      businessDescription,
+      upgradeType,
+    },
   };
 }
 
@@ -199,9 +261,25 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
   const idempotencyKey = crypto.randomUUID();
 
+  // Server-computed, never trusted from the client: foryourbusiness's
+  // total is the Starter price plus whatever upgrade (if any) was
+  // validated above; b2b is unchanged, a flat deposit.
+  const upgradePrice = data.offer === "foryourbusiness" ? FYB_UPGRADE_PRICES[data.upgradeType] : 0;
+  const amountPhp = data.offer === "foryourbusiness" ? STARTER_PHP + upgradePrice : offerConfig.amountPhp;
+
+  // foryourbusiness's thank-you page reads its own order reference back
+  // off this query param (the same idempotencyKey used as the D1 row id
+  // and ganap's externalReference) so the customer can actually see and
+  // screenshot it, per the no-account "talk to your developer" journey.
+  // b2b's redirect is untouched.
+  const successRedirectUrl =
+    data.offer === "foryourbusiness"
+      ? `${offerConfig.successRedirectUrl}?ref=${encodeURIComponent(idempotencyKey)}`
+      : offerConfig.successRedirectUrl;
+
   const ganapBody = JSON.stringify({
     projectUuid: env.GANAP_PROJECT_UUID,
-    amount: offerConfig.amountPhp,
+    amount: amountPhp,
     idempotencyKey,
     customerName: data.fullName,
     customerEmail: data.email,
@@ -212,9 +290,18 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       facebook: data.facebook || undefined,
       instagram: data.instagram || undefined,
       existingWebsite: data.existingWebsite || undefined,
+      businessCategory: data.businessCategory || undefined,
+      upgradeType: data.offer === "foryourbusiness" ? data.upgradeType : undefined,
+      upgradePrice: data.offer === "foryourbusiness" ? upgradePrice : undefined,
+      // Duplicate of upgradeType under the key name a different, concurrently-
+      // built checkout-redesign attempt used (see CLAUDE.md §38's merge note)
+      // — kept alongside upgradeType in case any webhook consumer (e.g. a
+      // clienthub-side plan-assignment handler) was already built against
+      // that key. Purely additive; this function's own logic never reads it.
+      upgrade: data.offer === "foryourbusiness" ? data.upgradeType : undefined,
       offer: offerConfig.metadataOffer,
     },
-    successRedirectUrl: offerConfig.successRedirectUrl,
+    successRedirectUrl,
     failureRedirectUrl: offerConfig.failureRedirectUrl,
   });
 
@@ -222,8 +309,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     try {
       const now = new Date().toISOString();
       await env.DB.prepare(
-        `INSERT INTO orders (id, status, full_name, business_name, email, phone, facebook, instagram, existing_website, amount, created_at, updated_at)
-         VALUES (?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        `INSERT INTO orders (id, status, full_name, business_name, email, phone, facebook, instagram, existing_website, business_category, business_description, upgrade_type, upgrade_price, amount, created_at, updated_at)
+         VALUES (?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
       )
         .bind(
           idempotencyKey,
@@ -234,7 +321,11 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
           data.facebook || null,
           data.instagram || null,
           data.existingWebsite || null,
-          offerConfig.amountPhp,
+          data.businessCategory || null,
+          data.businessDescription || null,
+          data.upgradeType,
+          upgradePrice,
+          amountPhp,
           now,
           now
         )

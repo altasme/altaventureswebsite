@@ -4,9 +4,11 @@ import { track } from "../../../lib/analytics";
 import Section from "../../ui/Section";
 import Tag from "../../ui/Tag";
 import Reveal from "../../offer/Reveal";
+import DecorativeShapes from "../DecorativeShapes";
 
 function ProjectCard({ id }: { id: string }) {
   const project = PORTFOLIO_BY_ID[id];
+  const description = FYB_PORTFOLIO.descriptionOverrides[id] ?? project.description;
   return (
     <a
       href={project.url ?? undefined}
@@ -29,7 +31,7 @@ function ProjectCard({ id }: { id: string }) {
       <div className="flex flex-1 flex-col p-6">
         <p className="text-xs font-semibold tracking-wide text-brand-blue">{project.category}</p>
         <h3 className="mt-1 text-lg font-bold text-ink">{project.name}</h3>
-        <p className="mt-2 flex-1 text-sm text-ink/60">{project.description}</p>
+        <p className="mt-2 flex-1 text-sm text-ink/60">{description}</p>
 
         <div className="mt-4 flex flex-wrap gap-2">
           {project.tags.map((tag) => (
@@ -48,42 +50,47 @@ function ProjectCard({ id }: { id: string }) {
 export default function FybPortfolio({ onCheckout }: { onCheckout: () => void }) {
   return (
     <Section id="fyb-portfolio" tone="alt">
-      <h2 className="max-w-2xl text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
-        {FYB_PORTFOLIO.headline}
-      </h2>
-      <p className="mt-3 max-w-md text-base text-ink/60">{FYB_PORTFOLIO.sub}</p>
+      <div className="relative">
+        <DecorativeShapes variant={3} />
+        <div className="relative">
+          <h2 className="max-w-2xl text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
+            {FYB_PORTFOLIO.headline}
+          </h2>
+          <p className="mt-3 max-w-md text-base text-ink/60">{FYB_PORTFOLIO.sub}</p>
 
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {FYB_PORTFOLIO.primaryIds.map((id, i) => (
-          <Reveal key={id} delayMs={i * 70}>
-            <ProjectCard id={id} />
-          </Reveal>
-        ))}
-      </div>
-
-      {FYB_PORTFOLIO.advancedIds.length > 0 && (
-        <div className="mt-14">
-          <p className="text-sm font-semibold uppercase tracking-wide text-ink/40">
-            {FYB_PORTFOLIO.advancedLabel}
-          </p>
-          <div className="mt-4 grid gap-6 sm:grid-cols-2">
-            {FYB_PORTFOLIO.advancedIds.map((id, i) => (
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {FYB_PORTFOLIO.primaryIds.map((id, i) => (
               <Reveal key={id} delayMs={i * 70}>
                 <ProjectCard id={id} />
               </Reveal>
             ))}
           </div>
-        </div>
-      )}
 
-      <div className="mt-10">
-        <button
-          type="button"
-          onClick={onCheckout}
-          className="text-sm font-semibold text-brand-blue hover:underline"
-        >
-          {FYB_PORTFOLIO.cta}
-        </button>
+          {FYB_PORTFOLIO.advancedIds.length > 0 && (
+            <div className="mt-14">
+              <p className="text-sm font-semibold uppercase tracking-wide text-ink/40">
+                {FYB_PORTFOLIO.advancedLabel}
+              </p>
+              <div className="mt-4 grid gap-6 sm:grid-cols-2">
+                {FYB_PORTFOLIO.advancedIds.map((id, i) => (
+                  <Reveal key={id} delayMs={i * 70}>
+                    <ProjectCard id={id} />
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="mt-10">
+            <button
+              type="button"
+              onClick={onCheckout}
+              className="text-sm font-semibold text-brand-blue hover:underline"
+            >
+              {FYB_PORTFOLIO.cta}
+            </button>
+          </div>
+        </div>
       </div>
     </Section>
   );

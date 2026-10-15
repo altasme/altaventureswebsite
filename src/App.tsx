@@ -8,15 +8,14 @@ import Footer from "./components/layout/Footer";
 import StickyMobileCTA from "./components/layout/StickyMobileCTA";
 
 import Hero from "./components/sections/Hero";
-import CredibilityStrip from "./components/sections/CredibilityStrip";
+import TrustSignals from "./components/sections/TrustSignals";
 import ProblemSection from "./components/sections/ProblemSection";
 import ServicesSection from "./components/sections/ServicesSection";
 import SelectedWork from "./components/sections/SelectedWork";
-import PortfolioConversion from "./components/sections/PortfolioConversion";
 import WhyAltaventures from "./components/sections/WhyAltaventures";
-import ComplimentaryOffer from "./components/sections/ComplimentaryOffer";
 import HowItWorks from "./components/sections/HowItWorks";
-import Industries from "./components/sections/Industries";
+import Testimonials from "./components/sections/Testimonials";
+import WhoWeBuildFor from "./components/sections/WhoWeBuildFor";
 import FAQ from "./components/sections/FAQ";
 import FinalCTA from "./components/sections/FinalCTA";
 import About from "./components/sections/About";
@@ -26,6 +25,9 @@ import CaseStudyModal from "./components/modals/CaseStudyModal";
 import LegalModal from "./components/modals/LegalModal";
 
 const WsaFreePage = lazy(() => import("./pages/WsaFreePage"));
+const WsaProPage = lazy(() => import("./pages/WsaProPage"));
+const ProposalPage = lazy(() => import("./pages/ProposalPage"));
+const QuestionsPage = lazy(() => import("./pages/QuestionsPage"));
 const LimitedOfferPage = lazy(() => import("./pages/LimitedOfferPage"));
 const ForYourBusinessPage = lazy(() => import("./pages/ForYourBusinessPage"));
 const ForYourBusinessCheckoutPage = lazy(() => import("./pages/ForYourBusinessCheckoutPage"));
@@ -33,6 +35,8 @@ const ForYourBusinessThankYouPage = lazy(() => import("./pages/ForYourBusinessTh
 const B2BPage = lazy(() => import("./pages/B2BPage"));
 const B2BCheckoutPage = lazy(() => import("./pages/B2BCheckoutPage"));
 const B2BThankYouPage = lazy(() => import("./pages/B2BThankYouPage"));
+const MyCafePosPage = lazy(() => import("./pages/MyCafePosPage"));
+const PricingPage = lazy(() => import("./pages/PricingPage"));
 
 function PageContent() {
   useScrollDepth();
@@ -42,15 +46,14 @@ function PageContent() {
       <Nav />
       <main className="pb-16 md:pb-0">
         <Hero />
-        <CredibilityStrip />
+        <TrustSignals />
         <ProblemSection />
         <ServicesSection />
         <SelectedWork />
-        <PortfolioConversion />
         <WhyAltaventures />
-        <ComplimentaryOffer />
         <HowItWorks />
-        <Industries />
+        <Testimonials />
+        <WhoWeBuildFor />
         <FAQ />
         <FinalCTA />
         <About />
@@ -81,6 +84,30 @@ export default function App() {
         element={
           <Suspense fallback={null}>
             <WsaFreePage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/WSA-pro"
+        element={
+          <Suspense fallback={null}>
+            <WsaProPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/proposal/:slug"
+        element={
+          <Suspense fallback={null}>
+            <ProposalPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/questions/:slug"
+        element={
+          <Suspense fallback={null}>
+            <QuestionsPage />
           </Suspense>
         }
       />
@@ -137,6 +164,22 @@ export default function App() {
         element={
           <Suspense fallback={null}>
             <B2BThankYouPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/mycafepos"
+        element={
+          <Suspense fallback={null}>
+            <MyCafePosPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/pricing"
+        element={
+          <Suspense fallback={null}>
+            <PricingPage />
           </Suspense>
         }
       />

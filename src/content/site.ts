@@ -21,7 +21,7 @@ export const CONTACT = {
     supportsPrefill: false,
   },
   messenger: {
-    handle: "vanamaranto.moto",
+    handle: "61584449870702",
     supportsPrefill: false,
   },
 } as const;
@@ -38,34 +38,41 @@ export const NAV_LINKS = [
 // Hero
 // ---------------------------------------------------------------------------
 
-export const HERO = {
-  eyebrow: BRAND.tagline,
-  headline: "Build a Better Digital Business.",
-  sub: "Altaventures builds professional websites, digital tools, and business systems designed around the way your business actually works.",
-  line: "For Philippine businesses ready to build, improve, or digitalize their business online.",
-  primaryCta: "Let's Talk About Your Business",
-  secondaryCta: "See What We've Built",
-  trustLine: "Built for real businesses. Designed around real business needs.",
-  // WebP variants (62-64% smaller than the JPEGs) are tried first via
-  // <picture>; the JPEGs stay as the fallback source, not dead files.
-  backgroundImageDesktopWebp: "/images/hero/hero-bg-wide.webp",
-  backgroundImageDesktop: "/images/hero/hero-bg-wide.jpg",
-  backgroundImageMobileWebp: "/images/hero/hero-bg-mobile.webp",
-  backgroundImageMobile: "/images/hero/hero-bg-mobile.jpg",
-  backgroundAlt: "Business owner smiling with coffee in a modern office, surrounded by laptops and monitors",
+// Below-hero stat band. Same discriminated-union shape (kind: "counter" |
+// "range" | "static") as /foryourbusiness's FYB_TRUST_SIGNALS, animated via
+// useCountUp + useInView (scroll-gated, since this band can sit below the
+// fold on shorter viewports). "static" isn't a number here, just a short
+// status phrase, which the shared StatValue pattern already supports as a
+// plain string value.
+export const TRUST_SIGNALS = {
+  stats: [
+    { kind: "counter", countTo: 20, suffix: "+", label: "Websites and businesses launched" },
+    { kind: "range", from: 3, to: 7, label: "Days average turnaround time" },
+    { kind: "static", value: "Open", label: "For projects and partnerships" },
+  ],
 } as const;
 
-// ---------------------------------------------------------------------------
-// Credibility strip
-// ---------------------------------------------------------------------------
-
-export const CREDIBILITY_STRIP = {
-  headline: "Not Just Websites. Real Business Systems.",
-  sub: "Every project below is a live, working system built for a real Philippine business, not a template or a mockup.",
-  cta: "Explore Our Work",
-  // Shows range: two systems, one commerce, one site. Data itself lives in
-  // content/portfolio.ts, the canonical source shared with /limitedoffer.
-  featuredIds: ["altamotors", "aurielle", "leanandfit", "vocalyze"],
+export const HERO = {
+  headline: "Get a Website That Helps Your Business Grow.",
+  sub: "We build professional websites, booking systems, and business tools that make it easier for customers to find you, trust you, and do business with you.",
+  line: "Tell us what your business needs, and we'll recommend the right solution for you.",
+  primaryCta: "Let's Talk About Your Business",
+  secondaryCta: "See What We've Built",
+  // [2026-10-07] Switched from the self-hosted AI-generated photo (§0.7's
+  // original exception) to the same real, operator-supplied photo already
+  // used on /foryourbusiness and /b2b, per the operator's direct request to
+  // align the homepage hero with the other funnel pages. Cloudinary's
+  // f_auto,q_auto negotiates WebP/AVIF automatically per request even on a
+  // plain <img> (no <picture>/source needed, unlike the old self-hosted
+  // JPEG+WebP pair), so there's no separate Webp field here, matching
+  // FYB_HERO's own shape in content/foryourbusiness.ts. The old self-hosted
+  // files remain in public/images/hero/ (unused, not deleted) in case a
+  // homepage-specific photo is wanted again later.
+  backgroundImageDesktop:
+    "https://res.cloudinary.com/dikrjc8nx/image/upload/f_auto,q_auto/v1791164586/Hero_full_bleed_cai8aw_zhqmrf.jpg",
+  backgroundImageMobile:
+    "https://res.cloudinary.com/dikrjc8nx/image/upload/f_auto,q_auto/v1791164587/Hero_mobile_zzu60d_gsgsxm.jpg",
+  backgroundAlt: "A small business owner working on their new website",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -73,26 +80,34 @@ export const CREDIBILITY_STRIP = {
 // ---------------------------------------------------------------------------
 
 export const PROBLEMS = {
-  headline: "Does Your Business Need More Than a Facebook Page?",
-  cta: "Tell Us What's Holding Your Business Back",
+  headline: "Is Your Business Ready for the Next Level?",
+  intro: [
+    "As your business grows, the way you work needs to grow with it.",
+    "You might be dealing with one of these:",
+  ],
   items: [
     {
-      title: "You're Losing Customers to a Weak First Impression",
-      copy: "A Facebook page can't show up in Google search, load fast on mobile, or make your business look as established as it actually is. Customers judge credibility in seconds.",
+      title: "Customers Can't Easily Find or Trust Your Business",
+      copy: "Your Facebook page gets attention, but customers need a better place to learn about your business, explore your services, and take the next step.",
     },
     {
-      title: "You're Managing Bookings, Orders, or Payments by Hand",
-      copy: "Messenger threads, spreadsheets, and sticky notes don't scale. Every manual step is a chance for something to be missed, double-booked, or lost.",
+      title: "You're Doing Too Much Manually",
+      copy: "Taking bookings, answering the same questions, collecting information, or managing orders shouldn't require you to do everything yourself.",
     },
     {
-      title: "Your Systems Don't Talk to Each Other",
-      copy: "Sales in one place, records in another, follow-ups nowhere. Without a connected system, growth just means more chaos, not more revenue.",
+      title: "Your Tools Don't Work Together",
+      copy: "Your website, bookings, customer information, payments, and other processes can become scattered across different platforms. That's when things start getting messy.",
     },
     {
-      title: "You Don't Have Time to Manage Any of This Yourself",
-      copy: "You're running the business, not building software. You need a system that works quietly in the background, not another project on your plate.",
+      title: "Your Business Is Growing, But Your System Isn't",
+      copy: "More customers should mean more opportunities. Not more spreadsheets, messages, follow-ups, and things to keep track of.",
     },
   ],
+  closing: {
+    lead: "You don't necessarily need more tools. You need the right system for your business.",
+    body: "That's where Altaventures comes in.",
+  },
+  cta: "Tell Us What Your Business Needs",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -100,72 +115,70 @@ export const PROBLEMS = {
 // ---------------------------------------------------------------------------
 
 export const SERVICES = {
-  headline: "Digital Solutions Built Around Your Business",
+  headline: "Whatever Your Business Needs, We Can Build Around It.",
+  sub: "From getting your first website online to replacing manual processes with connected systems, we build practical digital solutions around the way your business actually works.",
   items: [
-      {
+    {
       id: "websites",
-      name: "Business Websites",
-      outcome: "A Website That Works as Hard as You Do",
+      name: "Get Your Business Online",
+      outcome: "A website that gives customers a better way to discover and contact you.",
       capabilities: [
-        "Professional, mobile-first design",
-        "Built to convert visitors into conversations",
-        "Fast-loading, search-friendly pages",
-        "Easy to update as your business grows",
+        "Professional, mobile-friendly design",
+        "Services, products, and business information",
+        "Inquiry and contact features",
+        "Built around your goals",
       ],
-      cta: "I Need a Website",
-      referenceIds: [],
+      cta: "I want to improve my online presence",
     },
     {
       id: "booking",
-      name: "Booking & Scheduling",
-      outcome: "Stop Managing Bookings by Hand",
+      name: "Make Booking Easier",
+      outcome: "Give customers an easier way to book while reducing the work your team has to do.",
       capabilities: [
-        "Online booking and calendar management",
+        "Online booking",
+        "Calendar management",
         "Automated confirmations and reminders",
         "Staff and resource scheduling",
-        "Built around how your business actually operates",
       ],
-      cta: "I Need a Booking System",
-      referenceIds: ["setmona"],
+      cta: "I need a better booking process",
     },
     {
       id: "management",
-      name: "Business Management Systems",
-      outcome: "Run Your Operations From One Place",
+      name: "Organize Your Business",
+      outcome: "Replace scattered spreadsheets, messages, and manual processes with a system built around your workflow.",
       capabilities: [
-        "Loan, billing, and collections tracking",
-        "Financing and sales record management",
-        "Custom dashboards for owners and staff",
-        "Built to match your existing workflow, not replace it",
+        "Customer and sales records",
+        "Billing and collections",
+        "Dashboards and reporting",
+        "Custom workflows",
       ],
-      cta: "I Need a Management System",
-      referenceIds: ["altamotors", "kolekta"],
+      cta: "I need a better way to manage my business",
     },
     {
       id: "ecommerce",
-      name: "E-commerce",
-      outcome: "Sell Online Without the Guesswork",
+      name: "Start Selling Online",
+      outcome: "Give customers a simple way to browse, order, and pay online.",
       capabilities: [
-        "Product catalogs and online ordering",
-        "Payment and inventory-aware workflows",
-        "Mobile-first shopping experience",
-        "Designed to grow with your catalog",
+        "Product catalogs",
+        "Online ordering",
+        "Payment workflows",
+        "Inventory-aware processes",
       ],
-      cta: "I Need to Sell Online",
-      referenceIds: [],
+      cta: "I want to sell online",
     },
     {
       id: "digitalization",
-      name: "Business Digitalization",
-      outcome: "Move Your Business Online, Properly",
+      name: "Digitalize Your Business",
+      outcome: "Have a Process That Needs Fixing? Let's Build Around It.",
+      intro:
+        "If you're still relying on paper, spreadsheets, chat messages, or disconnected tools, we'll help you figure out what can be simplified or automated.",
       capabilities: [
-        "Digitizing manual, paper-based processes",
-        "Centralizing scattered records and tools",
-        "Systems that fit your business, not the other way around",
-        "A clear, guided path from where you are to where you want to be",
+        "Digitize manual processes",
+        "Connect scattered information",
+        "Build custom workflows",
+        "Create systems around how your business operates",
       ],
-      cta: "I Need to Digitalize My Business",
-      referenceIds: [],
+      cta: "Talk to us about your business",
     },
   ],
 } as const;
@@ -219,20 +232,38 @@ export const CASE_STUDY_DETAILS: Record<
 };
 
 export const SELECTED_WORK = {
-  headline: "We've Built It. Now Let's Build Yours.",
+  headline: "Built for Real Businesses. Designed to Do Real Work.",
+  sub: "See how we've helped businesses turn ideas, manual processes, and online needs into websites and digital systems that actually work.",
   viewWebsiteLabel: "View Website",
   viewDetailsLabel: "View Details",
   studioLine: "Currently in the studio:",
-} as const;
-
-// ---------------------------------------------------------------------------
-// Portfolio conversion
-// ---------------------------------------------------------------------------
-
-export const PORTFOLIO_CONVERSION = {
-  headline: "What Could We Build for Your Business?",
-  sub: "Every system on this page started as a conversation about a real business problem. Yours could be next.",
-  cta: "Let's Talk About Your Business",
+  // Explicit display order [2026-10-07], per the operator's direct request:
+  // Lean and Fit, Aurielle, AMR, Imago lead the grid; Setmona and Kolekta
+  // (engine-tier, no public URL) are hidden entirely; Altamotors closes the
+  // grid. Every other project keeps its prior canonical-order position.
+  // This supersedes rendering content/portfolio.ts's PORTFOLIO directly.
+  // Updated [2026-10-11]: AlfiesCarDeals added next to DM HR, and Vocalyze
+  // moved to the bottom of the regular list (just before Altamotors, which
+  // stays last by its own earlier, separate instruction), both per the
+  // operator's direct request.
+  order: [
+    "leanandfit",
+    "aurielle",
+    "amr-bookkeeping",
+    "imago-productions",
+    "dmhr",
+    "alfiescardeals",
+    "aulea",
+    "pocketg7iii",
+    "macquias",
+    "ascend-volleyball",
+    "clickandkeep",
+    "adrayan-law",
+    "camsnap",
+    "onyx-clouds",
+    "vocalyze",
+    "altamotors",
+  ],
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -240,37 +271,26 @@ export const PORTFOLIO_CONVERSION = {
 // ---------------------------------------------------------------------------
 
 export const WHY_ALTAVENTURES = {
-  headline: "Built Around Your Business.",
+  headline: "We Don't Just Build Websites. We Understand the Business Behind Them.",
+  sub: "A website is only useful when it supports what your business is trying to accomplish. That's why we start by understanding how your business works, what your customers need, and what you're trying to improve.",
   points: [
     {
-      title: "Business First",
-      copy: "We start with how your business actually operates, not with a template. The system fits the business, not the other way around.",
+      title: "Built Around Your Business",
+      copy: "No one-size-fits-all solution. We build around your actual requirements.",
     },
     {
-      title: "More Than Websites",
-      copy: "Websites, booking systems, management tools, e-commerce: we build the parts of your business that need to run online, together.",
+      title: "Practical, Not Overcomplicated",
+      copy: "We focus on tools and features that serve a purpose.",
     },
     {
-      title: "Designed to Grow",
-      copy: "What we build today is built to be extended tomorrow. You won't need to start over as your business scales.",
+      title: "Built to Grow With You",
+      copy: "Start with what you need today and expand as your business grows.",
     },
     {
-      title: "Practical",
-      copy: "No unnecessary complexity, no features you'll never use. Just the systems your business needs to run better.",
+      title: "One Partner for More Than Just a Website",
+      copy: "From your website to booking, e-commerce, and custom business systems.",
     },
   ],
-} as const;
-
-// ---------------------------------------------------------------------------
-// Complimentary offer
-// ---------------------------------------------------------------------------
-
-export const COMPLIMENTARY_OFFER = {
-  headline: "Need a Website? Let Us Build It.",
-  offerLine: "We'll build your flagship website free: you only pay for the domain.",
-  support:
-    "Tell us about your business. If you're a good fit, we'll discuss how we can build and launch a professional website around your business.",
-  cta: "See If We're a Good Fit",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -278,59 +298,103 @@ export const COMPLIMENTARY_OFFER = {
 // ---------------------------------------------------------------------------
 
 export const HOW_IT_WORKS = {
-  headline: "From Idea to Launch.",
+  headline: "Not Sure What You Need? We'll Figure It Out Together.",
   cta: "Start a Conversation",
   steps: [
     {
       number: 1,
-      title: "Talk",
-      copy: "Start a conversation on Messenger, Viber, or WhatsApp and tell us about your business.",
+      title: "Tell Us About Your Business",
+      copy: "Tell us what you do, what's currently working, and what's giving you trouble.",
     },
     {
       number: 2,
-      title: "Understand",
-      copy: "We ask questions about how your business actually runs, not just what you think you want built.",
+      title: "We Understand What You Need",
+      copy: "We'll look at your goals, workflow, and requirements and identify the right approach.",
     },
     {
       number: 3,
-      title: "Recommend",
-      copy: "We recommend the right solution for your business and budget, not the most expensive one.",
+      title: "We Recommend a Solution",
+      copy: "We'll explain what we recommend, what it can do, and what the project involves.",
     },
     {
       number: 4,
-      title: "Build",
-      copy: "We design and build your website or system, keeping you in the loop the whole way.",
-    },
-    {
-      number: 5,
-      title: "Launch",
-      copy: "We launch your site or system and make sure it's working the way your business needs it to.",
-    },
-    {
-      number: 6,
-      title: "Grow",
-      copy: "We're available as your business grows and your needs change. This isn't a one-and-done handoff.",
+      title: "We Build It",
+      copy: "Once we're aligned, we turn the plan into a working website or system.",
     },
   ],
 } as const;
 
 // ---------------------------------------------------------------------------
-// Industries
+// Testimonials [2026-10-07]. No real testimonial photos have actually been
+// supplied yet (the operator's own request referenced "uploaded" photos,
+// but this session's uploads held only the instruction text file, confirmed
+// via directory listing before writing this). Per the site-wide
+// real-work-only guardrail (§16), `items` stays empty until real photos
+// are supplied — Testimonials.tsx renders an honest "coming soon" state
+// instead of a placeholder/fabricated grid. Add real entries here (each a
+// real supplied photo) once available; the component's zoomable lightbox
+// already works for however many are added.
 // ---------------------------------------------------------------------------
 
-export const INDUSTRIES = {
-  headline: "Built for Businesses Like Yours.",
-  line: "Don't see your industry? That's okay. Tell us what your business needs.",
-  cta: "Tell Us About Your Business",
+export const TESTIMONIALS = {
+  headline: "Don't Take Our Word For It.",
+  sub: "See what our clients have to say about working with Altaventures.",
   items: [
-    "Automotive & Motorcycle Dealers",
-    "Lending & Financing",
-    "Salons & Spas",
-    "Clinics & Wellness",
-    "Home & Trade Services",
-    "Retail & E-commerce",
-    "Entertainment & Events",
-    "Professional Services",
+    {
+      src: "/images/testimonials/testimonial-1.png",
+      alt: "Facebook recommendation from Larmy Ramirez: \"Highly recommended Sir Van and Altaventures for your website needs! Smooth transaction, professional service, and very easy to work with.\"",
+    },
+    {
+      src: "/images/testimonials/testimonial-2.png",
+      alt: "Messenger message from a client: \"Good morning po sir napaganda po ng nagawa nyo appreciated po solid.\"",
+    },
+    {
+      src: "/images/testimonials/testimonial-3.png",
+      alt: "Messenger exchange where a client confirms their new website is being used and visited by renters, and linked in their business's social media bios.",
+    },
+    {
+      src: "/images/testimonials/testimonial-4.png",
+      alt: "Messenger exchange announcing the Imago Productions website going live, with the client replying \"thank you galing!\"",
+    },
+    {
+      src: "/images/testimonials/testimonial-5.png",
+      alt: "Messenger message from a client: \"thank you po, ang gandaaa i like the preview din, salamat po.\"",
+    },
+    {
+      src: "/images/testimonials/testimonial-6.png",
+      alt: "Messenger message from Pauline: \"Thank you po sir. The website looks amazingggg!\"",
+    },
+  ] as { src: string; alt: string }[],
+} as const;
+
+// ---------------------------------------------------------------------------
+// Who we build for (replaces the old industry-vertical "Industries"
+// section [2026-10-07]: business readiness/stage, not industry type)
+// ---------------------------------------------------------------------------
+
+export const WHO_WE_BUILD_FOR = {
+  headline: "Built for Businesses That Are Ready to Move Forward.",
+  items: [
+    {
+      title: "Starting a Business",
+      copy: "You need a professional online presence without overcomplicating things.",
+    },
+    {
+      title: "Growing Business",
+      copy: "Your current website or processes aren't keeping up anymore.",
+    },
+    {
+      title: "Service Business",
+      copy: "You need better inquiries, booking, customer management, or scheduling.",
+    },
+    {
+      title: "Selling Online",
+      copy: "You want customers to browse, order, and pay online.",
+    },
+    {
+      title: "Businesses With Manual Processes",
+      copy: "You're tired of spreadsheets, paperwork, and repetitive work.",
+    },
   ],
 } as const;
 
@@ -339,15 +403,15 @@ export const INDUSTRIES = {
 // ---------------------------------------------------------------------------
 
 export const FAQ = {
-  headline: "Frequently Asked Questions",
+  headline: "Questions? Let's Clear Them Up.",
   items: [
     {
       q: "What exactly does Altaventures build?",
       a: "Websites, booking and scheduling systems, business management tools, e-commerce, and general business digitalization: whatever your business needs to run better online.",
     },
     {
-      q: "Is the free website offer really free?",
-      a: "Yes. We'll build your flagship website at no development cost: you only pay for the domain. We'll discuss the details once we understand your business and confirm it's a good fit.",
+      q: "How much does a project cost?",
+      a: "It depends entirely on what you need: a simple website costs less than a full business system. Tell us about your project and we'll give you a clear, honest answer, no hidden fees, no pressure.",
     },
     {
       q: "How long does a project take?",
@@ -373,10 +437,12 @@ export const FAQ = {
 // ---------------------------------------------------------------------------
 
 export const FINAL_CTA = {
-  headline: "Ready to Build Something Better?",
-  sub: "Your business deserves more than a Facebook page. Let's talk about what you actually need.",
-  cta: "Let's Talk About Your Business",
-  channelsLine: "Messenger | Viber | WhatsApp",
+  kicker: "Ready to build your website?",
+  headline: "Let's Build Something That Works for Your Business.",
+  sub: "Tell us what you're trying to improve, and we'll help you figure out the right digital solution.",
+  line: "You don't need to know exactly what you need yet. Just start the conversation.",
+  cta: "Talk to Altaventures",
+  channelsLine: "Websites · Booking · E-commerce · Business Systems · Custom Solutions",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -1579,12 +1645,12 @@ export const LEGAL: {
     ],
   },
   "fyb-refund": {
-    title: "Refund Policy (₱299 Website Offer)",
+    title: "Refund Policy (₱599 Website Offer)",
     effectiveDate: "September 3, 2026",
-    lastUpdated: "September 16, 2026",
+    lastUpdated: "October 2, 2026",
     intro: [
       p(
-        "This Refund Policy applies specifically to the ₱299 one-time professional website offer at altasme.com/foryourbusiness (\"the ₱299 offer\"), provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). It should be read together with the Terms of Sale for the ₱299 offer.",
+        "This Refund Policy applies specifically to the ₱599 one-time professional website offer at www.altasme.com/foryourbusiness (\"the ₱599 offer\"), provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). It should be read together with the Terms of Sale for the ₱599 offer.",
       ),
       p(
         "This policy is separate from, and does not change, the general Refund Policy that applies to Altaventures' other services.",
@@ -1595,7 +1661,7 @@ export const LEGAL: {
         heading: "1. Before Work Begins",
         blocks: [
           p(
-            "You may request a full refund of the ₱299 at any time before your discovery call takes place and before any build work has started. Email altasmeworks@gmail.com to request it.",
+            "You may request a full refund of the ₱599 at any time before your discovery call takes place and before any build work has started. Email altasmeworks@gmail.com to request it.",
           ),
         ],
       },
@@ -1603,15 +1669,15 @@ export const LEGAL: {
         heading: "2. After the Discovery Call or Once Build Work Has Begun",
         blocks: [
           p(
-            "The ₱299 becomes non-refundable, because the consultation and build effort have already been rendered.",
+            "The ₱599 becomes non-refundable, because the consultation and build effort have already been rendered.",
           ),
         ],
       },
       {
-        heading: "3. If Your Project Needs More Than the ₱299 Offer",
+        heading: "3. If Your Project Needs More Than the ₱599 Offer",
         blocks: [
           p(
-            "If, during the discovery call, we determine your requirements go beyond a professional informational website (for example complex e-commerce, custom applications, advanced systems, or complex integrations), we will either (a) credit the full ₱299 toward the higher plan we recommend, or (b) proceed to build a professional informational website within the ₱299 scope. You receive value in either case. A cash refund is not owed simply because your needs exceed what the ₱299 offer covers.",
+            "If, during the discovery call, we determine your requirements go beyond a professional informational website (for example complex e-commerce, custom applications, advanced systems, or complex integrations), we will either (a) credit the full ₱599 toward the higher plan we recommend, or (b) proceed to build a professional informational website within the ₱599 scope. You receive value in either case. A cash refund is not owed simply because your needs exceed what the ₱599 offer covers.",
           ),
         ],
       },
@@ -1631,7 +1697,7 @@ export const LEGAL: {
         heading: "6. Client Responsiveness",
         blocks: [
           p(
-            "The build timeline starts only when we receive the required information and materials. If you do not provide the required materials, or you are unresponsive, for 30 days, we may close the project as fulfilled, and the ₱299 is non-refundable.",
+            "The build timeline starts only when we receive the required information and materials. If you do not provide the required materials, or you are unresponsive, for 30 days, we may close the project as fulfilled, and the ₱599 is non-refundable.",
           ),
         ],
       },
@@ -1654,17 +1720,17 @@ export const LEGAL: {
     ],
   },
   "fyb-terms": {
-    title: "Terms of Sale (₱299 Website Offer)",
+    title: "Terms of Sale (₱599 Website Offer)",
     effectiveDate: "September 3, 2026",
-    lastUpdated: "September 16, 2026",
+    lastUpdated: "October 2, 2026",
     intro: [
       p(
-        "These Terms of Sale govern the ₱299 one-time professional website offer at altasme.com/foryourbusiness, provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). By purchasing the ₱299 offer, you (\"you,\" \"the client\") agree to these Terms of Sale, together with the Refund Policy (₱299 Website Offer) and the Privacy Notice for the ₱299 offer.",
+        "These Terms of Sale govern the ₱599 one-time professional website offer at www.altasme.com/foryourbusiness, provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). By purchasing the ₱599 offer, you (\"you,\" \"the client\") agree to these Terms of Sale, together with the Refund Policy (₱599 Website Offer) and the Privacy Notice for the ₱599 offer.",
       ),
     ],
     sections: [
       {
-        heading: "1. What the ₱299 Offer Includes",
+        heading: "1. What the ₱599 Offer Includes",
         blocks: [
           p(
             "A professional, mobile-friendly informational website designed around your business: business information, services or products, an about section, contact details, a clear contact or inquiry call to action, hosting on an Altaventures subdomain, and SSL/HTTPS. Creation is fully done for you.",
@@ -1737,7 +1803,7 @@ export const LEGAL: {
         heading: "10. Limitation of Liability",
         blocks: [
           p(
-            "To the maximum extent permitted by law, Altaventures is not liable for indirect, incidental, special, or consequential damages, lost profits, or lost business. Our total aggregate liability for any claim relating to this offer is limited to the amount you paid (₱299).",
+            "To the maximum extent permitted by law, Altaventures is not liable for indirect, incidental, special, or consequential damages, lost profits, or lost business. Our total aggregate liability for any claim relating to this offer is limited to the amount you paid (₱599).",
           ),
         ],
       },
@@ -1763,7 +1829,7 @@ export const LEGAL: {
         heading: "14. Severability and Entire Agreement",
         blocks: [
           p(
-            "If any provision is held unenforceable, the rest remains in effect. These terms, together with the Refund Policy (₱299 Website Offer) and the Privacy Notice, are the entire agreement for the ₱299 offer.",
+            "If any provision is held unenforceable, the rest remains in effect. These terms, together with the Refund Policy (₱599 Website Offer) and the Privacy Notice, are the entire agreement for the ₱599 offer.",
           ),
         ],
       },
@@ -1774,12 +1840,12 @@ export const LEGAL: {
     ],
   },
   "fyb-privacy": {
-    title: "Privacy Notice (₱299 Website Offer)",
+    title: "Privacy Notice (₱599 Website Offer)",
     effectiveDate: "September 3, 2026",
-    lastUpdated: "September 16, 2026",
+    lastUpdated: "October 2, 2026",
     intro: [
       p(
-        "This Privacy Notice explains how Altaventures Business Development Services, operating under the brand name Altaventures, collects and processes personal data in connection with the ₱299 website offer at altasme.com/foryourbusiness, in accordance with the Data Privacy Act of 2012 (Republic Act 10173).",
+        "This Privacy Notice explains how Altaventures Business Development Services, operating under the brand name Altaventures, collects and processes personal data in connection with the ₱599 website offer at www.altasme.com/foryourbusiness, in accordance with the Data Privacy Act of 2012 (Republic Act 10173).",
       ),
     ],
     sections: [
@@ -1831,7 +1897,7 @@ export const LEGAL: {
         heading: "Consent",
         blocks: [
           p(
-            "By proceeding with the ₱299 offer, you confirm you have read this notice and consent to Altaventures collecting and processing your personal data for the purposes described.",
+            "By proceeding with the ₱599 offer, you confirm you have read this notice and consent to Altaventures collecting and processing your personal data for the purposes described.",
           ),
         ],
       },
@@ -1843,10 +1909,10 @@ export const LEGAL: {
     lastUpdated: "September 19, 2026",
     intro: [
       p(
-        "This Refund Policy applies specifically to the ₱4,999 complete business website package at altasme.com/b2b (\"the package\"), provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). The ₱4,999 is paid in two installments, a ₱2,499 deposit and a ₱2,500 balance, described further in the Terms of Sale for the package, which this policy should be read together with.",
+        "This Refund Policy applies specifically to the ₱4,999 complete business website package at www.altasme.com/b2b (\"the package\"), provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). The ₱4,999 is paid in two installments, a ₱2,499 deposit and a ₱2,500 balance, described further in the Terms of Sale for the package, which this policy should be read together with.",
       ),
       p(
-        "This policy is separate from, and does not change, the general Refund Policy that applies to Altaventures' other services, or the Refund Policy for the ₱299 website offer.",
+        "This policy is separate from, and does not change, the general Refund Policy that applies to Altaventures' other services, or the Refund Policy for the ₱599 website offer.",
       ),
     ],
     sections: [
@@ -1934,7 +2000,7 @@ export const LEGAL: {
     lastUpdated: "September 19, 2026",
     intro: [
       p(
-        "These Terms of Sale govern the ₱4,999 complete business website package at altasme.com/b2b, provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). By purchasing the package, you (\"you,\" \"the client\") agree to these Terms of Sale, together with the Refund Policy (₱4,999 Business Website Package) and the Privacy Notice for the package.",
+        "These Terms of Sale govern the ₱4,999 complete business website package at www.altasme.com/b2b, provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). By purchasing the package, you (\"you,\" \"the client\") agree to these Terms of Sale, together with the Refund Policy (₱4,999 Business Website Package) and the Privacy Notice for the package.",
       ),
     ],
     sections: [
@@ -2070,7 +2136,7 @@ export const LEGAL: {
     lastUpdated: "September 19, 2026",
     intro: [
       p(
-        "This Privacy Notice explains how Altaventures Business Development Services, operating under the brand name Altaventures, collects and processes personal data in connection with the ₱4,999 business website package at altasme.com/b2b, in accordance with the Data Privacy Act of 2012 (Republic Act 10173).",
+        "This Privacy Notice explains how Altaventures Business Development Services, operating under the brand name Altaventures, collects and processes personal data in connection with the ₱4,999 business website package at www.altasme.com/b2b, in accordance with the Data Privacy Act of 2012 (Republic Act 10173).",
       ),
     ],
     sections: [
