@@ -66,9 +66,14 @@ export const onRequestPost: PagesFunction<PublicDocsEnv, "slug"> = async ({ env,
   await db.prepare(`UPDATE proposals SET status = 'signed', updated_at = ? WHERE id = ?`).bind(now, proposal.id).run();
 
   // Best-effort activity log -- never block the signature itself on it.
+  // [2026-10-15] A proposal can now belong to a lead instead of a client
+  // (CLAUDE.md §62 / clienthub's §25: "a proposal generator that doesn't
+  // need a client") -- client_id is explicitly checked rather than left
+  // to this try/catch to swallow the resulting NOT NULL violation, since
+  // there's no equivalent "lead activity" timeline to write to instead.
   try {
-    const proposalMeta = await db.prepare(`SELECT client_id, title FROM proposals WHERE id = ?`).bind(proposal.id).first<{ client_id: string; title: string }>();
-    if (proposalMeta) {
+    const proposalMeta = await db.prepare(`SELECT client_id, title FROM proposals WHERE id = ?`).bind(proposal.id).first<{ client_id: string | null; title: string }>();
+    if (proposalMeta?.client_id) {
       await db
         .prepare(`INSERT INTO client_activity (id, client_id, type, description, actor_id, created_at) VALUES (?, ?, 'proposal_signed', ?, NULL, ?)`)
         .bind(crypto.randomUUID(), proposalMeta.client_id, `Proposal "${proposalMeta.title}" signed by ${signerName}`, now)
