@@ -1,30 +1,20 @@
 // Cloudflare Pages Function: GET /api/public/questionnaire/:slug?t=TOKEN
 //
 // Public, unauthenticated. Returns the LATEST PUBLISHED version's
-// question set only -- the client never sees the live draft buffer, and
+// content_html only -- the client never sees the live draft buffer, and
 // never sees any other client's questionnaire (slug+token gate, same
-// model as the proposal endpoint).
+// model as the proposal endpoint). Mirrors the proposal endpoint's own
+// shape exactly, since questionnaires are now the same free-text-content
+// model (CLAUDE.md's 2026-10-15 redesign: one rich-text content block,
+// one open-ended client reply, no structured per-question field types).
 
 import { jsonResponse, tokensMatch, type PublicDocsEnv } from "../../../_lib/publicDocs";
 
 interface QuestionnaireRow {
   id: string;
   title: string;
-  description: string | null;
   status: string;
   access_token: string;
-}
-
-interface QuestionRow {
-  id: string;
-  section_heading: string | null;
-  section_description: string | null;
-  prompt: string;
-  help_text: string | null;
-  field_type: string;
-  is_required: number;
-  options_json: string | null;
-  sort_order: number;
 }
 
 export const onRequestGet: PagesFunction<PublicDocsEnv, "slug"> = async ({ env, params, request }) => {
@@ -34,7 +24,7 @@ export const onRequestGet: PagesFunction<PublicDocsEnv, "slug"> = async ({ env, 
   const token = new URL(request.url).searchParams.get("t") ?? "";
 
   const questionnaire = await db
-    .prepare(`SELECT id, title, description, status, access_token FROM questionnaires WHERE slug = ?`)
+    .prepare(`SELECT id, title, status, access_token FROM questionnaires WHERE slug = ?`)
     .bind(slug)
     .first<QuestionnaireRow>();
 
@@ -46,32 +36,14 @@ export const onRequestGet: PagesFunction<PublicDocsEnv, "slug"> = async ({ env, 
   if (questionnaire.status === "submitted") return jsonResponse(409, { error: "A response has already been submitted for this questionnaire. Thank you!" });
 
   const latestVersion = await db
-    .prepare(`SELECT id, title, description FROM questionnaire_versions WHERE questionnaire_id = ? ORDER BY version_number DESC LIMIT 1`)
+    .prepare(`SELECT id, title, content_html FROM questionnaire_versions WHERE questionnaire_id = ? ORDER BY version_number DESC LIMIT 1`)
     .bind(questionnaire.id)
-    .first<{ id: string; title: string; description: string | null }>();
+    .first<{ id: string; title: string; content_html: string }>();
   if (!latestVersion) return jsonResponse(404, { error: "This questionnaire isn't available yet." });
-
-  const questions = await db
-    .prepare(
-      `SELECT id, section_heading, section_description, prompt, help_text, field_type, is_required, options_json, sort_order
-       FROM questionnaire_questions WHERE version_id = ? ORDER BY sort_order ASC`
-    )
-    .bind(latestVersion.id)
-    .all<QuestionRow>();
 
   return jsonResponse(200, {
     title: latestVersion.title,
-    description: latestVersion.description,
+    contentHtml: latestVersion.content_html,
     versionId: latestVersion.id,
-    questions: questions.results.map((q) => ({
-      id: q.id,
-      sectionHeading: q.section_heading,
-      sectionDescription: q.section_description,
-      prompt: q.prompt,
-      helpText: q.help_text,
-      fieldType: q.field_type,
-      isRequired: !!q.is_required,
-      options: q.options_json ? (JSON.parse(q.options_json) as string[]) : [],
-    })),
   });
 };
