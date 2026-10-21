@@ -46,7 +46,7 @@ export const NAV_LINKS = [
 // plain string value.
 export const TRUST_SIGNALS = {
   stats: [
-    { kind: "counter", countTo: 20, suffix: "+", label: "Websites and businesses launched" },
+    { kind: "counter", countTo: 25, suffix: "+", label: "Websites and businesses launched" },
     { kind: "range", from: 3, to: 7, label: "Days average turnaround time" },
     { kind: "static", value: "Open", label: "For projects and partnerships" },
   ],
