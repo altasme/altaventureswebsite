@@ -48,14 +48,26 @@ export default function FAQ() {
                   </svg>
                 </button>
               </h3>
+              {/* [2026-10-25] grid-template-rows 0fr->1fr smoothly animates
+                  to/from the answer's natural height with no JS
+                  measurement -- `hidden` (display:none) can't be
+                  transitioned at all, so this swaps to aria-hidden, which
+                  keeps the panel in a transitionable layout while still
+                  pulling it from the accessibility tree when closed. The
+                  inner min-h-0 wrapper is what actually clips the content
+                  against the animating 0fr row. */}
               <div
                 id={panelId}
                 role="region"
                 aria-labelledby={buttonId}
-                hidden={!isOpen}
-                className="pb-5"
+                aria-hidden={!isOpen}
+                className={`grid overflow-hidden transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:duration-0 ${
+                  isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                }`}
               >
-                <p className="text-sm leading-relaxed text-ink/65 sm:text-base">{item.a}</p>
+                <div className="min-h-0 overflow-hidden">
+                  <p className="pb-5 text-sm leading-relaxed text-ink/65 sm:text-base">{item.a}</p>
+                </div>
               </div>
             </div>
           );

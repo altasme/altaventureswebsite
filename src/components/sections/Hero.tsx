@@ -12,21 +12,41 @@ function scrollToWork() {
 function HeroCopy({ compact = false }: { compact?: boolean }) {
   const { openContactModal } = useModals();
 
+  // [2026-10-25] A staged, staggered entrance (headline -> sub -> line ->
+  // CTAs, ~130ms apart) reads as considered/art-directed rather than a
+  // static page that happened to load -- a cheap, well-worn "premium
+  // product launch" cue. motion-safe: so prefers-reduced-motion users get
+  // the fully-visible end state immediately, no animation at all (same
+  // accessible-by-default approach as Reveal.tsx). fill-mode forwards
+  // keeps the element at its animated-to state once the run completes
+  // instead of snapping back to the opacity-0 start.
   return (
     <div className="relative flex flex-col items-start text-left">
       <h1
-        className={`max-w-xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl ${
+        className={`max-w-xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl motion-safe:opacity-0 motion-safe:animate-[heroStagger_0.9s_cubic-bezier(0.16,1,0.3,1)_0.05s_forwards] ${
           compact ? "text-3xl" : "text-4xl"
         }`}
       >
         {HERO.headline}
       </h1>
-      <p className={`max-w-xl text-white/90 ${compact ? "mt-3 text-sm leading-snug" : "mt-6 text-lg"}`}>
+      <p
+        className={`max-w-xl text-white/90 motion-safe:opacity-0 motion-safe:animate-[heroStagger_0.9s_cubic-bezier(0.16,1,0.3,1)_0.2s_forwards] ${
+          compact ? "mt-3 text-sm leading-snug" : "mt-6 text-lg"
+        }`}
+      >
         {HERO.sub}
       </p>
-      {!compact && <p className="mt-3 max-w-xl text-sm text-white/70">{HERO.line}</p>}
+      {!compact && (
+        <p className="mt-3 max-w-xl text-sm text-white/70 motion-safe:opacity-0 motion-safe:animate-[heroStagger_0.9s_cubic-bezier(0.16,1,0.3,1)_0.32s_forwards]">
+          {HERO.line}
+        </p>
+      )}
 
-      <div className={`flex flex-col gap-4 sm:flex-row sm:items-center ${compact ? "mt-5" : "mt-10"}`}>
+      <div
+        className={`flex flex-col gap-4 sm:flex-row sm:items-center motion-safe:opacity-0 motion-safe:animate-[heroStagger_0.9s_cubic-bezier(0.16,1,0.3,1)_0.45s_forwards] ${
+          compact ? "mt-5" : "mt-10"
+        }`}
+      >
         <CTAButton
           label={HERO.primaryCta}
           section="hero"
@@ -55,7 +75,7 @@ export default function Hero() {
           src={HERO.backgroundImageDesktop}
           alt={HERO.backgroundAlt}
           fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          className="absolute inset-0 h-full w-full object-cover object-center motion-safe:animate-[kenburns_20s_ease-out_1_forwards]"
         />
         <div
           className="pointer-events-none absolute inset-0"
@@ -98,7 +118,7 @@ export default function Hero() {
             src={HERO.backgroundImageMobile}
             alt={HERO.backgroundAlt}
             loading="lazy"
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover motion-safe:animate-[kenburns_20s_ease-out_1_forwards]"
             style={{ objectPosition: "50% 83%" }}
           />
           <div

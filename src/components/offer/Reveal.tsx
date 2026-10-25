@@ -23,8 +23,14 @@ export default function Reveal({ children, delayMs = 0, className = "" }: Reveal
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ease-out ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+      // [2026-10-25] Swapped the plain ease-out curve for a slower,
+      // more deliberate "expo-out" cubic-bezier and a touch more lift
+      // distance/duration -- the kind of confident, unhurried settle
+      // premium sites use instead of a snappy default-ease fade, used
+      // site-wide since this one component drives scroll-reveal on
+      // every page that imports it.
+      className={`transition-all duration-[850ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
       } ${className}`}
       style={{ transitionDelay: visible ? `${delayMs}ms` : "0ms" }}
     >

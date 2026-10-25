@@ -7,7 +7,7 @@ const ICONS = [Target, CircleCheck, TrendingUp, Layers];
 
 export default function WhyAltaventures() {
   return (
-    <Section tone="dark">
+    <Section tone="dark" sectionClassName="bg-grain">
       <Reveal>
         <h2 className="max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">
           {WHY_ALTAVENTURES.headline}

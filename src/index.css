@@ -24,6 +24,70 @@
   }
 }
 
+/* [2026-10-25] Homepage premium-feel pass: three keyframes referenced via
+   Tailwind's arbitrary animate-[...] syntax (motion-safe:-prefixed at each
+   call site, so none of this ever runs under prefers-reduced-motion --
+   the element simply renders at its final, fully-visible state instead,
+   same accessible-by-default approach Reveal.tsx already uses). Defined
+   here because Tailwind's JIT can reference an arbitrary keyframe name
+   but doesn't generate the @keyframes block itself. */
+@keyframes kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+@keyframes heroStagger {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes statPop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* A faint fractal-noise texture for dark sections (Hero, WhyAltaventures,
+   FinalCTA) -- the kind of matte "grain" high-end agency/SaaS sites use so
+   a flat dark-navy block reads as deliberately textured rather than a
+   plain CSS color fill. Pure CSS, no network asset. Painted via ::before
+   so it never needs to be an extra DOM element at each call site -- just
+   add the .bg-grain class to a `position: relative` element. Deliberately
+   very low opacity (0.05) and blend-mode overlay so it never competes
+   with text legibility; z-index:0 here only matters paired with the
+   section's own content being explicitly stacked above it (Section.tsx's
+   inner content wrapper carries `relative z-10` for exactly this reason,
+   and Hero.tsx's own content wrappers do the same directly). */
+@layer utilities {
+  .bg-grain {
+    position: relative;
+  }
+  .bg-grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
 /* Proposal rich-text content styling (ProposalPage.tsx's public render of
    admin-authored HTML from ClientKeeper's proposal editor, which has the
    identical block in its own src/index.css -- kept in sync by hand since

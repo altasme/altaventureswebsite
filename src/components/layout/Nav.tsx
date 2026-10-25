@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BRAND, NAV_LINKS } from "../../content/site";
 import { useModals } from "../../lib/modalContext";
 import CTAButton from "../ui/CTAButton";
@@ -13,10 +13,30 @@ function Wordmark() {
 
 export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { openContactModal } = useModals();
 
+  // [2026-10-25] A nav that looks identical at the very top of the page and
+  // once scrolled reads as a static template; a small elevation change (a
+  // touch more opaque, a real shadow) once the visitor commits to scrolling
+  // is a cheap, common "premium product" signal. Passive listener + a
+  // boolean flip, not a scroll-position style read on every frame.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-40 border-b border-ink/5 bg-white/85 backdrop-blur-md">
+    <header
+      className={`sticky top-0 z-40 border-b backdrop-blur-md transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        scrolled
+          ? "border-ink/10 bg-white/95 shadow-[0_8px_30px_-12px_rgba(2,37,111,0.18)]"
+          : "border-ink/5 bg-white/85 shadow-none"
+      }`}
+    >
+
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
         <Wordmark />
 

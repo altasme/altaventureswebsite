@@ -22,9 +22,19 @@ function StatValue({ stat, animate }: { stat: Stat; animate: boolean }) {
   const rangeFrom = useCountUp(rangeFromTarget);
   const rangeTo = useCountUp(rangeToTarget);
 
+  // [2026-10-25] A small "pop" right as the counter settles reads as the
+  // number landing with intent rather than just stopping -- timed via a
+  // CSS animation-delay matching useCountUp's own 1400ms run, so it never
+  // needs a JS timer of its own. Only ever added once `animate` flips true
+  // (the band is below the fold, counting is already gated on scroll-into-
+  // view), so it can't fire on initial mount before anyone's scrolled down.
+  const popClass = animate
+    ? "motion-safe:animate-[statPop_0.5s_cubic-bezier(0.34,1.56,0.64,1)_1.4s_1_forwards]"
+    : "";
+
   if (stat.kind === "counter") {
     return (
-      <p className="text-3xl font-extrabold tracking-tight text-brand-navy sm:text-4xl">
+      <p className={`text-3xl font-extrabold tracking-tight text-brand-navy sm:text-4xl ${popClass}`}>
         {count}
         <span className="ml-1 text-lg font-semibold text-brand-blue">{stat.suffix}</span>
       </p>
@@ -33,7 +43,7 @@ function StatValue({ stat, animate }: { stat: Stat; animate: boolean }) {
 
   if (stat.kind === "range") {
     return (
-      <p className="text-3xl font-extrabold tracking-tight text-brand-navy sm:text-4xl">
+      <p className={`text-3xl font-extrabold tracking-tight text-brand-navy sm:text-4xl ${popClass}`}>
         {rangeFrom}-{rangeTo}
       </p>
     );
@@ -41,7 +51,7 @@ function StatValue({ stat, animate }: { stat: Stat; animate: boolean }) {
 
   return (
     <p
-      className={`text-3xl font-extrabold tracking-tight text-brand-navy transition-opacity duration-700 sm:text-4xl ${animate ? "opacity-100" : "opacity-0"}`}
+      className={`text-3xl font-extrabold tracking-tight text-brand-navy transition-opacity duration-700 sm:text-4xl ${animate ? "opacity-100" : "opacity-0"} ${popClass}`}
     >
       {stat.value}
     </p>
