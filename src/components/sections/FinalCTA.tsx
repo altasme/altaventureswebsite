@@ -8,7 +8,7 @@ export default function FinalCTA() {
   const { openContactModal } = useModals();
 
   return (
-    <Section tone="dark" className="text-center">
+    <Section tone="dark" className="text-center" sectionClassName="bg-grain">
       <Reveal className="mx-auto max-w-2xl">
         <p className="text-base text-white/70">{FINAL_CTA.kicker}</p>
         <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{FINAL_CTA.headline}</h2>

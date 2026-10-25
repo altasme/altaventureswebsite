@@ -35,7 +35,16 @@ export default function SelectedWork() {
           // 15-project grid doesn't queue a long tail of pop-ins the first
           // time it scrolls into view.
           <Reveal key={project.id} delayMs={(i % 6) * 70}>
-            <div className="flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg">
+            {/* [2026-10-25] group hosts the image-zoom + accent-bar hover
+                micro-interactions below; the lift/shadow transition stays
+                on its own duration-300 so it never inherits Reveal's
+                slower 850ms entrance easing (the two live on different
+                elements -- Reveal is the parent above, this div is its
+                child -- so there was never a literal conflict, but a
+                matching premium easing curve keeps the whole page's
+                motion feeling like one deliberate system). */}
+            <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:shadow-[0_24px_48px_-20px_rgba(2,37,111,0.35)]">
+              <span className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[3px] origin-left scale-x-0 bg-brand-gradient transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100" />
               {project.viewable && (
                 <div className="aspect-[16/10] w-full overflow-hidden border-b border-ink/10 bg-paper-alt">
                   <img
@@ -44,7 +53,7 @@ export default function SelectedWork() {
                     width={1200}
                     height={750}
                     loading="lazy"
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]"
                   />
                 </div>
               )}
