@@ -45,6 +45,30 @@ export const PORTFOLIO: Project[] = [
     tags: ["E-commerce", "Payments", "Operations"],
   },
   {
+    id: "ats",
+    name: "Armenian Thoracic Association",
+    url: "https://www.thoracic.am",
+    category: "Professional Medical Association Website",
+    tier: "system",
+    status: "live",
+    viewable: true,
+    description:
+      "A full multi-language website build with a CMS, an application system, and a membership system for a professional Armenian medical association.",
+    tags: ["CMS", "Membership", "Multi-Language"],
+  },
+  {
+    id: "dvolt",
+    name: "D-Volt Armenia",
+    url: "https://www.d-volt.am",
+    category: "Industrial Engineering Company Website",
+    tier: "system",
+    status: "live",
+    viewable: true,
+    description:
+      "A multi-language, e-commerce-ready website build for an Armenian ELV industrial engineering company.",
+    tags: ["E-commerce", "Multi-Language", "Industrial"],
+  },
+  {
     id: "leanandfit",
     name: "Lean and Fit PH",
     url: "https://leanandfit.ph",

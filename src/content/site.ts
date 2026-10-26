@@ -208,16 +208,26 @@ export const SELECTED_WORK = {
   // moved to the bottom of the regular list (just before Altamotors, which
   // stays last by its own earlier, separate instruction), both per the
   // operator's direct request.
+  // Updated [2026-10-26]: Aulea Skin Essentials and Pocket G7iii Camera
+  // Rental replaced by two new real clients, Armenian Thoracic Association
+  // (`ats`) and D-Volt Armenia (`dvolt`), placed next to Aurielle per the
+  // operator's direct instruction. Scoped to the homepage only, matching
+  // every prior portfolio-curation round's convention (§18/§19/§30/§44/§47/
+  // §58/§61) — `aulea`/`pocketg7iii` stay untouched in canonical
+  // content/portfolio.ts (still exist, just no longer referenced by this
+  // order list, the same treatment already given to Setmona/Kolekta/
+  // Macquia's there) and on every other page's own curated list
+  // (/limitedoffer's OFFER_PORTFOLIO, /foryourbusiness's FYB_PORTFOLIO).
   order: [
     "leanandfit",
     "aurielle",
+    "ats",
+    "dvolt",
     "amr-bookkeeping",
     "imago-productions",
     "dmhr",
     "alfiescardeals",
     "batumi-sales-partner",
-    "aulea",
-    "pocketg7iii",
     "ascend-volleyball",
     "clickandkeep",
     "adrayan-law",
