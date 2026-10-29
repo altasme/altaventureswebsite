@@ -73,13 +73,3 @@ export const B2B_PREFILL =
 export function buildPricingPrefill(tierName: string, priceLabel: string): string {
   return `Hi Altaventures! I'm interested in the ${tierName} plan (${priceLabel}). Can we talk about my business?`;
 }
-
-/**
- * WhatsApp prefill for the public proposal payment screen's "send your
- * payment screenshot" channel buttons (CLAUDE.md §67). Names the
- * proposal so a human reading it in chat doesn't have to guess which
- * project the incoming screenshot belongs to.
- */
-export function buildProposalPaymentPrefill(proposalTitle: string): string {
-  return `Hi Altaventures! I just paid for "${proposalTitle}." Here's my payment screenshot:`;
-}
