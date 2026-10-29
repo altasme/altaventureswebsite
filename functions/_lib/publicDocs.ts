@@ -20,6 +20,12 @@ export interface PublicDocsEnv {
   CLOUDINARY_CLOUD_NAME?: string;
   CLOUDINARY_API_KEY?: string;
   CLOUDINARY_API_SECRET?: string;
+  // [2026-10-29] Reused for the proposal payment-step's two emails
+  // (email-copy.ts, mark-paid.ts) -- the exact same credentials already
+  // required for submit-wsa.ts's email delivery, so no new env var is
+  // needed for this feature.
+  RESEND_API_KEY?: string;
+  RESEND_FROM_EMAIL?: string;
 }
 
 export function jsonResponse(status: number, body: unknown): Response {
@@ -32,6 +38,38 @@ export function tokensMatch(a: string, b: string): boolean {
   let diff = 0;
   for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
   return diff === 0;
+}
+
+/**
+ * Sends one email via Resend, optionally with a base64 attachment (same
+ * shape/credentials as functions/api/submit-wsa.ts's own inline helper,
+ * pulled out here since the proposal payment-step's two new endpoints
+ * both need it too -- real, now-duplicated-three-ways logic, the same
+ * bar this file's own header comment already sets for living in _lib).
+ */
+export async function sendResendEmail(
+  env: PublicDocsEnv,
+  to: string,
+  subject: string,
+  html: string,
+  attachment?: { filename: string; base64: string }
+): Promise<void> {
+  if (!env.RESEND_API_KEY || !env.RESEND_FROM_EMAIL) throw new Error("Email delivery is not configured yet.");
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from: env.RESEND_FROM_EMAIL,
+      to: [to],
+      subject,
+      html,
+      ...(attachment ? { attachments: [{ filename: attachment.filename, content: attachment.base64 }] } : {}),
+    }),
+  });
+  if (!response.ok) {
+    const text = await response.text().catch(() => "");
+    throw new Error(`Resend failed to send to ${to}: ${response.status} ${text}`);
+  }
 }
 
 async function signCloudinaryParams(params: Record<string, string>, apiSecret: string): Promise<string> {
