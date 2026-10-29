@@ -98,6 +98,20 @@ export default function ProposalPage() {
     return base && EMAIL_PATTERN.test(emailCopyAddress.trim());
   }, [signerName, hasSignature, agreed, wantsAnyEmail, emailCopyAddress]);
 
+  // What's still missing before Submit will enable -- without this, a
+  // disabled button gives zero indication of why (most commonly hit by
+  // checking an email checkbox and leaving the revealed email field
+  // blank or invalid, which silently blocks submission with no visible
+  // cause otherwise).
+  const missingBeforeSubmit = useMemo(() => {
+    const missing: string[] = [];
+    if (signerName.trim().length <= 1) missing.push("your full name");
+    if (!hasSignature) missing.push("your signature");
+    if (!agreed) missing.push("the agreement checkbox");
+    if (wantsAnyEmail && !EMAIL_PATTERN.test(emailCopyAddress.trim())) missing.push("a valid email address");
+    return missing;
+  }, [signerName, hasSignature, agreed, wantsAnyEmail, emailCopyAddress]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!slug || !canSubmit || submitting) return;
@@ -329,6 +343,10 @@ export default function ProposalPage() {
             )}
 
             {submitError && <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{submitError}</p>}
+
+            {!canSubmit && !submitting && missingBeforeSubmit.length > 0 && (
+              <p className="mt-4 text-xs text-ink/60">Before you can submit, we still need: {missingBeforeSubmit.join(", ")}.</p>
+            )}
 
             <button
               type="submit"
