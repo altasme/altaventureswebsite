@@ -52,6 +52,7 @@ export default function ProposalPage() {
   const [agreed, setAgreed] = useState(false);
   const [hasSignature, setHasSignature] = useState(false);
   const [wantsEmailCopy, setWantsEmailCopy] = useState(false);
+  const [wantsFreebies, setWantsFreebies] = useState(false);
   const [emailCopyAddress, setEmailCopyAddress] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -90,11 +91,12 @@ export default function ProposalPage() {
       .catch((err) => setLoadError(err instanceof Error ? err.message : "Something went wrong."));
   }, [slug, token]);
 
+  const wantsAnyEmail = wantsEmailCopy || wantsFreebies;
   const canSubmit = useMemo(() => {
     const base = signerName.trim().length > 1 && hasSignature && agreed;
-    if (!wantsEmailCopy) return base;
+    if (!wantsAnyEmail) return base;
     return base && EMAIL_PATTERN.test(emailCopyAddress.trim());
-  }, [signerName, hasSignature, agreed, wantsEmailCopy, emailCopyAddress]);
+  }, [signerName, hasSignature, agreed, wantsAnyEmail, emailCopyAddress]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -132,8 +134,11 @@ export default function ProposalPage() {
       });
 
       // Fire-and-forget: generating and emailing the PDF never blocks the
-      // payment screen from showing immediately below.
-      if (wantsEmailCopy && data) {
+      // payment screen from showing immediately below. One email covers
+      // both checkboxes -- checking "Send the freebies" alone still
+      // attaches the proposal copy (per the operator's own spec), so
+      // there's never a reason to fire two separate sends.
+      if (wantsAnyEmail && data) {
         setEmailCopyStatus("sending");
         generateSignedProposalPdfBase64({
           title: data.title,
@@ -148,7 +153,7 @@ export default function ProposalPage() {
             fetch(`/api/public/proposal/${encodeURIComponent(slug)}/email-copy`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ t: token, email: emailCopyAddress.trim(), pdfBase64 }),
+              body: JSON.stringify({ t: token, email: emailCopyAddress.trim(), pdfBase64, includeFreebies: wantsFreebies }),
             })
           )
           .then((res) => setEmailCopyStatus(res.ok ? "sent" : "error"))
@@ -298,7 +303,18 @@ export default function ProposalPage() {
               />
               Send a copy of the proposal via email
             </label>
-            {wantsEmailCopy && (
+
+            <label className="mt-3 flex items-start gap-3 text-sm text-ink/75">
+              <input
+                type="checkbox"
+                checked={wantsFreebies}
+                onChange={(e) => setWantsFreebies(e.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0 rounded border-ink/30 text-brand-blue focus:ring-brand-blue"
+              />
+              Send the freebies to my email
+            </label>
+
+            {wantsAnyEmail && (
               <div className="ml-7 mt-2">
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/60">Email Address</label>
                 <input
@@ -329,9 +345,15 @@ export default function ProposalPage() {
             <h2 className="text-xl font-bold text-green-800">
               {result === "signed" ? "Thank you, this proposal has been signed." : `Signed by ${displaySignature?.signerName ?? "the client"}.`}
             </h2>
-            {emailCopyStatus === "sending" && <p className="mt-2 text-xs text-green-700">Emailing you a copy&hellip;</p>}
-            {emailCopyStatus === "sent" && <p className="mt-2 text-xs text-green-700">A copy was emailed to {emailCopyAddress}.</p>}
-            {emailCopyStatus === "error" && <p className="mt-2 text-xs text-amber-700">We couldn't email a copy right now &mdash; you can still download/print it later.</p>}
+            {emailCopyStatus === "sending" && (
+              <p className="mt-2 text-xs text-green-700">{wantsFreebies ? "Emailing you a copy and the freebies…" : "Emailing you a copy…"}</p>
+            )}
+            {emailCopyStatus === "sent" && (
+              <p className="mt-2 text-xs text-green-700">
+                {wantsFreebies ? `A copy and the freebies were emailed to ${emailCopyAddress}.` : `A copy was emailed to ${emailCopyAddress}.`}
+              </p>
+            )}
+            {emailCopyStatus === "error" && <p className="mt-2 text-xs text-amber-700">We couldn't email that right now &mdash; you can still download/print it later.</p>}
             {!showPayment && !finalThanks && data.hasQuestionnaire && result === "signed" && (
               <p className="mt-2 text-sm text-green-700">Taking you to the next step&hellip;</p>
             )}
