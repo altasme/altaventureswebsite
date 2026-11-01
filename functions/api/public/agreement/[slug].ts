@@ -12,7 +12,10 @@
 //
 // No `payment` field here, unlike the proposal endpoint -- service
 // agreements are signature-only, per the operator's own confirmed
-// decision (no payment-request step for this clone).
+// decision (no payment-request step for this clone). `client_id` is
+// unconditionally present (CLAUDE.md §30: a service agreement always
+// belongs to a real client) -- unlike the proposal endpoint, there's no
+// lead_id/prospect_email fallback for contactEmail.
 
 import { jsonResponse, tokensMatch, type PublicDocsEnv } from "../../../_lib/publicDocs";
 
@@ -22,9 +25,7 @@ interface ServiceAgreementRow {
   content_html: string;
   status: string;
   access_token: string;
-  client_id: string | null;
-  lead_id: string | null;
-  prospect_email: string | null;
+  client_id: string;
 }
 
 export const onRequestGet: PagesFunction<PublicDocsEnv, "slug"> = async ({ env, params, request }) => {
@@ -35,7 +36,7 @@ export const onRequestGet: PagesFunction<PublicDocsEnv, "slug"> = async ({ env, 
 
   const agreement = await db
     .prepare(
-      `SELECT id, title, content_html, status, access_token, client_id, lead_id, prospect_email
+      `SELECT id, title, content_html, status, access_token, client_id
        FROM service_agreements WHERE slug = ?`
     )
     .bind(slug)
@@ -72,20 +73,17 @@ export const onRequestGet: PagesFunction<PublicDocsEnv, "slug"> = async ({ env, 
   }
 
   // The "pre-fill, but let the signer override it" email for the
-  // optional "email me a copy" checkbox, same priority order as the
-  // proposal endpoint's identical lookup. Best-effort: a lookup failure
-  // here never blocks the agreement itself from rendering.
-  let contactEmail: string | null = agreement.prospect_email;
+  // optional "email me a copy" checkbox -- always looked up from the
+  // agreement's real client (always present, CLAUDE.md §30), unlike the
+  // proposal endpoint's client/lead/prospect fallback chain. Best-effort:
+  // a lookup failure here never blocks the agreement itself from
+  // rendering, it just leaves the field blank for the signer to type in.
+  let contactEmail: string | null = null;
   try {
-    if (agreement.client_id) {
-      const client = await db.prepare(`SELECT email FROM clients WHERE id = ?`).bind(agreement.client_id).first<{ email: string }>();
-      if (client?.email) contactEmail = client.email;
-    } else if (agreement.lead_id) {
-      const lead = await db.prepare(`SELECT email FROM leads WHERE id = ?`).bind(agreement.lead_id).first<{ email: string | null }>();
-      if (lead?.email) contactEmail = lead.email;
-    }
+    const client = await db.prepare(`SELECT email FROM clients WHERE id = ?`).bind(agreement.client_id).first<{ email: string }>();
+    if (client?.email) contactEmail = client.email;
   } catch {
-    /* non-fatal -- contactEmail just stays whatever it already was */
+    /* non-fatal -- contactEmail just stays blank */
   }
 
   return jsonResponse(200, {
