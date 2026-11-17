@@ -11,7 +11,7 @@
 // in ClientKeeper), and an optional "email me a copy" checkbox that
 // generates a real client-side PDF (src/lib/proposalPdf.ts) and emails it.
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { BRAND } from "../content/site";
 import { WSA_ALTA_SIGNER } from "../content/wsa";
 import SignaturePad, { type SignaturePadHandle } from "../components/wsa/SignaturePad";
@@ -50,6 +50,7 @@ export default function ProposalPage() {
   const [signerName, setSignerName] = useState("");
   const [signerTitle, setSignerTitle] = useState("");
   const [agreed, setAgreed] = useState(false);
+  const [agreedToServiceAgreement, setAgreedToServiceAgreement] = useState(false);
   const [hasSignature, setHasSignature] = useState(false);
   const [wantsEmailCopy, setWantsEmailCopy] = useState(false);
   const [emailCopyAddress, setEmailCopyAddress] = useState("");
@@ -91,10 +92,10 @@ export default function ProposalPage() {
   }, [slug, token]);
 
   const canSubmit = useMemo(() => {
-    const base = signerName.trim().length > 1 && hasSignature && agreed;
+    const base = signerName.trim().length > 1 && hasSignature && agreed && agreedToServiceAgreement;
     if (!wantsEmailCopy) return base;
     return base && EMAIL_PATTERN.test(emailCopyAddress.trim());
-  }, [signerName, hasSignature, agreed, wantsEmailCopy, emailCopyAddress]);
+  }, [signerName, hasSignature, agreed, agreedToServiceAgreement, wantsEmailCopy, emailCopyAddress]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -311,6 +312,21 @@ export default function ProposalPage() {
                 />
               </div>
             )}
+
+            <label className="mt-4 flex items-start gap-3 text-sm text-ink/75">
+              <input
+                type="checkbox"
+                required
+                checked={agreedToServiceAgreement}
+                onChange={(e) => setAgreedToServiceAgreement(e.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0 rounded border-ink/30 text-brand-blue focus:ring-brand-blue"
+              />
+              I understand and agree to the{" "}
+              <Link to="/service-agreement" target="_blank" rel="noopener noreferrer" className="font-semibold text-brand-blue underline hover:text-[#0b57cc]">
+                Altaventures Service Agreement
+              </Link>
+              .
+            </label>
 
             {submitError && <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{submitError}</p>}
 
