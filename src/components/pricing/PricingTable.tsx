@@ -59,7 +59,7 @@ export default function PricingTable({ onSelectTier }: { onSelectTier: (tierId: 
     <div className="mt-12">
       {/* Desktop: full side-by-side comparison table. */}
       <table className="hidden w-full border-separate border-spacing-0 md:table">
-        <caption className="sr-only">Comparison of Starter, Professional, and Business website plans</caption>
+        <caption className="sr-only">Comparison of Starter, Pro, and Full Digital website plans</caption>
         <thead>
           <tr>
             <th scope="col" className="w-1/3" />

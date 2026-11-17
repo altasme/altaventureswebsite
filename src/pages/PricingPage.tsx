@@ -16,7 +16,7 @@ import PricingNotes from "../components/pricing/PricingNotes";
 
 const PAGE_TITLE = "Pricing | Altaventures";
 const PAGE_DESCRIPTION =
-  "Simple, transparent pricing for Altaventures website plans: Starter, Professional, and Business. See what's included and talk to us about your business.";
+  "Simple, transparent pricing for Altaventures website plans: Starter, Pro, and Full Digital. See what's included and talk to us about your business.";
 
 const LEGAL_LINKS = [
   { label: "Refund Policy", id: "fyb-refund" as const },
