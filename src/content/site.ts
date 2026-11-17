@@ -218,6 +218,16 @@ export const SELECTED_WORK = {
   // order list, the same treatment already given to Setmona/Kolekta/
   // Macquia's there) and on every other page's own curated list
   // (/limitedoffer's OFFER_PORTFOLIO, /foryourbusiness's FYB_PORTFOLIO).
+  // Updated [2026-11-17]: Click and Keep Photography, Atty. Omar Adrayan
+  // Law Office, and Onyx Clouds Premium Vape Co. replaced in place by
+  // three new real clients -- Apleco Development & Builders Inc. (`apleco`),
+  // K360 Business Group (`k360`), and BrightPlan Solutions (`brightplan`)
+  // -- per the operator's direct instruction. Same scoping as every prior
+  // round: `clickandkeep`/`adrayan-law`/`onyx-clouds` stay untouched in
+  // canonical content/portfolio.ts and on every other page's own curated
+  // list (/limitedoffer's OFFER_PORTFOLIO, /foryourbusiness's
+  // FYB_PORTFOLIO, /b2b's B2B_PORTFOLIO all still reference them) -- this
+  // order list is the only thing that changed.
   order: [
     "leanandfit",
     "aurielle",
@@ -229,10 +239,10 @@ export const SELECTED_WORK = {
     "alfiescardeals",
     "batumi-sales-partner",
     "ascend-volleyball",
-    "clickandkeep",
-    "adrayan-law",
+    "apleco",
+    "k360",
     "camsnap",
-    "onyx-clouds",
+    "brightplan",
     "vocalyze",
     "altamotors",
   ],

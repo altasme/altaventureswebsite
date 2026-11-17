@@ -265,6 +265,40 @@ export const PORTFOLIO: Project[] = [
     description: "A landing page for a local vape and e-cig supplier, subdomained to ours.",
     tags: ["Website", "Retail", "Local"],
   },
+  {
+    id: "apleco",
+    name: "Apleco Development & Builders Inc.",
+    url: "https://www.aplecodevelopment.com",
+    category: "Construction Company Website",
+    tier: "site",
+    status: "live",
+    viewable: true,
+    description: "A full professional website for a local construction company, showcasing their business profile and services.",
+    tags: ["Website", "Construction", "Local"],
+  },
+  {
+    id: "brightplan",
+    name: "BrightPlan Solutions",
+    url: "https://brightplansolutions.altasme.com",
+    category: "Insurance Agency Website",
+    tier: "site",
+    status: "live",
+    viewable: true,
+    description: "A professional website for a local insurance agency, subdomained to ours.",
+    tags: ["Website", "Insurance", "Local"],
+  },
+  {
+    id: "k360",
+    name: "K360 Business Group",
+    url: "https://www.k360group.com",
+    category: "Professional Business Services Website",
+    tier: "site",
+    status: "live",
+    viewable: true,
+    description:
+      "A full professional website for a professional business services company partnered with Polish corporations, showcasing their business profile and services.",
+    tags: ["Website", "Professional Services"],
+  },
 ];
 
 export const PORTFOLIO_BY_ID: Record<string, Project> = Object.fromEntries(
@@ -274,25 +308,20 @@ export const PORTFOLIO_BY_ID: Record<string, Project> = Object.fromEntries(
 export const VIEWABLE_PORTFOLIO_IDS = PORTFOLIO.filter((p) => p.viewable).map((p) => p.id);
 export const ENGINE_PORTFOLIO_IDS = PORTFOLIO.filter((p) => p.tier === "engine").map((p) => p.id);
 
-export const ONGOING = [
-  {
-    id: "ollocal",
-    name: "Ollocal.PH",
-    note: "A local farmers market initiative and event organizer across Metro Manila malls.",
-  },
-  {
-    id: "amani",
-    name: "Amani Massage and Wellness Spa",
-    note: "A massage and wellness spa.",
-  },
-  {
-    id: "argo",
-    name: "ARGO Customs Brokerage",
-    note: "A customs brokerage service.",
-  },
-  {
-    id: "firsthand-travel",
-    name: "FirstHand Travel and Tours",
-    note: "A travel and tours agency.",
-  },
-] as const;
+export interface OngoingProject {
+  id: string;
+  name: string;
+  note: string;
+}
+
+// [2026-11-17] Emptied per the operator's direct instruction to remove
+// Ollocal.PH, Amani Massage and Wellness Spa, ARGO Customs Brokerage, and
+// FirstHand Travel and Tours from the "Currently in the studio" line --
+// this was the entire list, so it's empty for now rather than deleted,
+// ready to hold real in-progress client work again later. Both render
+// sites (SelectedWork.tsx's studio line, offer/Scarcity.tsx's capacity
+// proof box) are guarded to hide gracefully when this is empty, rather
+// than rendering an awkward empty list. Typed explicitly (not `as const`
+// on an empty literal) so it stays assignable to a real OngoingProject[]
+// once entries are added back.
+export const ONGOING: OngoingProject[] = [];
