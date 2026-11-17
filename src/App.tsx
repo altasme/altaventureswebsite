@@ -26,6 +26,7 @@ import LegalModal from "./components/modals/LegalModal";
 
 const WsaFreePage = lazy(() => import("./pages/WsaFreePage"));
 const WsaProPage = lazy(() => import("./pages/WsaProPage"));
+const PostProjectServiceAgreementPage = lazy(() => import("./pages/PostProjectServiceAgreementPage"));
 const ProposalPage = lazy(() => import("./pages/ProposalPage"));
 const AgreementPage = lazy(() => import("./pages/AgreementPage"));
 const QuestionsPage = lazy(() => import("./pages/QuestionsPage"));
@@ -93,6 +94,14 @@ export default function App() {
         element={
           <Suspense fallback={null}>
             <WsaProPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/service-agreement"
+        element={
+          <Suspense fallback={null}>
+            <PostProjectServiceAgreementPage />
           </Suspense>
         }
       />
