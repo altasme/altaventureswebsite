@@ -15,7 +15,6 @@ import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { BRAND } from "../content/site";
 import { WSA_ALTA_SIGNER } from "../content/wsa";
 import SignaturePad, { type SignaturePadHandle } from "../components/wsa/SignaturePad";
-import { whatsappUrl, viberUrl, messengerUrl, buildProposalPaymentPrefill } from "../lib/contact";
 import { generateSignedProposalPdfBase64 } from "../lib/proposalPdf";
 
 interface ProposalPayment {
@@ -53,6 +52,7 @@ export default function ProposalPage() {
   const [agreedToServiceAgreement, setAgreedToServiceAgreement] = useState(false);
   const [hasSignature, setHasSignature] = useState(false);
   const [wantsEmailCopy, setWantsEmailCopy] = useState(false);
+  const [wantsFreebies, setWantsFreebies] = useState(false);
   const [emailCopyAddress, setEmailCopyAddress] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -91,11 +91,27 @@ export default function ProposalPage() {
       .catch((err) => setLoadError(err instanceof Error ? err.message : "Something went wrong."));
   }, [slug, token]);
 
+  const wantsAnyEmail = wantsEmailCopy || wantsFreebies;
   const canSubmit = useMemo(() => {
     const base = signerName.trim().length > 1 && hasSignature && agreed && agreedToServiceAgreement;
-    if (!wantsEmailCopy) return base;
+    if (!wantsAnyEmail) return base;
     return base && EMAIL_PATTERN.test(emailCopyAddress.trim());
-  }, [signerName, hasSignature, agreed, agreedToServiceAgreement, wantsEmailCopy, emailCopyAddress]);
+  }, [signerName, hasSignature, agreed, agreedToServiceAgreement, wantsAnyEmail, emailCopyAddress]);
+
+  // What's still missing before Submit will enable -- without this, a
+  // disabled button gives zero indication of why (most commonly hit by
+  // checking an email checkbox and leaving the revealed email field
+  // blank or invalid, which silently blocks submission with no visible
+  // cause otherwise).
+  const missingBeforeSubmit = useMemo(() => {
+    const missing: string[] = [];
+    if (signerName.trim().length <= 1) missing.push("your full name");
+    if (!hasSignature) missing.push("your signature");
+    if (!agreed) missing.push("the agreement checkbox");
+    if (!agreedToServiceAgreement) missing.push("the Altaventures Service Agreement checkbox");
+    if (wantsAnyEmail && !EMAIL_PATTERN.test(emailCopyAddress.trim())) missing.push("a valid email address");
+    return missing;
+  }, [signerName, hasSignature, agreed, agreedToServiceAgreement, wantsAnyEmail, emailCopyAddress]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -133,8 +149,11 @@ export default function ProposalPage() {
       });
 
       // Fire-and-forget: generating and emailing the PDF never blocks the
-      // payment screen from showing immediately below.
-      if (wantsEmailCopy && data) {
+      // payment screen from showing immediately below. One email covers
+      // both checkboxes -- checking "Send the freebies" alone still
+      // attaches the proposal copy (per the operator's own spec), so
+      // there's never a reason to fire two separate sends.
+      if (wantsAnyEmail && data) {
         setEmailCopyStatus("sending");
         generateSignedProposalPdfBase64({
           title: data.title,
@@ -149,7 +168,7 @@ export default function ProposalPage() {
             fetch(`/api/public/proposal/${encodeURIComponent(slug)}/email-copy`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ t: token, email: emailCopyAddress.trim(), pdfBase64 }),
+              body: JSON.stringify({ t: token, email: emailCopyAddress.trim(), pdfBase64, includeFreebies: wantsFreebies }),
             })
           )
           .then((res) => setEmailCopyStatus(res.ok ? "sent" : "error"))
@@ -227,7 +246,7 @@ export default function ProposalPage() {
   const displaySignature = result === "signed" && signedInfo ? { signerName: signedInfo.signerName, signedAt: signedInfo.signedAt } : data.signature;
   const showPayment = alreadySigned && !!data.payment && !finalThanks;
   const paymentAlreadyMarked = paidMarked || !!data.payment?.markedPaidAt;
-  const paymentPrefill = buildProposalPaymentPrefill(data.title);
+  const billedToDate = displaySignature?.signedAt ? new Date(displaySignature.signedAt) : null;
 
   return (
     <div className="min-h-screen bg-paper-alt pb-24">
@@ -299,7 +318,18 @@ export default function ProposalPage() {
               />
               Send a copy of the proposal via email
             </label>
-            {wantsEmailCopy && (
+
+            <label className="mt-3 flex items-start gap-3 text-sm text-ink/75">
+              <input
+                type="checkbox"
+                checked={wantsFreebies}
+                onChange={(e) => setWantsFreebies(e.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0 rounded border-ink/30 text-brand-blue focus:ring-brand-blue"
+              />
+              Send the freebies to my email
+            </label>
+
+            {wantsAnyEmail && (
               <div className="ml-7 mt-2">
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/60">Email Address</label>
                 <input
@@ -330,6 +360,10 @@ export default function ProposalPage() {
 
             {submitError && <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{submitError}</p>}
 
+            {!canSubmit && !submitting && missingBeforeSubmit.length > 0 && (
+              <p className="mt-4 text-xs text-ink/60">Before you can submit, we still need: {missingBeforeSubmit.join(", ")}.</p>
+            )}
+
             <button
               type="submit"
               disabled={!canSubmit || submitting}
@@ -345,9 +379,15 @@ export default function ProposalPage() {
             <h2 className="text-xl font-bold text-green-800">
               {result === "signed" ? "Thank you, this proposal has been signed." : `Signed by ${displaySignature?.signerName ?? "the client"}.`}
             </h2>
-            {emailCopyStatus === "sending" && <p className="mt-2 text-xs text-green-700">Emailing you a copy&hellip;</p>}
-            {emailCopyStatus === "sent" && <p className="mt-2 text-xs text-green-700">A copy was emailed to {emailCopyAddress}.</p>}
-            {emailCopyStatus === "error" && <p className="mt-2 text-xs text-amber-700">We couldn't email a copy right now &mdash; you can still download/print it later.</p>}
+            {emailCopyStatus === "sending" && (
+              <p className="mt-2 text-xs text-green-700">{wantsFreebies ? "Emailing you a copy and the freebies…" : "Emailing you a copy…"}</p>
+            )}
+            {emailCopyStatus === "sent" && (
+              <p className="mt-2 text-xs text-green-700">
+                {wantsFreebies ? `A copy and the freebies were emailed to ${emailCopyAddress}.` : `A copy was emailed to ${emailCopyAddress}.`}
+              </p>
+            )}
+            {emailCopyStatus === "error" && <p className="mt-2 text-xs text-amber-700">We couldn't email that right now &mdash; you can still download/print it later.</p>}
             {!showPayment && !finalThanks && data.hasQuestionnaire && result === "signed" && (
               <p className="mt-2 text-sm text-green-700">Taking you to the next step&hellip;</p>
             )}
@@ -359,55 +399,81 @@ export default function ProposalPage() {
         )}
 
         {showPayment && data.payment && (
-          <div className="mt-6 rounded-3xl border border-brand-blue/20 bg-white p-6 shadow-lg shadow-brand-blue/5 sm:p-10">
-            <h2 className="text-xl font-bold text-brand-navy">Let's Get Your Project Started</h2>
-            <p className="mt-2 text-sm text-ink/70">
-              In order to commence the website project, please pay the initial development fee:
-            </p>
+          <div className="mt-6 overflow-hidden rounded-3xl border border-ink/10 bg-white shadow-xl shadow-black/5">
+            <div className="h-1.5 bg-brand-gradient" aria-hidden="true" />
 
-            <div className="mt-5 rounded-2xl bg-brand-blue/5 px-5 py-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-ink/50">Amount</p>
-              <p className="text-3xl font-extrabold tracking-tight text-brand-blue">{data.payment.amountLabel}</p>
-            </div>
-
-            <div className="mt-5 rounded-2xl border border-ink/10 p-5">
-              <p className="text-xs font-semibold uppercase tracking-wide text-ink/50">Payment Method</p>
-              <div className="mt-2 flex flex-wrap items-center gap-3">
-                <p className="text-lg font-bold text-brand-navy">GCash: {data.payment.gcashNumber}</p>
-                <button
-                  type="button"
-                  onClick={handleCopyGcash}
-                  className="rounded-full border border-ink/15 px-3 py-1 text-xs font-semibold text-brand-navy hover:border-brand-blue hover:text-brand-blue"
-                >
-                  {gcashCopied ? "Copied!" : "Copy Number"}
-                </button>
+            <div className="p-6 sm:p-10">
+              <div className="flex flex-wrap items-start justify-between gap-6 border-b border-ink/10 pb-6">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-blue">Payment Request</p>
+                  <img src={BRAND.logo} alt={BRAND.name} width={200} height={25} className="mt-2 h-6 w-auto" />
+                  <p className="mt-2 text-xs text-ink/60">{BRAND.legalName}</p>
+                </div>
+                <div className="text-left sm:text-right">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-ink/60">Billed To</p>
+                  <p className="mt-1 text-sm font-semibold text-ink">{displaySignature?.signerName ?? signerName}</p>
+                  {billedToDate && (
+                    <p className="mt-1 text-xs text-ink/60">{billedToDate.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })}</p>
+                  )}
+                </div>
               </div>
-              <p className="mt-1 text-sm text-ink/70">Account name: {data.payment.gcashAccountName}</p>
-              {data.payment.bankNote && <p className="mt-3 text-sm text-ink/60">{data.payment.bankNote}</p>}
-            </div>
 
-            <p className="mt-6 text-sm font-semibold text-ink/80">Please send your payment screenshot to {BRAND.name}:</p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <a href={whatsappUrl(paymentPrefill)} target="_blank" rel="noopener noreferrer" className="rounded-full bg-[#25D366] px-4 py-2 text-sm font-semibold text-white hover:opacity-90">
-                WhatsApp
-              </a>
-              <a href={messengerUrl()} target="_blank" rel="noopener noreferrer" className="rounded-full bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-[#0b57cc]">
-                Messenger
-              </a>
-              <a href={viberUrl()} target="_blank" rel="noopener noreferrer" className="rounded-full bg-[#7360F2] px-4 py-2 text-sm font-semibold text-white hover:opacity-90">
-                Viber
-              </a>
-            </div>
+              <p className="mt-6 text-sm text-ink/70">To commence the website project, please settle the amount below.</p>
 
-            <button
-              type="button"
-              onClick={handleDonePaying}
-              disabled={markingPaid || paymentAlreadyMarked}
-              className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-brand-blue px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-black/15 transition hover:-translate-y-0.5 hover:bg-[#0b57cc] disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-60 sm:w-auto"
-            >
-              {paymentAlreadyMarked ? "Thanks, we've noted your payment!" : markingPaid ? "Just a moment..." : "Done Paying"}
-            </button>
-            <p className="mt-2 text-xs text-ink/50">Your signature is already recorded &mdash; this step just gets your project moving.</p>
+              <div className="mt-6">
+                <div className="flex items-center justify-between border-b border-ink/10 py-4">
+                  <div>
+                    <p className="text-sm font-semibold text-ink">{data.title}</p>
+                    <p className="mt-0.5 text-xs text-ink/60">Initial development fee</p>
+                  </div>
+                  <p className="text-sm font-semibold text-ink">{data.payment.amountLabel}</p>
+                </div>
+                <div className="flex items-center justify-between border-b-2 border-brand-navy py-4">
+                  <p className="text-sm font-bold uppercase tracking-wide text-brand-navy">Total Due</p>
+                  <p className="text-2xl font-extrabold tracking-tight text-brand-blue">{data.payment.amountLabel}</p>
+                </div>
+              </div>
+
+              <div className="mt-8 border-t border-ink/10 pt-6">
+                <p className="text-xs font-semibold uppercase tracking-wide text-ink/60">Remit Payment To</p>
+                <dl className="mt-4 space-y-3">
+                  <div className="flex items-center justify-between gap-4">
+                    <dt className="text-sm text-ink/60">Payment Method</dt>
+                    <dd className="text-sm font-semibold text-ink">GCash</dd>
+                  </div>
+                  <div className="flex items-center justify-between gap-4">
+                    <dt className="text-sm text-ink/60">Account Number</dt>
+                    <dd className="flex items-center gap-2">
+                      <span className="text-sm font-semibold tabular-nums text-ink">{data.payment.gcashNumber}</span>
+                      <button
+                        type="button"
+                        onClick={handleCopyGcash}
+                        className="rounded-full border border-ink/15 bg-white px-3 py-1 text-xs font-semibold text-brand-navy hover:border-brand-blue hover:text-brand-blue"
+                      >
+                        {gcashCopied ? "Copied!" : "Copy"}
+                      </button>
+                    </dd>
+                  </div>
+                  <div className="flex items-center justify-between gap-4">
+                    <dt className="text-sm text-ink/60">Account Name</dt>
+                    <dd className="text-sm font-semibold text-ink">{data.payment.gcashAccountName}</dd>
+                  </div>
+                </dl>
+                {data.payment.bankNote && <p className="mt-4 border-t border-ink/10 pt-4 text-xs text-ink/60">{data.payment.bankNote}</p>}
+              </div>
+
+              <p className="mt-6 text-xs text-ink/60">Please send your payment screenshot to {BRAND.name}.</p>
+
+              <button
+                type="button"
+                onClick={handleDonePaying}
+                disabled={markingPaid || paymentAlreadyMarked}
+                className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-brand-blue px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-black/15 transition hover:-translate-y-0.5 hover:bg-[#0b57cc] disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-60 sm:w-auto"
+              >
+                {paymentAlreadyMarked ? "Thanks, we've noted your payment!" : markingPaid ? "Just a moment..." : "I've Paid"}
+              </button>
+              <p className="mt-2 text-xs text-ink/60">Your signature is already recorded &mdash; this step just gets your project moving.</p>
+            </div>
           </div>
         )}
       </main>
