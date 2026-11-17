@@ -8,29 +8,44 @@
 // instruction: "This pricing page is purely for presentation only and
 // still leads the visitors to talk to us").
 //
-// The three tiers and every number here are NOT invented for this page.
-// They are the real, already-shipped /foryourbusiness base price plus its
-// two real optional annual upgrades (see functions/api/checkout.ts's
-// FYB_UPGRADE_PRICES and content/foryourbusiness.ts's UPGRADES):
-//   - Starter: the ₱599 Starter Website itself (promotional price).
-//   - Professional: Starter + the "Custom Domain & Managed Hosting"
-//     upgrade (₱1,500/year, billed annually starting Year 1).
-//   - Business: Starter + the "Website + Business Tools" upgrade
-//     (₱5,700/year, billed annually starting Year 1).
-// The operator supplied a reference graphic for this page's layout whose
-// numbers mostly matched (₱599 / ₱2,099 / ₱6,299 first-year totals, and
-// ₱1,500/year for the Professional renewal), confirming those are current.
-// Its one mismatch was the Business renewal figure (₱4,000/year in the
-// graphic vs. the real, already-live ₱5,700/year rate this codebase
-// actually charges) — per the operator's own direction to "use the current
-// add on rates that we have," the real ₱5,700/year figure is used here,
-// not the graphic's number. The feature checklist below was also
-// reconciled against the real UPGRADES.domainHosting/businessTools item
-// lists rather than copied from the graphic verbatim, with one correction
-// from the operator directly [2026-10-11]: Professional also gets its own
-// Website Control Panel and can manage its own products/pricing, same as
-// Business — both are true for Professional and Business, not Business
-// only as a first draft had it.
+// The three tiers originally traced directly to the real, already-shipped
+// /foryourbusiness base price plus its two real optional annual upgrades
+// (see functions/api/checkout.ts's FYB_UPGRADE_PRICES and
+// content/foryourbusiness.ts's UPGRADES). That link is now presentational
+// only, not a live computed one — see the price-update note below.
+// The operator supplied a reference graphic for this page's original
+// layout whose numbers mostly matched (₱599 / ₱2,099 / ₱6,299 first-year
+// totals, and ₱1,500/year for the Professional renewal), confirming those
+// were current at the time. Its one mismatch was the Business renewal
+// figure (₱4,000/year in the graphic vs. the real, already-live
+// ₱5,700/year rate this codebase actually charges) — per the operator's
+// own direction to "use the current add on rates that we have," the real
+// ₱5,700/year figure was used, not the graphic's number. The feature
+// checklist below was also reconciled against the real
+// UPGRADES.domainHosting/businessTools item lists rather than copied from
+// the graphic verbatim, with one correction from the operator directly
+// [2026-10-11]: Professional also gets its own Website Control Panel and
+// can manage its own products/pricing, same as Business — both are true
+// for Professional and Business, not Business only as a first draft had
+// it.
+//
+// Price update [2026-11-17], per the operator's direct instruction,
+// confirmed via two follow-up questions for the figures not stated
+// outright: Starter's price rose from ₱599 to ₱799 (still the
+// limited-time promotional price, same framing as before). Professional
+// was renamed "Pro" and its first-year total rose from ₱2,099 to ₱2,599,
+// with the operator separately confirming the Year 2+ renewal also
+// changes, from ₱1,500/year to ₱1,800/year. Business was renamed "Full
+// Digital" and its first-year total rose from ₱6,299 to ₱8,999, with the
+// operator confirming its Year 2+ renewal stays at the existing
+// ₱5,700/year rate, unchanged. These are no longer a live-computed
+// base+upgrade sum (if they ever were one in practice beyond the
+// coincidence of matching numbers) — they're now independent, directly
+// authored figures for this presentation-only page, tracked here as the
+// single source of truth for /pricing specifically. This does not touch
+// the real, separately-priced /foryourbusiness or /b2b checkout flows —
+// neither was mentioned in this instruction and neither imports anything
+// from this file.
 //
 // Add-on catalog (§ADDON_CATEGORIES below) is transcribed verbatim from
 // the real, authoritative catalog in the altasme/clienthub repo
@@ -70,24 +85,24 @@ export const PRICING_TIERS: {
   {
     id: "starter",
     name: "Starter",
-    price: "₱599",
+    price: "₱799",
     priceNote: "One-time payment",
     promoNote: "Limited-time promotional price",
     cta: "Get Started",
   },
   {
     id: "professional",
-    name: "Professional",
+    name: "Pro",
     badge: "Best Value",
-    price: "₱2,099",
+    price: "₱2,599",
     priceNote: "First-year total, one-time",
-    renewalNote: "Renews at ₱1,500/year from Year 2",
+    renewalNote: "Renews at ₱1,800/year from Year 2",
     cta: "Get Started",
   },
   {
     id: "business",
-    name: "Business",
-    price: "₱6,299",
+    name: "Full Digital",
+    price: "₱8,999",
     priceNote: "First-year total, one-time",
     renewalNote: "Renews at ₱5,700/year from Year 2",
     cta: "Get Started",
@@ -180,24 +195,24 @@ export const PRICING_NOTES = {
   headline: "Good to Know",
   items: [
     {
-      q: "Is ₱599 the permanent price?",
-      a: "No. ₱599 is a limited-time promotional price for the Starter plan. If pricing changes in the future, we'll always be upfront about it.",
+      q: "Is ₱799 the permanent price?",
+      a: "No. ₱799 is a limited-time promotional price for the Starter plan. If pricing changes in the future, we'll always be upfront about it.",
     },
     {
-      q: "What's included in the ₱599 Starter price?",
+      q: "What's included in the ₱799 Starter price?",
       a: "A multi-page professional website built around your business, hosted on your own subdomain of altasme.com, with managed hosting and SSL security already included at no extra fee.",
     },
     {
       q: "Can I get my own custom domain instead of a subdomain?",
-      a: "Yes, with the Professional or Business plan. Both include a custom domain plus managed hosting, security, and maintenance, billed annually starting Year 1.",
+      a: "Yes, with the Pro or Full Digital plan. Both include a custom domain plus managed hosting, security, and maintenance, billed annually starting Year 1.",
     },
     {
-      q: "What happens after Year 1 on Professional or Business?",
+      q: "What happens after Year 1 on Pro or Full Digital?",
       a: "The domain, hosting, security, and maintenance renew annually so everything stays active. We'll reach out before renewal, and you're free to cancel anytime.",
     },
     {
       q: "Do I have to pay in installments?",
-      a: "No. Each plan is a single upfront payment, the Starter price alone, or the first-year total shown for Professional/Business, which already includes that plan's add-on for Year 1.",
+      a: "No. Each plan is a single upfront payment, the Starter price alone, or the first-year total shown for Pro/Full Digital, which already includes that plan's add-on for Year 1.",
     },
   ],
 } as const;
