@@ -14,7 +14,7 @@ import PricingTable from "../components/pricing/PricingTable";
 import PricingAddOns from "../components/pricing/PricingAddOns";
 import PricingNotes from "../components/pricing/PricingNotes";
 
-const PAGE_TITLE = "Pricing | Altaventures";
+const PAGE_TITLE = "Website Pricing Plans (Philippines) | Altaventures";
 const PAGE_DESCRIPTION =
   "Simple, transparent pricing for Altaventures website plans: Starter, Pro, and Full Digital. See what's included and talk to us about your business.";
 

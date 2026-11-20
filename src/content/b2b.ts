@@ -199,7 +199,7 @@ export const B2B_FAQ = {
       a: "Yes. Once your website is live, we can quote additional systems separately as your business grows.",
     },
     {
-      q: "How is this different from the ₱599 offer?",
+      q: "How is this different from the ₱799 offer?",
       a: "This package is built for established businesses that want their own domain, hosting, security, and ongoing support handled for them, not just a one-time build.",
     },
     { q: "What payment methods are accepted?", a: "GCash, Maya, and cards, for both the deposit and the balance." },

@@ -131,14 +131,14 @@ export function trackLead(params: AnalyticsEventMap["lead"]) {
  * ganap.net checkout session is being created. Mirrors Meta's
  * InitiateCheckout, no-ops on the Pixel side until META_PIXEL_ID is set.
  *
- * `value` defaults to 599 (the Starter Website alone) but the checkout
+ * `value` defaults to 799 (the Starter Website alone) but the checkout
  * page now passes the actual server-validated total [2026-10-02, added
- * for the optional-upgrade checkout redesign] -- 2099 or 6299 when the
+ * for the optional-upgrade checkout redesign] -- 2599 or 8999 when the
  * customer added an upgrade -- so ad reporting reflects what was really
  * charged, same reasoning trackInitiateCheckoutB2B below already applies
  * to its own deposit-only value.
  */
-export function trackInitiateCheckout(value: number = 599) {
+export function trackInitiateCheckout(value: number = 799) {
   track("checkout_started", {});
   if (typeof window !== "undefined" && typeof window.fbq === "function") {
     window.fbq("track", "InitiateCheckout", { value, currency: "PHP" });

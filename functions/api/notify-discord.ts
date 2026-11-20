@@ -52,7 +52,7 @@ interface OrderRow {
   discord_notified_at: string | null;
 }
 
-const STARTER_PHP = 599;
+const STARTER_PHP = 799;
 
 const UPGRADE_LABEL: Record<string, string> = {
   none: "",
