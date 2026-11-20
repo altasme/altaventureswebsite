@@ -39,6 +39,7 @@ const B2BCheckoutPage = lazy(() => import("./pages/B2BCheckoutPage"));
 const B2BThankYouPage = lazy(() => import("./pages/B2BThankYouPage"));
 const MyCafePosPage = lazy(() => import("./pages/MyCafePosPage"));
 const PricingPage = lazy(() => import("./pages/PricingPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 function PageContent() {
   useScrollDepth();
@@ -198,6 +199,14 @@ export default function App() {
         element={
           <Suspense fallback={null}>
             <PricingPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="*"
+        element={
+          <Suspense fallback={null}>
+            <NotFoundPage />
           </Suspense>
         }
       />

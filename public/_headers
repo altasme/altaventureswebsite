@@ -1,0 +1,21 @@
+# Private/transactional pages: keep them out of search even when served as the SPA shell.
+/proposal/*
+  X-Robots-Tag: noindex, nofollow
+/agreement/*
+  X-Robots-Tag: noindex, nofollow
+/questions/*
+  X-Robots-Tag: noindex, nofollow
+/WSA-free
+  X-Robots-Tag: noindex, nofollow
+/WSA-pro
+  X-Robots-Tag: noindex, nofollow
+/service-agreement
+  X-Robots-Tag: noindex, nofollow
+/foryourbusiness/checkout
+  X-Robots-Tag: noindex, nofollow
+/foryourbusiness/thank-you
+  X-Robots-Tag: noindex, nofollow
+/b2b/checkout
+  X-Robots-Tag: noindex, nofollow
+/b2b/thank-you
+  X-Robots-Tag: noindex, nofollow

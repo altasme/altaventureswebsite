@@ -1,1 +1,6 @@
-/*  /index.html  200
+# Client-fetched pages whose slug is resolved in the browser: serve the SPA shell.
+# Every other public route is prerendered to its own HTML file, and any unknown URL
+# now falls through to /404.html with a real 404 status (no catch-all rewrite).
+/proposal/*   /index.html  200
+/agreement/*  /index.html  200
+/questions/*  /index.html  200

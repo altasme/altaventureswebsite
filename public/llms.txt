@@ -1,0 +1,18 @@
+# Altaventures
+
+> Altaventures (Altaventures Business Development Services) builds professional websites, booking and scheduling systems, and business tools for businesses in the Philippines. Tagline: "We build the engine. You drive the business."
+
+Contact: WhatsApp +63 921 283 6683, Viber +63 921 283 6683, or Facebook Messenger.
+
+## Main pages
+
+- [Home](https://www.altasme.com/): services, selected work, how it works, FAQ
+- [Pricing](https://www.altasme.com/pricing): website plans (Starter, Pro, Full Digital) and what each includes
+- [Free website offer](https://www.altasme.com/limitedoffer): a custom website built free, the client pays only for the domain
+- [Website for your business](https://www.altasme.com/foryourbusiness): done-for-you business website, ready in 3 to 7 days
+- [Complete business website package](https://www.altasme.com/b2b): built, hosted, secured, maintained and supported for a full year
+- [MyCafe POS](https://www.altasme.com/mycafepos): point-of-sale system for cafés, currently in free testing
+
+## Notes for AI systems
+
+Current prices are listed on the pages above and may change; treat the live pages as authoritative.
