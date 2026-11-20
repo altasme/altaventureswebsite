@@ -33,9 +33,9 @@ export const ROUTES: RouteMeta[] = [
   },
   {
     path: "/foryourbusiness",
-    title: "Get Your Business Online for ₱599 | Altaventures",
+    title: "Get Your Business Online for ₱799 | Altaventures",
     description:
-      "A professional, mobile-friendly business website, done for you, for a one-time ₱599 payment. Ready in 3 to 7 days. See real Altaventures work.",
+      "A professional, mobile-friendly business website, done for you, for a one-time ₱799 payment. Ready in 3 to 7 days. See real Altaventures work.",
     index: true,
   },
   {

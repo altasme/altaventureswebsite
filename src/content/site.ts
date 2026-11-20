@@ -1627,12 +1627,12 @@ export const LEGAL: {
     ],
   },
   "fyb-refund": {
-    title: "Refund Policy (₱599 Website Offer)",
+    title: "Refund Policy (₱799 Website Offer)",
     effectiveDate: "September 3, 2026",
-    lastUpdated: "October 2, 2026",
+    lastUpdated: "November 20, 2026",
     intro: [
       p(
-        "This Refund Policy applies specifically to the ₱599 one-time professional website offer at www.altasme.com/foryourbusiness (\"the ₱599 offer\"), provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). It should be read together with the Terms of Sale for the ₱599 offer.",
+        "This Refund Policy applies specifically to the ₱799 one-time professional website offer at www.altasme.com/foryourbusiness (\"the ₱799 offer\"), provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). It should be read together with the Terms of Sale for the ₱799 offer.",
       ),
       p(
         "This policy is separate from, and does not change, the general Refund Policy that applies to Altaventures' other services.",
@@ -1643,7 +1643,7 @@ export const LEGAL: {
         heading: "1. Before Work Begins",
         blocks: [
           p(
-            "You may request a full refund of the ₱599 at any time before your discovery call takes place and before any build work has started. Email altasmeworks@gmail.com to request it.",
+            "You may request a full refund of the ₱799 at any time before your discovery call takes place and before any build work has started. Email altasmeworks@gmail.com to request it.",
           ),
         ],
       },
@@ -1651,15 +1651,15 @@ export const LEGAL: {
         heading: "2. After the Discovery Call or Once Build Work Has Begun",
         blocks: [
           p(
-            "The ₱599 becomes non-refundable, because the consultation and build effort have already been rendered.",
+            "The ₱799 becomes non-refundable, because the consultation and build effort have already been rendered.",
           ),
         ],
       },
       {
-        heading: "3. If Your Project Needs More Than the ₱599 Offer",
+        heading: "3. If Your Project Needs More Than the ₱799 Offer",
         blocks: [
           p(
-            "If, during the discovery call, we determine your requirements go beyond a professional informational website (for example complex e-commerce, custom applications, advanced systems, or complex integrations), we will either (a) credit the full ₱599 toward the higher plan we recommend, or (b) proceed to build a professional informational website within the ₱599 scope. You receive value in either case. A cash refund is not owed simply because your needs exceed what the ₱599 offer covers.",
+            "If, during the discovery call, we determine your requirements go beyond a professional informational website (for example complex e-commerce, custom applications, advanced systems, or complex integrations), we will either (a) credit the full ₱799 toward the higher plan we recommend, or (b) proceed to build a professional informational website within the ₱799 scope. You receive value in either case. A cash refund is not owed simply because your needs exceed what the ₱799 offer covers.",
           ),
         ],
       },
@@ -1679,7 +1679,7 @@ export const LEGAL: {
         heading: "6. Client Responsiveness",
         blocks: [
           p(
-            "The build timeline starts only when we receive the required information and materials. If you do not provide the required materials, or you are unresponsive, for 30 days, we may close the project as fulfilled, and the ₱599 is non-refundable.",
+            "The build timeline starts only when we receive the required information and materials. If you do not provide the required materials, or you are unresponsive, for 30 days, we may close the project as fulfilled, and the ₱799 is non-refundable.",
           ),
         ],
       },
@@ -1702,17 +1702,17 @@ export const LEGAL: {
     ],
   },
   "fyb-terms": {
-    title: "Terms of Sale (₱599 Website Offer)",
+    title: "Terms of Sale (₱799 Website Offer)",
     effectiveDate: "September 3, 2026",
-    lastUpdated: "October 2, 2026",
+    lastUpdated: "November 20, 2026",
     intro: [
       p(
-        "These Terms of Sale govern the ₱599 one-time professional website offer at www.altasme.com/foryourbusiness, provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). By purchasing the ₱599 offer, you (\"you,\" \"the client\") agree to these Terms of Sale, together with the Refund Policy (₱599 Website Offer) and the Privacy Notice for the ₱599 offer.",
+        "These Terms of Sale govern the ₱799 one-time professional website offer at www.altasme.com/foryourbusiness, provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). By purchasing the ₱799 offer, you (\"you,\" \"the client\") agree to these Terms of Sale, together with the Refund Policy (₱799 Website Offer) and the Privacy Notice for the ₱799 offer.",
       ),
     ],
     sections: [
       {
-        heading: "1. What the ₱599 Offer Includes",
+        heading: "1. What the ₱799 Offer Includes",
         blocks: [
           p(
             "A professional, mobile-friendly informational website designed around your business: business information, services or products, an about section, contact details, a clear contact or inquiry call to action, hosting on an Altaventures subdomain, and SSL/HTTPS. Creation is fully done for you.",
@@ -1785,7 +1785,7 @@ export const LEGAL: {
         heading: "10. Limitation of Liability",
         blocks: [
           p(
-            "To the maximum extent permitted by law, Altaventures is not liable for indirect, incidental, special, or consequential damages, lost profits, or lost business. Our total aggregate liability for any claim relating to this offer is limited to the amount you paid (₱599).",
+            "To the maximum extent permitted by law, Altaventures is not liable for indirect, incidental, special, or consequential damages, lost profits, or lost business. Our total aggregate liability for any claim relating to this offer is limited to the amount you paid (₱799).",
           ),
         ],
       },
@@ -1811,7 +1811,7 @@ export const LEGAL: {
         heading: "14. Severability and Entire Agreement",
         blocks: [
           p(
-            "If any provision is held unenforceable, the rest remains in effect. These terms, together with the Refund Policy (₱599 Website Offer) and the Privacy Notice, are the entire agreement for the ₱599 offer.",
+            "If any provision is held unenforceable, the rest remains in effect. These terms, together with the Refund Policy (₱799 Website Offer) and the Privacy Notice, are the entire agreement for the ₱799 offer.",
           ),
         ],
       },
@@ -1822,12 +1822,12 @@ export const LEGAL: {
     ],
   },
   "fyb-privacy": {
-    title: "Privacy Notice (₱599 Website Offer)",
+    title: "Privacy Notice (₱799 Website Offer)",
     effectiveDate: "September 3, 2026",
-    lastUpdated: "October 2, 2026",
+    lastUpdated: "November 20, 2026",
     intro: [
       p(
-        "This Privacy Notice explains how Altaventures Business Development Services, operating under the brand name Altaventures, collects and processes personal data in connection with the ₱599 website offer at www.altasme.com/foryourbusiness, in accordance with the Data Privacy Act of 2012 (Republic Act 10173).",
+        "This Privacy Notice explains how Altaventures Business Development Services, operating under the brand name Altaventures, collects and processes personal data in connection with the ₱799 website offer at www.altasme.com/foryourbusiness, in accordance with the Data Privacy Act of 2012 (Republic Act 10173).",
       ),
     ],
     sections: [
@@ -1879,7 +1879,7 @@ export const LEGAL: {
         heading: "Consent",
         blocks: [
           p(
-            "By proceeding with the ₱599 offer, you confirm you have read this notice and consent to Altaventures collecting and processing your personal data for the purposes described.",
+            "By proceeding with the ₱799 offer, you confirm you have read this notice and consent to Altaventures collecting and processing your personal data for the purposes described.",
           ),
         ],
       },
@@ -1894,7 +1894,7 @@ export const LEGAL: {
         "This Refund Policy applies specifically to the ₱4,999 complete business website package at www.altasme.com/b2b (\"the package\"), provided by Altaventures Business Development Services, operating under the brand name Altaventures (\"Altaventures,\" \"we,\" \"us,\" or \"our\"). The ₱4,999 is paid in two installments, a ₱2,499 deposit and a ₱2,500 balance, described further in the Terms of Sale for the package, which this policy should be read together with.",
       ),
       p(
-        "This policy is separate from, and does not change, the general Refund Policy that applies to Altaventures' other services, or the Refund Policy for the ₱599 website offer.",
+        "This policy is separate from, and does not change, the general Refund Policy that applies to Altaventures' other services, or the Refund Policy for the ₱799 website offer.",
       ),
     ],
     sections: [

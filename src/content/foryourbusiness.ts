@@ -50,8 +50,8 @@
 // doesn't include them — functions/api/checkout.ts still accepts them as
 // optional/empty for /b2b, which is untouched by any of this.
 
-export const PRIMARY_CTA = "GET MY WEBSITE FOR ₱599 →";
-export const STICKY_CTA = "₱599 · GET MY WEBSITE →";
+export const PRIMARY_CTA = "GET MY WEBSITE FOR ₱799 →";
+export const STICKY_CTA = "₱799 · GET MY WEBSITE →";
 
 // Hero background is a real supplied photo (operator-provided, hosted on
 // Cloudinary), full-bleed, same treatment as the homepage Hero.tsx: a
@@ -63,7 +63,7 @@ export const STICKY_CTA = "₱599 · GET MY WEBSITE →";
 // local asset + conversion step for an image already hosted externally.
 export const FYB_HERO = {
   headline: "Your Business Deserves More Than Just a Facebook Page.",
-  sub: "Get your own professional website for just ₱599. Showcase what makes your business special, make a great first impression, and help more potential customers see why they should choose you.",
+  sub: "Get your own professional website for just ₱799. Showcase what makes your business special, make a great first impression, and help more potential customers see why they should choose you.",
   line: "No complicated process. No need to build it yourself. We'll do it all for you.",
   cta: PRIMARY_CTA,
   talkToUsCta: "Talk to Us",
@@ -91,7 +91,7 @@ export const FYB_TRUST_SIGNALS = {
   stats: [
     { kind: "counter", countTo: 20, suffix: "+", label: "Websites and Systems launched & counting" },
     { kind: "range", from: 3, to: 7, label: "Average build time" },
-    { kind: "static", value: "₱599", label: "Your starting price" },
+    { kind: "static", value: "₱799", label: "Your starting price" },
   ],
 } as const;
 
@@ -106,7 +106,7 @@ export const PROBLEM = {
 } as const;
 
 export const WHATS_INCLUDED = {
-  headline: "What ₱599 Gets You and Your Business",
+  headline: "What ₱799 Gets You and Your Business",
   intro:
     "We know how difficult and expensive it can be to get a professional website for your business. That's why we're lowering the barrier to getting online, so more business owners and professionals can build, grow, and scale their businesses.",
   items: [
@@ -141,7 +141,7 @@ export const WHATS_INCLUDED = {
   ],
   closing: {
     lead: "You've already put so much into building your business.",
-    body: "For just ₱599, let us help you give it a proper place online.",
+    body: "For just ₱799, let us help you give it a proper place online.",
   },
 } as const;
 
@@ -250,7 +250,7 @@ export const FYB_FAQ = {
   headline: "Frequently Asked Questions",
   items: [
     {
-      q: "What exactly is included in ₱599?",
+      q: "What exactly is included in ₱799?",
       a: "A professional multi-page website built around your business, mobile-friendly design, your business information, contact details, free hosting on your own subdomain, and SSL security. One-time fee.",
     },
     { q: "How long does it take?", a: "Usually 3 to 7 days after we receive your details and content." },
@@ -271,7 +271,7 @@ export const FYB_FAQ = {
       a: "You'll get your order reference right away. Message your developer with a screenshot of it, and we'll start building based on what you told us in the questionnaire.",
     },
     {
-      q: "Why is it only ₱599?",
+      q: "Why is it only ₱799?",
       a: "We keep the first website simple and affordable to earn your trust. If your business grows and wants more later, we hope you build it with us. No catch, no contract.",
     },
   ],
@@ -279,7 +279,7 @@ export const FYB_FAQ = {
 
 export const FYB_FINAL_CTA = {
   headline: "Ready to Put Your Business Online?",
-  body: "Get started with your website for ₱599. Simple, professional, and yours.",
+  body: "Get started with your website for ₱799. Simple, professional, and yours.",
   cta: PRIMARY_CTA,
 } as const;
 
@@ -310,12 +310,12 @@ export const QUESTIONNAIRE = {
 // Step 2 of 4: Package Review. The Starter package and its inclusions
 // only — still no upgrade shown, so the customer confirms the base offer
 // before any upsell enters the picture.
-export const STARTER_PHP = 599;
+export const STARTER_PHP = 799;
 
 export const PACKAGE_REVIEW = {
   stepLabel: "Step 2 of 4",
   headline: "Your Starter Website",
-  price: "₱599",
+  price: "₱799",
   priceNote: "ONE-TIME PAYMENT",
   summaryTitle: "Professional Business Website",
   items: [
@@ -331,12 +331,12 @@ export const PACKAGE_REVIEW = {
 } as const;
 
 // Step 3 of 4: Optional Upgrade. Exactly one of these may be selected (or
-// none, the default) — the ₱5,700 package replaces the ₱1,500 one, they
+// none, the default) — the Business Tools package replaces the Domain & Hosting one, they
 // are never charged together. Prices here are the display copy only; the
 // actual charge is computed server-side in functions/api/checkout.ts from
 // the validated upgradeType, never trusted from the client.
-export const DOMAIN_HOSTING_UPGRADE_PHP = 1500;
-export const BUSINESS_TOOLS_UPGRADE_PHP = 5700;
+export const DOMAIN_HOSTING_UPGRADE_PHP = 1800;
+export const BUSINESS_TOOLS_UPGRADE_PHP = 8200; // first-year charge; renews at 5,700/yr from Year 2
 
 export const UPGRADES = {
   stepLabel: "Step 3 of 4",
@@ -345,22 +345,22 @@ export const UPGRADES = {
   none: {
     id: "none",
     title: "No Upgrade",
-    body: "Just the Starter Website for ₱599.",
-    firstYearTotal: "₱599",
+    body: "Just the Starter Website for ₱799.",
+    firstYearTotal: "₱799",
   },
   domainHosting: {
     id: "domain_hosting",
     title: "Custom Domain & Managed Hosting",
-    price: "₱1,500/year",
+    price: "₱1,800/year",
     annualNote: "Billed annually, starting Year 1.",
     items: ["Custom domain", "Managed website hosting", "SSL security", "Website maintenance", "Best effort technical support"],
-    firstYearTotal: "₱2,099",
+    firstYearTotal: "₱2,599",
   },
   businessTools: {
     id: "business_tools",
     title: "Website + Business Tools",
-    price: "₱5,700/year",
-    annualNote: "Billed annually, starting Year 1.",
+    price: "₱8,200 first year",
+    annualNote: "Then ₱5,700/year from Year 2.",
     items: [
       "Managed custom domain and hosting",
       "SSL security",
@@ -370,7 +370,7 @@ export const UPGRADES = {
       "Standard technical support",
     ],
     note: "You'll get either an order management system or a booking system, not both by default.",
-    firstYearTotal: "₱6,299",
+    firstYearTotal: "₱8,999",
   },
   cta: "Continue",
 } as const;

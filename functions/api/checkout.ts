@@ -90,7 +90,7 @@ type OfferConfig = {
 // unaffected and still a flat deposit.
 const OFFER_CONFIG: Record<OfferId, OfferConfig> = {
   foryourbusiness: {
-    amountPhp: 599,
+    amountPhp: 799,
     metadataOffer: "foryourbusiness-299",
     successRedirectUrl: "https://www.altasme.com/foryourbusiness/thank-you",
     failureRedirectUrl: "https://www.altasme.com/foryourbusiness/checkout?retry=1",
@@ -111,12 +111,14 @@ const OFFER_CONFIG: Record<OfferId, OfferConfig> = {
 // (or is trusted for) a price or total directly.
 type FybUpgradeType = "none" | "domain_hosting" | "business_tools";
 
-const STARTER_PHP = 599;
+const STARTER_PHP = 799;
 
 const FYB_UPGRADE_PRICES: Record<FybUpgradeType, number> = {
   none: 0,
-  domain_hosting: 1500,
-  business_tools: 5700,
+  // First-year charges: Starter 799 + 1,800 = 2,599 and 799 + 8,200 = 8,999 (the /pricing
+  // "Pro" and "Full Digital" first-year totals). Renewals: 1,800/yr and 5,700/yr.
+  domain_hosting: 1800,
+  business_tools: 8200,
 };
 
 function isFybUpgradeType(value: unknown): value is FybUpgradeType {

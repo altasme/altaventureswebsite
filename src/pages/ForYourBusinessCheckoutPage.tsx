@@ -26,7 +26,7 @@ import PaymentStep from "../components/fyb/checkout/PaymentStep";
 // a refresh mid-wizard doesn't lose it, without needing any account to
 // store it against.
 
-const PAGE_TITLE = "Start Your ₱599 Website | Altaventures";
+const PAGE_TITLE = "Start Your ₱799 Website | Altaventures";
 const STORAGE_KEY = "fyb-checkout-wizard";
 
 type WizardStep = "questionnaire" | "package" | "upgrade" | "payment";

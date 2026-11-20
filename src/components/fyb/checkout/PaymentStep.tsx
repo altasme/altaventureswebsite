@@ -11,7 +11,7 @@ import type { QuestionnaireData } from "./QuestionnaireStep";
 type RedirectKind = "url" | "qr-image" | "qr-payload" | "test-placeholder";
 type PaymentResult = { redirectUrl: string; referenceNumber: string; kind: RedirectKind };
 
-const UPGRADE_PRICE: Record<FybUpgradeType, number> = { none: 0, domain_hosting: 1500, business_tools: 5700 };
+const UPGRADE_PRICE: Record<FybUpgradeType, number> = { none: 0, domain_hosting: 1800, business_tools: 8200 };
 const UPGRADE_TITLE: Record<FybUpgradeType, string> = {
   none: "",
   domain_hosting: UPGRADES.domainHosting.title,
