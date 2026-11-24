@@ -49,14 +49,52 @@ export default function PricingAddOns() {
               <div id={panelId} role="region" aria-labelledby={buttonId} hidden={!isOpen}>
                 <ul className="divide-y divide-ink/8 border-t border-ink/8">
                   {category.items.map((item) => (
-                    <li key={item.id} className="flex items-start justify-between gap-4 px-5 py-4">
-                      <div>
-                        <p className="text-sm font-semibold text-ink">{item.name}</p>
-                        <p className="mt-0.5 text-sm text-ink/60">{item.description}</p>
+                    <li key={item.id} className="px-5 py-4">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="text-sm font-semibold text-ink">{item.name}</p>
+                          <p className="mt-0.5 text-sm text-ink/60">{item.description}</p>
+                        </div>
+                        {item.priceLabel && (
+                          <span className="shrink-0 whitespace-nowrap text-sm font-semibold text-brand-blue">
+                            {item.priceLabel}
+                          </span>
+                        )}
                       </div>
-                      <span className="shrink-0 whitespace-nowrap text-sm font-semibold text-brand-blue">
-                        {item.priceLabel}
-                      </span>
+
+                      {item.tiers && item.tiers.length > 0 && (
+                        <div className="mt-3 space-y-2">
+                          {item.tiers.map((tier) => (
+                            <div key={tier.volume} className="rounded-xl bg-paper-alt px-4 py-3">
+                              <div className="flex flex-wrap items-center justify-between gap-2">
+                                <span className="text-sm font-semibold text-ink">{tier.volume}</span>
+                                <span className="shrink-0 whitespace-nowrap text-sm font-semibold text-brand-blue">
+                                  {tier.price}
+                                </span>
+                              </div>
+                              <p className="mt-1 text-xs text-ink/60">{tier.note}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {item.features && item.features.length > 0 && (
+                        <div className="mt-3">
+                          <p className="text-xs font-semibold uppercase tracking-wide text-ink/60">
+                            Included in all plans
+                          </p>
+                          <ul className="mt-1.5 space-y-1">
+                            {item.features.map((feature) => (
+                              <li key={feature} className="flex items-start gap-1.5 text-xs text-ink/60">
+                                <span className="mt-0.5 text-brand-blue" aria-hidden="true">
+                                  &bull;
+                                </span>
+                                <span>{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </li>
                   ))}
                 </ul>

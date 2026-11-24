@@ -62,6 +62,12 @@
 // no-cross-build-target-imports convention clienthub's own two pricing
 // files (functions/_lib vs. src/content) already follow for the same
 // reason.
+//
+// [2026-11-24] Added "Business & Customer Email Notifications" to the
+// Domains & Email category, per the operator's direct, exact copy — three
+// volume-based tiers (not a single "starting at" price like every other
+// add-on here), so AddonItem gained an optional `tiers`/`features` shape
+// used only by this item; every other add-on keeps its plain `priceLabel`.
 
 export const PRICING_HERO = {
   headline: "Simple, Transparent Pricing",
@@ -217,11 +223,19 @@ export const PRICING_NOTES = {
   ],
 } as const;
 
+export interface AddonPriceTier {
+  volume: string;
+  price: string;
+  note: string;
+}
+
 export interface AddonItem {
   id: string;
   name: string;
   description: string;
-  priceLabel: string;
+  priceLabel?: string; // omit when `tiers` is set
+  tiers?: AddonPriceTier[];
+  features?: string[]; // rendered as "Included in all plans" when `tiers` is set
 }
 
 export interface AddonCategory {
@@ -286,6 +300,35 @@ export const ADDON_CATEGORIES: AddonCategory[] = [
       { id: "addon-additional-domain", name: "Additional Domain", description: "Add another domain to your account.", priceLabel: "Client-paid + setup" },
       { id: "addon-business-email", name: "Additional Business Email Account", description: "Get a professional email address for your team.", priceLabel: "₱500+/year" },
       { id: "addon-email-integration", name: "External Email / Service Integration", description: "Integrate with external email services and tools.", priceLabel: "₱1,500+" },
+      {
+        id: "addon-email-notifications",
+        name: "Business & Customer Email Notifications",
+        description: "Automated payment notifications, order confirmations, and acknowledgement emails for your business and its customers.",
+        tiers: [
+          {
+            volume: "Up to 1,500 emails/month",
+            price: "₱1,499/year",
+            note: "Ideal for businesses that need automated payment notifications, order confirmations, and acknowledgement emails for both the business and its customers.",
+          },
+          {
+            volume: "Up to 5,000 emails/month",
+            price: "₱2,999/year",
+            note: "Ideal for growing businesses with more frequent customer and business transactions.",
+          },
+          {
+            volume: "Up to 15,000 emails/month",
+            price: "₱5,999/year",
+            note: "Ideal for businesses with higher transaction volumes and more frequent automated notifications.",
+          },
+        ],
+        features: [
+          "Automated email notification integration",
+          "Business and customer email delivery",
+          "Professionally designed branded email templates",
+          "Email template setup and integration",
+          "Integration with supported website or business system events",
+        ],
+      },
     ],
   },
   {
