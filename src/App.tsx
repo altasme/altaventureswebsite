@@ -30,6 +30,7 @@ const PostProjectServiceAgreementPage = lazy(() => import("./pages/PostProjectSe
 const ProposalPage = lazy(() => import("./pages/ProposalPage"));
 const AgreementPage = lazy(() => import("./pages/AgreementPage"));
 const QuestionsPage = lazy(() => import("./pages/QuestionsPage"));
+const MailboxRequestPage = lazy(() => import("./pages/MailboxRequestPage"));
 const LimitedOfferPage = lazy(() => import("./pages/LimitedOfferPage"));
 const ForYourBusinessPage = lazy(() => import("./pages/ForYourBusinessPage"));
 const ForYourBusinessCheckoutPage = lazy(() => import("./pages/ForYourBusinessCheckoutPage"));
@@ -127,6 +128,14 @@ export default function App() {
         element={
           <Suspense fallback={null}>
             <QuestionsPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/mailbox-request/:slug"
+        element={
+          <Suspense fallback={null}>
+            <MailboxRequestPage />
           </Suspense>
         }
       />
