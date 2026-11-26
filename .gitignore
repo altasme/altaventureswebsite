@@ -16,6 +16,11 @@ dist-ssr
 .dev.vars
 .wrangler
 
+# Claude Code local session/agent scratch state (isolated worktrees for
+# background agents, each with its own nested .git) -- never project
+# source, never meant to be committed.
+.claude/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
