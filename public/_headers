@@ -5,6 +5,8 @@
   X-Robots-Tag: noindex, nofollow
 /questions/*
   X-Robots-Tag: noindex, nofollow
+/mailbox-request/*
+  X-Robots-Tag: noindex, nofollow
 /WSA-free
   X-Robots-Tag: noindex, nofollow
 /WSA-pro
